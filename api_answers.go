@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -167,7 +167,7 @@ type ApiListAnswersRequest struct {
 	ApiService *AnswersAPIService
 	projectId *int32
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -179,6 +179,7 @@ type ApiListAnswersRequest struct {
 	page *int32
 	perPage *int32
 	query *string
+	noResult *bool
 }
 
 // Project ID
@@ -193,18 +194,19 @@ func (r ApiListAnswersRequest) Model(model string) ApiListAnswersRequest {
 	return r
 }
 
-func (r ApiListAnswersRequest) CollectionId(collectionId int32) ApiListAnswersRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListAnswersRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListAnswersRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiListAnswersRequest) CountryCode(countryCode string) ApiListAnswersRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiListAnswersRequest) LanguageCode(languageCode string) ApiListAnswersRequest {
 	r.languageCode = &languageCode
 	return r
@@ -239,6 +241,7 @@ func (r ApiListAnswersRequest) From(from time.Time) ApiListAnswersRequest {
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiListAnswersRequest) To(to time.Time) ApiListAnswersRequest {
 	r.to = &to
 	return r
@@ -257,6 +260,12 @@ func (r ApiListAnswersRequest) PerPage(perPage int32) ApiListAnswersRequest {
 // Case-insensitive full-text search inside AI response texts. Switches items to snippet + match_count mode.
 func (r ApiListAnswersRequest) Query(query string) ApiListAnswersRequest {
 	r.query = &query
+	return r
+}
+
+// Filter sentinel non-answers (provider returned nothing after retries; excluded from platform metrics). false &#x3D; only real answers, true &#x3D; only sentinels, omit &#x3D; both. Every item carries its own no_result flag.
+func (r ApiListAnswersRequest) NoResult(noResult bool) ApiListAnswersRequest {
+	r.noResult = &noResult
 	return r
 }
 
@@ -348,6 +357,9 @@ func (a *AnswersAPIService) ListAnswersExecute(r ApiListAnswersRequest) (*http.R
 	}
 	if r.query != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.noResult != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "no_result", r.noResult, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

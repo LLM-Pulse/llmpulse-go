@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,131 +18,12 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 
 // PromptsAPIService PromptsAPI service
 type PromptsAPIService service
-
-type ApiAssignPromptTagsRequest struct {
-	ctx context.Context
-	ApiService *PromptsAPIService
-	assignPromptTagsRequest *AssignPromptTagsRequest
-}
-
-func (r ApiAssignPromptTagsRequest) AssignPromptTagsRequest(assignPromptTagsRequest AssignPromptTagsRequest) ApiAssignPromptTagsRequest {
-	r.assignPromptTagsRequest = &assignPromptTagsRequest
-	return r
-}
-
-func (r ApiAssignPromptTagsRequest) Execute() (*http.Response, error) {
-	return r.ApiService.AssignPromptTagsExecute(r)
-}
-
-/*
-AssignPromptTags Bulk-attach tags to prompts
-
-Idempotent bulk assignment of tags (Collections) to existing prompts. Tags can be resolved by id or by name (case-insensitive). Use `create_missing: true` to auto-create unknown tag names. Requires a `read_write` scope API key.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAssignPromptTagsRequest
-*/
-func (a *PromptsAPIService) AssignPromptTags(ctx context.Context) ApiAssignPromptTagsRequest {
-	return ApiAssignPromptTagsRequest{
-		ApiService: a,
-		ctx: ctx,
-	}
-}
-
-// Execute executes the request
-func (a *PromptsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTagsRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.AssignPromptTags")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/prompts/assign_tags"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.assignPromptTagsRequest == nil {
-		return nil, reportError("assignPromptTagsRequest is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.assignPromptTagsRequest
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 422 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-		}
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
-}
 
 type ApiCreatePromptsRequest struct {
 	ctx context.Context
@@ -384,6 +265,741 @@ func (a *PromptsAPIService) DeletePromptExecute(r ApiDeletePromptRequest) (*http
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiListPromptExecutionsRequest struct {
+	ctx context.Context
+	ApiService *PromptsAPIService
+	projectId *int32
+	page *int32
+	perPage *int32
+	model *string
+	collectionId *GetTimeseriesCollectionIdParameter
+	countryCode *string
+	languageCode *string
+	prompt *int32
+	from *time.Time
+	to *time.Time
+	mentionFilter *string
+	citationFilter *string
+	competitors *string
+	output *string
+}
+
+// Project ID
+func (r ApiListPromptExecutionsRequest) ProjectId(projectId int32) ApiListPromptExecutionsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListPromptExecutionsRequest) Page(page int32) ApiListPromptExecutionsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListPromptExecutionsRequest) PerPage(perPage int32) ApiListPromptExecutionsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+func (r ApiListPromptExecutionsRequest) Model(model string) ApiListPromptExecutionsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListPromptExecutionsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListPromptExecutionsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListPromptExecutionsRequest) CountryCode(countryCode string) ApiListPromptExecutionsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListPromptExecutionsRequest) LanguageCode(languageCode string) ApiListPromptExecutionsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiListPromptExecutionsRequest) Prompt(prompt int32) ApiListPromptExecutionsRequest {
+	r.prompt = &prompt
+	return r
+}
+
+func (r ApiListPromptExecutionsRequest) From(from time.Time) ApiListPromptExecutionsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListPromptExecutionsRequest) To(to time.Time) ApiListPromptExecutionsRequest {
+	r.to = &to
+	return r
+}
+
+// Filter by which brands are mentioned, as a two-axis matrix (your brand x competitors): mentions_you / not_mentions_you, mentions_competitor / not_mentions_competitor, and the four combined cells you_and_competitor, competitor_not_you (a rival wins and you are absent), you_not_competitor, no_brands (no tracked brand appears, i.e. open space). Combine with &#39;competitors&#39; to narrow the competitor side to specific rivals; on a negative cell that reads &#39;none of these&#39;. On /dimensions/sources it applies to the crawled content of each cited page instead of the answer text. The legacy value &#39;competitors_only&#39; is still accepted as an alias of competitor_not_you.
+func (r ApiListPromptExecutionsRequest) MentionFilter(mentionFilter string) ApiListPromptExecutionsRequest {
+	r.mentionFilter = &mentionFilter
+	return r
+}
+
+// Same two-axis matrix applied to the domains cited in the answer instead of the brands named in it. Independent of mention_filter; pass both to intersect them (e.g. mentions_you + not_cites_you finds answers that talk about you without linking to you).
+func (r ApiListPromptExecutionsRequest) CitationFilter(citationFilter string) ApiListPromptExecutionsRequest {
+	r.citationFilter = &citationFilter
+	return r
+}
+
+// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+func (r ApiListPromptExecutionsRequest) Competitors(competitors string) ApiListPromptExecutionsRequest {
+	r.competitors = &competitors
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListPromptExecutionsRequest) Output(output string) ApiListPromptExecutionsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListPromptExecutionsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListPromptExecutionsExecute(r)
+}
+
+/*
+ListPromptExecutions List prompt executions
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListPromptExecutionsRequest
+*/
+func (a *PromptsAPIService) ListPromptExecutions(ctx context.Context) ApiListPromptExecutionsRequest {
+	return ApiListPromptExecutionsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecutionsRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ListPromptExecutions")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/prompt_executions"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.mentionFilter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "mention_filter", r.mentionFilter, "form", "")
+	}
+	if r.citationFilter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "citation_filter", r.citationFilter, "form", "")
+	}
+	if r.competitors != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "competitors", r.competitors, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiListPromptsRequest struct {
+	ctx context.Context
+	ApiService *PromptsAPIService
+	projectId *int32
+	page *int32
+	perPage *int32
+	model *string
+	collectionId *GetTimeseriesCollectionIdParameter
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	from *time.Time
+	to *time.Time
+	output *string
+}
+
+// Project ID
+func (r ApiListPromptsRequest) ProjectId(projectId int32) ApiListPromptsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListPromptsRequest) Page(page int32) ApiListPromptsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListPromptsRequest) PerPage(perPage int32) ApiListPromptsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+func (r ApiListPromptsRequest) Model(model string) ApiListPromptsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListPromptsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListPromptsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListPromptsRequest) CountryCode(countryCode string) ApiListPromptsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListPromptsRequest) LanguageCode(languageCode string) ApiListPromptsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListPromptsRequest) PromptType(promptType string) ApiListPromptsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListPromptsRequest) BrandKind(brandKind string) ApiListPromptsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+func (r ApiListPromptsRequest) From(from time.Time) ApiListPromptsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListPromptsRequest) To(to time.Time) ApiListPromptsRequest {
+	r.to = &to
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListPromptsRequest) Output(output string) ApiListPromptsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListPromptsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListPromptsExecute(r)
+}
+
+/*
+ListPrompts List prompts
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListPromptsRequest
+*/
+func (a *PromptsAPIService) ListPrompts(ctx context.Context) ApiListPromptsRequest {
+	return ApiListPromptsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ListPrompts")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/prompts"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiListQueryFanOutsRequest struct {
+	ctx context.Context
+	ApiService *PromptsAPIService
+	projectId *int32
+	page *int32
+	perPage *int32
+	view *string
+	order *string
+	direction *string
+	query *string
+	model *string
+	collectionId *GetTimeseriesCollectionIdParameter
+	countryCode *string
+	languageCode *string
+	prompt *int32
+	promptType *string
+	brandKind *string
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	output *string
+}
+
+// Project ID
+func (r ApiListQueryFanOutsRequest) ProjectId(projectId int32) ApiListQueryFanOutsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListQueryFanOutsRequest) Page(page int32) ApiListQueryFanOutsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListQueryFanOutsRequest) PerPage(perPage int32) ApiListQueryFanOutsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Row shape: one per distinct sub-query, or one per prompt
+func (r ApiListQueryFanOutsRequest) View(view string) ApiListQueryFanOutsRequest {
+	r.view = &view
+	return r
+}
+
+// Sort field; the allowed set depends on view
+func (r ApiListQueryFanOutsRequest) Order(order string) ApiListQueryFanOutsRequest {
+	r.order = &order
+	return r
+}
+
+func (r ApiListQueryFanOutsRequest) Direction(direction string) ApiListQueryFanOutsRequest {
+	r.direction = &direction
+	return r
+}
+
+// Case-insensitive substring filter on the sub-query text
+func (r ApiListQueryFanOutsRequest) Query(query string) ApiListQueryFanOutsRequest {
+	r.query = &query
+	return r
+}
+
+// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+func (r ApiListQueryFanOutsRequest) Model(model string) ApiListQueryFanOutsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListQueryFanOutsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListQueryFanOutsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListQueryFanOutsRequest) CountryCode(countryCode string) ApiListQueryFanOutsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListQueryFanOutsRequest) LanguageCode(languageCode string) ApiListQueryFanOutsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiListQueryFanOutsRequest) Prompt(prompt int32) ApiListQueryFanOutsRequest {
+	r.prompt = &prompt
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListQueryFanOutsRequest) PromptType(promptType string) ApiListQueryFanOutsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListQueryFanOutsRequest) BrandKind(brandKind string) ApiListQueryFanOutsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListQueryFanOutsRequest) Range_(range_ int32) ApiListQueryFanOutsRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiListQueryFanOutsRequest) From(from time.Time) ApiListQueryFanOutsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListQueryFanOutsRequest) To(to time.Time) ApiListQueryFanOutsRequest {
+	r.to = &to
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListQueryFanOutsRequest) Output(output string) ApiListQueryFanOutsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListQueryFanOutsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListQueryFanOutsExecute(r)
+}
+
+/*
+ListQueryFanOuts List query fan-out
+
+The sub-queries a model actually issued when answering your tracked prompts. view=query (default) returns one row per distinct sub-query with count and share of all occurrences; view=prompt returns one row per prompt with how many distinct sub-queries it produced. Fan-out is reported mainly by ChatGPT, so an empty result usually means the models in scope do not expose it. The API returns the aggregation only: for a period-over-period delta, call it twice with explicit from/to.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListQueryFanOutsRequest
+*/
+func (a *PromptsAPIService) ListQueryFanOuts(ctx context.Context) ApiListQueryFanOutsRequest {
+	return ApiListQueryFanOutsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *PromptsAPIService) ListQueryFanOutsExecute(r ApiListQueryFanOutsRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ListQueryFanOuts")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/query_fan_outs"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.view != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "view", r.view, "form", "")
+	} else {
+		var defaultValue string = "query"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "view", defaultValue, "form", "")
+		r.view = &defaultValue
+	}
+	if r.order != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
+	}
+	if r.direction != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "direction", r.direction, "form", "")
+	} else {
+		var defaultValue string = "desc"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "direction", defaultValue, "form", "")
+		r.direction = &defaultValue
+	}
+	if r.query != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

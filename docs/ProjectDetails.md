@@ -12,9 +12,11 @@ Name | Type | Description | Notes
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
 **Industry** | Pointer to **string** |  | [optional] 
 **BusinessModel** | Pointer to **string** |  | [optional] 
-**PrimaryProducts** | Pointer to **string** |  | [optional] 
+**BusinessModelOther** | Pointer to **NullableString** | Set only when business_model is OTHER | [optional] 
+**PrimaryProducts** | Pointer to **[]string** |  | [optional] 
 **TargetAudience** | Pointer to **string** |  | [optional] 
 **BrandVoice** | Pointer to **string** |  | [optional] 
+**Goals** | Pointer to **string** |  | [optional] 
 **CountryCode** | Pointer to **string** |  | [optional] 
 **LanguageCode** | Pointer to **string** |  | [optional] 
 **Paused** | Pointer to **bool** |  | [optional] 
@@ -242,22 +244,57 @@ SetBusinessModel sets BusinessModel field to given value.
 
 HasBusinessModel returns a boolean if a field has been set.
 
+### GetBusinessModelOther
+
+`func (o *ProjectDetails) GetBusinessModelOther() string`
+
+GetBusinessModelOther returns the BusinessModelOther field if non-nil, zero value otherwise.
+
+### GetBusinessModelOtherOk
+
+`func (o *ProjectDetails) GetBusinessModelOtherOk() (*string, bool)`
+
+GetBusinessModelOtherOk returns a tuple with the BusinessModelOther field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBusinessModelOther
+
+`func (o *ProjectDetails) SetBusinessModelOther(v string)`
+
+SetBusinessModelOther sets BusinessModelOther field to given value.
+
+### HasBusinessModelOther
+
+`func (o *ProjectDetails) HasBusinessModelOther() bool`
+
+HasBusinessModelOther returns a boolean if a field has been set.
+
+### SetBusinessModelOtherNil
+
+`func (o *ProjectDetails) SetBusinessModelOtherNil(b bool)`
+
+ SetBusinessModelOtherNil sets the value for BusinessModelOther to be an explicit nil
+
+### UnsetBusinessModelOther
+`func (o *ProjectDetails) UnsetBusinessModelOther()`
+
+UnsetBusinessModelOther ensures that no value is present for BusinessModelOther, not even an explicit nil
 ### GetPrimaryProducts
 
-`func (o *ProjectDetails) GetPrimaryProducts() string`
+`func (o *ProjectDetails) GetPrimaryProducts() []string`
 
 GetPrimaryProducts returns the PrimaryProducts field if non-nil, zero value otherwise.
 
 ### GetPrimaryProductsOk
 
-`func (o *ProjectDetails) GetPrimaryProductsOk() (*string, bool)`
+`func (o *ProjectDetails) GetPrimaryProductsOk() (*[]string, bool)`
 
 GetPrimaryProductsOk returns a tuple with the PrimaryProducts field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPrimaryProducts
 
-`func (o *ProjectDetails) SetPrimaryProducts(v string)`
+`func (o *ProjectDetails) SetPrimaryProducts(v []string)`
 
 SetPrimaryProducts sets PrimaryProducts field to given value.
 
@@ -316,6 +353,31 @@ SetBrandVoice sets BrandVoice field to given value.
 `func (o *ProjectDetails) HasBrandVoice() bool`
 
 HasBrandVoice returns a boolean if a field has been set.
+
+### GetGoals
+
+`func (o *ProjectDetails) GetGoals() string`
+
+GetGoals returns the Goals field if non-nil, zero value otherwise.
+
+### GetGoalsOk
+
+`func (o *ProjectDetails) GetGoalsOk() (*string, bool)`
+
+GetGoalsOk returns a tuple with the Goals field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGoals
+
+`func (o *ProjectDetails) SetGoals(v string)`
+
+SetGoals sets Goals field to given value.
+
+### HasGoals
+
+`func (o *ProjectDetails) HasGoals() bool`
+
+HasGoals returns a boolean if a field has been set.
 
 ### GetCountryCode
 

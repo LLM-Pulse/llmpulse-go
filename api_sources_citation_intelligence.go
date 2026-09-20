@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,12 +23,12 @@ import (
 )
 
 
-// CitationIntelligenceAPIService CitationIntelligenceAPI service
-type CitationIntelligenceAPIService service
+// SourcesCitationIntelligenceAPIService SourcesCitationIntelligenceAPI service
+type SourcesCitationIntelligenceAPIService service
 
 type ApiGetCitedUrlContentRequest struct {
 	ctx context.Context
-	ApiService *CitationIntelligenceAPIService
+	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	urlSha256 string
 }
@@ -46,11 +46,13 @@ func (r ApiGetCitedUrlContentRequest) Execute() (*http.Response, error) {
 /*
 GetCitedUrlContent Cited URL cached content
 
+Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null; content_gap_status is content_unavailable (or missing_page_cache). Mention arrays stay empty until usable content has completed analysis. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; mention counts are null when no URL has completed analysis.
+
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param urlSha256 64-character hex SHA-256 of the cited URL
  @return ApiGetCitedUrlContentRequest
 */
-func (a *CitationIntelligenceAPIService) GetCitedUrlContent(ctx context.Context, urlSha256 string) ApiGetCitedUrlContentRequest {
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContent(ctx context.Context, urlSha256 string) ApiGetCitedUrlContentRequest {
 	return ApiGetCitedUrlContentRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -59,14 +61,14 @@ func (a *CitationIntelligenceAPIService) GetCitedUrlContent(ctx context.Context,
 }
 
 // Execute executes the request
-func (a *CitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiGetCitedUrlContentRequest) (*http.Response, error) {
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiGetCitedUrlContentRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CitationIntelligenceAPIService.GetCitedUrlContent")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetCitedUrlContent")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -139,7 +141,7 @@ func (a *CitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiGetCited
 
 type ApiGetCitedUrlDetailRequest struct {
 	ctx context.Context
-	ApiService *CitationIntelligenceAPIService
+	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	urlSha256 string
 }
@@ -157,11 +159,13 @@ func (r ApiGetCitedUrlDetailRequest) Execute() (*http.Response, error) {
 /*
 GetCitedUrlDetail Cited URL detail
 
+Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null; content_gap_status is content_unavailable (or missing_page_cache). Mention arrays stay empty until usable content has completed analysis. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; mention counts are null when no URL has completed analysis.
+
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param urlSha256 64-character hex SHA-256 of the cited URL
  @return ApiGetCitedUrlDetailRequest
 */
-func (a *CitationIntelligenceAPIService) GetCitedUrlDetail(ctx context.Context, urlSha256 string) ApiGetCitedUrlDetailRequest {
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetail(ctx context.Context, urlSha256 string) ApiGetCitedUrlDetailRequest {
 	return ApiGetCitedUrlDetailRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -170,14 +174,14 @@ func (a *CitationIntelligenceAPIService) GetCitedUrlDetail(ctx context.Context, 
 }
 
 // Execute executes the request
-func (a *CitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGetCitedUrlDetailRequest) (*http.Response, error) {
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGetCitedUrlDetailRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CitationIntelligenceAPIService.GetCitedUrlDetail")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetCitedUrlDetail")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -250,14 +254,15 @@ func (a *CitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGetCitedU
 
 type ApiGetMentionsByCitingDomainRequest struct {
 	ctx context.Context
-	ApiService *CitationIntelligenceAPIService
+	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	domains *[]string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
+	brandKind *string
 	from *time.Time
 	to *time.Time
 }
@@ -280,18 +285,19 @@ func (r ApiGetMentionsByCitingDomainRequest) Model(model string) ApiGetMentionsB
 	return r
 }
 
-func (r ApiGetMentionsByCitingDomainRequest) CollectionId(collectionId int32) ApiGetMentionsByCitingDomainRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetMentionsByCitingDomainRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetMentionsByCitingDomainRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetMentionsByCitingDomainRequest) CountryCode(countryCode string) ApiGetMentionsByCitingDomainRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetMentionsByCitingDomainRequest) LanguageCode(languageCode string) ApiGetMentionsByCitingDomainRequest {
 	r.languageCode = &languageCode
 	return r
@@ -303,11 +309,18 @@ func (r ApiGetMentionsByCitingDomainRequest) Prompt(prompt int32) ApiGetMentions
 	return r
 }
 
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetMentionsByCitingDomainRequest) BrandKind(brandKind string) ApiGetMentionsByCitingDomainRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
 func (r ApiGetMentionsByCitingDomainRequest) From(from time.Time) ApiGetMentionsByCitingDomainRequest {
 	r.from = &from
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetMentionsByCitingDomainRequest) To(to time.Time) ApiGetMentionsByCitingDomainRequest {
 	r.to = &to
 	return r
@@ -325,7 +338,7 @@ For the responses where each given source domain is cited, returns the share of 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetMentionsByCitingDomainRequest
 */
-func (a *CitationIntelligenceAPIService) GetMentionsByCitingDomain(ctx context.Context) ApiGetMentionsByCitingDomainRequest {
+func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomain(ctx context.Context) ApiGetMentionsByCitingDomainRequest {
 	return ApiGetMentionsByCitingDomainRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -333,14 +346,14 @@ func (a *CitationIntelligenceAPIService) GetMentionsByCitingDomain(ctx context.C
 }
 
 // Execute executes the request
-func (a *CitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiGetMentionsByCitingDomainRequest) (*http.Response, error) {
+func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiGetMentionsByCitingDomainRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CitationIntelligenceAPIService.GetMentionsByCitingDomain")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetMentionsByCitingDomain")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -383,6 +396,9 @@ func (a *CitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiG
 	}
 	if r.prompt != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
 	}
 	if r.from != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
@@ -447,7 +463,7 @@ func (a *CitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiG
 
 type ApiListCitationGroupsRequest struct {
 	ctx context.Context
-	ApiService *CitationIntelligenceAPIService
+	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	view *string
 	page *int32
@@ -455,7 +471,7 @@ type ApiListCitationGroupsRequest struct {
 	order *string
 	direction *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -504,18 +520,19 @@ func (r ApiListCitationGroupsRequest) Model(model string) ApiListCitationGroupsR
 	return r
 }
 
-func (r ApiListCitationGroupsRequest) CollectionId(collectionId int32) ApiListCitationGroupsRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListCitationGroupsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListCitationGroupsRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiListCitationGroupsRequest) CountryCode(countryCode string) ApiListCitationGroupsRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiListCitationGroupsRequest) LanguageCode(languageCode string) ApiListCitationGroupsRequest {
 	r.languageCode = &languageCode
 	return r
@@ -532,6 +549,7 @@ func (r ApiListCitationGroupsRequest) From(from time.Time) ApiListCitationGroups
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiListCitationGroupsRequest) To(to time.Time) ApiListCitationGroupsRequest {
 	r.to = &to
 	return r
@@ -564,12 +582,12 @@ func (r ApiListCitationGroupsRequest) Execute() (*http.Response, error) {
 /*
 ListCitationGroups Grouped citation intelligence
 
-Grouped citation intelligence by url / domain / host with per-model breakdown, citation rate, and avg citation position. Counts and citation rate include visible citations and background source references. Average position ignores rows with position=0. Owned and competitor source matching honor the project's exact-subdomain setting. Filter vocabulary aligns with `source_type` returned by the API.
+Grouped citation intelligence by url / domain / host with per-model breakdown, citation rate, and avg citation position. Counts and citation rate include visible citations and background source references. Average position ignores rows with position=0. Owned and competitor source matching honor the project's exact-subdomain setting. Filter vocabulary aligns with `source_type` returned by the API. Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null; content_gap_status is content_unavailable (or missing_page_cache). Mention arrays stay empty until usable content has completed analysis. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; mention counts are null when no URL has completed analysis.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListCitationGroupsRequest
 */
-func (a *CitationIntelligenceAPIService) ListCitationGroups(ctx context.Context) ApiListCitationGroupsRequest {
+func (a *SourcesCitationIntelligenceAPIService) ListCitationGroups(ctx context.Context) ApiListCitationGroupsRequest {
 	return ApiListCitationGroupsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -577,14 +595,14 @@ func (a *CitationIntelligenceAPIService) ListCitationGroups(ctx context.Context)
 }
 
 // Execute executes the request
-func (a *CitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiListCitationGroupsRequest) (*http.Response, error) {
+func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiListCitationGroupsRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CitationIntelligenceAPIService.ListCitationGroups")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListCitationGroups")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -716,7 +734,7 @@ func (a *CitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiListCita
 
 type ApiListCitedUrlOccurrencesRequest struct {
 	ctx context.Context
-	ApiService *CitationIntelligenceAPIService
+	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	urlSha256 string
 	page *int32
@@ -750,7 +768,7 @@ ListCitedUrlOccurrences Cited URL occurrences
  @param urlSha256 64-character hex SHA-256 of the cited URL
  @return ApiListCitedUrlOccurrencesRequest
 */
-func (a *CitationIntelligenceAPIService) ListCitedUrlOccurrences(ctx context.Context, urlSha256 string) ApiListCitedUrlOccurrencesRequest {
+func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrences(ctx context.Context, urlSha256 string) ApiListCitedUrlOccurrencesRequest {
 	return ApiListCitedUrlOccurrencesRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -759,14 +777,14 @@ func (a *CitationIntelligenceAPIService) ListCitedUrlOccurrences(ctx context.Con
 }
 
 // Execute executes the request
-func (a *CitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r ApiListCitedUrlOccurrencesRequest) (*http.Response, error) {
+func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r ApiListCitedUrlOccurrencesRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CitationIntelligenceAPIService.ListCitedUrlOccurrences")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListCitedUrlOccurrences")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
@@ -844,6 +862,238 @@ func (a *CitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r ApiLis
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiListSourcesRequest struct {
+	ctx context.Context
+	ApiService *SourcesCitationIntelligenceAPIService
+	projectId *int32
+	page *int32
+	perPage *int32
+	model *string
+	collectionId *GetTimeseriesCollectionIdParameter
+	countryCode *string
+	languageCode *string
+	prompt *int32
+	from *time.Time
+	to *time.Time
+	sourceType *string
+	mentionFilter *string
+	competitors *string
+	output *string
+}
+
+// Project ID
+func (r ApiListSourcesRequest) ProjectId(projectId int32) ApiListSourcesRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListSourcesRequest) Page(page int32) ApiListSourcesRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListSourcesRequest) PerPage(perPage int32) ApiListSourcesRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+func (r ApiListSourcesRequest) Model(model string) ApiListSourcesRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListSourcesRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListSourcesRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListSourcesRequest) CountryCode(countryCode string) ApiListSourcesRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListSourcesRequest) LanguageCode(languageCode string) ApiListSourcesRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiListSourcesRequest) Prompt(prompt int32) ApiListSourcesRequest {
+	r.prompt = &prompt
+	return r
+}
+
+func (r ApiListSourcesRequest) From(from time.Time) ApiListSourcesRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListSourcesRequest) To(to time.Time) ApiListSourcesRequest {
+	r.to = &to
+	return r
+}
+
+// Filter by source ownership. Owned and competitor matching honor the project&#39;s exact-subdomain setting.
+func (r ApiListSourcesRequest) SourceType(sourceType string) ApiListSourcesRequest {
+	r.sourceType = &sourceType
+	return r
+}
+
+// Filter by which brands are mentioned, as a two-axis matrix (your brand x competitors): mentions_you / not_mentions_you, mentions_competitor / not_mentions_competitor, and the four combined cells you_and_competitor, competitor_not_you (a rival wins and you are absent), you_not_competitor, no_brands (no tracked brand appears, i.e. open space). Combine with &#39;competitors&#39; to narrow the competitor side to specific rivals; on a negative cell that reads &#39;none of these&#39;. On /dimensions/sources it applies to the crawled content of each cited page instead of the answer text. The legacy value &#39;competitors_only&#39; is still accepted as an alias of competitor_not_you.
+func (r ApiListSourcesRequest) MentionFilter(mentionFilter string) ApiListSourcesRequest {
+	r.mentionFilter = &mentionFilter
+	return r
+}
+
+// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+func (r ApiListSourcesRequest) Competitors(competitors string) ApiListSourcesRequest {
+	r.competitors = &competitors
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListSourcesRequest) Output(output string) ApiListSourcesRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListSourcesRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListSourcesExecute(r)
+}
+
+/*
+ListSources List source URLs
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListSourcesRequest
+*/
+func (a *SourcesCitationIntelligenceAPIService) ListSources(ctx context.Context) ApiListSourcesRequest {
+	return ApiListSourcesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSourcesRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListSources")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/sources"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.sourceType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "source_type", r.sourceType, "form", "")
+	}
+	if r.mentionFilter != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "mention_filter", r.mentionFilter, "form", "")
+	}
+	if r.competitors != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "competitors", r.competitors, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
 		}
 		return localVarHTTPResponse, newErr
 	}

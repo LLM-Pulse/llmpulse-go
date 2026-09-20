@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -21,59 +21,59 @@ import (
 )
 
 
-// CollectionsAPIService CollectionsAPI service
-type CollectionsAPIService service
+// TechnicalGEOReportsAPIService TechnicalGEOReportsAPI service
+type TechnicalGEOReportsAPIService service
 
-type ApiCreateCollectionRequest struct {
+type ApiCreateTechnicalGeoReportsRequest struct {
 	ctx context.Context
-	ApiService *CollectionsAPIService
-	createCollectionRequest *CreateCollectionRequest
+	ApiService *TechnicalGEOReportsAPIService
+	createTechnicalGeoReportsRequest *CreateTechnicalGeoReportsRequest
 }
 
-func (r ApiCreateCollectionRequest) CreateCollectionRequest(createCollectionRequest CreateCollectionRequest) ApiCreateCollectionRequest {
-	r.createCollectionRequest = &createCollectionRequest
+func (r ApiCreateTechnicalGeoReportsRequest) CreateTechnicalGeoReportsRequest(createTechnicalGeoReportsRequest CreateTechnicalGeoReportsRequest) ApiCreateTechnicalGeoReportsRequest {
+	r.createTechnicalGeoReportsRequest = &createTechnicalGeoReportsRequest
 	return r
 }
 
-func (r ApiCreateCollectionRequest) Execute() (*http.Response, error) {
-	return r.ApiService.CreateCollectionExecute(r)
+func (r ApiCreateTechnicalGeoReportsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.CreateTechnicalGeoReportsExecute(r)
 }
 
 /*
-CreateCollection Create a tag
+CreateTechnicalGeoReports Run technical GEO analysis
 
-Creates a tag (Collection) in a project. Optional `prompt_ids` attaches existing prompts in the same call. Tag name must be unique per project (case-insensitive). Requires a `read_write` scope API key.
+Launches the full technical GEO analysis bundle (crawlability, schema, content readiness, discoverability, site structure, robots.txt, agent readiness, llms.txt, AI visibility) for a URL + country. Each report runs in a background job. Requires a `read_write` scope API key.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateCollectionRequest
+ @return ApiCreateTechnicalGeoReportsRequest
 */
-func (a *CollectionsAPIService) CreateCollection(ctx context.Context) ApiCreateCollectionRequest {
-	return ApiCreateCollectionRequest{
+func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReports(ctx context.Context) ApiCreateTechnicalGeoReportsRequest {
+	return ApiCreateTechnicalGeoReportsRequest{
 		ApiService: a,
 		ctx: ctx,
 	}
 }
 
 // Execute executes the request
-func (a *CollectionsAPIService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*http.Response, error) {
+func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCreateTechnicalGeoReportsRequest) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.CreateCollection")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.CreateTechnicalGeoReports")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/collections"
+	localVarPath := localBasePath + "/technical_geo_reports"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.createCollectionRequest == nil {
-		return nil, reportError("createCollectionRequest is required and must be specified")
+	if r.createTechnicalGeoReportsRequest == nil {
+		return nil, reportError("createTechnicalGeoReportsRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -94,7 +94,7 @@ func (a *CollectionsAPIService) CreateCollectionExecute(r ApiCreateCollectionReq
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.createCollectionRequest
+	localVarPostBody = r.createTechnicalGeoReportsRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -144,34 +144,40 @@ func (a *CollectionsAPIService) CreateCollectionExecute(r ApiCreateCollectionReq
 	return localVarHTTPResponse, nil
 }
 
-type ApiDeleteCollectionRequest struct {
+type ApiGetTechnicalGeoReportRequest struct {
 	ctx context.Context
-	ApiService *CollectionsAPIService
+	ApiService *TechnicalGEOReportsAPIService
 	projectId *int32
+	reportType *string
 	id int32
 }
 
 // Project ID
-func (r ApiDeleteCollectionRequest) ProjectId(projectId int32) ApiDeleteCollectionRequest {
+func (r ApiGetTechnicalGeoReportRequest) ProjectId(projectId int32) ApiGetTechnicalGeoReportRequest {
 	r.projectId = &projectId
 	return r
 }
 
-func (r ApiDeleteCollectionRequest) Execute() (*http.Response, error) {
-	return r.ApiService.DeleteCollectionExecute(r)
+func (r ApiGetTechnicalGeoReportRequest) ReportType(reportType string) ApiGetTechnicalGeoReportRequest {
+	r.reportType = &reportType
+	return r
+}
+
+func (r ApiGetTechnicalGeoReportRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTechnicalGeoReportExecute(r)
 }
 
 /*
-DeleteCollection Delete a tag
+GetTechnicalGeoReport Get a technical GEO report
 
-Deletes a tag/collection. The prompts inside it are NOT deleted; only the grouping disappears. Requires a `read_write` scope API key.
+Returns the current status and the full result_data once the report is completed. While it is running, result_data is null and poll_after_seconds tells clients when to check again.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return ApiDeleteCollectionRequest
+ @param id Report id returned by POST /technical_geo_reports or GET /technical_geo_reports
+ @return ApiGetTechnicalGeoReportRequest
 */
-func (a *CollectionsAPIService) DeleteCollection(ctx context.Context, id int32) ApiDeleteCollectionRequest {
-	return ApiDeleteCollectionRequest{
+func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReport(ctx context.Context, id int32) ApiGetTechnicalGeoReportRequest {
+	return ApiGetTechnicalGeoReportRequest{
 		ApiService: a,
 		ctx: ctx,
 		id: id,
@@ -179,19 +185,19 @@ func (a *CollectionsAPIService) DeleteCollection(ctx context.Context, id int32) 
 }
 
 // Execute executes the request
-func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionRequest) (*http.Response, error) {
+func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTechnicalGeoReportRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.DeleteCollection")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.GetTechnicalGeoReport")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/collections/{id}"
+	localVarPath := localBasePath + "/technical_geo_reports/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -200,8 +206,12 @@ func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionReq
 	if r.projectId == nil {
 		return nil, reportError("projectId is required and must be specified")
 	}
+	if r.reportType == nil {
+		return nil, reportError("reportType is required and must be specified")
+	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "report_type", r.reportType, "form", "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -241,7 +251,7 @@ func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionReq
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 403 {
+		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -252,7 +262,7 @@ func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionReq
 					newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-		if localVarHTTPResponse.StatusCode == 404 {
+		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -268,64 +278,118 @@ func (a *CollectionsAPIService) DeleteCollectionExecute(r ApiDeleteCollectionReq
 	return localVarHTTPResponse, nil
 }
 
-type ApiUpdateCollectionRequest struct {
+type ApiListTechnicalGeoReportsRequest struct {
 	ctx context.Context
-	ApiService *CollectionsAPIService
-	id int32
-	updateCollectionRequest *UpdateCollectionRequest
+	ApiService *TechnicalGEOReportsAPIService
+	projectId *int32
+	reportType *string
+	status *string
+	batchId *int32
+	page *int32
+	perPage *int32
 }
 
-func (r ApiUpdateCollectionRequest) UpdateCollectionRequest(updateCollectionRequest UpdateCollectionRequest) ApiUpdateCollectionRequest {
-	r.updateCollectionRequest = &updateCollectionRequest
+// Project ID
+func (r ApiListTechnicalGeoReportsRequest) ProjectId(projectId int32) ApiListTechnicalGeoReportsRequest {
+	r.projectId = &projectId
 	return r
 }
 
-func (r ApiUpdateCollectionRequest) Execute() (*http.Response, error) {
-	return r.ApiService.UpdateCollectionExecute(r)
+func (r ApiListTechnicalGeoReportsRequest) ReportType(reportType string) ApiListTechnicalGeoReportsRequest {
+	r.reportType = &reportType
+	return r
+}
+
+// Optional status filter; valid values depend on report_type
+func (r ApiListTechnicalGeoReportsRequest) Status(status string) ApiListTechnicalGeoReportsRequest {
+	r.status = &status
+	return r
+}
+
+// Optional batch id returned when the report bundle was created
+func (r ApiListTechnicalGeoReportsRequest) BatchId(batchId int32) ApiListTechnicalGeoReportsRequest {
+	r.batchId = &batchId
+	return r
+}
+
+func (r ApiListTechnicalGeoReportsRequest) Page(page int32) ApiListTechnicalGeoReportsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListTechnicalGeoReportsRequest) PerPage(perPage int32) ApiListTechnicalGeoReportsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+func (r ApiListTechnicalGeoReportsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListTechnicalGeoReportsExecute(r)
 }
 
 /*
-UpdateCollection Update a tag
+ListTechnicalGeoReports List technical GEO reports
 
-Renames a tag/collection or changes its description. Prompt membership is managed via POST /prompts/assign_tags, not here. Requires a `read_write` scope API key.
+Lists reports of one technical GEO type for a project, newest first. Use agent_readiness for the AI/Agent Readiness report.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id
- @return ApiUpdateCollectionRequest
+ @return ApiListTechnicalGeoReportsRequest
 */
-func (a *CollectionsAPIService) UpdateCollection(ctx context.Context, id int32) ApiUpdateCollectionRequest {
-	return ApiUpdateCollectionRequest{
+func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReports(ctx context.Context) ApiListTechnicalGeoReportsRequest {
+	return ApiListTechnicalGeoReportsRequest{
 		ApiService: a,
 		ctx: ctx,
-		id: id,
 	}
 }
 
 // Execute executes the request
-func (a *CollectionsAPIService) UpdateCollectionExecute(r ApiUpdateCollectionRequest) (*http.Response, error) {
+func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiListTechnicalGeoReportsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPatch
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsAPIService.UpdateCollection")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.ListTechnicalGeoReports")
 	if err != nil {
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/collections/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+	localVarPath := localBasePath + "/technical_geo_reports"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.updateCollectionRequest == nil {
-		return nil, reportError("updateCollectionRequest is required and must be specified")
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+	if r.reportType == nil {
+		return nil, reportError("reportType is required and must be specified")
 	}
 
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "report_type", r.reportType, "form", "")
+	if r.status != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "form", "")
+	}
+	if r.batchId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "batch_id", r.batchId, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json"}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -341,8 +405,6 @@ func (a *CollectionsAPIService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	// body params
-	localVarPostBody = r.updateCollectionRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -364,28 +426,6 @@ func (a *CollectionsAPIService) UpdateCollectionExecute(r ApiUpdateCollectionReq
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError

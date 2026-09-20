@@ -4,170 +4,12 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetAgentTraffic**](MetricsAPI.md#GetAgentTraffic) | **Get** /metrics/agent_traffic | AI bot crawler traffic (Scale+, Beta)
-[**GetAiTraffic**](MetricsAPI.md#GetAiTraffic) | **Get** /metrics/ai_traffic | AI referral traffic (Scale+)
 [**GetPromptSummary**](MetricsAPI.md#GetPromptSummary) | **Get** /metrics/prompt_summary | Per-prompt metrics summary
 [**GetShareOfVoice**](MetricsAPI.md#GetShareOfVoice) | **Get** /metrics/sov | Share of Voice
 [**GetSummary**](MetricsAPI.md#GetSummary) | **Get** /metrics/summary | Aggregated metrics summary
 [**GetTimeseries**](MetricsAPI.md#GetTimeseries) | **Get** /metrics/timeseries | Time-series metrics
 [**GetTopSources**](MetricsAPI.md#GetTopSources) | **Get** /metrics/top_sources | Top cited sources
 
-
-
-## GetAgentTraffic
-
-> AgentTrafficResponse GetAgentTraffic(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Bot(bot).Company(company).GroupBy(groupBy).Granularity(granularity).Execute()
-
-AI bot crawler traffic (Scale+, Beta)
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-    "time"
-	openapiclient "github.com/LLM-Pulse/llmpulse-go"
-)
-
-func main() {
-	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
-	bot := "bot_example" // string | Filter by bot slug (e.g. gptbot, claudebot, perplexitybot) (optional)
-	company := "company_example" // string | Filter by company (e.g. openai, anthropic, google) (optional)
-	groupBy := "groupBy_example" // string |  (optional) (default to "bot")
-	granularity := "granularity_example" // string |  (optional)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MetricsAPI.GetAgentTraffic(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Bot(bot).Company(company).GroupBy(groupBy).Granularity(granularity).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `MetricsAPI.GetAgentTraffic``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-	// response from `GetAgentTraffic`: AgentTrafficResponse
-	fmt.Fprintf(os.Stdout, "Response from `MetricsAPI.GetAgentTraffic`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetAgentTrafficRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
- **bot** | **string** | Filter by bot slug (e.g. gptbot, claudebot, perplexitybot) | 
- **company** | **string** | Filter by company (e.g. openai, anthropic, google) | 
- **groupBy** | **string** |  | [default to &quot;bot&quot;]
- **granularity** | **string** |  | 
-
-### Return type
-
-[**AgentTrafficResponse**](AgentTrafficResponse.md)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## GetAiTraffic
-
-> GetAiTraffic(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
-
-AI referral traffic (Scale+)
-
-
-
-### Example
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"os"
-    "time"
-	openapiclient "github.com/LLM-Pulse/llmpulse-go"
-)
-
-func main() {
-	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
-	source := "source_example" // string | Filter by a single AI source slug (e.g. chatgpt, perplexity, gemini, claude) (optional)
-	granularity := "granularity_example" // string |  (optional)
-
-	configuration := openapiclient.NewConfiguration()
-	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MetricsAPI.GetAiTraffic(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `MetricsAPI.GetAiTraffic``: %v\n", err)
-		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-	}
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetAiTrafficRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
- **source** | **string** | Filter by a single AI source slug (e.g. chatgpt, perplexity, gemini, claude) | 
- **granularity** | **string** |  | 
-
-### Return type
-
- (empty response body)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
 
 
 ## GetPromptSummary
@@ -195,14 +37,14 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	breakdown := "breakdown_example" // string | Add per-(prompt, model) rows to the output (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := int32(56) // int32 |  (optional)
-	countryCode := "countryCode_example" // string | ISO country code (e.g. US, GB, DE) (optional)
-	languageCode := "languageCode_example" // string | ISO language code (e.g. en, es, de) (optional)
+	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
-	promptType := "promptType_example" // string | Filter by prompt type (search intent) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	sort := "sort_example" // string |  (optional) (default to "responses")
 	sortDir := "sortDir_example" // string |  (optional) (default to "desc")
@@ -236,14 +78,14 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **range_** | **int32** | Number of days to look back (alternative to from/to) | 
  **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **breakdown** | **string** | Add per-(prompt, model) rows to the output | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | **int32** |  | 
- **countryCode** | **string** | ISO country code (e.g. US, GB, DE) | 
- **languageCode** | **string** | ISO language code (e.g. en, es, de) | 
+ **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
- **promptType** | **string** | Filter by prompt type (search intent) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **sort** | **string** |  | [default to &quot;responses&quot;]
  **sortDir** | **string** |  | [default to &quot;desc&quot;]
@@ -294,13 +136,13 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := int32(56) // int32 |  (optional)
+	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
-	promptType := "promptType_example" // string | Filter by prompt type (search intent) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
 	view := "view_example" // string | Which Share of Voice projection to flatten. Only valid together with 'output'. 'over_time' (default) is one row per date and actor, 'current' the ranked snapshot, 'breakdown' the Top 4 plus Others. (optional) (default to "over_time")
@@ -331,13 +173,13 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **range_** | **int32** | Number of days to look back (alternative to from/to) | 
  **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | **int32** |  | 
+ **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
  **prompt** | **int32** | Filter by prompt ID | 
- **promptType** | **string** | Filter by prompt type (search intent) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
  **view** | **string** | Which Share of Voice projection to flatten. Only valid together with &#39;output&#39;. &#39;over_time&#39; (default) is one row per date and actor, &#39;current&#39; the ranked snapshot, &#39;breakdown&#39; the Top 4 plus Others. | [default to &quot;over_time&quot;]
@@ -387,12 +229,12 @@ func main() {
 	granularity := "granularity_example" // string |  (optional)
 	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := int32(56) // int32 |  (optional)
+	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
-	promptType := "promptType_example" // string | Filter by prompt type (search intent) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
 
@@ -424,12 +266,12 @@ Name | Type | Description  | Notes
  **granularity** | **string** |  | 
  **range_** | **int32** | Number of days to look back (alternative to from/to) | 
  **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | **int32** |  | 
+ **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
  **prompt** | **int32** | Filter by prompt ID | 
- **promptType** | **string** | Filter by prompt type (search intent) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
 
@@ -478,14 +320,14 @@ func main() {
 	granularity := "granularity_example" // string |  (optional)
 	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := int32(56) // int32 |  (optional)
-	countryCode := "countryCode_example" // string | ISO country code (e.g. US, GB, DE) (optional)
-	languageCode := "languageCode_example" // string | ISO language code (e.g. en, es, de) (optional)
+	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
-	promptType := "promptType_example" // string | Filter by prompt type (search intent) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	includeProject := true // bool |  (optional) (default to true)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
@@ -518,14 +360,14 @@ Name | Type | Description  | Notes
  **granularity** | **string** |  | 
  **range_** | **int32** | Number of days to look back (alternative to from/to) | 
  **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | **int32** |  | 
- **countryCode** | **string** | ISO country code (e.g. US, GB, DE) | 
- **languageCode** | **string** | ISO language code (e.g. en, es, de) | 
+ **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
- **promptType** | **string** | Filter by prompt type (search intent) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **includeProject** | **bool** |  | [default to true]
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
@@ -573,13 +415,13 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 	from := time.Now() // time.Time |  (optional)
-	to := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := int32(56) // int32 |  (optional)
-	countryCode := "countryCode_example" // string | ISO country code (e.g. US, GB, DE) (optional)
-	languageCode := "languageCode_example" // string | ISO language code (e.g. en, es, de) (optional)
+	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
-	promptType := "promptType_example" // string | Filter by prompt type (search intent) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	sort := "sort_example" // string |  (optional) (default to "total_responses")
 	query := "query_example" // string | Filter domains by case-insensitive partial match (optional)
@@ -613,13 +455,13 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **range_** | **int32** | Number of days to look back (alternative to from/to) | 
  **from** | **time.Time** |  | 
- **to** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | **int32** |  | 
- **countryCode** | **string** | ISO country code (e.g. US, GB, DE) | 
- **languageCode** | **string** | ISO language code (e.g. en, es, de) | 
+ **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
- **promptType** | **string** | Filter by prompt type (search intent) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **sort** | **string** |  | [default to &quot;total_responses&quot;]
  **query** | **string** | Filter domains by case-insensitive partial match | 

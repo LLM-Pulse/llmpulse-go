@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -30,6 +30,18 @@ type ProjectCreateRequest struct {
 	BrandName *string `json:"brand_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Industry []string `json:"industry,omitempty"`
+	// Business model key (e.g. B2B_SAAS, MARKETPLACE); unknown keys are rejected
+	BusinessModel *string `json:"business_model,omitempty"`
+	// Free-text business model, only accepted when business_model is OTHER; rejected against any other key
+	BusinessModelOther *string `json:"business_model_other,omitempty"`
+	// Who the brand sells to. Context for Recommendations and GEO Writer (Brand Book)
+	TargetAudience *string `json:"target_audience,omitempty"`
+	// Tone of voice guidance for generated content (Brand Book)
+	BrandVoice *string `json:"brand_voice,omitempty"`
+	// What the brand wants to achieve. Context for GEO Writer and prompt suggestions
+	Goals *string `json:"goals,omitempty"`
+	// Main products or services
+	PrimaryProducts []string `json:"primary_products,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
 	Prompts []string `json:"prompts,omitempty"`
 	Competitors []ProjectCreateRequestCompetitorsInner `json:"competitors,omitempty"`
@@ -266,6 +278,198 @@ func (o *ProjectCreateRequest) HasIndustry() bool {
 // SetIndustry gets a reference to the given []string and assigns it to the Industry field.
 func (o *ProjectCreateRequest) SetIndustry(v []string) {
 	o.Industry = v
+}
+
+// GetBusinessModel returns the BusinessModel field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetBusinessModel() string {
+	if o == nil || IsNil(o.BusinessModel) {
+		var ret string
+		return ret
+	}
+	return *o.BusinessModel
+}
+
+// GetBusinessModelOk returns a tuple with the BusinessModel field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetBusinessModelOk() (*string, bool) {
+	if o == nil || IsNil(o.BusinessModel) {
+		return nil, false
+	}
+	return o.BusinessModel, true
+}
+
+// HasBusinessModel returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasBusinessModel() bool {
+	if o != nil && !IsNil(o.BusinessModel) {
+		return true
+	}
+
+	return false
+}
+
+// SetBusinessModel gets a reference to the given string and assigns it to the BusinessModel field.
+func (o *ProjectCreateRequest) SetBusinessModel(v string) {
+	o.BusinessModel = &v
+}
+
+// GetBusinessModelOther returns the BusinessModelOther field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetBusinessModelOther() string {
+	if o == nil || IsNil(o.BusinessModelOther) {
+		var ret string
+		return ret
+	}
+	return *o.BusinessModelOther
+}
+
+// GetBusinessModelOtherOk returns a tuple with the BusinessModelOther field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetBusinessModelOtherOk() (*string, bool) {
+	if o == nil || IsNil(o.BusinessModelOther) {
+		return nil, false
+	}
+	return o.BusinessModelOther, true
+}
+
+// HasBusinessModelOther returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasBusinessModelOther() bool {
+	if o != nil && !IsNil(o.BusinessModelOther) {
+		return true
+	}
+
+	return false
+}
+
+// SetBusinessModelOther gets a reference to the given string and assigns it to the BusinessModelOther field.
+func (o *ProjectCreateRequest) SetBusinessModelOther(v string) {
+	o.BusinessModelOther = &v
+}
+
+// GetTargetAudience returns the TargetAudience field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetTargetAudience() string {
+	if o == nil || IsNil(o.TargetAudience) {
+		var ret string
+		return ret
+	}
+	return *o.TargetAudience
+}
+
+// GetTargetAudienceOk returns a tuple with the TargetAudience field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetTargetAudienceOk() (*string, bool) {
+	if o == nil || IsNil(o.TargetAudience) {
+		return nil, false
+	}
+	return o.TargetAudience, true
+}
+
+// HasTargetAudience returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasTargetAudience() bool {
+	if o != nil && !IsNil(o.TargetAudience) {
+		return true
+	}
+
+	return false
+}
+
+// SetTargetAudience gets a reference to the given string and assigns it to the TargetAudience field.
+func (o *ProjectCreateRequest) SetTargetAudience(v string) {
+	o.TargetAudience = &v
+}
+
+// GetBrandVoice returns the BrandVoice field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetBrandVoice() string {
+	if o == nil || IsNil(o.BrandVoice) {
+		var ret string
+		return ret
+	}
+	return *o.BrandVoice
+}
+
+// GetBrandVoiceOk returns a tuple with the BrandVoice field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetBrandVoiceOk() (*string, bool) {
+	if o == nil || IsNil(o.BrandVoice) {
+		return nil, false
+	}
+	return o.BrandVoice, true
+}
+
+// HasBrandVoice returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasBrandVoice() bool {
+	if o != nil && !IsNil(o.BrandVoice) {
+		return true
+	}
+
+	return false
+}
+
+// SetBrandVoice gets a reference to the given string and assigns it to the BrandVoice field.
+func (o *ProjectCreateRequest) SetBrandVoice(v string) {
+	o.BrandVoice = &v
+}
+
+// GetGoals returns the Goals field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetGoals() string {
+	if o == nil || IsNil(o.Goals) {
+		var ret string
+		return ret
+	}
+	return *o.Goals
+}
+
+// GetGoalsOk returns a tuple with the Goals field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetGoalsOk() (*string, bool) {
+	if o == nil || IsNil(o.Goals) {
+		return nil, false
+	}
+	return o.Goals, true
+}
+
+// HasGoals returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasGoals() bool {
+	if o != nil && !IsNil(o.Goals) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoals gets a reference to the given string and assigns it to the Goals field.
+func (o *ProjectCreateRequest) SetGoals(v string) {
+	o.Goals = &v
+}
+
+// GetPrimaryProducts returns the PrimaryProducts field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetPrimaryProducts() []string {
+	if o == nil || IsNil(o.PrimaryProducts) {
+		var ret []string
+		return ret
+	}
+	return o.PrimaryProducts
+}
+
+// GetPrimaryProductsOk returns a tuple with the PrimaryProducts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetPrimaryProductsOk() ([]string, bool) {
+	if o == nil || IsNil(o.PrimaryProducts) {
+		return nil, false
+	}
+	return o.PrimaryProducts, true
+}
+
+// HasPrimaryProducts returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasPrimaryProducts() bool {
+	if o != nil && !IsNil(o.PrimaryProducts) {
+		return true
+	}
+
+	return false
+}
+
+// SetPrimaryProducts gets a reference to the given []string and assigns it to the PrimaryProducts field.
+func (o *ProjectCreateRequest) SetPrimaryProducts(v []string) {
+	o.PrimaryProducts = v
 }
 
 // GetMatchingNames returns the MatchingNames field value if set, zero value otherwise.
@@ -546,6 +750,24 @@ func (o ProjectCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Industry) {
 		toSerialize["industry"] = o.Industry
+	}
+	if !IsNil(o.BusinessModel) {
+		toSerialize["business_model"] = o.BusinessModel
+	}
+	if !IsNil(o.BusinessModelOther) {
+		toSerialize["business_model_other"] = o.BusinessModelOther
+	}
+	if !IsNil(o.TargetAudience) {
+		toSerialize["target_audience"] = o.TargetAudience
+	}
+	if !IsNil(o.BrandVoice) {
+		toSerialize["brand_voice"] = o.BrandVoice
+	}
+	if !IsNil(o.Goals) {
+		toSerialize["goals"] = o.Goals
+	}
+	if !IsNil(o.PrimaryProducts) {
+		toSerialize["primary_products"] = o.PrimaryProducts
 	}
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames

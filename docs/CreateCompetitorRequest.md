@@ -8,6 +8,8 @@ Name | Type | Description | Notes
 **BrandName** | **string** |  | 
 **Domain** | **string** | URL is accepted and normalised to host (e.g. https://www.openai.com → openai.com) | 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
+**CitationMatchMode** | Pointer to **string** | domain includes the registrable domain and all subdomains; host requires the exact hostname; path_prefix also requires citation_match_path | [optional] [default to "domain"]
+**CitationMatchPath** | Pointer to **string** | Required when citation_match_mode&#x3D;path_prefix, e.g. /es. Case-sensitive; trailing slash is optional; query and fragment are ignored | [optional] 
 
 ## Methods
 
@@ -112,6 +114,56 @@ SetMatchingNames sets MatchingNames field to given value.
 `func (o *CreateCompetitorRequest) HasMatchingNames() bool`
 
 HasMatchingNames returns a boolean if a field has been set.
+
+### GetCitationMatchMode
+
+`func (o *CreateCompetitorRequest) GetCitationMatchMode() string`
+
+GetCitationMatchMode returns the CitationMatchMode field if non-nil, zero value otherwise.
+
+### GetCitationMatchModeOk
+
+`func (o *CreateCompetitorRequest) GetCitationMatchModeOk() (*string, bool)`
+
+GetCitationMatchModeOk returns a tuple with the CitationMatchMode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCitationMatchMode
+
+`func (o *CreateCompetitorRequest) SetCitationMatchMode(v string)`
+
+SetCitationMatchMode sets CitationMatchMode field to given value.
+
+### HasCitationMatchMode
+
+`func (o *CreateCompetitorRequest) HasCitationMatchMode() bool`
+
+HasCitationMatchMode returns a boolean if a field has been set.
+
+### GetCitationMatchPath
+
+`func (o *CreateCompetitorRequest) GetCitationMatchPath() string`
+
+GetCitationMatchPath returns the CitationMatchPath field if non-nil, zero value otherwise.
+
+### GetCitationMatchPathOk
+
+`func (o *CreateCompetitorRequest) GetCitationMatchPathOk() (*string, bool)`
+
+GetCitationMatchPathOk returns a tuple with the CitationMatchPath field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCitationMatchPath
+
+`func (o *CreateCompetitorRequest) SetCitationMatchPath(v string)`
+
+SetCitationMatchPath sets CitationMatchPath field to given value.
+
+### HasCitationMatchPath
+
+`func (o *CreateCompetitorRequest) HasCitationMatchPath() bool`
+
+HasCitationMatchPath returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

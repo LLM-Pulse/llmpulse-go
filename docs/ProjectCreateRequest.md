@@ -11,6 +11,12 @@ Name | Type | Description | Notes
 **BrandName** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **Industry** | Pointer to **[]string** |  | [optional] 
+**BusinessModel** | Pointer to **string** | Business model key (e.g. B2B_SAAS, MARKETPLACE); unknown keys are rejected | [optional] 
+**BusinessModelOther** | Pointer to **string** | Free-text business model, only accepted when business_model is OTHER; rejected against any other key | [optional] 
+**TargetAudience** | Pointer to **string** | Who the brand sells to. Context for Recommendations and GEO Writer (Brand Book) | [optional] 
+**BrandVoice** | Pointer to **string** | Tone of voice guidance for generated content (Brand Book) | [optional] 
+**Goals** | Pointer to **string** | What the brand wants to achieve. Context for GEO Writer and prompt suggestions | [optional] 
+**PrimaryProducts** | Pointer to **[]string** | Main products or services | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
 **Prompts** | Pointer to **[]string** |  | [optional] 
 **Competitors** | Pointer to [**[]ProjectCreateRequestCompetitorsInner**](ProjectCreateRequestCompetitorsInner.md) |  | [optional] 
@@ -193,6 +199,156 @@ SetIndustry sets Industry field to given value.
 `func (o *ProjectCreateRequest) HasIndustry() bool`
 
 HasIndustry returns a boolean if a field has been set.
+
+### GetBusinessModel
+
+`func (o *ProjectCreateRequest) GetBusinessModel() string`
+
+GetBusinessModel returns the BusinessModel field if non-nil, zero value otherwise.
+
+### GetBusinessModelOk
+
+`func (o *ProjectCreateRequest) GetBusinessModelOk() (*string, bool)`
+
+GetBusinessModelOk returns a tuple with the BusinessModel field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBusinessModel
+
+`func (o *ProjectCreateRequest) SetBusinessModel(v string)`
+
+SetBusinessModel sets BusinessModel field to given value.
+
+### HasBusinessModel
+
+`func (o *ProjectCreateRequest) HasBusinessModel() bool`
+
+HasBusinessModel returns a boolean if a field has been set.
+
+### GetBusinessModelOther
+
+`func (o *ProjectCreateRequest) GetBusinessModelOther() string`
+
+GetBusinessModelOther returns the BusinessModelOther field if non-nil, zero value otherwise.
+
+### GetBusinessModelOtherOk
+
+`func (o *ProjectCreateRequest) GetBusinessModelOtherOk() (*string, bool)`
+
+GetBusinessModelOtherOk returns a tuple with the BusinessModelOther field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBusinessModelOther
+
+`func (o *ProjectCreateRequest) SetBusinessModelOther(v string)`
+
+SetBusinessModelOther sets BusinessModelOther field to given value.
+
+### HasBusinessModelOther
+
+`func (o *ProjectCreateRequest) HasBusinessModelOther() bool`
+
+HasBusinessModelOther returns a boolean if a field has been set.
+
+### GetTargetAudience
+
+`func (o *ProjectCreateRequest) GetTargetAudience() string`
+
+GetTargetAudience returns the TargetAudience field if non-nil, zero value otherwise.
+
+### GetTargetAudienceOk
+
+`func (o *ProjectCreateRequest) GetTargetAudienceOk() (*string, bool)`
+
+GetTargetAudienceOk returns a tuple with the TargetAudience field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetAudience
+
+`func (o *ProjectCreateRequest) SetTargetAudience(v string)`
+
+SetTargetAudience sets TargetAudience field to given value.
+
+### HasTargetAudience
+
+`func (o *ProjectCreateRequest) HasTargetAudience() bool`
+
+HasTargetAudience returns a boolean if a field has been set.
+
+### GetBrandVoice
+
+`func (o *ProjectCreateRequest) GetBrandVoice() string`
+
+GetBrandVoice returns the BrandVoice field if non-nil, zero value otherwise.
+
+### GetBrandVoiceOk
+
+`func (o *ProjectCreateRequest) GetBrandVoiceOk() (*string, bool)`
+
+GetBrandVoiceOk returns a tuple with the BrandVoice field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBrandVoice
+
+`func (o *ProjectCreateRequest) SetBrandVoice(v string)`
+
+SetBrandVoice sets BrandVoice field to given value.
+
+### HasBrandVoice
+
+`func (o *ProjectCreateRequest) HasBrandVoice() bool`
+
+HasBrandVoice returns a boolean if a field has been set.
+
+### GetGoals
+
+`func (o *ProjectCreateRequest) GetGoals() string`
+
+GetGoals returns the Goals field if non-nil, zero value otherwise.
+
+### GetGoalsOk
+
+`func (o *ProjectCreateRequest) GetGoalsOk() (*string, bool)`
+
+GetGoalsOk returns a tuple with the Goals field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGoals
+
+`func (o *ProjectCreateRequest) SetGoals(v string)`
+
+SetGoals sets Goals field to given value.
+
+### HasGoals
+
+`func (o *ProjectCreateRequest) HasGoals() bool`
+
+HasGoals returns a boolean if a field has been set.
+
+### GetPrimaryProducts
+
+`func (o *ProjectCreateRequest) GetPrimaryProducts() []string`
+
+GetPrimaryProducts returns the PrimaryProducts field if non-nil, zero value otherwise.
+
+### GetPrimaryProductsOk
+
+`func (o *ProjectCreateRequest) GetPrimaryProductsOk() (*[]string, bool)`
+
+GetPrimaryProductsOk returns a tuple with the PrimaryProducts field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPrimaryProducts
+
+`func (o *ProjectCreateRequest) SetPrimaryProducts(v []string)`
+
+SetPrimaryProducts sets PrimaryProducts field to given value.
+
+### HasPrimaryProducts
+
+`func (o *ProjectCreateRequest) HasPrimaryProducts() bool`
+
+HasPrimaryProducts returns a boolean if a field has been set.
 
 ### GetMatchingNames
 

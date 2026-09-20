@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,9 +24,14 @@ var _ MappedNullable = &UpdateCompetitorRequest{}
 type UpdateCompetitorRequest struct {
 	ProjectId int32 `json:"project_id"`
 	BrandName *string `json:"brand_name,omitempty"`
+	// Website domain or host used for citation matching. A full URL is accepted and normalised to its host.
+	Domain *string `json:"domain,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
 	// Hex color, e.g. #1a2b3c
 	Color *string `json:"color,omitempty"`
+	CitationMatchMode *string `json:"citation_match_mode,omitempty"`
+	// Required when changing citation_match_mode to path_prefix
+	CitationMatchPath *string `json:"citation_match_path,omitempty"`
 }
 
 type _UpdateCompetitorRequest UpdateCompetitorRequest
@@ -105,6 +110,38 @@ func (o *UpdateCompetitorRequest) SetBrandName(v string) {
 	o.BrandName = &v
 }
 
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *UpdateCompetitorRequest) GetDomain() string {
+	if o == nil || IsNil(o.Domain) {
+		var ret string
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateCompetitorRequest) GetDomainOk() (*string, bool) {
+	if o == nil || IsNil(o.Domain) {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *UpdateCompetitorRequest) HasDomain() bool {
+	if o != nil && !IsNil(o.Domain) {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given string and assigns it to the Domain field.
+func (o *UpdateCompetitorRequest) SetDomain(v string) {
+	o.Domain = &v
+}
+
 // GetMatchingNames returns the MatchingNames field value if set, zero value otherwise.
 func (o *UpdateCompetitorRequest) GetMatchingNames() []string {
 	if o == nil || IsNil(o.MatchingNames) {
@@ -169,6 +206,70 @@ func (o *UpdateCompetitorRequest) SetColor(v string) {
 	o.Color = &v
 }
 
+// GetCitationMatchMode returns the CitationMatchMode field value if set, zero value otherwise.
+func (o *UpdateCompetitorRequest) GetCitationMatchMode() string {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchMode
+}
+
+// GetCitationMatchModeOk returns a tuple with the CitationMatchMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateCompetitorRequest) GetCitationMatchModeOk() (*string, bool) {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		return nil, false
+	}
+	return o.CitationMatchMode, true
+}
+
+// HasCitationMatchMode returns a boolean if a field has been set.
+func (o *UpdateCompetitorRequest) HasCitationMatchMode() bool {
+	if o != nil && !IsNil(o.CitationMatchMode) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchMode gets a reference to the given string and assigns it to the CitationMatchMode field.
+func (o *UpdateCompetitorRequest) SetCitationMatchMode(v string) {
+	o.CitationMatchMode = &v
+}
+
+// GetCitationMatchPath returns the CitationMatchPath field value if set, zero value otherwise.
+func (o *UpdateCompetitorRequest) GetCitationMatchPath() string {
+	if o == nil || IsNil(o.CitationMatchPath) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchPath
+}
+
+// GetCitationMatchPathOk returns a tuple with the CitationMatchPath field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateCompetitorRequest) GetCitationMatchPathOk() (*string, bool) {
+	if o == nil || IsNil(o.CitationMatchPath) {
+		return nil, false
+	}
+	return o.CitationMatchPath, true
+}
+
+// HasCitationMatchPath returns a boolean if a field has been set.
+func (o *UpdateCompetitorRequest) HasCitationMatchPath() bool {
+	if o != nil && !IsNil(o.CitationMatchPath) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchPath gets a reference to the given string and assigns it to the CitationMatchPath field.
+func (o *UpdateCompetitorRequest) SetCitationMatchPath(v string) {
+	o.CitationMatchPath = &v
+}
+
 func (o UpdateCompetitorRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -183,11 +284,20 @@ func (o UpdateCompetitorRequest) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BrandName) {
 		toSerialize["brand_name"] = o.BrandName
 	}
+	if !IsNil(o.Domain) {
+		toSerialize["domain"] = o.Domain
+	}
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
 	}
 	if !IsNil(o.Color) {
 		toSerialize["color"] = o.Color
+	}
+	if !IsNil(o.CitationMatchMode) {
+		toSerialize["citation_match_mode"] = o.CitationMatchMode
+	}
+	if !IsNil(o.CitationMatchPath) {
+		toSerialize["citation_match_path"] = o.CitationMatchPath
 	}
 	return toSerialize, nil
 }

@@ -22,6 +22,8 @@ Name | Type | Description | Notes
 **EstimatedTime** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **ProcessedAt** | Pointer to **NullableTime** |  | [optional] 
+**ManuallyEditedAt** | Pointer to **NullableTime** | When the content was last edited by hand; null while the output is as generated | [optional] 
+**EditedByUserId** | Pointer to **NullableInt32** | User behind the last manual edit; null for an unedited task or an edit made from an embedded portal | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -583,6 +585,76 @@ HasProcessedAt returns a boolean if a field has been set.
 `func (o *IntelligenceTask) UnsetProcessedAt()`
 
 UnsetProcessedAt ensures that no value is present for ProcessedAt, not even an explicit nil
+### GetManuallyEditedAt
+
+`func (o *IntelligenceTask) GetManuallyEditedAt() time.Time`
+
+GetManuallyEditedAt returns the ManuallyEditedAt field if non-nil, zero value otherwise.
+
+### GetManuallyEditedAtOk
+
+`func (o *IntelligenceTask) GetManuallyEditedAtOk() (*time.Time, bool)`
+
+GetManuallyEditedAtOk returns a tuple with the ManuallyEditedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetManuallyEditedAt
+
+`func (o *IntelligenceTask) SetManuallyEditedAt(v time.Time)`
+
+SetManuallyEditedAt sets ManuallyEditedAt field to given value.
+
+### HasManuallyEditedAt
+
+`func (o *IntelligenceTask) HasManuallyEditedAt() bool`
+
+HasManuallyEditedAt returns a boolean if a field has been set.
+
+### SetManuallyEditedAtNil
+
+`func (o *IntelligenceTask) SetManuallyEditedAtNil(b bool)`
+
+ SetManuallyEditedAtNil sets the value for ManuallyEditedAt to be an explicit nil
+
+### UnsetManuallyEditedAt
+`func (o *IntelligenceTask) UnsetManuallyEditedAt()`
+
+UnsetManuallyEditedAt ensures that no value is present for ManuallyEditedAt, not even an explicit nil
+### GetEditedByUserId
+
+`func (o *IntelligenceTask) GetEditedByUserId() int32`
+
+GetEditedByUserId returns the EditedByUserId field if non-nil, zero value otherwise.
+
+### GetEditedByUserIdOk
+
+`func (o *IntelligenceTask) GetEditedByUserIdOk() (*int32, bool)`
+
+GetEditedByUserIdOk returns a tuple with the EditedByUserId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEditedByUserId
+
+`func (o *IntelligenceTask) SetEditedByUserId(v int32)`
+
+SetEditedByUserId sets EditedByUserId field to given value.
+
+### HasEditedByUserId
+
+`func (o *IntelligenceTask) HasEditedByUserId() bool`
+
+HasEditedByUserId returns a boolean if a field has been set.
+
+### SetEditedByUserIdNil
+
+`func (o *IntelligenceTask) SetEditedByUserIdNil(b bool)`
+
+ SetEditedByUserIdNil sets the value for EditedByUserId to be an explicit nil
+
+### UnsetEditedByUserId
+`func (o *IntelligenceTask) UnsetEditedByUserId()`
+
+UnsetEditedByUserId ensures that no value is present for EditedByUserId, not even an explicit nil
 ### GetRequestId
 
 `func (o *IntelligenceTask) GetRequestId() string`

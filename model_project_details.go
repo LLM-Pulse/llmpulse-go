@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -31,9 +31,12 @@ type ProjectDetails struct {
 	MatchingNames []string `json:"matching_names,omitempty"`
 	Industry *string `json:"industry,omitempty"`
 	BusinessModel *string `json:"business_model,omitempty"`
-	PrimaryProducts *string `json:"primary_products,omitempty"`
+	// Set only when business_model is OTHER
+	BusinessModelOther NullableString `json:"business_model_other,omitempty"`
+	PrimaryProducts []string `json:"primary_products,omitempty"`
 	TargetAudience *string `json:"target_audience,omitempty"`
 	BrandVoice *string `json:"brand_voice,omitempty"`
+	Goals *string `json:"goals,omitempty"`
 	CountryCode *string `json:"country_code,omitempty"`
 	LanguageCode *string `json:"language_code,omitempty"`
 	Paused *bool `json:"paused,omitempty"`
@@ -316,18 +319,60 @@ func (o *ProjectDetails) SetBusinessModel(v string) {
 	o.BusinessModel = &v
 }
 
-// GetPrimaryProducts returns the PrimaryProducts field value if set, zero value otherwise.
-func (o *ProjectDetails) GetPrimaryProducts() string {
-	if o == nil || IsNil(o.PrimaryProducts) {
+// GetBusinessModelOther returns the BusinessModelOther field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ProjectDetails) GetBusinessModelOther() string {
+	if o == nil || IsNil(o.BusinessModelOther.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.PrimaryProducts
+	return *o.BusinessModelOther.Get()
+}
+
+// GetBusinessModelOtherOk returns a tuple with the BusinessModelOther field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetails) GetBusinessModelOtherOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.BusinessModelOther.Get(), o.BusinessModelOther.IsSet()
+}
+
+// HasBusinessModelOther returns a boolean if a field has been set.
+func (o *ProjectDetails) HasBusinessModelOther() bool {
+	if o != nil && o.BusinessModelOther.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetBusinessModelOther gets a reference to the given NullableString and assigns it to the BusinessModelOther field.
+func (o *ProjectDetails) SetBusinessModelOther(v string) {
+	o.BusinessModelOther.Set(&v)
+}
+// SetBusinessModelOtherNil sets the value for BusinessModelOther to be an explicit nil
+func (o *ProjectDetails) SetBusinessModelOtherNil() {
+	o.BusinessModelOther.Set(nil)
+}
+
+// UnsetBusinessModelOther ensures that no value is present for BusinessModelOther, not even an explicit nil
+func (o *ProjectDetails) UnsetBusinessModelOther() {
+	o.BusinessModelOther.Unset()
+}
+
+// GetPrimaryProducts returns the PrimaryProducts field value if set, zero value otherwise.
+func (o *ProjectDetails) GetPrimaryProducts() []string {
+	if o == nil || IsNil(o.PrimaryProducts) {
+		var ret []string
+		return ret
+	}
+	return o.PrimaryProducts
 }
 
 // GetPrimaryProductsOk returns a tuple with the PrimaryProducts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ProjectDetails) GetPrimaryProductsOk() (*string, bool) {
+func (o *ProjectDetails) GetPrimaryProductsOk() ([]string, bool) {
 	if o == nil || IsNil(o.PrimaryProducts) {
 		return nil, false
 	}
@@ -343,9 +388,9 @@ func (o *ProjectDetails) HasPrimaryProducts() bool {
 	return false
 }
 
-// SetPrimaryProducts gets a reference to the given string and assigns it to the PrimaryProducts field.
-func (o *ProjectDetails) SetPrimaryProducts(v string) {
-	o.PrimaryProducts = &v
+// SetPrimaryProducts gets a reference to the given []string and assigns it to the PrimaryProducts field.
+func (o *ProjectDetails) SetPrimaryProducts(v []string) {
+	o.PrimaryProducts = v
 }
 
 // GetTargetAudience returns the TargetAudience field value if set, zero value otherwise.
@@ -410,6 +455,38 @@ func (o *ProjectDetails) HasBrandVoice() bool {
 // SetBrandVoice gets a reference to the given string and assigns it to the BrandVoice field.
 func (o *ProjectDetails) SetBrandVoice(v string) {
 	o.BrandVoice = &v
+}
+
+// GetGoals returns the Goals field value if set, zero value otherwise.
+func (o *ProjectDetails) GetGoals() string {
+	if o == nil || IsNil(o.Goals) {
+		var ret string
+		return ret
+	}
+	return *o.Goals
+}
+
+// GetGoalsOk returns a tuple with the Goals field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetGoalsOk() (*string, bool) {
+	if o == nil || IsNil(o.Goals) {
+		return nil, false
+	}
+	return o.Goals, true
+}
+
+// HasGoals returns a boolean if a field has been set.
+func (o *ProjectDetails) HasGoals() bool {
+	if o != nil && !IsNil(o.Goals) {
+		return true
+	}
+
+	return false
+}
+
+// SetGoals gets a reference to the given string and assigns it to the Goals field.
+func (o *ProjectDetails) SetGoals(v string) {
+	o.Goals = &v
 }
 
 // GetCountryCode returns the CountryCode field value if set, zero value otherwise.
@@ -670,6 +747,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.BusinessModel) {
 		toSerialize["business_model"] = o.BusinessModel
 	}
+	if o.BusinessModelOther.IsSet() {
+		toSerialize["business_model_other"] = o.BusinessModelOther.Get()
+	}
 	if !IsNil(o.PrimaryProducts) {
 		toSerialize["primary_products"] = o.PrimaryProducts
 	}
@@ -678,6 +758,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.BrandVoice) {
 		toSerialize["brand_voice"] = o.BrandVoice
+	}
+	if !IsNil(o.Goals) {
+		toSerialize["goals"] = o.Goals
 	}
 	if !IsNil(o.CountryCode) {
 		toSerialize["country_code"] = o.CountryCode

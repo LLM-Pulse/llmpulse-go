@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,363 +24,6 @@ import (
 // MetricsAPIService MetricsAPI service
 type MetricsAPIService service
 
-type ApiGetAgentTrafficRequest struct {
-	ctx context.Context
-	ApiService *MetricsAPIService
-	projectId *int32
-	range_ *int32
-	from *time.Time
-	to *time.Time
-	bot *string
-	company *string
-	groupBy *string
-	granularity *string
-}
-
-// Project ID
-func (r ApiGetAgentTrafficRequest) ProjectId(projectId int32) ApiGetAgentTrafficRequest {
-	r.projectId = &projectId
-	return r
-}
-
-// Number of days to look back (alternative to from/to)
-func (r ApiGetAgentTrafficRequest) Range_(range_ int32) ApiGetAgentTrafficRequest {
-	r.range_ = &range_
-	return r
-}
-
-func (r ApiGetAgentTrafficRequest) From(from time.Time) ApiGetAgentTrafficRequest {
-	r.from = &from
-	return r
-}
-
-func (r ApiGetAgentTrafficRequest) To(to time.Time) ApiGetAgentTrafficRequest {
-	r.to = &to
-	return r
-}
-
-// Filter by bot slug (e.g. gptbot, claudebot, perplexitybot)
-func (r ApiGetAgentTrafficRequest) Bot(bot string) ApiGetAgentTrafficRequest {
-	r.bot = &bot
-	return r
-}
-
-// Filter by company (e.g. openai, anthropic, google)
-func (r ApiGetAgentTrafficRequest) Company(company string) ApiGetAgentTrafficRequest {
-	r.company = &company
-	return r
-}
-
-func (r ApiGetAgentTrafficRequest) GroupBy(groupBy string) ApiGetAgentTrafficRequest {
-	r.groupBy = &groupBy
-	return r
-}
-
-func (r ApiGetAgentTrafficRequest) Granularity(granularity string) ApiGetAgentTrafficRequest {
-	r.granularity = &granularity
-	return r
-}
-
-func (r ApiGetAgentTrafficRequest) Execute() (*AgentTrafficResponse, *http.Response, error) {
-	return r.ApiService.GetAgentTrafficExecute(r)
-}
-
-/*
-GetAgentTraffic AI bot crawler traffic (Scale+, Beta)
-
-Aggregated AI bot traffic hitting the project's origin server (GPTBot, PerplexityBot, ClaudeBot, OAI-SearchBot, Google-Extended, etc.). Sourced from Cloudflare or CSV uploads. Requires the Scale plan; lower tiers receive ERR_PLAN_REQUIRED.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetAgentTrafficRequest
-*/
-func (a *MetricsAPIService) GetAgentTraffic(ctx context.Context) ApiGetAgentTrafficRequest {
-	return ApiGetAgentTrafficRequest{
-		ApiService: a,
-		ctx: ctx,
-	}
-}
-
-// Execute executes the request
-//  @return AgentTrafficResponse
-func (a *MetricsAPIService) GetAgentTrafficExecute(r ApiGetAgentTrafficRequest) (*AgentTrafficResponse, *http.Response, error) {
-	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AgentTrafficResponse
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsAPIService.GetAgentTraffic")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/metrics/agent_traffic"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.projectId == nil {
-		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
-	}
-
-	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
-	if r.range_ != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
-	}
-	if r.from != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
-	}
-	if r.to != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
-	}
-	if r.bot != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "bot", r.bot, "form", "")
-	}
-	if r.company != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "company", r.company, "form", "")
-	}
-	if r.groupBy != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "group_by", r.groupBy, "form", "")
-	} else {
-		var defaultValue string = "bot"
-		parameterAddToHeaderOrQuery(localVarQueryParams, "group_by", defaultValue, "form", "")
-		r.groupBy = &defaultValue
-	}
-	if r.granularity != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "granularity", r.granularity, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-type ApiGetAiTrafficRequest struct {
-	ctx context.Context
-	ApiService *MetricsAPIService
-	projectId *int32
-	range_ *int32
-	from *time.Time
-	to *time.Time
-	source *string
-	granularity *string
-}
-
-// Project ID
-func (r ApiGetAiTrafficRequest) ProjectId(projectId int32) ApiGetAiTrafficRequest {
-	r.projectId = &projectId
-	return r
-}
-
-// Number of days to look back (alternative to from/to)
-func (r ApiGetAiTrafficRequest) Range_(range_ int32) ApiGetAiTrafficRequest {
-	r.range_ = &range_
-	return r
-}
-
-func (r ApiGetAiTrafficRequest) From(from time.Time) ApiGetAiTrafficRequest {
-	r.from = &from
-	return r
-}
-
-func (r ApiGetAiTrafficRequest) To(to time.Time) ApiGetAiTrafficRequest {
-	r.to = &to
-	return r
-}
-
-// Filter by a single AI source slug (e.g. chatgpt, perplexity, gemini, claude)
-func (r ApiGetAiTrafficRequest) Source(source string) ApiGetAiTrafficRequest {
-	r.source = &source
-	return r
-}
-
-func (r ApiGetAiTrafficRequest) Granularity(granularity string) ApiGetAiTrafficRequest {
-	r.granularity = &granularity
-	return r
-}
-
-func (r ApiGetAiTrafficRequest) Execute() (*http.Response, error) {
-	return r.ApiService.GetAiTrafficExecute(r)
-}
-
-/*
-GetAiTraffic AI referral traffic (Scale+)
-
-AI referral traffic for a project: human visits arriving from AI assistants (ChatGPT, Perplexity, Gemini, Claude, etc.), measured from the connected web analytics provider (Google Analytics 4, Adobe Analytics, PostHog, Plausible or Piano). Returns per-source users, sessions and conversions with totals and a conversion rate. Requires a connected provider and the Scale plan; otherwise returns ERR_AI_TRAFFIC_NOT_CONNECTED or ERR_PLAN_REQUIRED.
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetAiTrafficRequest
-*/
-func (a *MetricsAPIService) GetAiTraffic(ctx context.Context) ApiGetAiTrafficRequest {
-	return ApiGetAiTrafficRequest{
-		ApiService: a,
-		ctx: ctx,
-	}
-}
-
-// Execute executes the request
-func (a *MetricsAPIService) GetAiTrafficExecute(r ApiGetAiTrafficRequest) (*http.Response, error) {
-	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsAPIService.GetAiTraffic")
-	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/metrics/ai_traffic"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
-	}
-
-	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
-	if r.range_ != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
-	}
-	if r.from != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
-	}
-	if r.to != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
-	}
-	if r.source != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "source", r.source, "form", "")
-	}
-	if r.granularity != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "granularity", r.granularity, "form", "")
-	}
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
-	}
-
-	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-			return localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
-		}
-		return localVarHTTPResponse, newErr
-	}
-
-	return localVarHTTPResponse, nil
-}
-
 type ApiGetPromptSummaryRequest struct {
 	ctx context.Context
 	ApiService *MetricsAPIService
@@ -390,7 +33,7 @@ type ApiGetPromptSummaryRequest struct {
 	to *time.Time
 	breakdown *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -420,6 +63,7 @@ func (r ApiGetPromptSummaryRequest) From(from time.Time) ApiGetPromptSummaryRequ
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetPromptSummaryRequest) To(to time.Time) ApiGetPromptSummaryRequest {
 	r.to = &to
 	return r
@@ -437,18 +81,19 @@ func (r ApiGetPromptSummaryRequest) Model(model string) ApiGetPromptSummaryReque
 	return r
 }
 
-func (r ApiGetPromptSummaryRequest) CollectionId(collectionId int32) ApiGetPromptSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetPromptSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetPromptSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetPromptSummaryRequest) CountryCode(countryCode string) ApiGetPromptSummaryRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetPromptSummaryRequest) LanguageCode(languageCode string) ApiGetPromptSummaryRequest {
 	r.languageCode = &languageCode
 	return r
@@ -460,7 +105,7 @@ func (r ApiGetPromptSummaryRequest) Prompt(prompt int32) ApiGetPromptSummaryRequ
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetPromptSummaryRequest) PromptType(promptType string) ApiGetPromptSummaryRequest {
 	r.promptType = &promptType
 	return r
@@ -680,7 +325,7 @@ type ApiGetShareOfVoiceRequest struct {
 	granularity *string
 	competitors *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	prompt *int32
 	promptType *string
 	brandKind *string
@@ -705,6 +350,7 @@ func (r ApiGetShareOfVoiceRequest) From(from time.Time) ApiGetShareOfVoiceReques
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetShareOfVoiceRequest) To(to time.Time) ApiGetShareOfVoiceRequest {
 	r.to = &to
 	return r
@@ -727,7 +373,8 @@ func (r ApiGetShareOfVoiceRequest) Model(model string) ApiGetShareOfVoiceRequest
 	return r
 }
 
-func (r ApiGetShareOfVoiceRequest) CollectionId(collectionId int32) ApiGetShareOfVoiceRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetShareOfVoiceRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetShareOfVoiceRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -738,7 +385,7 @@ func (r ApiGetShareOfVoiceRequest) Prompt(prompt int32) ApiGetShareOfVoiceReques
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetShareOfVoiceRequest) PromptType(promptType string) ApiGetShareOfVoiceRequest {
 	r.promptType = &promptType
 	return r
@@ -911,7 +558,7 @@ type ApiGetSummaryRequest struct {
 	to *time.Time
 	competitors *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	prompt *int32
 	promptType *string
 	brandKind *string
@@ -946,6 +593,7 @@ func (r ApiGetSummaryRequest) From(from time.Time) ApiGetSummaryRequest {
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetSummaryRequest) To(to time.Time) ApiGetSummaryRequest {
 	r.to = &to
 	return r
@@ -963,7 +611,8 @@ func (r ApiGetSummaryRequest) Model(model string) ApiGetSummaryRequest {
 	return r
 }
 
-func (r ApiGetSummaryRequest) CollectionId(collectionId int32) ApiGetSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -974,7 +623,7 @@ func (r ApiGetSummaryRequest) Prompt(prompt int32) ApiGetSummaryRequest {
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetSummaryRequest) PromptType(promptType string) ApiGetSummaryRequest {
 	r.promptType = &promptType
 	return r
@@ -1158,7 +807,7 @@ type ApiGetTimeseriesRequest struct {
 	to *time.Time
 	competitors *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -1196,6 +845,7 @@ func (r ApiGetTimeseriesRequest) From(from time.Time) ApiGetTimeseriesRequest {
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetTimeseriesRequest) To(to time.Time) ApiGetTimeseriesRequest {
 	r.to = &to
 	return r
@@ -1213,18 +863,19 @@ func (r ApiGetTimeseriesRequest) Model(model string) ApiGetTimeseriesRequest {
 	return r
 }
 
-func (r ApiGetTimeseriesRequest) CollectionId(collectionId int32) ApiGetTimeseriesRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetTimeseriesRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetTimeseriesRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetTimeseriesRequest) CountryCode(countryCode string) ApiGetTimeseriesRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetTimeseriesRequest) LanguageCode(languageCode string) ApiGetTimeseriesRequest {
 	r.languageCode = &languageCode
 	return r
@@ -1236,7 +887,7 @@ func (r ApiGetTimeseriesRequest) Prompt(prompt int32) ApiGetTimeseriesRequest {
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetTimeseriesRequest) PromptType(promptType string) ApiGetTimeseriesRequest {
 	r.promptType = &promptType
 	return r
@@ -1446,7 +1097,7 @@ type ApiGetTopSourcesRequest struct {
 	from *time.Time
 	to *time.Time
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -1476,6 +1127,7 @@ func (r ApiGetTopSourcesRequest) From(from time.Time) ApiGetTopSourcesRequest {
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetTopSourcesRequest) To(to time.Time) ApiGetTopSourcesRequest {
 	r.to = &to
 	return r
@@ -1487,18 +1139,19 @@ func (r ApiGetTopSourcesRequest) Model(model string) ApiGetTopSourcesRequest {
 	return r
 }
 
-func (r ApiGetTopSourcesRequest) CollectionId(collectionId int32) ApiGetTopSourcesRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetTopSourcesRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetTopSourcesRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetTopSourcesRequest) CountryCode(countryCode string) ApiGetTopSourcesRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetTopSourcesRequest) LanguageCode(languageCode string) ApiGetTopSourcesRequest {
 	r.languageCode = &languageCode
 	return r
@@ -1510,7 +1163,7 @@ func (r ApiGetTopSourcesRequest) Prompt(prompt int32) ApiGetTopSourcesRequest {
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetTopSourcesRequest) PromptType(promptType string) ApiGetTopSourcesRequest {
 	r.promptType = &promptType
 	return r

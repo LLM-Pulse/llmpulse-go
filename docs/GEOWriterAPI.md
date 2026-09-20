@@ -7,6 +7,8 @@ Method | HTTP request | Description
 [**CreateIntelligenceTask**](GEOWriterAPI.md#CreateIntelligenceTask) | **Post** /intelligence_tasks | Create a GEO Writer task
 [**GetIntelligenceTask**](GEOWriterAPI.md#GetIntelligenceTask) | **Get** /intelligence_tasks/{id} | Get a GEO Writer task
 [**ListIntelligenceTasks**](GEOWriterAPI.md#ListIntelligenceTasks) | **Get** /intelligence_tasks | List GEO Writer tasks
+[**RevertIntelligenceTaskContent**](GEOWriterAPI.md#RevertIntelligenceTaskContent) | **Post** /intelligence_tasks/{id}/revert | Revert GEO Writer task content
+[**UpdateIntelligenceTaskContent**](GEOWriterAPI.md#UpdateIntelligenceTaskContent) | **Patch** /intelligence_tasks/{id} | Edit GEO Writer task content
 
 
 
@@ -208,6 +210,150 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RevertIntelligenceTaskContent
+
+> IntelligenceTask RevertIntelligenceTaskContent(ctx, id).ProjectId(projectId).Execute()
+
+Revert GEO Writer task content
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	id := "id_example" // string | Numeric task ID or public_id string token
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GEOWriterAPI.RevertIntelligenceTaskContent(context.Background(), id).ProjectId(projectId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.RevertIntelligenceTaskContent``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RevertIntelligenceTaskContent`: IntelligenceTask
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.RevertIntelligenceTaskContent`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** | Numeric task ID or public_id string token | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRevertIntelligenceTaskContentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+
+### Return type
+
+[**IntelligenceTask**](IntelligenceTask.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateIntelligenceTaskContent
+
+> IntelligenceTaskUpdateResponse UpdateIntelligenceTaskContent(ctx, id).IntelligenceTaskUpdateRequest(intelligenceTaskUpdateRequest).Execute()
+
+Edit GEO Writer task content
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := "id_example" // string | Numeric task ID or public_id string token
+	intelligenceTaskUpdateRequest := *openapiclient.NewIntelligenceTaskUpdateRequest(int32(123), map[string]string{"key": "Inner_example"}) // IntelligenceTaskUpdateRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GEOWriterAPI.UpdateIntelligenceTaskContent(context.Background(), id).IntelligenceTaskUpdateRequest(intelligenceTaskUpdateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.UpdateIntelligenceTaskContent``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateIntelligenceTaskContent`: IntelligenceTaskUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.UpdateIntelligenceTaskContent`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** | Numeric task ID or public_id string token | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateIntelligenceTaskContentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **intelligenceTaskUpdateRequest** | [**IntelligenceTaskUpdateRequest**](IntelligenceTaskUpdateRequest.md) |  | 
+
+### Return type
+
+[**IntelligenceTaskUpdateResponse**](IntelligenceTaskUpdateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

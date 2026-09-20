@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -40,6 +40,10 @@ type IntelligenceTask struct {
 	EstimatedTime NullableString `json:"estimated_time,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	ProcessedAt NullableTime `json:"processed_at,omitempty"`
+	// When the content was last edited by hand; null while the output is as generated
+	ManuallyEditedAt NullableTime `json:"manually_edited_at,omitempty"`
+	// User behind the last manual edit; null for an unedited task or an edit made from an embedded portal
+	EditedByUserId NullableInt32 `json:"edited_by_user_id,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
@@ -726,6 +730,90 @@ func (o *IntelligenceTask) UnsetProcessedAt() {
 	o.ProcessedAt.Unset()
 }
 
+// GetManuallyEditedAt returns the ManuallyEditedAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *IntelligenceTask) GetManuallyEditedAt() time.Time {
+	if o == nil || IsNil(o.ManuallyEditedAt.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.ManuallyEditedAt.Get()
+}
+
+// GetManuallyEditedAtOk returns a tuple with the ManuallyEditedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *IntelligenceTask) GetManuallyEditedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ManuallyEditedAt.Get(), o.ManuallyEditedAt.IsSet()
+}
+
+// HasManuallyEditedAt returns a boolean if a field has been set.
+func (o *IntelligenceTask) HasManuallyEditedAt() bool {
+	if o != nil && o.ManuallyEditedAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetManuallyEditedAt gets a reference to the given NullableTime and assigns it to the ManuallyEditedAt field.
+func (o *IntelligenceTask) SetManuallyEditedAt(v time.Time) {
+	o.ManuallyEditedAt.Set(&v)
+}
+// SetManuallyEditedAtNil sets the value for ManuallyEditedAt to be an explicit nil
+func (o *IntelligenceTask) SetManuallyEditedAtNil() {
+	o.ManuallyEditedAt.Set(nil)
+}
+
+// UnsetManuallyEditedAt ensures that no value is present for ManuallyEditedAt, not even an explicit nil
+func (o *IntelligenceTask) UnsetManuallyEditedAt() {
+	o.ManuallyEditedAt.Unset()
+}
+
+// GetEditedByUserId returns the EditedByUserId field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *IntelligenceTask) GetEditedByUserId() int32 {
+	if o == nil || IsNil(o.EditedByUserId.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.EditedByUserId.Get()
+}
+
+// GetEditedByUserIdOk returns a tuple with the EditedByUserId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *IntelligenceTask) GetEditedByUserIdOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.EditedByUserId.Get(), o.EditedByUserId.IsSet()
+}
+
+// HasEditedByUserId returns a boolean if a field has been set.
+func (o *IntelligenceTask) HasEditedByUserId() bool {
+	if o != nil && o.EditedByUserId.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetEditedByUserId gets a reference to the given NullableInt32 and assigns it to the EditedByUserId field.
+func (o *IntelligenceTask) SetEditedByUserId(v int32) {
+	o.EditedByUserId.Set(&v)
+}
+// SetEditedByUserIdNil sets the value for EditedByUserId to be an explicit nil
+func (o *IntelligenceTask) SetEditedByUserIdNil() {
+	o.EditedByUserId.Set(nil)
+}
+
+// UnsetEditedByUserId ensures that no value is present for EditedByUserId, not even an explicit nil
+func (o *IntelligenceTask) UnsetEditedByUserId() {
+	o.EditedByUserId.Unset()
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *IntelligenceTask) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -821,6 +909,12 @@ func (o IntelligenceTask) ToMap() (map[string]interface{}, error) {
 	}
 	if o.ProcessedAt.IsSet() {
 		toSerialize["processed_at"] = o.ProcessedAt.Get()
+	}
+	if o.ManuallyEditedAt.IsSet() {
+		toSerialize["manually_edited_at"] = o.ManuallyEditedAt.Get()
+	}
+	if o.EditedByUserId.IsSet() {
+		toSerialize["edited_by_user_id"] = o.EditedByUserId.Get()
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId

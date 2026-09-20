@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,115 @@ import (
 // SentimentsAPIService SentimentsAPI service
 type SentimentsAPIService service
 
+type ApiListSentimentCategoriesRequest struct {
+	ctx context.Context
+	ApiService *SentimentsAPIService
+	projectId *int32
+	output *string
+}
+
+// Project ID
+func (r ApiListSentimentCategoriesRequest) ProjectId(projectId int32) ApiListSentimentCategoriesRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListSentimentCategoriesRequest) Output(output string) ApiListSentimentCategoriesRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListSentimentCategoriesRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ListSentimentCategoriesExecute(r)
+}
+
+/*
+ListSentimentCategories List sentiment categories
+
+Sentiment metric keys + labels + colors. For records, use /sentiments.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListSentimentCategoriesRequest
+*/
+func (a *SentimentsAPIService) ListSentimentCategories(ctx context.Context) ApiListSentimentCategoriesRequest {
+	return ApiListSentimentCategoriesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+func (a *SentimentsAPIService) ListSentimentCategoriesExecute(r ApiListSentimentCategoriesRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SentimentsAPIService.ListSentimentCategories")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/sentiments"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
 type ApiListSentimentRecordsRequest struct {
 	ctx context.Context
 	ApiService *SentimentsAPIService
@@ -32,7 +141,7 @@ type ApiListSentimentRecordsRequest struct {
 	brandOnly *bool
 	analysis *string
 	model *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	from *time.Time
@@ -57,6 +166,7 @@ func (r ApiListSentimentRecordsRequest) BrandOnly(brandOnly bool) ApiListSentime
 	return r
 }
 
+// One sentiment level or a comma-separated list: very_positive, positive, neutral, negative, very_negative
 func (r ApiListSentimentRecordsRequest) Analysis(analysis string) ApiListSentimentRecordsRequest {
 	r.analysis = &analysis
 	return r
@@ -68,18 +178,19 @@ func (r ApiListSentimentRecordsRequest) Model(model string) ApiListSentimentReco
 	return r
 }
 
-func (r ApiListSentimentRecordsRequest) CollectionId(collectionId int32) ApiListSentimentRecordsRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiListSentimentRecordsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListSentimentRecordsRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiListSentimentRecordsRequest) CountryCode(countryCode string) ApiListSentimentRecordsRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiListSentimentRecordsRequest) LanguageCode(languageCode string) ApiListSentimentRecordsRequest {
 	r.languageCode = &languageCode
 	return r
@@ -90,6 +201,7 @@ func (r ApiListSentimentRecordsRequest) From(from time.Time) ApiListSentimentRec
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiListSentimentRecordsRequest) To(to time.Time) ApiListSentimentRecordsRequest {
 	r.to = &to
 	return r

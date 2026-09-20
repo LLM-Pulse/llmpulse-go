@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,7 +32,7 @@ type ApiGetAiModelInsightsSummaryRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -57,6 +57,7 @@ func (r ApiGetAiModelInsightsSummaryRequest) From(from time.Time) ApiGetAiModelI
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetAiModelInsightsSummaryRequest) To(to time.Time) ApiGetAiModelInsightsSummaryRequest {
 	r.to = &to
 	return r
@@ -67,24 +68,25 @@ func (r ApiGetAiModelInsightsSummaryRequest) Granularity(granularity string) Api
 	return r
 }
 
-func (r ApiGetAiModelInsightsSummaryRequest) CollectionId(collectionId int32) ApiGetAiModelInsightsSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetAiModelInsightsSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiModelInsightsSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetAiModelInsightsSummaryRequest) CountryCode(countryCode string) ApiGetAiModelInsightsSummaryRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetAiModelInsightsSummaryRequest) LanguageCode(languageCode string) ApiGetAiModelInsightsSummaryRequest {
 	r.languageCode = &languageCode
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetAiModelInsightsSummaryRequest) PromptType(promptType string) ApiGetAiModelInsightsSummaryRequest {
 	r.promptType = &promptType
 	return r
@@ -227,7 +229,7 @@ type ApiGetAiModelPositionDistributionRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -254,6 +256,7 @@ func (r ApiGetAiModelPositionDistributionRequest) From(from time.Time) ApiGetAiM
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetAiModelPositionDistributionRequest) To(to time.Time) ApiGetAiModelPositionDistributionRequest {
 	r.to = &to
 	return r
@@ -264,24 +267,25 @@ func (r ApiGetAiModelPositionDistributionRequest) Granularity(granularity string
 	return r
 }
 
-func (r ApiGetAiModelPositionDistributionRequest) CollectionId(collectionId int32) ApiGetAiModelPositionDistributionRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetAiModelPositionDistributionRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiModelPositionDistributionRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetAiModelPositionDistributionRequest) CountryCode(countryCode string) ApiGetAiModelPositionDistributionRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetAiModelPositionDistributionRequest) LanguageCode(languageCode string) ApiGetAiModelPositionDistributionRequest {
 	r.languageCode = &languageCode
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetAiModelPositionDistributionRequest) PromptType(promptType string) ApiGetAiModelPositionDistributionRequest {
 	r.promptType = &promptType
 	return r
@@ -439,7 +443,7 @@ type ApiGetAiOverviewResultsRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *int32
+	collectionId *GetTimeseriesCollectionIdParameter
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -465,6 +469,7 @@ func (r ApiGetAiOverviewResultsRequest) From(from time.Time) ApiGetAiOverviewRes
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetAiOverviewResultsRequest) To(to time.Time) ApiGetAiOverviewResultsRequest {
 	r.to = &to
 	return r
@@ -475,24 +480,25 @@ func (r ApiGetAiOverviewResultsRequest) Granularity(granularity string) ApiGetAi
 	return r
 }
 
-func (r ApiGetAiOverviewResultsRequest) CollectionId(collectionId int32) ApiGetAiOverviewResultsRequest {
+// One collection/tag ID or a comma-separated list of IDs
+func (r ApiGetAiOverviewResultsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiOverviewResultsRequest {
 	r.collectionId = &collectionId
 	return r
 }
 
-// ISO country code (e.g. US, GB, DE)
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
 func (r ApiGetAiOverviewResultsRequest) CountryCode(countryCode string) ApiGetAiOverviewResultsRequest {
 	r.countryCode = &countryCode
 	return r
 }
 
-// ISO language code (e.g. en, es, de)
+// One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiGetAiOverviewResultsRequest) LanguageCode(languageCode string) ApiGetAiOverviewResultsRequest {
 	r.languageCode = &languageCode
 	return r
 }
 
-// Filter by prompt type (search intent)
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
 func (r ApiGetAiOverviewResultsRequest) PromptType(promptType string) ApiGetAiOverviewResultsRequest {
 	r.promptType = &promptType
 	return r

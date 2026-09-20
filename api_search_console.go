@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,6 +35,9 @@ type ApiGetSearchConsolePagesRequest struct {
 	page *int32
 	perPage *int32
 	output *string
+	searchType *string
+	filters *string
+	dataState *string
 }
 
 // Project ID
@@ -54,6 +57,7 @@ func (r ApiGetSearchConsolePagesRequest) From(from time.Time) ApiGetSearchConsol
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetSearchConsolePagesRequest) To(to time.Time) ApiGetSearchConsolePagesRequest {
 	r.to = &to
 	return r
@@ -80,6 +84,24 @@ func (r ApiGetSearchConsolePagesRequest) Output(output string) ApiGetSearchConso
 	return r
 }
 
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsolePagesRequest) SearchType(searchType string) ApiGetSearchConsolePagesRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsolePagesRequest) Filters(filters string) ApiGetSearchConsolePagesRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsolePagesRequest) DataState(dataState string) ApiGetSearchConsolePagesRequest {
+	r.dataState = &dataState
+	return r
+}
+
 func (r ApiGetSearchConsolePagesRequest) Execute() (*http.Response, error) {
 	return r.ApiService.GetSearchConsolePagesExecute(r)
 }
@@ -87,7 +109,7 @@ func (r ApiGetSearchConsolePagesRequest) Execute() (*http.Response, error) {
 /*
 GetSearchConsolePages Top Search Console pages (Growth+)
 
-Top Google Search Console landing pages over a date range, ranked by impressions, clicks, ctr or position, paginated. Requires a connected Search Console property (Growth+).
+Top Google Search Console landing pages over a date range, ranked by impressions, clicks, ctr or position, paginated. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts distinct keys available for the range: keys from synced daily rows for stored reads, or up to 25,000 rows from one Google request for live reads. Live responses include truncated: true when that limit is reached. Sorting and pagination apply to the available set.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsolePagesRequest
@@ -155,6 +177,23 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -214,6 +253,17 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -232,6 +282,9 @@ type ApiGetSearchConsoleQueriesRequest struct {
 	page *int32
 	perPage *int32
 	output *string
+	searchType *string
+	filters *string
+	dataState *string
 }
 
 // Project ID
@@ -251,6 +304,7 @@ func (r ApiGetSearchConsoleQueriesRequest) From(from time.Time) ApiGetSearchCons
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetSearchConsoleQueriesRequest) To(to time.Time) ApiGetSearchConsoleQueriesRequest {
 	r.to = &to
 	return r
@@ -277,6 +331,24 @@ func (r ApiGetSearchConsoleQueriesRequest) Output(output string) ApiGetSearchCon
 	return r
 }
 
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleQueriesRequest) SearchType(searchType string) ApiGetSearchConsoleQueriesRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleQueriesRequest) Filters(filters string) ApiGetSearchConsoleQueriesRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleQueriesRequest) DataState(dataState string) ApiGetSearchConsoleQueriesRequest {
+	r.dataState = &dataState
+	return r
+}
+
 func (r ApiGetSearchConsoleQueriesRequest) Execute() (*http.Response, error) {
 	return r.ApiService.GetSearchConsoleQueriesExecute(r)
 }
@@ -284,7 +356,7 @@ func (r ApiGetSearchConsoleQueriesRequest) Execute() (*http.Response, error) {
 /*
 GetSearchConsoleQueries Top Search Console queries (Growth+)
 
-Top Google Search Console search queries over a date range, ranked by impressions, clicks, ctr or position, paginated. Knowingly undercounts anonymized queries; for exact totals use /search_console/summary. Requires a connected Search Console property (Growth+).
+Top Google Search Console search queries over a date range, ranked by impressions, clicks, ctr or position, paginated. Excludes anonymized queries; for headline totals use /search_console/summary. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts distinct keys available for the range: keys from synced daily rows for stored reads, or up to 25,000 rows from one Google request for live reads. Live responses include truncated: true when that limit is reached. Sorting and pagination apply to the available set.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleQueriesRequest
@@ -352,6 +424,23 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -411,6 +500,17 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -426,6 +526,10 @@ type ApiGetSearchConsoleSummaryRequest struct {
 	from *time.Time
 	to *time.Time
 	dimension *string
+	limit *int32
+	searchType *string
+	filters *string
+	dataState *string
 }
 
 // Project ID
@@ -445,14 +549,39 @@ func (r ApiGetSearchConsoleSummaryRequest) From(from time.Time) ApiGetSearchCons
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetSearchConsoleSummaryRequest) To(to time.Time) ApiGetSearchConsoleSummaryRequest {
 	r.to = &to
 	return r
 }
 
-// Optional breakdown aggregated over the range
+// Optional breakdown aggregated over the range. country and device are lowercased; page and query keep the casing Google returns, because a page URL is case sensitive.
 func (r ApiGetSearchConsoleSummaryRequest) Dimension(dimension string) ApiGetSearchConsoleSummaryRequest {
 	r.dimension = &dimension
+	return r
+}
+
+// Maximum breakdown rows, sorted by impressions descending. Default and maximum 1000. Use /search_console/queries or /search_console/pages to page through a full list.
+func (r ApiGetSearchConsoleSummaryRequest) Limit(limit int32) ApiGetSearchConsoleSummaryRequest {
+	r.limit = &limit
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleSummaryRequest) SearchType(searchType string) ApiGetSearchConsoleSummaryRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleSummaryRequest) Filters(filters string) ApiGetSearchConsoleSummaryRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleSummaryRequest) DataState(dataState string) ApiGetSearchConsoleSummaryRequest {
+	r.dataState = &dataState
 	return r
 }
 
@@ -463,7 +592,7 @@ func (r ApiGetSearchConsoleSummaryRequest) Execute() (*http.Response, error) {
 /*
 GetSearchConsoleSummary Search Console summary (Growth+)
 
-Google Search Console headline totals (impressions, clicks, ctr as a 0..1 fraction, average position) for the project over a date range. Pass dimension=country or dimension=device to also receive the breakdown aggregated over the range. Requires the project to have a connected Search Console property and the Growth plan or above; otherwise returns ERR_SEARCH_CONSOLE_NOT_CONNECTED or ERR_PLAN_REQUIRED.
+Google Search Console headline totals (impressions, clicks, ctr as a 0..1 fraction, average position) for the project over a date range. Pass dimension=country, device, page, query or searchAppearance to also receive the breakdown aggregated over the range, capped by limit. Requires the project to have a connected Search Console property and the Growth plan or above; otherwise returns ERR_SEARCH_CONSOLE_NOT_CONNECTED or ERR_PLAN_REQUIRED. X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleSummaryRequest
@@ -510,6 +639,26 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 	if r.dimension != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "dimension", r.dimension, "form", "")
 	}
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -569,6 +718,17 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -585,6 +745,9 @@ type ApiGetSearchConsoleTimeseriesRequest struct {
 	to *time.Time
 	granularity *string
 	output *string
+	searchType *string
+	filters *string
+	dataState *string
 }
 
 // Project ID
@@ -604,6 +767,7 @@ func (r ApiGetSearchConsoleTimeseriesRequest) From(from time.Time) ApiGetSearchC
 	return r
 }
 
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiGetSearchConsoleTimeseriesRequest) To(to time.Time) ApiGetSearchConsoleTimeseriesRequest {
 	r.to = &to
 	return r
@@ -620,6 +784,24 @@ func (r ApiGetSearchConsoleTimeseriesRequest) Output(output string) ApiGetSearch
 	return r
 }
 
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleTimeseriesRequest) SearchType(searchType string) ApiGetSearchConsoleTimeseriesRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleTimeseriesRequest) Filters(filters string) ApiGetSearchConsoleTimeseriesRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleTimeseriesRequest) DataState(dataState string) ApiGetSearchConsoleTimeseriesRequest {
+	r.dataState = &dataState
+	return r
+}
+
 func (r ApiGetSearchConsoleTimeseriesRequest) Execute() (*http.Response, error) {
 	return r.ApiService.GetSearchConsoleTimeseriesExecute(r)
 }
@@ -627,7 +809,7 @@ func (r ApiGetSearchConsoleTimeseriesRequest) Execute() (*http.Response, error) 
 /*
 GetSearchConsoleTimeseries Search Console time series (Growth+)
 
-Google Search Console property-wide series (impressions, clicks, ctr, position) bucketed by day, week or month. Requires a connected Search Console property (Growth+).
+Google Search Console property-wide series (impressions, clicks, ctr, position) bucketed by day, week or month. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleTimeseriesRequest
@@ -677,6 +859,23 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -728,6 +927,17 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

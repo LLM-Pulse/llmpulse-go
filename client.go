@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,7 +42,7 @@ var (
 	queryDescape    = strings.NewReplacer( "%5B", "[", "%5D", "]" )
 )
 
-// APIClient manages communication with the LLM Pulse API API v1.22.0
+// APIClient manages communication with the LLM Pulse API API v1.46.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -50,25 +50,29 @@ type APIClient struct {
 
 	// API Services
 
+	AIAgentTrafficAPI *AIAgentTrafficAPIService
+
 	AIModelInsightsAPI *AIModelInsightsAPIService
+
+	AccountAPI *AccountAPIService
 
 	AnnotationsAPI *AnnotationsAPIService
 
 	AnswersAPI *AnswersAPIService
 
-	CitationIntelligenceAPI *CitationIntelligenceAPIService
-
-	CollectionsAPI *CollectionsAPIService
+	CollectionsTagsAPI *CollectionsTagsAPIService
 
 	CompetitorsAPI *CompetitorsAPIService
-
-	DimensionsAPI *DimensionsAPIService
 
 	GEOWriterAPI *GEOWriterAPIService
 
 	HealthAPI *HealthAPIService
 
+	MentionsCitationsAPI *MentionsCitationsAPIService
+
 	MetricsAPI *MetricsAPIService
+
+	OwnedMediaCommunitiesAPI *OwnedMediaCommunitiesAPIService
 
 	ProjectsAPI *ProjectsAPIService
 
@@ -76,11 +80,17 @@ type APIClient struct {
 
 	RecommendationsAPI *RecommendationsAPIService
 
-	ReportsAPI *ReportsAPIService
+	ReputationStudiesAPI *ReputationStudiesAPIService
 
 	SearchConsoleAPI *SearchConsoleAPIService
 
 	SentimentsAPI *SentimentsAPIService
+
+	ShoppingAdsAPI *ShoppingAdsAPIService
+
+	SourcesCitationIntelligenceAPI *SourcesCitationIntelligenceAPIService
+
+	TechnicalGEOReportsAPI *TechnicalGEOReportsAPIService
 
 	WebhooksAPI *WebhooksAPIService
 }
@@ -101,22 +111,27 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
+	c.AIAgentTrafficAPI = (*AIAgentTrafficAPIService)(&c.common)
 	c.AIModelInsightsAPI = (*AIModelInsightsAPIService)(&c.common)
+	c.AccountAPI = (*AccountAPIService)(&c.common)
 	c.AnnotationsAPI = (*AnnotationsAPIService)(&c.common)
 	c.AnswersAPI = (*AnswersAPIService)(&c.common)
-	c.CitationIntelligenceAPI = (*CitationIntelligenceAPIService)(&c.common)
-	c.CollectionsAPI = (*CollectionsAPIService)(&c.common)
+	c.CollectionsTagsAPI = (*CollectionsTagsAPIService)(&c.common)
 	c.CompetitorsAPI = (*CompetitorsAPIService)(&c.common)
-	c.DimensionsAPI = (*DimensionsAPIService)(&c.common)
 	c.GEOWriterAPI = (*GEOWriterAPIService)(&c.common)
 	c.HealthAPI = (*HealthAPIService)(&c.common)
+	c.MentionsCitationsAPI = (*MentionsCitationsAPIService)(&c.common)
 	c.MetricsAPI = (*MetricsAPIService)(&c.common)
+	c.OwnedMediaCommunitiesAPI = (*OwnedMediaCommunitiesAPIService)(&c.common)
 	c.ProjectsAPI = (*ProjectsAPIService)(&c.common)
 	c.PromptsAPI = (*PromptsAPIService)(&c.common)
 	c.RecommendationsAPI = (*RecommendationsAPIService)(&c.common)
-	c.ReportsAPI = (*ReportsAPIService)(&c.common)
+	c.ReputationStudiesAPI = (*ReputationStudiesAPIService)(&c.common)
 	c.SearchConsoleAPI = (*SearchConsoleAPIService)(&c.common)
 	c.SentimentsAPI = (*SentimentsAPIService)(&c.common)
+	c.ShoppingAdsAPI = (*ShoppingAdsAPIService)(&c.common)
+	c.SourcesCitationIntelligenceAPI = (*SourcesCitationIntelligenceAPIService)(&c.common)
+	c.TechnicalGEOReportsAPI = (*TechnicalGEOReportsAPIService)(&c.common)
 	c.WebhooksAPI = (*WebhooksAPIService)(&c.common)
 
 	return c

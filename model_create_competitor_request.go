@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.22.0
+API version: 1.46.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,6 +27,10 @@ type CreateCompetitorRequest struct {
 	// URL is accepted and normalised to host (e.g. https://www.openai.com → openai.com)
 	Domain string `json:"domain"`
 	MatchingNames []string `json:"matching_names,omitempty"`
+	// domain includes the registrable domain and all subdomains; host requires the exact hostname; path_prefix also requires citation_match_path
+	CitationMatchMode *string `json:"citation_match_mode,omitempty"`
+	// Required when citation_match_mode=path_prefix, e.g. /es. Case-sensitive; trailing slash is optional; query and fragment are ignored
+	CitationMatchPath *string `json:"citation_match_path,omitempty"`
 }
 
 type _CreateCompetitorRequest CreateCompetitorRequest
@@ -40,6 +44,8 @@ func NewCreateCompetitorRequest(projectId int32, brandName string, domain string
 	this.ProjectId = projectId
 	this.BrandName = brandName
 	this.Domain = domain
+	var citationMatchMode string = "domain"
+	this.CitationMatchMode = &citationMatchMode
 	return &this
 }
 
@@ -48,6 +54,8 @@ func NewCreateCompetitorRequest(projectId int32, brandName string, domain string
 // but it doesn't guarantee that properties required by API are set
 func NewCreateCompetitorRequestWithDefaults() *CreateCompetitorRequest {
 	this := CreateCompetitorRequest{}
+	var citationMatchMode string = "domain"
+	this.CitationMatchMode = &citationMatchMode
 	return &this
 }
 
@@ -155,6 +163,70 @@ func (o *CreateCompetitorRequest) SetMatchingNames(v []string) {
 	o.MatchingNames = v
 }
 
+// GetCitationMatchMode returns the CitationMatchMode field value if set, zero value otherwise.
+func (o *CreateCompetitorRequest) GetCitationMatchMode() string {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchMode
+}
+
+// GetCitationMatchModeOk returns a tuple with the CitationMatchMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateCompetitorRequest) GetCitationMatchModeOk() (*string, bool) {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		return nil, false
+	}
+	return o.CitationMatchMode, true
+}
+
+// HasCitationMatchMode returns a boolean if a field has been set.
+func (o *CreateCompetitorRequest) HasCitationMatchMode() bool {
+	if o != nil && !IsNil(o.CitationMatchMode) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchMode gets a reference to the given string and assigns it to the CitationMatchMode field.
+func (o *CreateCompetitorRequest) SetCitationMatchMode(v string) {
+	o.CitationMatchMode = &v
+}
+
+// GetCitationMatchPath returns the CitationMatchPath field value if set, zero value otherwise.
+func (o *CreateCompetitorRequest) GetCitationMatchPath() string {
+	if o == nil || IsNil(o.CitationMatchPath) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchPath
+}
+
+// GetCitationMatchPathOk returns a tuple with the CitationMatchPath field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateCompetitorRequest) GetCitationMatchPathOk() (*string, bool) {
+	if o == nil || IsNil(o.CitationMatchPath) {
+		return nil, false
+	}
+	return o.CitationMatchPath, true
+}
+
+// HasCitationMatchPath returns a boolean if a field has been set.
+func (o *CreateCompetitorRequest) HasCitationMatchPath() bool {
+	if o != nil && !IsNil(o.CitationMatchPath) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchPath gets a reference to the given string and assigns it to the CitationMatchPath field.
+func (o *CreateCompetitorRequest) SetCitationMatchPath(v string) {
+	o.CitationMatchPath = &v
+}
+
 func (o CreateCompetitorRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -170,6 +242,12 @@ func (o CreateCompetitorRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize["domain"] = o.Domain
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
+	}
+	if !IsNil(o.CitationMatchMode) {
+		toSerialize["citation_match_mode"] = o.CitationMatchMode
+	}
+	if !IsNil(o.CitationMatchPath) {
+		toSerialize["citation_match_path"] = o.CitationMatchPath
 	}
 	return toSerialize, nil
 }
