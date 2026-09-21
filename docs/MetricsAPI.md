@@ -40,7 +40,7 @@ func main() {
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	breakdown := "breakdown_example" // string | Add per-(prompt, model) rows to the output (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **breakdown** | **string** | Add per-(prompt, model) rows to the output | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
@@ -140,7 +140,7 @@ func main() {
 	granularity := "granularity_example" // string |  (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
@@ -177,7 +177,7 @@ Name | Type | Description  | Notes
  **granularity** | **string** |  | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **prompt** | **int32** | Filter by prompt ID | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
@@ -232,7 +232,7 @@ func main() {
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
@@ -269,7 +269,7 @@ Name | Type | Description  | Notes
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **prompt** | **int32** | Filter by prompt ID | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
@@ -323,7 +323,7 @@ func main() {
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -363,7 +363,7 @@ Name | Type | Description  | Notes
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
@@ -417,7 +417,7 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -457,7 +457,7 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 

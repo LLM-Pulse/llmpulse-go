@@ -167,7 +167,7 @@ type ApiListAnswersRequest struct {
 	ApiService *AnswersAPIService
 	projectId *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -194,8 +194,8 @@ func (r ApiListAnswersRequest) Model(model string) ApiListAnswersRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListAnswersRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListAnswersRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListAnswersRequest) CollectionId(collectionId string) ApiListAnswersRequest {
 	r.collectionId = &collectionId
 	return r
 }

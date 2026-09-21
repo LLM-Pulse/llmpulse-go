@@ -287,7 +287,7 @@ type ApiListPromptExecutionsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -321,8 +321,8 @@ func (r ApiListPromptExecutionsRequest) Model(model string) ApiListPromptExecuti
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListPromptExecutionsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListPromptExecutionsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListPromptExecutionsRequest) CollectionId(collectionId string) ApiListPromptExecutionsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -519,7 +519,7 @@ type ApiListPromptsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -551,8 +551,8 @@ func (r ApiListPromptsRequest) Model(model string) ApiListPromptsRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListPromptsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListPromptsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListPromptsRequest) CollectionId(collectionId string) ApiListPromptsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -735,7 +735,7 @@ type ApiListQueryFanOutsRequest struct {
 	direction *string
 	query *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -792,8 +792,8 @@ func (r ApiListQueryFanOutsRequest) Model(model string) ApiListQueryFanOutsReque
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListQueryFanOutsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListQueryFanOutsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListQueryFanOutsRequest) CollectionId(collectionId string) ApiListQueryFanOutsRequest {
 	r.collectionId = &collectionId
 	return r
 }

@@ -32,7 +32,7 @@ type ApiGetAiModelInsightsSummaryRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -68,8 +68,8 @@ func (r ApiGetAiModelInsightsSummaryRequest) Granularity(granularity string) Api
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetAiModelInsightsSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiModelInsightsSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetAiModelInsightsSummaryRequest) CollectionId(collectionId string) ApiGetAiModelInsightsSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -229,7 +229,7 @@ type ApiGetAiModelPositionDistributionRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -267,8 +267,8 @@ func (r ApiGetAiModelPositionDistributionRequest) Granularity(granularity string
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetAiModelPositionDistributionRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiModelPositionDistributionRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetAiModelPositionDistributionRequest) CollectionId(collectionId string) ApiGetAiModelPositionDistributionRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -443,7 +443,7 @@ type ApiGetAiOverviewResultsRequest struct {
 	from *time.Time
 	to *time.Time
 	granularity *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	promptType *string
@@ -480,8 +480,8 @@ func (r ApiGetAiOverviewResultsRequest) Granularity(granularity string) ApiGetAi
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetAiOverviewResultsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetAiOverviewResultsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetAiOverviewResultsRequest) CollectionId(collectionId string) ApiGetAiOverviewResultsRequest {
 	r.collectionId = &collectionId
 	return r
 }

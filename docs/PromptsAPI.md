@@ -172,7 +172,7 @@ func main() {
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -208,7 +208,7 @@ Name | Type | Description  | Notes
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
@@ -261,7 +261,7 @@ func main() {
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
@@ -295,7 +295,7 @@ Name | Type | Description  | Notes
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
@@ -352,7 +352,7 @@ func main() {
 	direction := "direction_example" // string |  (optional) (default to "desc")
 	query := "query_example" // string | Case-insensitive substring filter on the sub-query text (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -392,7 +392,7 @@ Name | Type | Description  | Notes
  **direction** | **string** |  | [default to &quot;desc&quot;]
  **query** | **string** | Case-insensitive substring filter on the sub-query text | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 

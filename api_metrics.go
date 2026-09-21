@@ -33,7 +33,7 @@ type ApiGetPromptSummaryRequest struct {
 	to *time.Time
 	breakdown *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -81,8 +81,8 @@ func (r ApiGetPromptSummaryRequest) Model(model string) ApiGetPromptSummaryReque
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetPromptSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetPromptSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetPromptSummaryRequest) CollectionId(collectionId string) ApiGetPromptSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -325,7 +325,7 @@ type ApiGetShareOfVoiceRequest struct {
 	granularity *string
 	competitors *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	promptType *string
 	brandKind *string
@@ -373,8 +373,8 @@ func (r ApiGetShareOfVoiceRequest) Model(model string) ApiGetShareOfVoiceRequest
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetShareOfVoiceRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetShareOfVoiceRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetShareOfVoiceRequest) CollectionId(collectionId string) ApiGetShareOfVoiceRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -558,7 +558,7 @@ type ApiGetSummaryRequest struct {
 	to *time.Time
 	competitors *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	promptType *string
 	brandKind *string
@@ -611,8 +611,8 @@ func (r ApiGetSummaryRequest) Model(model string) ApiGetSummaryRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetSummaryRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetSummaryRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetSummaryRequest) CollectionId(collectionId string) ApiGetSummaryRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -807,7 +807,7 @@ type ApiGetTimeseriesRequest struct {
 	to *time.Time
 	competitors *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -863,8 +863,8 @@ func (r ApiGetTimeseriesRequest) Model(model string) ApiGetTimeseriesRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetTimeseriesRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetTimeseriesRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetTimeseriesRequest) CollectionId(collectionId string) ApiGetTimeseriesRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -1097,7 +1097,7 @@ type ApiGetTopSourcesRequest struct {
 	from *time.Time
 	to *time.Time
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -1139,8 +1139,8 @@ func (r ApiGetTopSourcesRequest) Model(model string) ApiGetTopSourcesRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiGetTopSourcesRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiGetTopSourcesRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetTopSourcesRequest) CollectionId(collectionId string) ApiGetTopSourcesRequest {
 	r.collectionId = &collectionId
 	return r
 }

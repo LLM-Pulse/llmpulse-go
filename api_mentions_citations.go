@@ -32,7 +32,7 @@ type ApiListAllCitationsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	from *time.Time
 	to *time.Time
@@ -67,8 +67,8 @@ func (r ApiListAllCitationsRequest) Model(model string) ApiListAllCitationsReque
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListAllCitationsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListAllCitationsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListAllCitationsRequest) CollectionId(collectionId string) ApiListAllCitationsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -226,7 +226,7 @@ type ApiListAllMentionsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	from *time.Time
 	to *time.Time
@@ -261,8 +261,8 @@ func (r ApiListAllMentionsRequest) Model(model string) ApiListAllMentionsRequest
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListAllMentionsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListAllMentionsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListAllMentionsRequest) CollectionId(collectionId string) ApiListAllMentionsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -419,7 +419,7 @@ type ApiListCitationsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -450,8 +450,8 @@ func (r ApiListCitationsRequest) Model(model string) ApiListCitationsRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListCitationsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListCitationsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListCitationsRequest) CollectionId(collectionId string) ApiListCitationsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -624,7 +624,7 @@ type ApiListCompetitorCitationsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	from *time.Time
 	to *time.Time
@@ -659,8 +659,8 @@ func (r ApiListCompetitorCitationsRequest) Model(model string) ApiListCompetitor
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListCompetitorCitationsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListCompetitorCitationsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListCompetitorCitationsRequest) CollectionId(collectionId string) ApiListCompetitorCitationsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -818,7 +818,7 @@ type ApiListCompetitorMentionsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	prompt *int32
 	from *time.Time
 	to *time.Time
@@ -853,8 +853,8 @@ func (r ApiListCompetitorMentionsRequest) Model(model string) ApiListCompetitorM
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListCompetitorMentionsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListCompetitorMentionsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListCompetitorMentionsRequest) CollectionId(collectionId string) ApiListCompetitorMentionsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -1009,7 +1009,7 @@ type ApiListMentionsRequest struct {
 	page *int32
 	perPage *int32
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -1040,8 +1040,8 @@ func (r ApiListMentionsRequest) Model(model string) ApiListMentionsRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListMentionsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListMentionsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListMentionsRequest) CollectionId(collectionId string) ApiListMentionsRequest {
 	r.collectionId = &collectionId
 	return r
 }

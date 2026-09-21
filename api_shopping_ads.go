@@ -36,7 +36,7 @@ type ApiListAdsRequest struct {
 	direction *string
 	query *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -100,8 +100,8 @@ func (r ApiListAdsRequest) Model(model string) ApiListAdsRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListAdsRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListAdsRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListAdsRequest) CollectionId(collectionId string) ApiListAdsRequest {
 	r.collectionId = &collectionId
 	return r
 }
@@ -334,7 +334,7 @@ type ApiListShoppingRequest struct {
 	direction *string
 	query *string
 	model *string
-	collectionId *GetTimeseriesCollectionIdParameter
+	collectionId *string
 	countryCode *string
 	languageCode *string
 	prompt *int32
@@ -397,8 +397,8 @@ func (r ApiListShoppingRequest) Model(model string) ApiListShoppingRequest {
 	return r
 }
 
-// One collection/tag ID or a comma-separated list of IDs
-func (r ApiListShoppingRequest) CollectionId(collectionId GetTimeseriesCollectionIdParameter) ApiListShoppingRequest {
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListShoppingRequest) CollectionId(collectionId string) ApiListShoppingRequest {
 	r.collectionId = &collectionId
 	return r
 }

@@ -37,7 +37,7 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
@@ -120,7 +120,7 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
@@ -207,7 +207,7 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
@@ -241,7 +241,7 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 

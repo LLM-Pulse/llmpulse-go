@@ -40,7 +40,7 @@ func main() {
 	direction := "direction_example" // string | Sort direction for view=advertisers. Defaults to desc, except avg_position and domain which default to asc. (optional)
 	query := "query_example" // string | Case-insensitive substring filter on the ad title, domain or snippet (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
  **direction** | **string** | Sort direction for view&#x3D;advertisers. Defaults to desc, except avg_position and domain which default to asc. | 
  **query** | **string** | Case-insensitive substring filter on the ad title, domain or snippet | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
@@ -141,7 +141,7 @@ func main() {
 	direction := "direction_example" // string |  (optional) (default to "desc")
 	query := "query_example" // string | Case-insensitive substring filter on the product title (optional)
 	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
-	collectionId := openapiclient.getTimeseries_collection_id_parameter{Int32: new(int32)} // GetTimeseriesCollectionIdParameter | One collection/tag ID or a comma-separated list of IDs (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
  **direction** | **string** |  | [default to &quot;desc&quot;]
  **query** | **string** | Case-insensitive substring filter on the product title | 
  **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
- **collectionId** | [**GetTimeseriesCollectionIdParameter**](GetTimeseriesCollectionIdParameter.md) | One collection/tag ID or a comma-separated list of IDs | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 

@@ -61,7 +61,6 @@ docs/GetAccount200Response.md
 docs/GetAccount200ResponseLimits.md
 docs/GetAccount200ResponseRateLimits.md
 docs/GetAccount200ResponseSubscription.md
-docs/GetTimeseriesCollectionIdParameter.md
 docs/HealthAPI.md
 docs/IntelligenceTask.md
 docs/IntelligenceTaskCreateRequest.md
@@ -152,7 +151,6 @@ model_get_account_200_response.go
 model_get_account_200_response_limits.go
 model_get_account_200_response_rate_limits.go
 model_get_account_200_response_subscription.go
-model_get_timeseries_collection_id_parameter.go
 model_intelligence_task.go
 model_intelligence_task_create_request.go
 model_intelligence_task_update_request.go
