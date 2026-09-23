@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **ProjectId** | **int32** |  | 
 **Url** | **string** |  | 
 **CountryCode** | Pointer to **string** | Defaults to the project country | [optional] 
+**OutputLanguageCode** | Pointer to **string** | ISO 639-1 code of the language the llms.txt files are written in (for example es). Defaults to the project language, else en. Only the llms.txt report of the bundle uses it; an unsupported code returns 422 ERR_INVALID_PARAM | [optional] 
 
 ## Methods
 
@@ -91,6 +92,31 @@ SetCountryCode sets CountryCode field to given value.
 `func (o *CreateTechnicalGeoReportsRequest) HasCountryCode() bool`
 
 HasCountryCode returns a boolean if a field has been set.
+
+### GetOutputLanguageCode
+
+`func (o *CreateTechnicalGeoReportsRequest) GetOutputLanguageCode() string`
+
+GetOutputLanguageCode returns the OutputLanguageCode field if non-nil, zero value otherwise.
+
+### GetOutputLanguageCodeOk
+
+`func (o *CreateTechnicalGeoReportsRequest) GetOutputLanguageCodeOk() (*string, bool)`
+
+GetOutputLanguageCodeOk returns a tuple with the OutputLanguageCode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOutputLanguageCode
+
+`func (o *CreateTechnicalGeoReportsRequest) SetOutputLanguageCode(v string)`
+
+SetOutputLanguageCode sets OutputLanguageCode field to given value.
+
+### HasOutputLanguageCode
+
+`func (o *CreateTechnicalGeoReportsRequest) HasOutputLanguageCode() bool`
+
+HasOutputLanguageCode returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.46.0
+API version: 1.47.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,6 +26,8 @@ type CreateTechnicalGeoReportsRequest struct {
 	Url string `json:"url"`
 	// Defaults to the project country
 	CountryCode *string `json:"country_code,omitempty"`
+	// ISO 639-1 code of the language the llms.txt files are written in (for example es). Defaults to the project language, else en. Only the llms.txt report of the bundle uses it; an unsupported code returns 422 ERR_INVALID_PARAM
+	OutputLanguageCode *string `json:"output_language_code,omitempty"`
 }
 
 type _CreateTechnicalGeoReportsRequest CreateTechnicalGeoReportsRequest
@@ -129,6 +131,38 @@ func (o *CreateTechnicalGeoReportsRequest) SetCountryCode(v string) {
 	o.CountryCode = &v
 }
 
+// GetOutputLanguageCode returns the OutputLanguageCode field value if set, zero value otherwise.
+func (o *CreateTechnicalGeoReportsRequest) GetOutputLanguageCode() string {
+	if o == nil || IsNil(o.OutputLanguageCode) {
+		var ret string
+		return ret
+	}
+	return *o.OutputLanguageCode
+}
+
+// GetOutputLanguageCodeOk returns a tuple with the OutputLanguageCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateTechnicalGeoReportsRequest) GetOutputLanguageCodeOk() (*string, bool) {
+	if o == nil || IsNil(o.OutputLanguageCode) {
+		return nil, false
+	}
+	return o.OutputLanguageCode, true
+}
+
+// HasOutputLanguageCode returns a boolean if a field has been set.
+func (o *CreateTechnicalGeoReportsRequest) HasOutputLanguageCode() bool {
+	if o != nil && !IsNil(o.OutputLanguageCode) {
+		return true
+	}
+
+	return false
+}
+
+// SetOutputLanguageCode gets a reference to the given string and assigns it to the OutputLanguageCode field.
+func (o *CreateTechnicalGeoReportsRequest) SetOutputLanguageCode(v string) {
+	o.OutputLanguageCode = &v
+}
+
 func (o CreateTechnicalGeoReportsRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -143,6 +177,9 @@ func (o CreateTechnicalGeoReportsRequest) ToMap() (map[string]interface{}, error
 	toSerialize["url"] = o.Url
 	if !IsNil(o.CountryCode) {
 		toSerialize["country_code"] = o.CountryCode
+	}
+	if !IsNil(o.OutputLanguageCode) {
+		toSerialize["output_language_code"] = o.OutputLanguageCode
 	}
 	return toSerialize, nil
 }
