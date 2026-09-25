@@ -24,6 +24,7 @@ Name | Type | Description | Notes
 **BrandEntities** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **LocalBusinesses** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Locale** | Pointer to [**AnswerDetailsLocale**](AnswerDetailsLocale.md) |  | [optional] 
+**AppUrl** | Pointer to **string** | Opens this answer in the app. The link names its project, so it opens there for any user with access to that project | [optional] 
 
 ## Methods
 
@@ -543,6 +544,31 @@ SetLocale sets Locale field to given value.
 `func (o *AnswerDetails) HasLocale() bool`
 
 HasLocale returns a boolean if a field has been set.
+
+### GetAppUrl
+
+`func (o *AnswerDetails) GetAppUrl() string`
+
+GetAppUrl returns the AppUrl field if non-nil, zero value otherwise.
+
+### GetAppUrlOk
+
+`func (o *AnswerDetails) GetAppUrlOk() (*string, bool)`
+
+GetAppUrlOk returns a tuple with the AppUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAppUrl
+
+`func (o *AnswerDetails) SetAppUrl(v string)`
+
+SetAppUrl sets AppUrl field to given value.
+
+### HasAppUrl
+
+`func (o *AnswerDetails) HasAppUrl() bool`
+
+HasAppUrl returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

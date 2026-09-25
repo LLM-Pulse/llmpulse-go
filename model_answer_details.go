@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.47.0
+API version: 1.48.0
 Contact: info@llmpulse.ai
 */
 
@@ -41,6 +41,8 @@ type AnswerDetails struct {
 	BrandEntities []map[string]interface{} `json:"brand_entities,omitempty"`
 	LocalBusinesses []map[string]interface{} `json:"local_businesses,omitempty"`
 	Locale *AnswerDetailsLocale `json:"locale,omitempty"`
+	// Opens this answer in the app. The link names its project, so it opens there for any user with access to that project
+	AppUrl *string `json:"app_url,omitempty"`
 }
 
 // NewAnswerDetails instantiates a new AnswerDetails object
@@ -700,6 +702,38 @@ func (o *AnswerDetails) SetLocale(v AnswerDetailsLocale) {
 	o.Locale = &v
 }
 
+// GetAppUrl returns the AppUrl field value if set, zero value otherwise.
+func (o *AnswerDetails) GetAppUrl() string {
+	if o == nil || IsNil(o.AppUrl) {
+		var ret string
+		return ret
+	}
+	return *o.AppUrl
+}
+
+// GetAppUrlOk returns a tuple with the AppUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AnswerDetails) GetAppUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.AppUrl) {
+		return nil, false
+	}
+	return o.AppUrl, true
+}
+
+// HasAppUrl returns a boolean if a field has been set.
+func (o *AnswerDetails) HasAppUrl() bool {
+	if o != nil && !IsNil(o.AppUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetAppUrl gets a reference to the given string and assigns it to the AppUrl field.
+func (o *AnswerDetails) SetAppUrl(v string) {
+	o.AppUrl = &v
+}
+
 func (o AnswerDetails) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -769,6 +803,9 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Locale) {
 		toSerialize["locale"] = o.Locale
+	}
+	if !IsNil(o.AppUrl) {
+		toSerialize["app_url"] = o.AppUrl
 	}
 	return toSerialize, nil
 }

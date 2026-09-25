@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.47.0
+API version: 1.48.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,6 +32,8 @@ type PromptSummaryRow struct {
 	CitationRate *float32 `json:"citation_rate,omitempty"`
 	AvgMentionPosition NullableFloat32 `json:"avg_mention_position,omitempty"`
 	AvgPosition NullableFloat32 `json:"avg_position,omitempty"`
+	// Opens this prompt in the app. The link names its project, so it opens there for any user with access to that project
+	AppUrl *string `json:"app_url,omitempty"`
 }
 
 // NewPromptSummaryRow instantiates a new PromptSummaryRow object
@@ -423,6 +425,38 @@ func (o *PromptSummaryRow) UnsetAvgPosition() {
 	o.AvgPosition.Unset()
 }
 
+// GetAppUrl returns the AppUrl field value if set, zero value otherwise.
+func (o *PromptSummaryRow) GetAppUrl() string {
+	if o == nil || IsNil(o.AppUrl) {
+		var ret string
+		return ret
+	}
+	return *o.AppUrl
+}
+
+// GetAppUrlOk returns a tuple with the AppUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromptSummaryRow) GetAppUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.AppUrl) {
+		return nil, false
+	}
+	return o.AppUrl, true
+}
+
+// HasAppUrl returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasAppUrl() bool {
+	if o != nil && !IsNil(o.AppUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetAppUrl gets a reference to the given string and assigns it to the AppUrl field.
+func (o *PromptSummaryRow) SetAppUrl(v string) {
+	o.AppUrl = &v
+}
+
 func (o PromptSummaryRow) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -465,6 +499,9 @@ func (o PromptSummaryRow) ToMap() (map[string]interface{}, error) {
 	}
 	if o.AvgPosition.IsSet() {
 		toSerialize["avg_position"] = o.AvgPosition.Get()
+	}
+	if !IsNil(o.AppUrl) {
+		toSerialize["app_url"] = o.AppUrl
 	}
 	return toSerialize, nil
 }
