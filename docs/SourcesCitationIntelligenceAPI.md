@@ -274,7 +274,7 @@ func main() {
 	query := "query_example" // string |  (optional)
 	sourceType := "sourceType_example" // string |  (optional)
 	sentiment := "sentiment_example" // string |  (optional)
-	contentGap := "contentGap_example" // string |  (optional)
+	contentGap := "contentGap_example" // string | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -313,7 +313,7 @@ Name | Type | Description  | Notes
  **query** | **string** |  | 
  **sourceType** | **string** |  | 
  **sentiment** | **string** |  | 
- **contentGap** | **string** |  | 
+ **contentGap** | **string** | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. | 
 
 ### Return type
 
