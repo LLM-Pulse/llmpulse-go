@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 **Project** | Pointer to **map[string]interface{}** | Same shape as GET /dimensions/projects/{id} | [optional] 
 **Prompts** | Pointer to [**ProjectCreateResponsePrompts**](ProjectCreateResponsePrompts.md) |  | [optional] 
 **Competitors** | Pointer to [**ProjectCreateResponseCompetitors**](ProjectCreateResponseCompetitors.md) |  | [optional] 
+**Collections** | Pointer to [**[]ProjectCreateResponseCollectionsInner**](ProjectCreateResponseCollectionsInner.md) | Collections created from the request&#39;s collections field (empty when none were sent; absent on an idempotent replay) | [optional] 
+**SameDomainProjects** | Pointer to [**[]ProjectCreateResponseSameDomainProjectsInner**](ProjectCreateResponseSameDomainProjectsInner.md) | Projects the caller can already see on the same domain (absent on an idempotent replay). Informational only: the create is never blocked, since one domain tracked per market is a normal setup. | [optional] 
 **EmailSubscription** | Pointer to [**ProjectCreateResponseEmailSubscription**](ProjectCreateResponseEmailSubscription.md) |  | [optional] 
 **Limits** | Pointer to [**ProjectCreateResponseLimits**](ProjectCreateResponseLimits.md) |  | [optional] 
 **Idempotent** | Pointer to **bool** | Present and true only on external_identifier replays | [optional] 
@@ -105,6 +107,56 @@ SetCompetitors sets Competitors field to given value.
 `func (o *ProjectCreateResponse) HasCompetitors() bool`
 
 HasCompetitors returns a boolean if a field has been set.
+
+### GetCollections
+
+`func (o *ProjectCreateResponse) GetCollections() []ProjectCreateResponseCollectionsInner`
+
+GetCollections returns the Collections field if non-nil, zero value otherwise.
+
+### GetCollectionsOk
+
+`func (o *ProjectCreateResponse) GetCollectionsOk() (*[]ProjectCreateResponseCollectionsInner, bool)`
+
+GetCollectionsOk returns a tuple with the Collections field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCollections
+
+`func (o *ProjectCreateResponse) SetCollections(v []ProjectCreateResponseCollectionsInner)`
+
+SetCollections sets Collections field to given value.
+
+### HasCollections
+
+`func (o *ProjectCreateResponse) HasCollections() bool`
+
+HasCollections returns a boolean if a field has been set.
+
+### GetSameDomainProjects
+
+`func (o *ProjectCreateResponse) GetSameDomainProjects() []ProjectCreateResponseSameDomainProjectsInner`
+
+GetSameDomainProjects returns the SameDomainProjects field if non-nil, zero value otherwise.
+
+### GetSameDomainProjectsOk
+
+`func (o *ProjectCreateResponse) GetSameDomainProjectsOk() (*[]ProjectCreateResponseSameDomainProjectsInner, bool)`
+
+GetSameDomainProjectsOk returns a tuple with the SameDomainProjects field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSameDomainProjects
+
+`func (o *ProjectCreateResponse) SetSameDomainProjects(v []ProjectCreateResponseSameDomainProjectsInner)`
+
+SetSameDomainProjects sets SameDomainProjects field to given value.
+
+### HasSameDomainProjects
+
+`func (o *ProjectCreateResponse) HasSameDomainProjects() bool`
+
+HasSameDomainProjects returns a boolean if a field has been set.
 
 ### GetEmailSubscription
 

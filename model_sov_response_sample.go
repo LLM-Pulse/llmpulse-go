@@ -15,39 +15,37 @@ import (
 	"encoding/json"
 )
 
-// checks if the SovResponsePeriodsInner type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &SovResponsePeriodsInner{}
+// checks if the SovResponseSample type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SovResponseSample{}
 
-// SovResponsePeriodsInner struct for SovResponsePeriodsInner
-type SovResponsePeriodsInner struct {
+// SovResponseSample The period the current shares were computed on (the last one with mentions), same shape as a periods item; null when the window has no mentions.
+type SovResponseSample struct {
 	Date *string `json:"date,omitempty"`
 	Mentions *int32 `json:"mentions,omitempty"`
 	Partial *bool `json:"partial,omitempty"`
-	// How far the shares of this period can be trusted, from its mentions: none (0), low (under 30), medium (under 100) or high (100 or more).
 	Confidence *string `json:"confidence,omitempty"`
-	// Worst-case 95% margin of a share in percentage points, 98 / sqrt(mentions); mentions within one answer are not independent, so the real margin is at least this wide. null with no mentions.
 	MarginOfError NullableFloat32 `json:"margin_of_error,omitempty"`
 }
 
-// NewSovResponsePeriodsInner instantiates a new SovResponsePeriodsInner object
+// NewSovResponseSample instantiates a new SovResponseSample object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSovResponsePeriodsInner() *SovResponsePeriodsInner {
-	this := SovResponsePeriodsInner{}
+func NewSovResponseSample() *SovResponseSample {
+	this := SovResponseSample{}
 	return &this
 }
 
-// NewSovResponsePeriodsInnerWithDefaults instantiates a new SovResponsePeriodsInner object
+// NewSovResponseSampleWithDefaults instantiates a new SovResponseSample object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewSovResponsePeriodsInnerWithDefaults() *SovResponsePeriodsInner {
-	this := SovResponsePeriodsInner{}
+func NewSovResponseSampleWithDefaults() *SovResponseSample {
+	this := SovResponseSample{}
 	return &this
 }
 
 // GetDate returns the Date field value if set, zero value otherwise.
-func (o *SovResponsePeriodsInner) GetDate() string {
+func (o *SovResponseSample) GetDate() string {
 	if o == nil || IsNil(o.Date) {
 		var ret string
 		return ret
@@ -57,7 +55,7 @@ func (o *SovResponsePeriodsInner) GetDate() string {
 
 // GetDateOk returns a tuple with the Date field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SovResponsePeriodsInner) GetDateOk() (*string, bool) {
+func (o *SovResponseSample) GetDateOk() (*string, bool) {
 	if o == nil || IsNil(o.Date) {
 		return nil, false
 	}
@@ -65,7 +63,7 @@ func (o *SovResponsePeriodsInner) GetDateOk() (*string, bool) {
 }
 
 // HasDate returns a boolean if a field has been set.
-func (o *SovResponsePeriodsInner) HasDate() bool {
+func (o *SovResponseSample) HasDate() bool {
 	if o != nil && !IsNil(o.Date) {
 		return true
 	}
@@ -74,12 +72,12 @@ func (o *SovResponsePeriodsInner) HasDate() bool {
 }
 
 // SetDate gets a reference to the given string and assigns it to the Date field.
-func (o *SovResponsePeriodsInner) SetDate(v string) {
+func (o *SovResponseSample) SetDate(v string) {
 	o.Date = &v
 }
 
 // GetMentions returns the Mentions field value if set, zero value otherwise.
-func (o *SovResponsePeriodsInner) GetMentions() int32 {
+func (o *SovResponseSample) GetMentions() int32 {
 	if o == nil || IsNil(o.Mentions) {
 		var ret int32
 		return ret
@@ -89,7 +87,7 @@ func (o *SovResponsePeriodsInner) GetMentions() int32 {
 
 // GetMentionsOk returns a tuple with the Mentions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SovResponsePeriodsInner) GetMentionsOk() (*int32, bool) {
+func (o *SovResponseSample) GetMentionsOk() (*int32, bool) {
 	if o == nil || IsNil(o.Mentions) {
 		return nil, false
 	}
@@ -97,7 +95,7 @@ func (o *SovResponsePeriodsInner) GetMentionsOk() (*int32, bool) {
 }
 
 // HasMentions returns a boolean if a field has been set.
-func (o *SovResponsePeriodsInner) HasMentions() bool {
+func (o *SovResponseSample) HasMentions() bool {
 	if o != nil && !IsNil(o.Mentions) {
 		return true
 	}
@@ -106,12 +104,12 @@ func (o *SovResponsePeriodsInner) HasMentions() bool {
 }
 
 // SetMentions gets a reference to the given int32 and assigns it to the Mentions field.
-func (o *SovResponsePeriodsInner) SetMentions(v int32) {
+func (o *SovResponseSample) SetMentions(v int32) {
 	o.Mentions = &v
 }
 
 // GetPartial returns the Partial field value if set, zero value otherwise.
-func (o *SovResponsePeriodsInner) GetPartial() bool {
+func (o *SovResponseSample) GetPartial() bool {
 	if o == nil || IsNil(o.Partial) {
 		var ret bool
 		return ret
@@ -121,7 +119,7 @@ func (o *SovResponsePeriodsInner) GetPartial() bool {
 
 // GetPartialOk returns a tuple with the Partial field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SovResponsePeriodsInner) GetPartialOk() (*bool, bool) {
+func (o *SovResponseSample) GetPartialOk() (*bool, bool) {
 	if o == nil || IsNil(o.Partial) {
 		return nil, false
 	}
@@ -129,7 +127,7 @@ func (o *SovResponsePeriodsInner) GetPartialOk() (*bool, bool) {
 }
 
 // HasPartial returns a boolean if a field has been set.
-func (o *SovResponsePeriodsInner) HasPartial() bool {
+func (o *SovResponseSample) HasPartial() bool {
 	if o != nil && !IsNil(o.Partial) {
 		return true
 	}
@@ -138,12 +136,12 @@ func (o *SovResponsePeriodsInner) HasPartial() bool {
 }
 
 // SetPartial gets a reference to the given bool and assigns it to the Partial field.
-func (o *SovResponsePeriodsInner) SetPartial(v bool) {
+func (o *SovResponseSample) SetPartial(v bool) {
 	o.Partial = &v
 }
 
 // GetConfidence returns the Confidence field value if set, zero value otherwise.
-func (o *SovResponsePeriodsInner) GetConfidence() string {
+func (o *SovResponseSample) GetConfidence() string {
 	if o == nil || IsNil(o.Confidence) {
 		var ret string
 		return ret
@@ -153,7 +151,7 @@ func (o *SovResponsePeriodsInner) GetConfidence() string {
 
 // GetConfidenceOk returns a tuple with the Confidence field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SovResponsePeriodsInner) GetConfidenceOk() (*string, bool) {
+func (o *SovResponseSample) GetConfidenceOk() (*string, bool) {
 	if o == nil || IsNil(o.Confidence) {
 		return nil, false
 	}
@@ -161,7 +159,7 @@ func (o *SovResponsePeriodsInner) GetConfidenceOk() (*string, bool) {
 }
 
 // HasConfidence returns a boolean if a field has been set.
-func (o *SovResponsePeriodsInner) HasConfidence() bool {
+func (o *SovResponseSample) HasConfidence() bool {
 	if o != nil && !IsNil(o.Confidence) {
 		return true
 	}
@@ -170,12 +168,12 @@ func (o *SovResponsePeriodsInner) HasConfidence() bool {
 }
 
 // SetConfidence gets a reference to the given string and assigns it to the Confidence field.
-func (o *SovResponsePeriodsInner) SetConfidence(v string) {
+func (o *SovResponseSample) SetConfidence(v string) {
 	o.Confidence = &v
 }
 
 // GetMarginOfError returns the MarginOfError field value if set, zero value otherwise (both if not set or set to explicit null).
-func (o *SovResponsePeriodsInner) GetMarginOfError() float32 {
+func (o *SovResponseSample) GetMarginOfError() float32 {
 	if o == nil || IsNil(o.MarginOfError.Get()) {
 		var ret float32
 		return ret
@@ -186,7 +184,7 @@ func (o *SovResponsePeriodsInner) GetMarginOfError() float32 {
 // GetMarginOfErrorOk returns a tuple with the MarginOfError field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *SovResponsePeriodsInner) GetMarginOfErrorOk() (*float32, bool) {
+func (o *SovResponseSample) GetMarginOfErrorOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -194,7 +192,7 @@ func (o *SovResponsePeriodsInner) GetMarginOfErrorOk() (*float32, bool) {
 }
 
 // HasMarginOfError returns a boolean if a field has been set.
-func (o *SovResponsePeriodsInner) HasMarginOfError() bool {
+func (o *SovResponseSample) HasMarginOfError() bool {
 	if o != nil && o.MarginOfError.IsSet() {
 		return true
 	}
@@ -203,20 +201,20 @@ func (o *SovResponsePeriodsInner) HasMarginOfError() bool {
 }
 
 // SetMarginOfError gets a reference to the given NullableFloat32 and assigns it to the MarginOfError field.
-func (o *SovResponsePeriodsInner) SetMarginOfError(v float32) {
+func (o *SovResponseSample) SetMarginOfError(v float32) {
 	o.MarginOfError.Set(&v)
 }
 // SetMarginOfErrorNil sets the value for MarginOfError to be an explicit nil
-func (o *SovResponsePeriodsInner) SetMarginOfErrorNil() {
+func (o *SovResponseSample) SetMarginOfErrorNil() {
 	o.MarginOfError.Set(nil)
 }
 
 // UnsetMarginOfError ensures that no value is present for MarginOfError, not even an explicit nil
-func (o *SovResponsePeriodsInner) UnsetMarginOfError() {
+func (o *SovResponseSample) UnsetMarginOfError() {
 	o.MarginOfError.Unset()
 }
 
-func (o SovResponsePeriodsInner) MarshalJSON() ([]byte, error) {
+func (o SovResponseSample) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -224,7 +222,7 @@ func (o SovResponsePeriodsInner) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o SovResponsePeriodsInner) ToMap() (map[string]interface{}, error) {
+func (o SovResponseSample) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.Date) {
 		toSerialize["date"] = o.Date
@@ -244,38 +242,38 @@ func (o SovResponsePeriodsInner) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-type NullableSovResponsePeriodsInner struct {
-	value *SovResponsePeriodsInner
+type NullableSovResponseSample struct {
+	value *SovResponseSample
 	isSet bool
 }
 
-func (v NullableSovResponsePeriodsInner) Get() *SovResponsePeriodsInner {
+func (v NullableSovResponseSample) Get() *SovResponseSample {
 	return v.value
 }
 
-func (v *NullableSovResponsePeriodsInner) Set(val *SovResponsePeriodsInner) {
+func (v *NullableSovResponseSample) Set(val *SovResponseSample) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableSovResponsePeriodsInner) IsSet() bool {
+func (v NullableSovResponseSample) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableSovResponsePeriodsInner) Unset() {
+func (v *NullableSovResponseSample) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableSovResponsePeriodsInner(val *SovResponsePeriodsInner) *NullableSovResponsePeriodsInner {
-	return &NullableSovResponsePeriodsInner{value: val, isSet: true}
+func NewNullableSovResponseSample(val *SovResponseSample) *NullableSovResponseSample {
+	return &NullableSovResponseSample{value: val, isSet: true}
 }
 
-func (v NullableSovResponsePeriodsInner) MarshalJSON() ([]byte, error) {
+func (v NullableSovResponseSample) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableSovResponsePeriodsInner) UnmarshalJSON(src []byte) error {
+func (v *NullableSovResponseSample) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

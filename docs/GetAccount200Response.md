@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Plan** | Pointer to **string** | Plan key (starter, growth, scale, ...) | [optional] 
+**PlanName** | Pointer to **string** | Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key) | [optional] 
 **TrackingFrequency** | Pointer to **string** | How often prompts run (weekly, daily, monthly, ...) | [optional] 
 **Role** | Pointer to **string** | Whether the key belongs to the account owner or a team member | [optional] 
 **Subscription** | Pointer to [**GetAccount200ResponseSubscription**](GetAccount200ResponseSubscription.md) |  | [optional] 
@@ -55,6 +56,31 @@ SetPlan sets Plan field to given value.
 `func (o *GetAccount200Response) HasPlan() bool`
 
 HasPlan returns a boolean if a field has been set.
+
+### GetPlanName
+
+`func (o *GetAccount200Response) GetPlanName() string`
+
+GetPlanName returns the PlanName field if non-nil, zero value otherwise.
+
+### GetPlanNameOk
+
+`func (o *GetAccount200Response) GetPlanNameOk() (*string, bool)`
+
+GetPlanNameOk returns a tuple with the PlanName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPlanName
+
+`func (o *GetAccount200Response) SetPlanName(v string)`
+
+SetPlanName sets PlanName field to given value.
+
+### HasPlanName
+
+`func (o *GetAccount200Response) HasPlanName() bool`
+
+HasPlanName returns a boolean if a field has been set.
 
 ### GetTrackingFrequency
 

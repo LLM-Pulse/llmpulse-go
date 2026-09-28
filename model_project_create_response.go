@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,10 @@ type ProjectCreateResponse struct {
 	Project map[string]interface{} `json:"project,omitempty"`
 	Prompts *ProjectCreateResponsePrompts `json:"prompts,omitempty"`
 	Competitors *ProjectCreateResponseCompetitors `json:"competitors,omitempty"`
+	// Collections created from the request's collections field (empty when none were sent; absent on an idempotent replay)
+	Collections []ProjectCreateResponseCollectionsInner `json:"collections,omitempty"`
+	// Projects the caller can already see on the same domain (absent on an idempotent replay). Informational only: the create is never blocked, since one domain tracked per market is a normal setup.
+	SameDomainProjects []ProjectCreateResponseSameDomainProjectsInner `json:"same_domain_projects,omitempty"`
 	EmailSubscription *ProjectCreateResponseEmailSubscription `json:"email_subscription,omitempty"`
 	Limits *ProjectCreateResponseLimits `json:"limits,omitempty"`
 	// Present and true only on external_identifier replays
@@ -142,6 +146,70 @@ func (o *ProjectCreateResponse) HasCompetitors() bool {
 // SetCompetitors gets a reference to the given ProjectCreateResponseCompetitors and assigns it to the Competitors field.
 func (o *ProjectCreateResponse) SetCompetitors(v ProjectCreateResponseCompetitors) {
 	o.Competitors = &v
+}
+
+// GetCollections returns the Collections field value if set, zero value otherwise.
+func (o *ProjectCreateResponse) GetCollections() []ProjectCreateResponseCollectionsInner {
+	if o == nil || IsNil(o.Collections) {
+		var ret []ProjectCreateResponseCollectionsInner
+		return ret
+	}
+	return o.Collections
+}
+
+// GetCollectionsOk returns a tuple with the Collections field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateResponse) GetCollectionsOk() ([]ProjectCreateResponseCollectionsInner, bool) {
+	if o == nil || IsNil(o.Collections) {
+		return nil, false
+	}
+	return o.Collections, true
+}
+
+// HasCollections returns a boolean if a field has been set.
+func (o *ProjectCreateResponse) HasCollections() bool {
+	if o != nil && !IsNil(o.Collections) {
+		return true
+	}
+
+	return false
+}
+
+// SetCollections gets a reference to the given []ProjectCreateResponseCollectionsInner and assigns it to the Collections field.
+func (o *ProjectCreateResponse) SetCollections(v []ProjectCreateResponseCollectionsInner) {
+	o.Collections = v
+}
+
+// GetSameDomainProjects returns the SameDomainProjects field value if set, zero value otherwise.
+func (o *ProjectCreateResponse) GetSameDomainProjects() []ProjectCreateResponseSameDomainProjectsInner {
+	if o == nil || IsNil(o.SameDomainProjects) {
+		var ret []ProjectCreateResponseSameDomainProjectsInner
+		return ret
+	}
+	return o.SameDomainProjects
+}
+
+// GetSameDomainProjectsOk returns a tuple with the SameDomainProjects field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateResponse) GetSameDomainProjectsOk() ([]ProjectCreateResponseSameDomainProjectsInner, bool) {
+	if o == nil || IsNil(o.SameDomainProjects) {
+		return nil, false
+	}
+	return o.SameDomainProjects, true
+}
+
+// HasSameDomainProjects returns a boolean if a field has been set.
+func (o *ProjectCreateResponse) HasSameDomainProjects() bool {
+	if o != nil && !IsNil(o.SameDomainProjects) {
+		return true
+	}
+
+	return false
+}
+
+// SetSameDomainProjects gets a reference to the given []ProjectCreateResponseSameDomainProjectsInner and assigns it to the SameDomainProjects field.
+func (o *ProjectCreateResponse) SetSameDomainProjects(v []ProjectCreateResponseSameDomainProjectsInner) {
+	o.SameDomainProjects = v
 }
 
 // GetEmailSubscription returns the EmailSubscription field value if set, zero value otherwise.
@@ -290,6 +358,12 @@ func (o ProjectCreateResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Competitors) {
 		toSerialize["competitors"] = o.Competitors
+	}
+	if !IsNil(o.Collections) {
+		toSerialize["collections"] = o.Collections
+	}
+	if !IsNil(o.SameDomainProjects) {
+		toSerialize["same_domain_projects"] = o.SameDomainProjects
 	}
 	if !IsNil(o.EmailSubscription) {
 		toSerialize["email_subscription"] = o.EmailSubscription

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Url** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
-**Industry** | Pointer to **string** |  | [optional] 
+**Industry** | Pointer to **interface{}** | Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape | [optional] 
 **BusinessModel** | Pointer to **string** |  | [optional] 
 **BusinessModelOther** | Pointer to **NullableString** | Set only when business_model is OTHER | [optional] 
 **PrimaryProducts** | Pointer to **[]string** |  | [optional] 
@@ -196,20 +196,20 @@ HasMatchingNames returns a boolean if a field has been set.
 
 ### GetIndustry
 
-`func (o *ProjectDetails) GetIndustry() string`
+`func (o *ProjectDetails) GetIndustry() interface{}`
 
 GetIndustry returns the Industry field if non-nil, zero value otherwise.
 
 ### GetIndustryOk
 
-`func (o *ProjectDetails) GetIndustryOk() (*string, bool)`
+`func (o *ProjectDetails) GetIndustryOk() (*interface{}, bool)`
 
 GetIndustryOk returns a tuple with the Industry field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetIndustry
 
-`func (o *ProjectDetails) SetIndustry(v string)`
+`func (o *ProjectDetails) SetIndustry(v interface{})`
 
 SetIndustry sets Industry field to given value.
 
@@ -219,6 +219,16 @@ SetIndustry sets Industry field to given value.
 
 HasIndustry returns a boolean if a field has been set.
 
+### SetIndustryNil
+
+`func (o *ProjectDetails) SetIndustryNil(b bool)`
+
+ SetIndustryNil sets the value for Industry to be an explicit nil
+
+### UnsetIndustry
+`func (o *ProjectDetails) UnsetIndustry()`
+
+UnsetIndustry ensures that no value is present for Industry, not even an explicit nil
 ### GetBusinessModel
 
 `func (o *ProjectDetails) GetBusinessModel() string`

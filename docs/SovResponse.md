@@ -5,7 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProjectId** | Pointer to **int32** |  | [optional] 
-**Periods** | Pointer to [**[]SovResponsePeriodsInner**](SovResponsePeriodsInner.md) | Per-bucket sample size and completeness: mentions is the total the shares were computed on (1-3 mentions produce the 100/50/33.33 low-sample patterns); partial marks buckets still collecting data or clipped by the requested window. | [optional] 
+**Periods** | Pointer to [**[]SovResponsePeriodsInner**](SovResponsePeriodsInner.md) | Per-bucket sample size and completeness: mentions is the total the shares were computed on (1-3 mentions produce the 100/50/33.33 low-sample patterns); partial marks buckets still collecting data or clipped by the requested window; confidence and margin_of_error read the sample size. | [optional] 
+**Sample** | Pointer to [**NullableSovResponseSample**](SovResponseSample.md) |  | [optional] 
 **OverTime** | Pointer to [**[]SovResponseOverTimeInner**](SovResponseOverTimeInner.md) |  | [optional] 
 **Current** | Pointer to [**[]SovResponseCurrentInner**](SovResponseCurrentInner.md) |  | [optional] 
 **Breakdown** | Pointer to [**[]SovResponseBreakdownInner**](SovResponseBreakdownInner.md) |  | [optional] 
@@ -80,6 +81,41 @@ SetPeriods sets Periods field to given value.
 
 HasPeriods returns a boolean if a field has been set.
 
+### GetSample
+
+`func (o *SovResponse) GetSample() SovResponseSample`
+
+GetSample returns the Sample field if non-nil, zero value otherwise.
+
+### GetSampleOk
+
+`func (o *SovResponse) GetSampleOk() (*SovResponseSample, bool)`
+
+GetSampleOk returns a tuple with the Sample field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSample
+
+`func (o *SovResponse) SetSample(v SovResponseSample)`
+
+SetSample sets Sample field to given value.
+
+### HasSample
+
+`func (o *SovResponse) HasSample() bool`
+
+HasSample returns a boolean if a field has been set.
+
+### SetSampleNil
+
+`func (o *SovResponse) SetSampleNil(b bool)`
+
+ SetSampleNil sets the value for Sample to be an explicit nil
+
+### UnsetSample
+`func (o *SovResponse) UnsetSample()`
+
+UnsetSample ensures that no value is present for Sample, not even an explicit nil
 ### GetOverTime
 
 `func (o *SovResponse) GetOverTime() []SovResponseOverTimeInner`

@@ -4,9 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Name** | Pointer to **string** | Project name shown in the app. A label: it does not change mention detection unless brand_name is empty. Cannot be blank | [optional] 
 **BrandName** | Pointer to **string** | Brand name used to detect mentions. Applies to future runs; it does not rewrite history | [optional] 
 **Description** | Pointer to **string** | What the brand does. Context for Recommendations and GEO Writer (Brand Book) | [optional] 
-**Industry** | Pointer to **string** | Single industry key (e.g. SAAS); unknown keys are rejected | [optional] 
+**Industry** | Pointer to **string** | Single industry key (e.g. SAAS), stored as sent; an array of keys is also accepted and stored as an array, like the in-app multi-select. Unknown keys are rejected with the valid keys listed | [optional] 
 **BusinessModel** | Pointer to **string** | Business model key (e.g. B2B_SAAS); unknown keys are rejected | [optional] 
 **BusinessModelOther** | Pointer to **string** | Free-text business model, only accepted when business_model is OTHER; rejected against any other key | [optional] 
 **TargetAudience** | Pointer to **string** | Who the brand sells to (Brand Book) | [optional] 
@@ -33,6 +34,31 @@ will change when the set of required properties is changed
 NewUpdateProjectRequestWithDefaults instantiates a new UpdateProjectRequest object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetName
+
+`func (o *UpdateProjectRequest) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *UpdateProjectRequest) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *UpdateProjectRequest) SetName(v string)`
+
+SetName sets Name field to given value.
+
+### HasName
+
+`func (o *UpdateProjectRequest) HasName() bool`
+
+HasName returns a boolean if a field has been set.
 
 ### GetBrandName
 

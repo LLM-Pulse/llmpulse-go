@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,11 +24,13 @@ var _ MappedNullable = &ProjectCreateRequest{}
 type ProjectCreateRequest struct {
 	// Public HTTP(S) URL with a DNS hostname or public IP address. Credentials, private and special IP addresses, localhost and internal hostnames are rejected.
 	WebsiteUrl string `json:"website_url"`
+	// Project name, as plain text. It can be changed later with PATCH /projects/{id}
 	Name string `json:"name"`
 	MainCountry string `json:"main_country"`
 	MainLanguage string `json:"main_language"`
 	BrandName *string `json:"brand_name,omitempty"`
 	Description *string `json:"description,omitempty"`
+	// Industry keys, case-insensitive; a single key string is also accepted. An unknown key returns ERR_INVALID_PARAM listing the valid keys (the same list as the in-app industry picker, e.g. TECHNOLOGY, SAAS, ECOMMERCE)
 	Industry []string `json:"industry,omitempty"`
 	// Business model key (e.g. B2B_SAAS, MARKETPLACE); unknown keys are rejected
 	BusinessModel *string `json:"business_model,omitempty"`
@@ -44,6 +46,8 @@ type ProjectCreateRequest struct {
 	PrimaryProducts []string `json:"primary_products,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
 	Prompts []string `json:"prompts,omitempty"`
+	// Collections (prompt tags) created with the project, each tagging prompts of this request by their exact text, so no separate tagging calls are needed. A text that is not in prompts returns ERR_INVALID_PARAM. A team member also needs Tags: Create permission.
+	Collections []ProjectCreateRequestCollectionsInner `json:"collections,omitempty"`
 	Competitors []ProjectCreateRequestCompetitorsInner `json:"competitors,omitempty"`
 	OwnedMedia *ProjectCreateRequestOwnedMedia `json:"owned_media,omitempty"`
 	UseSubdomain *bool `json:"use_subdomain,omitempty"`
@@ -536,6 +540,38 @@ func (o *ProjectCreateRequest) SetPrompts(v []string) {
 	o.Prompts = v
 }
 
+// GetCollections returns the Collections field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetCollections() []ProjectCreateRequestCollectionsInner {
+	if o == nil || IsNil(o.Collections) {
+		var ret []ProjectCreateRequestCollectionsInner
+		return ret
+	}
+	return o.Collections
+}
+
+// GetCollectionsOk returns a tuple with the Collections field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetCollectionsOk() ([]ProjectCreateRequestCollectionsInner, bool) {
+	if o == nil || IsNil(o.Collections) {
+		return nil, false
+	}
+	return o.Collections, true
+}
+
+// HasCollections returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasCollections() bool {
+	if o != nil && !IsNil(o.Collections) {
+		return true
+	}
+
+	return false
+}
+
+// SetCollections gets a reference to the given []ProjectCreateRequestCollectionsInner and assigns it to the Collections field.
+func (o *ProjectCreateRequest) SetCollections(v []ProjectCreateRequestCollectionsInner) {
+	o.Collections = v
+}
+
 // GetCompetitors returns the Competitors field value if set, zero value otherwise.
 func (o *ProjectCreateRequest) GetCompetitors() []ProjectCreateRequestCompetitorsInner {
 	if o == nil || IsNil(o.Competitors) {
@@ -774,6 +810,9 @@ func (o ProjectCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Prompts) {
 		toSerialize["prompts"] = o.Prompts
+	}
+	if !IsNil(o.Collections) {
+		toSerialize["collections"] = o.Collections
 	}
 	if !IsNil(o.Competitors) {
 		toSerialize["competitors"] = o.Competitors

@@ -5,12 +5,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **WebsiteUrl** | **string** | Public HTTP(S) URL with a DNS hostname or public IP address. Credentials, private and special IP addresses, localhost and internal hostnames are rejected. | 
-**Name** | **string** |  | 
+**Name** | **string** | Project name, as plain text. It can be changed later with PATCH /projects/{id} | 
 **MainCountry** | **string** |  | 
 **MainLanguage** | **string** |  | 
 **BrandName** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
-**Industry** | Pointer to **[]string** |  | [optional] 
+**Industry** | Pointer to **[]string** | Industry keys, case-insensitive; a single key string is also accepted. An unknown key returns ERR_INVALID_PARAM listing the valid keys (the same list as the in-app industry picker, e.g. TECHNOLOGY, SAAS, ECOMMERCE) | [optional] 
 **BusinessModel** | Pointer to **string** | Business model key (e.g. B2B_SAAS, MARKETPLACE); unknown keys are rejected | [optional] 
 **BusinessModelOther** | Pointer to **string** | Free-text business model, only accepted when business_model is OTHER; rejected against any other key | [optional] 
 **TargetAudience** | Pointer to **string** | Who the brand sells to. Context for Recommendations and GEO Writer (Brand Book) | [optional] 
@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **PrimaryProducts** | Pointer to **[]string** | Main products or services | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
 **Prompts** | Pointer to **[]string** |  | [optional] 
+**Collections** | Pointer to [**[]ProjectCreateRequestCollectionsInner**](ProjectCreateRequestCollectionsInner.md) | Collections (prompt tags) created with the project, each tagging prompts of this request by their exact text, so no separate tagging calls are needed. A text that is not in prompts returns ERR_INVALID_PARAM. A team member also needs Tags: Create permission. | [optional] 
 **Competitors** | Pointer to [**[]ProjectCreateRequestCompetitorsInner**](ProjectCreateRequestCompetitorsInner.md) |  | [optional] 
 **OwnedMedia** | Pointer to [**ProjectCreateRequestOwnedMedia**](ProjectCreateRequestOwnedMedia.md) |  | [optional] 
 **UseSubdomain** | Pointer to **bool** |  | [optional] [default to false]
@@ -399,6 +400,31 @@ SetPrompts sets Prompts field to given value.
 `func (o *ProjectCreateRequest) HasPrompts() bool`
 
 HasPrompts returns a boolean if a field has been set.
+
+### GetCollections
+
+`func (o *ProjectCreateRequest) GetCollections() []ProjectCreateRequestCollectionsInner`
+
+GetCollections returns the Collections field if non-nil, zero value otherwise.
+
+### GetCollectionsOk
+
+`func (o *ProjectCreateRequest) GetCollectionsOk() (*[]ProjectCreateRequestCollectionsInner, bool)`
+
+GetCollectionsOk returns a tuple with the Collections field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCollections
+
+`func (o *ProjectCreateRequest) SetCollections(v []ProjectCreateRequestCollectionsInner)`
+
+SetCollections sets Collections field to given value.
+
+### HasCollections
+
+`func (o *ProjectCreateRequest) HasCollections() bool`
+
+HasCollections returns a boolean if a field has been set.
 
 ### GetCompetitors
 

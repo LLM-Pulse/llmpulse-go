@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,11 +20,13 @@ var _ MappedNullable = &UpdateProjectRequest{}
 
 // UpdateProjectRequest struct for UpdateProjectRequest
 type UpdateProjectRequest struct {
+	// Project name shown in the app. A label: it does not change mention detection unless brand_name is empty. Cannot be blank
+	Name *string `json:"name,omitempty"`
 	// Brand name used to detect mentions. Applies to future runs; it does not rewrite history
 	BrandName *string `json:"brand_name,omitempty"`
 	// What the brand does. Context for Recommendations and GEO Writer (Brand Book)
 	Description *string `json:"description,omitempty"`
-	// Single industry key (e.g. SAAS); unknown keys are rejected
+	// Single industry key (e.g. SAAS), stored as sent; an array of keys is also accepted and stored as an array, like the in-app multi-select. Unknown keys are rejected with the valid keys listed
 	Industry *string `json:"industry,omitempty"`
 	// Business model key (e.g. B2B_SAAS); unknown keys are rejected
 	BusinessModel *string `json:"business_model,omitempty"`
@@ -57,6 +59,38 @@ func NewUpdateProjectRequest() *UpdateProjectRequest {
 func NewUpdateProjectRequestWithDefaults() *UpdateProjectRequest {
 	this := UpdateProjectRequest{}
 	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *UpdateProjectRequest) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateProjectRequest) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *UpdateProjectRequest) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *UpdateProjectRequest) SetName(v string) {
+	o.Name = &v
 }
 
 // GetBrandName returns the BrandName field value if set, zero value otherwise.
@@ -389,6 +423,9 @@ func (o UpdateProjectRequest) MarshalJSON() ([]byte, error) {
 
 func (o UpdateProjectRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
 	if !IsNil(o.BrandName) {
 		toSerialize["brand_name"] = o.BrandName
 	}

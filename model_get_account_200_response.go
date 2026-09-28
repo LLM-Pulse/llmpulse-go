@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,6 +22,8 @@ var _ MappedNullable = &GetAccount200Response{}
 type GetAccount200Response struct {
 	// Plan key (starter, growth, scale, ...)
 	Plan *string `json:"plan,omitempty"`
+	// Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key)
+	PlanName *string `json:"plan_name,omitempty"`
 	// How often prompts run (weekly, daily, monthly, ...)
 	TrackingFrequency *string `json:"tracking_frequency,omitempty"`
 	// Whether the key belongs to the account owner or a team member
@@ -79,6 +81,38 @@ func (o *GetAccount200Response) HasPlan() bool {
 // SetPlan gets a reference to the given string and assigns it to the Plan field.
 func (o *GetAccount200Response) SetPlan(v string) {
 	o.Plan = &v
+}
+
+// GetPlanName returns the PlanName field value if set, zero value otherwise.
+func (o *GetAccount200Response) GetPlanName() string {
+	if o == nil || IsNil(o.PlanName) {
+		var ret string
+		return ret
+	}
+	return *o.PlanName
+}
+
+// GetPlanNameOk returns a tuple with the PlanName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200Response) GetPlanNameOk() (*string, bool) {
+	if o == nil || IsNil(o.PlanName) {
+		return nil, false
+	}
+	return o.PlanName, true
+}
+
+// HasPlanName returns a boolean if a field has been set.
+func (o *GetAccount200Response) HasPlanName() bool {
+	if o != nil && !IsNil(o.PlanName) {
+		return true
+	}
+
+	return false
+}
+
+// SetPlanName gets a reference to the given string and assigns it to the PlanName field.
+func (o *GetAccount200Response) SetPlanName(v string) {
+	o.PlanName = &v
 }
 
 // GetTrackingFrequency returns the TrackingFrequency field value if set, zero value otherwise.
@@ -285,6 +319,9 @@ func (o GetAccount200Response) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.Plan) {
 		toSerialize["plan"] = o.Plan
+	}
+	if !IsNil(o.PlanName) {
+		toSerialize["plan_name"] = o.PlanName
 	}
 	if !IsNil(o.TrackingFrequency) {
 		toSerialize["tracking_frequency"] = o.TrackingFrequency

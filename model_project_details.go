@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -29,7 +29,8 @@ type ProjectDetails struct {
 	Url *string `json:"url,omitempty"`
 	Description *string `json:"description,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
-	Industry *string `json:"industry,omitempty"`
+	// Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape
+	Industry interface{} `json:"industry,omitempty"`
 	BusinessModel *string `json:"business_model,omitempty"`
 	// Set only when business_model is OTHER
 	BusinessModelOther NullableString `json:"business_model_other,omitempty"`
@@ -255,22 +256,23 @@ func (o *ProjectDetails) SetMatchingNames(v []string) {
 	o.MatchingNames = v
 }
 
-// GetIndustry returns the Industry field value if set, zero value otherwise.
-func (o *ProjectDetails) GetIndustry() string {
-	if o == nil || IsNil(o.Industry) {
-		var ret string
+// GetIndustry returns the Industry field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ProjectDetails) GetIndustry() interface{} {
+	if o == nil {
+		var ret interface{}
 		return ret
 	}
-	return *o.Industry
+	return o.Industry
 }
 
 // GetIndustryOk returns a tuple with the Industry field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ProjectDetails) GetIndustryOk() (*string, bool) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetails) GetIndustryOk() (*interface{}, bool) {
 	if o == nil || IsNil(o.Industry) {
 		return nil, false
 	}
-	return o.Industry, true
+	return &o.Industry, true
 }
 
 // HasIndustry returns a boolean if a field has been set.
@@ -282,9 +284,9 @@ func (o *ProjectDetails) HasIndustry() bool {
 	return false
 }
 
-// SetIndustry gets a reference to the given string and assigns it to the Industry field.
-func (o *ProjectDetails) SetIndustry(v string) {
-	o.Industry = &v
+// SetIndustry gets a reference to the given interface{} and assigns it to the Industry field.
+func (o *ProjectDetails) SetIndustry(v interface{}) {
+	o.Industry = v
 }
 
 // GetBusinessModel returns the BusinessModel field value if set, zero value otherwise.
@@ -741,7 +743,7 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
 	}
-	if !IsNil(o.Industry) {
+	if o.Industry != nil {
 		toSerialize["industry"] = o.Industry
 	}
 	if !IsNil(o.BusinessModel) {

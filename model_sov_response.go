@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.49.0
+API version: 1.50.0
 Contact: info@llmpulse.ai
 */
 
@@ -21,8 +21,9 @@ var _ MappedNullable = &SovResponse{}
 // SovResponse struct for SovResponse
 type SovResponse struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
-	// Per-bucket sample size and completeness: mentions is the total the shares were computed on (1-3 mentions produce the 100/50/33.33 low-sample patterns); partial marks buckets still collecting data or clipped by the requested window.
+	// Per-bucket sample size and completeness: mentions is the total the shares were computed on (1-3 mentions produce the 100/50/33.33 low-sample patterns); partial marks buckets still collecting data or clipped by the requested window; confidence and margin_of_error read the sample size.
 	Periods []SovResponsePeriodsInner `json:"periods,omitempty"`
+	Sample NullableSovResponseSample `json:"sample,omitempty"`
 	OverTime []SovResponseOverTimeInner `json:"over_time,omitempty"`
 	Current []SovResponseCurrentInner `json:"current,omitempty"`
 	Breakdown []SovResponseBreakdownInner `json:"breakdown,omitempty"`
@@ -108,6 +109,48 @@ func (o *SovResponse) HasPeriods() bool {
 // SetPeriods gets a reference to the given []SovResponsePeriodsInner and assigns it to the Periods field.
 func (o *SovResponse) SetPeriods(v []SovResponsePeriodsInner) {
 	o.Periods = v
+}
+
+// GetSample returns the Sample field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *SovResponse) GetSample() SovResponseSample {
+	if o == nil || IsNil(o.Sample.Get()) {
+		var ret SovResponseSample
+		return ret
+	}
+	return *o.Sample.Get()
+}
+
+// GetSampleOk returns a tuple with the Sample field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *SovResponse) GetSampleOk() (*SovResponseSample, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Sample.Get(), o.Sample.IsSet()
+}
+
+// HasSample returns a boolean if a field has been set.
+func (o *SovResponse) HasSample() bool {
+	if o != nil && o.Sample.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSample gets a reference to the given NullableSovResponseSample and assigns it to the Sample field.
+func (o *SovResponse) SetSample(v SovResponseSample) {
+	o.Sample.Set(&v)
+}
+// SetSampleNil sets the value for Sample to be an explicit nil
+func (o *SovResponse) SetSampleNil() {
+	o.Sample.Set(nil)
+}
+
+// UnsetSample ensures that no value is present for Sample, not even an explicit nil
+func (o *SovResponse) UnsetSample() {
+	o.Sample.Unset()
 }
 
 // GetOverTime returns the OverTime field value if set, zero value otherwise.
@@ -253,6 +296,9 @@ func (o SovResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Periods) {
 		toSerialize["periods"] = o.Periods
+	}
+	if o.Sample.IsSet() {
+		toSerialize["sample"] = o.Sample.Get()
 	}
 	if !IsNil(o.OverTime) {
 		toSerialize["over_time"] = o.OverTime

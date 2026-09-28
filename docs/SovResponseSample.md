@@ -1,4 +1,4 @@
-# SovResponsePeriodsInner
+# SovResponseSample
 
 ## Properties
 
@@ -7,161 +7,161 @@ Name | Type | Description | Notes
 **Date** | Pointer to **string** |  | [optional] 
 **Mentions** | Pointer to **int32** |  | [optional] 
 **Partial** | Pointer to **bool** |  | [optional] 
-**Confidence** | Pointer to **string** | How far the shares of this period can be trusted, from its mentions: none (0), low (under 30), medium (under 100) or high (100 or more). | [optional] 
-**MarginOfError** | Pointer to **NullableFloat32** | Worst-case 95% margin of a share in percentage points, 98 / sqrt(mentions); mentions within one answer are not independent, so the real margin is at least this wide. null with no mentions. | [optional] 
+**Confidence** | Pointer to **string** |  | [optional] 
+**MarginOfError** | Pointer to **NullableFloat32** |  | [optional] 
 
 ## Methods
 
-### NewSovResponsePeriodsInner
+### NewSovResponseSample
 
-`func NewSovResponsePeriodsInner() *SovResponsePeriodsInner`
+`func NewSovResponseSample() *SovResponseSample`
 
-NewSovResponsePeriodsInner instantiates a new SovResponsePeriodsInner object
+NewSovResponseSample instantiates a new SovResponseSample object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewSovResponsePeriodsInnerWithDefaults
+### NewSovResponseSampleWithDefaults
 
-`func NewSovResponsePeriodsInnerWithDefaults() *SovResponsePeriodsInner`
+`func NewSovResponseSampleWithDefaults() *SovResponseSample`
 
-NewSovResponsePeriodsInnerWithDefaults instantiates a new SovResponsePeriodsInner object
+NewSovResponseSampleWithDefaults instantiates a new SovResponseSample object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetDate
 
-`func (o *SovResponsePeriodsInner) GetDate() string`
+`func (o *SovResponseSample) GetDate() string`
 
 GetDate returns the Date field if non-nil, zero value otherwise.
 
 ### GetDateOk
 
-`func (o *SovResponsePeriodsInner) GetDateOk() (*string, bool)`
+`func (o *SovResponseSample) GetDateOk() (*string, bool)`
 
 GetDateOk returns a tuple with the Date field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDate
 
-`func (o *SovResponsePeriodsInner) SetDate(v string)`
+`func (o *SovResponseSample) SetDate(v string)`
 
 SetDate sets Date field to given value.
 
 ### HasDate
 
-`func (o *SovResponsePeriodsInner) HasDate() bool`
+`func (o *SovResponseSample) HasDate() bool`
 
 HasDate returns a boolean if a field has been set.
 
 ### GetMentions
 
-`func (o *SovResponsePeriodsInner) GetMentions() int32`
+`func (o *SovResponseSample) GetMentions() int32`
 
 GetMentions returns the Mentions field if non-nil, zero value otherwise.
 
 ### GetMentionsOk
 
-`func (o *SovResponsePeriodsInner) GetMentionsOk() (*int32, bool)`
+`func (o *SovResponseSample) GetMentionsOk() (*int32, bool)`
 
 GetMentionsOk returns a tuple with the Mentions field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMentions
 
-`func (o *SovResponsePeriodsInner) SetMentions(v int32)`
+`func (o *SovResponseSample) SetMentions(v int32)`
 
 SetMentions sets Mentions field to given value.
 
 ### HasMentions
 
-`func (o *SovResponsePeriodsInner) HasMentions() bool`
+`func (o *SovResponseSample) HasMentions() bool`
 
 HasMentions returns a boolean if a field has been set.
 
 ### GetPartial
 
-`func (o *SovResponsePeriodsInner) GetPartial() bool`
+`func (o *SovResponseSample) GetPartial() bool`
 
 GetPartial returns the Partial field if non-nil, zero value otherwise.
 
 ### GetPartialOk
 
-`func (o *SovResponsePeriodsInner) GetPartialOk() (*bool, bool)`
+`func (o *SovResponseSample) GetPartialOk() (*bool, bool)`
 
 GetPartialOk returns a tuple with the Partial field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPartial
 
-`func (o *SovResponsePeriodsInner) SetPartial(v bool)`
+`func (o *SovResponseSample) SetPartial(v bool)`
 
 SetPartial sets Partial field to given value.
 
 ### HasPartial
 
-`func (o *SovResponsePeriodsInner) HasPartial() bool`
+`func (o *SovResponseSample) HasPartial() bool`
 
 HasPartial returns a boolean if a field has been set.
 
 ### GetConfidence
 
-`func (o *SovResponsePeriodsInner) GetConfidence() string`
+`func (o *SovResponseSample) GetConfidence() string`
 
 GetConfidence returns the Confidence field if non-nil, zero value otherwise.
 
 ### GetConfidenceOk
 
-`func (o *SovResponsePeriodsInner) GetConfidenceOk() (*string, bool)`
+`func (o *SovResponseSample) GetConfidenceOk() (*string, bool)`
 
 GetConfidenceOk returns a tuple with the Confidence field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetConfidence
 
-`func (o *SovResponsePeriodsInner) SetConfidence(v string)`
+`func (o *SovResponseSample) SetConfidence(v string)`
 
 SetConfidence sets Confidence field to given value.
 
 ### HasConfidence
 
-`func (o *SovResponsePeriodsInner) HasConfidence() bool`
+`func (o *SovResponseSample) HasConfidence() bool`
 
 HasConfidence returns a boolean if a field has been set.
 
 ### GetMarginOfError
 
-`func (o *SovResponsePeriodsInner) GetMarginOfError() float32`
+`func (o *SovResponseSample) GetMarginOfError() float32`
 
 GetMarginOfError returns the MarginOfError field if non-nil, zero value otherwise.
 
 ### GetMarginOfErrorOk
 
-`func (o *SovResponsePeriodsInner) GetMarginOfErrorOk() (*float32, bool)`
+`func (o *SovResponseSample) GetMarginOfErrorOk() (*float32, bool)`
 
 GetMarginOfErrorOk returns a tuple with the MarginOfError field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetMarginOfError
 
-`func (o *SovResponsePeriodsInner) SetMarginOfError(v float32)`
+`func (o *SovResponseSample) SetMarginOfError(v float32)`
 
 SetMarginOfError sets MarginOfError field to given value.
 
 ### HasMarginOfError
 
-`func (o *SovResponsePeriodsInner) HasMarginOfError() bool`
+`func (o *SovResponseSample) HasMarginOfError() bool`
 
 HasMarginOfError returns a boolean if a field has been set.
 
 ### SetMarginOfErrorNil
 
-`func (o *SovResponsePeriodsInner) SetMarginOfErrorNil(b bool)`
+`func (o *SovResponseSample) SetMarginOfErrorNil(b bool)`
 
  SetMarginOfErrorNil sets the value for MarginOfError to be an explicit nil
 
 ### UnsetMarginOfError
-`func (o *SovResponsePeriodsInner) UnsetMarginOfError()`
+`func (o *SovResponseSample) UnsetMarginOfError()`
 
 UnsetMarginOfError ensures that no value is present for MarginOfError, not even an explicit nil
 
