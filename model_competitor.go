@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,7 +22,8 @@ var _ MappedNullable = &Competitor{}
 type Competitor struct {
 	Id *int32 `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
-	Domain *string `json:"domain,omitempty"`
+	// Bare (scheme-less) domain. Null only on the own-brand row (include_project_brand=true) when the project has no URL.
+	Domain NullableString `json:"domain,omitempty"`
 	// Only present when include_project_brand=true
 	ActorType *string `json:"actor_type,omitempty"`
 	// Only present when include_project_brand=true
@@ -110,36 +111,46 @@ func (o *Competitor) SetName(v string) {
 	o.Name = &v
 }
 
-// GetDomain returns the Domain field value if set, zero value otherwise.
+// GetDomain returns the Domain field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Competitor) GetDomain() string {
-	if o == nil || IsNil(o.Domain) {
+	if o == nil || IsNil(o.Domain.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Domain
+	return *o.Domain.Get()
 }
 
 // GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Competitor) GetDomainOk() (*string, bool) {
-	if o == nil || IsNil(o.Domain) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Domain, true
+	return o.Domain.Get(), o.Domain.IsSet()
 }
 
 // HasDomain returns a boolean if a field has been set.
 func (o *Competitor) HasDomain() bool {
-	if o != nil && !IsNil(o.Domain) {
+	if o != nil && o.Domain.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetDomain gets a reference to the given string and assigns it to the Domain field.
+// SetDomain gets a reference to the given NullableString and assigns it to the Domain field.
 func (o *Competitor) SetDomain(v string) {
-	o.Domain = &v
+	o.Domain.Set(&v)
+}
+// SetDomainNil sets the value for Domain to be an explicit nil
+func (o *Competitor) SetDomainNil() {
+	o.Domain.Set(nil)
+}
+
+// UnsetDomain ensures that no value is present for Domain, not even an explicit nil
+func (o *Competitor) UnsetDomain() {
+	o.Domain.Unset()
 }
 
 // GetActorType returns the ActorType field value if set, zero value otherwise.
@@ -222,8 +233,8 @@ func (o Competitor) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if !IsNil(o.Domain) {
-		toSerialize["domain"] = o.Domain
+	if o.Domain.IsSet() {
+		toSerialize["domain"] = o.Domain.Get()
 	}
 	if !IsNil(o.ActorType) {
 		toSerialize["actor_type"] = o.ActorType

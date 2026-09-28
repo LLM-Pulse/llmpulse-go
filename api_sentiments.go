@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -48,9 +48,9 @@ func (r ApiListSentimentCategoriesRequest) Execute() (*http.Response, error) {
 }
 
 /*
-ListSentimentCategories List sentiment categories
+ListSentimentCategories List sentiment categories (Growth plan or above)
 
-Sentiment metric keys + labels + colors. For records, use /sentiments.
+Sentiment metric keys + labels + colors. For records, use /sentiments. Requires the Growth plan; lower tiers receive ERR_PLAN_REQUIRED.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListSentimentCategoriesRequest
@@ -98,7 +98,7 @@ func (a *SentimentsAPIService) ListSentimentCategoriesExecute(r ApiListSentiment
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -126,6 +126,16 @@ func (a *SentimentsAPIService) ListSentimentCategoriesExecute(r ApiListSentiment
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -222,7 +232,9 @@ func (r ApiListSentimentRecordsRequest) Execute() (*http.Response, error) {
 }
 
 /*
-ListSentimentRecords List sentiment records
+ListSentimentRecords List sentiment records (Growth plan or above)
+
+Requires the Growth plan; lower tiers receive ERR_PLAN_REQUIRED.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListSentimentRecordsRequest
@@ -336,6 +348,17 @@ func (a *SentimentsAPIService) ListSentimentRecordsExecute(r ApiListSentimentRec
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError

@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **UserInstructions** | Pointer to **NullableString** |  | [optional] 
 **OutputLanguageCode** | Pointer to **NullableString** |  | [optional] 
 **WordCount** | Pointer to **NullableInt32** |  | [optional] 
-**ResultData** | Pointer to **map[string]interface{}** | Only present when status&#x3D;&#39;completed&#39; | [optional] 
+**ResultData** | Pointer to **map[string]interface{}** | The generated content once status is completed; null before that | [optional] 
 **ErrorMessage** | Pointer to **NullableString** |  | [optional] 
 **EstimatedTime** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
@@ -456,6 +456,16 @@ SetResultData sets ResultData field to given value.
 
 HasResultData returns a boolean if a field has been set.
 
+### SetResultDataNil
+
+`func (o *IntelligenceTaskUpdateResponse) SetResultDataNil(b bool)`
+
+ SetResultDataNil sets the value for ResultData to be an explicit nil
+
+### UnsetResultData
+`func (o *IntelligenceTaskUpdateResponse) UnsetResultData()`
+
+UnsetResultData ensures that no value is present for ResultData, not even an explicit nil
 ### GetErrorMessage
 
 `func (o *IntelligenceTaskUpdateResponse) GetErrorMessage() string`

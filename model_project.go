@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,8 +23,8 @@ type Project struct {
 	Id *int32 `json:"id,omitempty"`
 	// Internal project label (sidebar, settings, admin)
 	Name *string `json:"name,omitempty"`
-	// LLM-facing brand label (used in prompts and customer-facing charts). Defaults to `name` when not set.
-	BrandName *string `json:"brand_name,omitempty"`
+	// LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use `name`.
+	BrandName NullableString `json:"brand_name,omitempty"`
 }
 
 // NewProject instantiates a new Project object
@@ -108,36 +108,46 @@ func (o *Project) SetName(v string) {
 	o.Name = &v
 }
 
-// GetBrandName returns the BrandName field value if set, zero value otherwise.
+// GetBrandName returns the BrandName field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *Project) GetBrandName() string {
-	if o == nil || IsNil(o.BrandName) {
+	if o == nil || IsNil(o.BrandName.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.BrandName
+	return *o.BrandName.Get()
 }
 
 // GetBrandNameOk returns a tuple with the BrandName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *Project) GetBrandNameOk() (*string, bool) {
-	if o == nil || IsNil(o.BrandName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.BrandName, true
+	return o.BrandName.Get(), o.BrandName.IsSet()
 }
 
 // HasBrandName returns a boolean if a field has been set.
 func (o *Project) HasBrandName() bool {
-	if o != nil && !IsNil(o.BrandName) {
+	if o != nil && o.BrandName.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetBrandName gets a reference to the given string and assigns it to the BrandName field.
+// SetBrandName gets a reference to the given NullableString and assigns it to the BrandName field.
 func (o *Project) SetBrandName(v string) {
-	o.BrandName = &v
+	o.BrandName.Set(&v)
+}
+// SetBrandNameNil sets the value for BrandName to be an explicit nil
+func (o *Project) SetBrandNameNil() {
+	o.BrandName.Set(nil)
+}
+
+// UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
+func (o *Project) UnsetBrandName() {
+	o.BrandName.Unset()
 }
 
 func (o Project) MarshalJSON() ([]byte, error) {
@@ -156,8 +166,8 @@ func (o Project) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if !IsNil(o.BrandName) {
-		toSerialize["brand_name"] = o.BrandName
+	if o.BrandName.IsSet() {
+		toSerialize["brand_name"] = o.BrandName.Get()
 	}
 	return toSerialize, nil
 }

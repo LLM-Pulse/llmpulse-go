@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** | Internal project label (sidebar, settings, admin) | [optional] 
-**BrandName** | Pointer to **string** | LLM-facing brand label (used in prompts and customer-facing charts). Defaults to &#x60;name&#x60; when not set. | [optional] 
+**BrandName** | Pointer to **NullableString** | LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use &#x60;name&#x60;. | [optional] 
 
 ## Methods
 
@@ -102,6 +102,16 @@ SetBrandName sets BrandName field to given value.
 
 HasBrandName returns a boolean if a field has been set.
 
+### SetBrandNameNil
+
+`func (o *Project) SetBrandNameNil(b bool)`
+
+ SetBrandNameNil sets the value for BrandName to be an explicit nil
+
+### UnsetBrandName
+`func (o *Project) UnsetBrandName()`
+
+UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

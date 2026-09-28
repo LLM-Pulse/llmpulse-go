@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -34,7 +34,7 @@ type IntelligenceTaskUpdateResponse struct {
 	UserInstructions NullableString `json:"user_instructions,omitempty"`
 	OutputLanguageCode NullableString `json:"output_language_code,omitempty"`
 	WordCount NullableInt32 `json:"word_count,omitempty"`
-	// Only present when status='completed'
+	// The generated content once status is completed; null before that
 	ResultData map[string]interface{} `json:"result_data,omitempty"`
 	ErrorMessage NullableString `json:"error_message,omitempty"`
 	EstimatedTime NullableString `json:"estimated_time,omitempty"`
@@ -542,9 +542,9 @@ func (o *IntelligenceTaskUpdateResponse) UnsetWordCount() {
 	o.WordCount.Unset()
 }
 
-// GetResultData returns the ResultData field value if set, zero value otherwise.
+// GetResultData returns the ResultData field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *IntelligenceTaskUpdateResponse) GetResultData() map[string]interface{} {
-	if o == nil || IsNil(o.ResultData) {
+	if o == nil {
 		var ret map[string]interface{}
 		return ret
 	}
@@ -553,6 +553,7 @@ func (o *IntelligenceTaskUpdateResponse) GetResultData() map[string]interface{} 
 
 // GetResultDataOk returns a tuple with the ResultData field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IntelligenceTaskUpdateResponse) GetResultDataOk() (map[string]interface{}, bool) {
 	if o == nil || IsNil(o.ResultData) {
 		return map[string]interface{}{}, false
@@ -929,7 +930,7 @@ func (o IntelligenceTaskUpdateResponse) ToMap() (map[string]interface{}, error) 
 	if o.WordCount.IsSet() {
 		toSerialize["word_count"] = o.WordCount.Get()
 	}
-	if !IsNil(o.ResultData) {
+	if o.ResultData != nil {
 		toSerialize["result_data"] = o.ResultData
 	}
 	if o.ErrorMessage.IsSet() {

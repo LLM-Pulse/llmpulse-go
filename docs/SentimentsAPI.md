@@ -4,8 +4,8 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListSentimentCategories**](SentimentsAPI.md#ListSentimentCategories) | **Get** /dimensions/sentiments | List sentiment categories
-[**ListSentimentRecords**](SentimentsAPI.md#ListSentimentRecords) | **Get** /sentiments | List sentiment records
+[**ListSentimentCategories**](SentimentsAPI.md#ListSentimentCategories) | **Get** /dimensions/sentiments | List sentiment categories (Growth plan or above)
+[**ListSentimentRecords**](SentimentsAPI.md#ListSentimentRecords) | **Get** /sentiments | List sentiment records (Growth plan or above)
 
 
 
@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 > ListSentimentCategories(ctx).ProjectId(projectId).Output(output).Execute()
 
-List sentiment categories
+List sentiment categories (Growth plan or above)
 
 
 
@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -79,7 +79,9 @@ Name | Type | Description  | Notes
 
 > ListSentimentRecords(ctx).ProjectId(projectId).CompetitorId(competitorId).BrandOnly(brandOnly).Analysis(analysis).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).From(from).To(to).Page(page).PerPage(perPage).Execute()
 
-List sentiment records
+List sentiment records (Growth plan or above)
+
+
 
 ### Example
 

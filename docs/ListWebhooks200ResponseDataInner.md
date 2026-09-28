@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **TargetUrl** | Pointer to **string** |  | [optional] 
 **Disabled** | Pointer to **bool** |  | [optional] 
 **FailureCount** | Pointer to **int32** |  | [optional] 
-**LastDeliveredAt** | Pointer to **time.Time** |  | [optional] 
+**LastDeliveredAt** | Pointer to **NullableTime** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 
 ## Methods
@@ -207,6 +207,16 @@ SetLastDeliveredAt sets LastDeliveredAt field to given value.
 
 HasLastDeliveredAt returns a boolean if a field has been set.
 
+### SetLastDeliveredAtNil
+
+`func (o *ListWebhooks200ResponseDataInner) SetLastDeliveredAtNil(b bool)`
+
+ SetLastDeliveredAtNil sets the value for LastDeliveredAt to be an explicit nil
+
+### UnsetLastDeliveredAt
+`func (o *ListWebhooks200ResponseDataInner) UnsetLastDeliveredAt()`
+
+UnsetLastDeliveredAt ensures that no value is present for LastDeliveredAt, not even an explicit nil
 ### GetCreatedAt
 
 `func (o *ListWebhooks200ResponseDataInner) GetCreatedAt() time.Time`

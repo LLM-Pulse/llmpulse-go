@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **Id** | Pointer to **int32** |  | [optional] 
 **CompetitorId** | Pointer to **NullableInt32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
-**Domain** | Pointer to **string** | Bare (scheme-less) domain | [optional] 
+**Domain** | Pointer to **NullableString** | Bare (scheme-less) domain. Null for the project actor when the project has no URL. | [optional] 
 
 ## Methods
 
@@ -164,6 +164,16 @@ SetDomain sets Domain field to given value.
 
 HasDomain returns a boolean if a field has been set.
 
+### SetDomainNil
+
+`func (o *Actor) SetDomainNil(b bool)`
+
+ SetDomainNil sets the value for Domain to be an explicit nil
+
+### UnsetDomain
+`func (o *Actor) UnsetDomain()`
+
+UnsetDomain ensures that no value is present for Domain, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

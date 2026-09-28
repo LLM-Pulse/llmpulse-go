@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -13,7 +13,6 @@ package llmpulse
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // checks if the TimeseriesPoint type satisfies the MappedNullable interface at compile time
@@ -21,8 +20,10 @@ var _ MappedNullable = &TimeseriesPoint{}
 
 // TimeseriesPoint struct for TimeseriesPoint
 type TimeseriesPoint struct {
-	Date *time.Time `json:"date,omitempty"`
-	Value *float32 `json:"value,omitempty"`
+	// Calendar day in Europe/Madrid (YYYY-MM-DD). With granularity week or month it is the first day of the bucket (the Monday, or the 1st of the month).
+	Date *string `json:"date,omitempty"`
+	// Null when the metric has no value for the bucket, e.g. a rate, position or sentiment metric on a day without answers.
+	Value NullableFloat32 `json:"value,omitempty"`
 }
 
 // NewTimeseriesPoint instantiates a new TimeseriesPoint object
@@ -43,9 +44,9 @@ func NewTimeseriesPointWithDefaults() *TimeseriesPoint {
 }
 
 // GetDate returns the Date field value if set, zero value otherwise.
-func (o *TimeseriesPoint) GetDate() time.Time {
+func (o *TimeseriesPoint) GetDate() string {
 	if o == nil || IsNil(o.Date) {
-		var ret time.Time
+		var ret string
 		return ret
 	}
 	return *o.Date
@@ -53,7 +54,7 @@ func (o *TimeseriesPoint) GetDate() time.Time {
 
 // GetDateOk returns a tuple with the Date field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TimeseriesPoint) GetDateOk() (*time.Time, bool) {
+func (o *TimeseriesPoint) GetDateOk() (*string, bool) {
 	if o == nil || IsNil(o.Date) {
 		return nil, false
 	}
@@ -69,41 +70,51 @@ func (o *TimeseriesPoint) HasDate() bool {
 	return false
 }
 
-// SetDate gets a reference to the given time.Time and assigns it to the Date field.
-func (o *TimeseriesPoint) SetDate(v time.Time) {
+// SetDate gets a reference to the given string and assigns it to the Date field.
+func (o *TimeseriesPoint) SetDate(v string) {
 	o.Date = &v
 }
 
-// GetValue returns the Value field value if set, zero value otherwise.
+// GetValue returns the Value field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *TimeseriesPoint) GetValue() float32 {
-	if o == nil || IsNil(o.Value) {
+	if o == nil || IsNil(o.Value.Get()) {
 		var ret float32
 		return ret
 	}
-	return *o.Value
+	return *o.Value.Get()
 }
 
 // GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *TimeseriesPoint) GetValueOk() (*float32, bool) {
-	if o == nil || IsNil(o.Value) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Value, true
+	return o.Value.Get(), o.Value.IsSet()
 }
 
 // HasValue returns a boolean if a field has been set.
 func (o *TimeseriesPoint) HasValue() bool {
-	if o != nil && !IsNil(o.Value) {
+	if o != nil && o.Value.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetValue gets a reference to the given float32 and assigns it to the Value field.
+// SetValue gets a reference to the given NullableFloat32 and assigns it to the Value field.
 func (o *TimeseriesPoint) SetValue(v float32) {
-	o.Value = &v
+	o.Value.Set(&v)
+}
+// SetValueNil sets the value for Value to be an explicit nil
+func (o *TimeseriesPoint) SetValueNil() {
+	o.Value.Set(nil)
+}
+
+// UnsetValue ensures that no value is present for Value, not even an explicit nil
+func (o *TimeseriesPoint) UnsetValue() {
+	o.Value.Unset()
 }
 
 func (o TimeseriesPoint) MarshalJSON() ([]byte, error) {
@@ -119,8 +130,8 @@ func (o TimeseriesPoint) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Date) {
 		toSerialize["date"] = o.Date
 	}
-	if !IsNil(o.Value) {
-		toSerialize["value"] = o.Value
+	if o.Value.IsSet() {
+		toSerialize["value"] = o.Value.Get()
 	}
 	return toSerialize, nil
 }

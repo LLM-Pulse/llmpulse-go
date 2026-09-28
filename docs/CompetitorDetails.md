@@ -9,9 +9,9 @@ Name | Type | Description | Notes
 **BrandName** | Pointer to **string** |  | [optional] 
 **Domain** | Pointer to **string** |  | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
-**GooglePlayId** | Pointer to **string** |  | [optional] 
-**AppStoreId** | Pointer to **string** |  | [optional] 
-**Color** | Pointer to **string** |  | [optional] 
+**GooglePlayId** | Pointer to **NullableString** |  | [optional] 
+**AppStoreId** | Pointer to **NullableString** |  | [optional] 
+**Color** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 
 ## Methods
@@ -158,6 +158,16 @@ SetMatchingNames sets MatchingNames field to given value.
 
 HasMatchingNames returns a boolean if a field has been set.
 
+### SetMatchingNamesNil
+
+`func (o *CompetitorDetails) SetMatchingNamesNil(b bool)`
+
+ SetMatchingNamesNil sets the value for MatchingNames to be an explicit nil
+
+### UnsetMatchingNames
+`func (o *CompetitorDetails) UnsetMatchingNames()`
+
+UnsetMatchingNames ensures that no value is present for MatchingNames, not even an explicit nil
 ### GetGooglePlayId
 
 `func (o *CompetitorDetails) GetGooglePlayId() string`
@@ -183,6 +193,16 @@ SetGooglePlayId sets GooglePlayId field to given value.
 
 HasGooglePlayId returns a boolean if a field has been set.
 
+### SetGooglePlayIdNil
+
+`func (o *CompetitorDetails) SetGooglePlayIdNil(b bool)`
+
+ SetGooglePlayIdNil sets the value for GooglePlayId to be an explicit nil
+
+### UnsetGooglePlayId
+`func (o *CompetitorDetails) UnsetGooglePlayId()`
+
+UnsetGooglePlayId ensures that no value is present for GooglePlayId, not even an explicit nil
 ### GetAppStoreId
 
 `func (o *CompetitorDetails) GetAppStoreId() string`
@@ -208,6 +228,16 @@ SetAppStoreId sets AppStoreId field to given value.
 
 HasAppStoreId returns a boolean if a field has been set.
 
+### SetAppStoreIdNil
+
+`func (o *CompetitorDetails) SetAppStoreIdNil(b bool)`
+
+ SetAppStoreIdNil sets the value for AppStoreId to be an explicit nil
+
+### UnsetAppStoreId
+`func (o *CompetitorDetails) UnsetAppStoreId()`
+
+UnsetAppStoreId ensures that no value is present for AppStoreId, not even an explicit nil
 ### GetColor
 
 `func (o *CompetitorDetails) GetColor() string`
@@ -233,6 +263,16 @@ SetColor sets Color field to given value.
 
 HasColor returns a boolean if a field has been set.
 
+### SetColorNil
+
+`func (o *CompetitorDetails) SetColorNil(b bool)`
+
+ SetColorNil sets the value for Color to be an explicit nil
+
+### UnsetColor
+`func (o *CompetitorDetails) UnsetColor()`
+
+UnsetColor ensures that no value is present for Color, not even an explicit nil
 ### GetCreatedAt
 
 `func (o *CompetitorDetails) GetCreatedAt() time.Time`

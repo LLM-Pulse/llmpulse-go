@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
-**Domain** | Pointer to **string** |  | [optional] 
+**Domain** | Pointer to **NullableString** | Bare (scheme-less) domain. Null only on the own-brand row (include_project_brand&#x3D;true) when the project has no URL. | [optional] 
 **ActorType** | Pointer to **string** | Only present when include_project_brand&#x3D;true | [optional] 
 **IsOwn** | Pointer to **bool** | Only present when include_project_brand&#x3D;true | [optional] 
 
@@ -104,6 +104,16 @@ SetDomain sets Domain field to given value.
 
 HasDomain returns a boolean if a field has been set.
 
+### SetDomainNil
+
+`func (o *Competitor) SetDomainNil(b bool)`
+
+ SetDomainNil sets the value for Domain to be an explicit nil
+
+### UnsetDomain
+`func (o *Competitor) UnsetDomain()`
+
+UnsetDomain ensures that no value is present for Domain, not even an explicit nil
 ### GetActorType
 
 `func (o *Competitor) GetActorType() string`

@@ -8,11 +8,11 @@ Name | Type | Description | Notes
 **PromptId** | Pointer to **int32** |  | [optional] 
 **PromptText** | Pointer to **string** |  | [optional] 
 **Model** | Pointer to **string** |  | [optional] 
-**Response** | Pointer to **string** |  | [optional] 
+**Response** | Pointer to **NullableString** |  | [optional] 
 **ResponseTruncated** | Pointer to **bool** |  | [optional] 
-**ExecutedAt** | Pointer to **time.Time** |  | [optional] 
-**DurationMs** | Pointer to **int32** |  | [optional] 
-**Success** | Pointer to **bool** |  | [optional] 
+**ExecutedAt** | Pointer to **NullableTime** |  | [optional] 
+**DurationMs** | Pointer to **NullableFloat32** | Milliseconds, rounded to one decimal place | [optional] 
+**Success** | Pointer to **NullableBool** | Null while the answer is still pending | [optional] 
 **FanOutQueries** | Pointer to **[]string** |  | [optional] 
 **Mentions** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Citations** | Pointer to **[]map[string]interface{}** |  | [optional] 
@@ -170,6 +170,16 @@ SetResponse sets Response field to given value.
 
 HasResponse returns a boolean if a field has been set.
 
+### SetResponseNil
+
+`func (o *AnswerDetails) SetResponseNil(b bool)`
+
+ SetResponseNil sets the value for Response to be an explicit nil
+
+### UnsetResponse
+`func (o *AnswerDetails) UnsetResponse()`
+
+UnsetResponse ensures that no value is present for Response, not even an explicit nil
 ### GetResponseTruncated
 
 `func (o *AnswerDetails) GetResponseTruncated() bool`
@@ -220,22 +230,32 @@ SetExecutedAt sets ExecutedAt field to given value.
 
 HasExecutedAt returns a boolean if a field has been set.
 
+### SetExecutedAtNil
+
+`func (o *AnswerDetails) SetExecutedAtNil(b bool)`
+
+ SetExecutedAtNil sets the value for ExecutedAt to be an explicit nil
+
+### UnsetExecutedAt
+`func (o *AnswerDetails) UnsetExecutedAt()`
+
+UnsetExecutedAt ensures that no value is present for ExecutedAt, not even an explicit nil
 ### GetDurationMs
 
-`func (o *AnswerDetails) GetDurationMs() int32`
+`func (o *AnswerDetails) GetDurationMs() float32`
 
 GetDurationMs returns the DurationMs field if non-nil, zero value otherwise.
 
 ### GetDurationMsOk
 
-`func (o *AnswerDetails) GetDurationMsOk() (*int32, bool)`
+`func (o *AnswerDetails) GetDurationMsOk() (*float32, bool)`
 
 GetDurationMsOk returns a tuple with the DurationMs field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDurationMs
 
-`func (o *AnswerDetails) SetDurationMs(v int32)`
+`func (o *AnswerDetails) SetDurationMs(v float32)`
 
 SetDurationMs sets DurationMs field to given value.
 
@@ -245,6 +265,16 @@ SetDurationMs sets DurationMs field to given value.
 
 HasDurationMs returns a boolean if a field has been set.
 
+### SetDurationMsNil
+
+`func (o *AnswerDetails) SetDurationMsNil(b bool)`
+
+ SetDurationMsNil sets the value for DurationMs to be an explicit nil
+
+### UnsetDurationMs
+`func (o *AnswerDetails) UnsetDurationMs()`
+
+UnsetDurationMs ensures that no value is present for DurationMs, not even an explicit nil
 ### GetSuccess
 
 `func (o *AnswerDetails) GetSuccess() bool`
@@ -270,6 +300,16 @@ SetSuccess sets Success field to given value.
 
 HasSuccess returns a boolean if a field has been set.
 
+### SetSuccessNil
+
+`func (o *AnswerDetails) SetSuccessNil(b bool)`
+
+ SetSuccessNil sets the value for Success to be an explicit nil
+
+### UnsetSuccess
+`func (o *AnswerDetails) UnsetSuccess()`
+
+UnsetSuccess ensures that no value is present for Success, not even an explicit nil
 ### GetFanOutQueries
 
 `func (o *AnswerDetails) GetFanOutQueries() []string`
@@ -295,6 +335,16 @@ SetFanOutQueries sets FanOutQueries field to given value.
 
 HasFanOutQueries returns a boolean if a field has been set.
 
+### SetFanOutQueriesNil
+
+`func (o *AnswerDetails) SetFanOutQueriesNil(b bool)`
+
+ SetFanOutQueriesNil sets the value for FanOutQueries to be an explicit nil
+
+### UnsetFanOutQueries
+`func (o *AnswerDetails) UnsetFanOutQueries()`
+
+UnsetFanOutQueries ensures that no value is present for FanOutQueries, not even an explicit nil
 ### GetMentions
 
 `func (o *AnswerDetails) GetMentions() []map[string]interface{}`

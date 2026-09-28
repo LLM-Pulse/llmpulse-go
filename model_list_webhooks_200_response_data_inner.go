@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,7 +27,7 @@ type ListWebhooks200ResponseDataInner struct {
 	TargetUrl *string `json:"target_url,omitempty"`
 	Disabled *bool `json:"disabled,omitempty"`
 	FailureCount *int32 `json:"failure_count,omitempty"`
-	LastDeliveredAt *time.Time `json:"last_delivered_at,omitempty"`
+	LastDeliveredAt NullableTime `json:"last_delivered_at,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
@@ -240,36 +240,46 @@ func (o *ListWebhooks200ResponseDataInner) SetFailureCount(v int32) {
 	o.FailureCount = &v
 }
 
-// GetLastDeliveredAt returns the LastDeliveredAt field value if set, zero value otherwise.
+// GetLastDeliveredAt returns the LastDeliveredAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ListWebhooks200ResponseDataInner) GetLastDeliveredAt() time.Time {
-	if o == nil || IsNil(o.LastDeliveredAt) {
+	if o == nil || IsNil(o.LastDeliveredAt.Get()) {
 		var ret time.Time
 		return ret
 	}
-	return *o.LastDeliveredAt
+	return *o.LastDeliveredAt.Get()
 }
 
 // GetLastDeliveredAtOk returns a tuple with the LastDeliveredAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ListWebhooks200ResponseDataInner) GetLastDeliveredAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.LastDeliveredAt) {
+	if o == nil {
 		return nil, false
 	}
-	return o.LastDeliveredAt, true
+	return o.LastDeliveredAt.Get(), o.LastDeliveredAt.IsSet()
 }
 
 // HasLastDeliveredAt returns a boolean if a field has been set.
 func (o *ListWebhooks200ResponseDataInner) HasLastDeliveredAt() bool {
-	if o != nil && !IsNil(o.LastDeliveredAt) {
+	if o != nil && o.LastDeliveredAt.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetLastDeliveredAt gets a reference to the given time.Time and assigns it to the LastDeliveredAt field.
+// SetLastDeliveredAt gets a reference to the given NullableTime and assigns it to the LastDeliveredAt field.
 func (o *ListWebhooks200ResponseDataInner) SetLastDeliveredAt(v time.Time) {
-	o.LastDeliveredAt = &v
+	o.LastDeliveredAt.Set(&v)
+}
+// SetLastDeliveredAtNil sets the value for LastDeliveredAt to be an explicit nil
+func (o *ListWebhooks200ResponseDataInner) SetLastDeliveredAtNil() {
+	o.LastDeliveredAt.Set(nil)
+}
+
+// UnsetLastDeliveredAt ensures that no value is present for LastDeliveredAt, not even an explicit nil
+func (o *ListWebhooks200ResponseDataInner) UnsetLastDeliveredAt() {
+	o.LastDeliveredAt.Unset()
 }
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
@@ -332,8 +342,8 @@ func (o ListWebhooks200ResponseDataInner) ToMap() (map[string]interface{}, error
 	if !IsNil(o.FailureCount) {
 		toSerialize["failure_count"] = o.FailureCount
 	}
-	if !IsNil(o.LastDeliveredAt) {
-		toSerialize["last_delivered_at"] = o.LastDeliveredAt
+	if o.LastDeliveredAt.IsSet() {
+		toSerialize["last_delivered_at"] = o.LastDeliveredAt.Get()
 	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt

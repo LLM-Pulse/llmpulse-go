@@ -6,22 +6,22 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** | Internal project label (sidebar, settings, admin) | [optional] 
-**BrandName** | Pointer to **string** | LLM-facing brand label (used in prompts and customer-facing charts). Defaults to &#x60;name&#x60; when not set. | [optional] 
-**Url** | Pointer to **string** |  | [optional] 
-**Description** | Pointer to **string** |  | [optional] 
+**BrandName** | Pointer to **NullableString** | LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use &#x60;name&#x60;. | [optional] 
+**Url** | Pointer to **NullableString** |  | [optional] 
+**Description** | Pointer to **NullableString** |  | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
 **Industry** | Pointer to **interface{}** | Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape | [optional] 
-**BusinessModel** | Pointer to **string** |  | [optional] 
+**BusinessModel** | Pointer to **NullableString** |  | [optional] 
 **BusinessModelOther** | Pointer to **NullableString** | Set only when business_model is OTHER | [optional] 
 **PrimaryProducts** | Pointer to **[]string** |  | [optional] 
-**TargetAudience** | Pointer to **string** |  | [optional] 
-**BrandVoice** | Pointer to **string** |  | [optional] 
-**Goals** | Pointer to **string** |  | [optional] 
+**TargetAudience** | Pointer to **NullableString** |  | [optional] 
+**BrandVoice** | Pointer to **NullableString** |  | [optional] 
+**Goals** | Pointer to **NullableString** |  | [optional] 
 **CountryCode** | Pointer to **string** |  | [optional] 
 **LanguageCode** | Pointer to **string** |  | [optional] 
 **Paused** | Pointer to **bool** |  | [optional] 
-**GooglePlayId** | Pointer to **string** |  | [optional] 
-**AppStoreId** | Pointer to **string** |  | [optional] 
+**GooglePlayId** | Pointer to **NullableString** |  | [optional] 
+**AppStoreId** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Stats** | Pointer to [**ProjectDetailsAllOfStats**](ProjectDetailsAllOfStats.md) |  | [optional] 
 
@@ -119,6 +119,16 @@ SetBrandName sets BrandName field to given value.
 
 HasBrandName returns a boolean if a field has been set.
 
+### SetBrandNameNil
+
+`func (o *ProjectDetails) SetBrandNameNil(b bool)`
+
+ SetBrandNameNil sets the value for BrandName to be an explicit nil
+
+### UnsetBrandName
+`func (o *ProjectDetails) UnsetBrandName()`
+
+UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
 ### GetUrl
 
 `func (o *ProjectDetails) GetUrl() string`
@@ -144,6 +154,16 @@ SetUrl sets Url field to given value.
 
 HasUrl returns a boolean if a field has been set.
 
+### SetUrlNil
+
+`func (o *ProjectDetails) SetUrlNil(b bool)`
+
+ SetUrlNil sets the value for Url to be an explicit nil
+
+### UnsetUrl
+`func (o *ProjectDetails) UnsetUrl()`
+
+UnsetUrl ensures that no value is present for Url, not even an explicit nil
 ### GetDescription
 
 `func (o *ProjectDetails) GetDescription() string`
@@ -169,6 +189,16 @@ SetDescription sets Description field to given value.
 
 HasDescription returns a boolean if a field has been set.
 
+### SetDescriptionNil
+
+`func (o *ProjectDetails) SetDescriptionNil(b bool)`
+
+ SetDescriptionNil sets the value for Description to be an explicit nil
+
+### UnsetDescription
+`func (o *ProjectDetails) UnsetDescription()`
+
+UnsetDescription ensures that no value is present for Description, not even an explicit nil
 ### GetMatchingNames
 
 `func (o *ProjectDetails) GetMatchingNames() []string`
@@ -254,6 +284,16 @@ SetBusinessModel sets BusinessModel field to given value.
 
 HasBusinessModel returns a boolean if a field has been set.
 
+### SetBusinessModelNil
+
+`func (o *ProjectDetails) SetBusinessModelNil(b bool)`
+
+ SetBusinessModelNil sets the value for BusinessModel to be an explicit nil
+
+### UnsetBusinessModel
+`func (o *ProjectDetails) UnsetBusinessModel()`
+
+UnsetBusinessModel ensures that no value is present for BusinessModel, not even an explicit nil
 ### GetBusinessModelOther
 
 `func (o *ProjectDetails) GetBusinessModelOther() string`
@@ -339,6 +379,16 @@ SetTargetAudience sets TargetAudience field to given value.
 
 HasTargetAudience returns a boolean if a field has been set.
 
+### SetTargetAudienceNil
+
+`func (o *ProjectDetails) SetTargetAudienceNil(b bool)`
+
+ SetTargetAudienceNil sets the value for TargetAudience to be an explicit nil
+
+### UnsetTargetAudience
+`func (o *ProjectDetails) UnsetTargetAudience()`
+
+UnsetTargetAudience ensures that no value is present for TargetAudience, not even an explicit nil
 ### GetBrandVoice
 
 `func (o *ProjectDetails) GetBrandVoice() string`
@@ -364,6 +414,16 @@ SetBrandVoice sets BrandVoice field to given value.
 
 HasBrandVoice returns a boolean if a field has been set.
 
+### SetBrandVoiceNil
+
+`func (o *ProjectDetails) SetBrandVoiceNil(b bool)`
+
+ SetBrandVoiceNil sets the value for BrandVoice to be an explicit nil
+
+### UnsetBrandVoice
+`func (o *ProjectDetails) UnsetBrandVoice()`
+
+UnsetBrandVoice ensures that no value is present for BrandVoice, not even an explicit nil
 ### GetGoals
 
 `func (o *ProjectDetails) GetGoals() string`
@@ -389,6 +449,16 @@ SetGoals sets Goals field to given value.
 
 HasGoals returns a boolean if a field has been set.
 
+### SetGoalsNil
+
+`func (o *ProjectDetails) SetGoalsNil(b bool)`
+
+ SetGoalsNil sets the value for Goals to be an explicit nil
+
+### UnsetGoals
+`func (o *ProjectDetails) UnsetGoals()`
+
+UnsetGoals ensures that no value is present for Goals, not even an explicit nil
 ### GetCountryCode
 
 `func (o *ProjectDetails) GetCountryCode() string`
@@ -489,6 +559,16 @@ SetGooglePlayId sets GooglePlayId field to given value.
 
 HasGooglePlayId returns a boolean if a field has been set.
 
+### SetGooglePlayIdNil
+
+`func (o *ProjectDetails) SetGooglePlayIdNil(b bool)`
+
+ SetGooglePlayIdNil sets the value for GooglePlayId to be an explicit nil
+
+### UnsetGooglePlayId
+`func (o *ProjectDetails) UnsetGooglePlayId()`
+
+UnsetGooglePlayId ensures that no value is present for GooglePlayId, not even an explicit nil
 ### GetAppStoreId
 
 `func (o *ProjectDetails) GetAppStoreId() string`
@@ -514,6 +594,16 @@ SetAppStoreId sets AppStoreId field to given value.
 
 HasAppStoreId returns a boolean if a field has been set.
 
+### SetAppStoreIdNil
+
+`func (o *ProjectDetails) SetAppStoreIdNil(b bool)`
+
+ SetAppStoreIdNil sets the value for AppStoreId to be an explicit nil
+
+### UnsetAppStoreId
+`func (o *ProjectDetails) UnsetAppStoreId()`
+
+UnsetAppStoreId ensures that no value is present for AppStoreId, not even an explicit nil
 ### GetCreatedAt
 
 `func (o *ProjectDetails) GetCreatedAt() time.Time`

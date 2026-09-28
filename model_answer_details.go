@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,11 +25,13 @@ type AnswerDetails struct {
 	PromptId *int32 `json:"prompt_id,omitempty"`
 	PromptText *string `json:"prompt_text,omitempty"`
 	Model *string `json:"model,omitempty"`
-	Response *string `json:"response,omitempty"`
+	Response NullableString `json:"response,omitempty"`
 	ResponseTruncated *bool `json:"response_truncated,omitempty"`
-	ExecutedAt *time.Time `json:"executed_at,omitempty"`
-	DurationMs *int32 `json:"duration_ms,omitempty"`
-	Success *bool `json:"success,omitempty"`
+	ExecutedAt NullableTime `json:"executed_at,omitempty"`
+	// Milliseconds, rounded to one decimal place
+	DurationMs NullableFloat32 `json:"duration_ms,omitempty"`
+	// Null while the answer is still pending
+	Success NullableBool `json:"success,omitempty"`
 	FanOutQueries []string `json:"fan_out_queries,omitempty"`
 	Mentions []map[string]interface{} `json:"mentions,omitempty"`
 	Citations []map[string]interface{} `json:"citations,omitempty"`
@@ -190,36 +192,46 @@ func (o *AnswerDetails) SetModel(v string) {
 	o.Model = &v
 }
 
-// GetResponse returns the Response field value if set, zero value otherwise.
+// GetResponse returns the Response field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetails) GetResponse() string {
-	if o == nil || IsNil(o.Response) {
+	if o == nil || IsNil(o.Response.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Response
+	return *o.Response.Get()
 }
 
 // GetResponseOk returns a tuple with the Response field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetails) GetResponseOk() (*string, bool) {
-	if o == nil || IsNil(o.Response) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Response, true
+	return o.Response.Get(), o.Response.IsSet()
 }
 
 // HasResponse returns a boolean if a field has been set.
 func (o *AnswerDetails) HasResponse() bool {
-	if o != nil && !IsNil(o.Response) {
+	if o != nil && o.Response.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetResponse gets a reference to the given string and assigns it to the Response field.
+// SetResponse gets a reference to the given NullableString and assigns it to the Response field.
 func (o *AnswerDetails) SetResponse(v string) {
-	o.Response = &v
+	o.Response.Set(&v)
+}
+// SetResponseNil sets the value for Response to be an explicit nil
+func (o *AnswerDetails) SetResponseNil() {
+	o.Response.Set(nil)
+}
+
+// UnsetResponse ensures that no value is present for Response, not even an explicit nil
+func (o *AnswerDetails) UnsetResponse() {
+	o.Response.Unset()
 }
 
 // GetResponseTruncated returns the ResponseTruncated field value if set, zero value otherwise.
@@ -254,105 +266,135 @@ func (o *AnswerDetails) SetResponseTruncated(v bool) {
 	o.ResponseTruncated = &v
 }
 
-// GetExecutedAt returns the ExecutedAt field value if set, zero value otherwise.
+// GetExecutedAt returns the ExecutedAt field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetails) GetExecutedAt() time.Time {
-	if o == nil || IsNil(o.ExecutedAt) {
+	if o == nil || IsNil(o.ExecutedAt.Get()) {
 		var ret time.Time
 		return ret
 	}
-	return *o.ExecutedAt
+	return *o.ExecutedAt.Get()
 }
 
 // GetExecutedAtOk returns a tuple with the ExecutedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetails) GetExecutedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.ExecutedAt) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ExecutedAt, true
+	return o.ExecutedAt.Get(), o.ExecutedAt.IsSet()
 }
 
 // HasExecutedAt returns a boolean if a field has been set.
 func (o *AnswerDetails) HasExecutedAt() bool {
-	if o != nil && !IsNil(o.ExecutedAt) {
+	if o != nil && o.ExecutedAt.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetExecutedAt gets a reference to the given time.Time and assigns it to the ExecutedAt field.
+// SetExecutedAt gets a reference to the given NullableTime and assigns it to the ExecutedAt field.
 func (o *AnswerDetails) SetExecutedAt(v time.Time) {
-	o.ExecutedAt = &v
+	o.ExecutedAt.Set(&v)
+}
+// SetExecutedAtNil sets the value for ExecutedAt to be an explicit nil
+func (o *AnswerDetails) SetExecutedAtNil() {
+	o.ExecutedAt.Set(nil)
 }
 
-// GetDurationMs returns the DurationMs field value if set, zero value otherwise.
-func (o *AnswerDetails) GetDurationMs() int32 {
-	if o == nil || IsNil(o.DurationMs) {
-		var ret int32
+// UnsetExecutedAt ensures that no value is present for ExecutedAt, not even an explicit nil
+func (o *AnswerDetails) UnsetExecutedAt() {
+	o.ExecutedAt.Unset()
+}
+
+// GetDurationMs returns the DurationMs field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *AnswerDetails) GetDurationMs() float32 {
+	if o == nil || IsNil(o.DurationMs.Get()) {
+		var ret float32
 		return ret
 	}
-	return *o.DurationMs
+	return *o.DurationMs.Get()
 }
 
 // GetDurationMsOk returns a tuple with the DurationMs field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AnswerDetails) GetDurationMsOk() (*int32, bool) {
-	if o == nil || IsNil(o.DurationMs) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *AnswerDetails) GetDurationMsOk() (*float32, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.DurationMs, true
+	return o.DurationMs.Get(), o.DurationMs.IsSet()
 }
 
 // HasDurationMs returns a boolean if a field has been set.
 func (o *AnswerDetails) HasDurationMs() bool {
-	if o != nil && !IsNil(o.DurationMs) {
+	if o != nil && o.DurationMs.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetDurationMs gets a reference to the given int32 and assigns it to the DurationMs field.
-func (o *AnswerDetails) SetDurationMs(v int32) {
-	o.DurationMs = &v
+// SetDurationMs gets a reference to the given NullableFloat32 and assigns it to the DurationMs field.
+func (o *AnswerDetails) SetDurationMs(v float32) {
+	o.DurationMs.Set(&v)
+}
+// SetDurationMsNil sets the value for DurationMs to be an explicit nil
+func (o *AnswerDetails) SetDurationMsNil() {
+	o.DurationMs.Set(nil)
 }
 
-// GetSuccess returns the Success field value if set, zero value otherwise.
+// UnsetDurationMs ensures that no value is present for DurationMs, not even an explicit nil
+func (o *AnswerDetails) UnsetDurationMs() {
+	o.DurationMs.Unset()
+}
+
+// GetSuccess returns the Success field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetails) GetSuccess() bool {
-	if o == nil || IsNil(o.Success) {
+	if o == nil || IsNil(o.Success.Get()) {
 		var ret bool
 		return ret
 	}
-	return *o.Success
+	return *o.Success.Get()
 }
 
 // GetSuccessOk returns a tuple with the Success field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetails) GetSuccessOk() (*bool, bool) {
-	if o == nil || IsNil(o.Success) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Success, true
+	return o.Success.Get(), o.Success.IsSet()
 }
 
 // HasSuccess returns a boolean if a field has been set.
 func (o *AnswerDetails) HasSuccess() bool {
-	if o != nil && !IsNil(o.Success) {
+	if o != nil && o.Success.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetSuccess gets a reference to the given bool and assigns it to the Success field.
+// SetSuccess gets a reference to the given NullableBool and assigns it to the Success field.
 func (o *AnswerDetails) SetSuccess(v bool) {
-	o.Success = &v
+	o.Success.Set(&v)
+}
+// SetSuccessNil sets the value for Success to be an explicit nil
+func (o *AnswerDetails) SetSuccessNil() {
+	o.Success.Set(nil)
 }
 
-// GetFanOutQueries returns the FanOutQueries field value if set, zero value otherwise.
+// UnsetSuccess ensures that no value is present for Success, not even an explicit nil
+func (o *AnswerDetails) UnsetSuccess() {
+	o.Success.Unset()
+}
+
+// GetFanOutQueries returns the FanOutQueries field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetails) GetFanOutQueries() []string {
-	if o == nil || IsNil(o.FanOutQueries) {
+	if o == nil {
 		var ret []string
 		return ret
 	}
@@ -361,6 +403,7 @@ func (o *AnswerDetails) GetFanOutQueries() []string {
 
 // GetFanOutQueriesOk returns a tuple with the FanOutQueries field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetails) GetFanOutQueriesOk() ([]string, bool) {
 	if o == nil || IsNil(o.FanOutQueries) {
 		return nil, false
@@ -756,22 +799,22 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Model) {
 		toSerialize["model"] = o.Model
 	}
-	if !IsNil(o.Response) {
-		toSerialize["response"] = o.Response
+	if o.Response.IsSet() {
+		toSerialize["response"] = o.Response.Get()
 	}
 	if !IsNil(o.ResponseTruncated) {
 		toSerialize["response_truncated"] = o.ResponseTruncated
 	}
-	if !IsNil(o.ExecutedAt) {
-		toSerialize["executed_at"] = o.ExecutedAt
+	if o.ExecutedAt.IsSet() {
+		toSerialize["executed_at"] = o.ExecutedAt.Get()
 	}
-	if !IsNil(o.DurationMs) {
-		toSerialize["duration_ms"] = o.DurationMs
+	if o.DurationMs.IsSet() {
+		toSerialize["duration_ms"] = o.DurationMs.Get()
 	}
-	if !IsNil(o.Success) {
-		toSerialize["success"] = o.Success
+	if o.Success.IsSet() {
+		toSerialize["success"] = o.Success.Get()
 	}
-	if !IsNil(o.FanOutQueries) {
+	if o.FanOutQueries != nil {
 		toSerialize["fan_out_queries"] = o.FanOutQueries
 	}
 	if !IsNil(o.Mentions) {

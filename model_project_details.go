@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.50.0
+API version: 1.51.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,25 +24,25 @@ type ProjectDetails struct {
 	Id *int32 `json:"id,omitempty"`
 	// Internal project label (sidebar, settings, admin)
 	Name *string `json:"name,omitempty"`
-	// LLM-facing brand label (used in prompts and customer-facing charts). Defaults to `name` when not set.
-	BrandName *string `json:"brand_name,omitempty"`
-	Url *string `json:"url,omitempty"`
-	Description *string `json:"description,omitempty"`
+	// LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use `name`.
+	BrandName NullableString `json:"brand_name,omitempty"`
+	Url NullableString `json:"url,omitempty"`
+	Description NullableString `json:"description,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
 	// Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape
 	Industry interface{} `json:"industry,omitempty"`
-	BusinessModel *string `json:"business_model,omitempty"`
+	BusinessModel NullableString `json:"business_model,omitempty"`
 	// Set only when business_model is OTHER
 	BusinessModelOther NullableString `json:"business_model_other,omitempty"`
 	PrimaryProducts []string `json:"primary_products,omitempty"`
-	TargetAudience *string `json:"target_audience,omitempty"`
-	BrandVoice *string `json:"brand_voice,omitempty"`
-	Goals *string `json:"goals,omitempty"`
+	TargetAudience NullableString `json:"target_audience,omitempty"`
+	BrandVoice NullableString `json:"brand_voice,omitempty"`
+	Goals NullableString `json:"goals,omitempty"`
 	CountryCode *string `json:"country_code,omitempty"`
 	LanguageCode *string `json:"language_code,omitempty"`
 	Paused *bool `json:"paused,omitempty"`
-	GooglePlayId *string `json:"google_play_id,omitempty"`
-	AppStoreId *string `json:"app_store_id,omitempty"`
+	GooglePlayId NullableString `json:"google_play_id,omitempty"`
+	AppStoreId NullableString `json:"app_store_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 }
@@ -128,100 +128,130 @@ func (o *ProjectDetails) SetName(v string) {
 	o.Name = &v
 }
 
-// GetBrandName returns the BrandName field value if set, zero value otherwise.
+// GetBrandName returns the BrandName field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetBrandName() string {
-	if o == nil || IsNil(o.BrandName) {
+	if o == nil || IsNil(o.BrandName.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.BrandName
+	return *o.BrandName.Get()
 }
 
 // GetBrandNameOk returns a tuple with the BrandName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetBrandNameOk() (*string, bool) {
-	if o == nil || IsNil(o.BrandName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.BrandName, true
+	return o.BrandName.Get(), o.BrandName.IsSet()
 }
 
 // HasBrandName returns a boolean if a field has been set.
 func (o *ProjectDetails) HasBrandName() bool {
-	if o != nil && !IsNil(o.BrandName) {
+	if o != nil && o.BrandName.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetBrandName gets a reference to the given string and assigns it to the BrandName field.
+// SetBrandName gets a reference to the given NullableString and assigns it to the BrandName field.
 func (o *ProjectDetails) SetBrandName(v string) {
-	o.BrandName = &v
+	o.BrandName.Set(&v)
+}
+// SetBrandNameNil sets the value for BrandName to be an explicit nil
+func (o *ProjectDetails) SetBrandNameNil() {
+	o.BrandName.Set(nil)
 }
 
-// GetUrl returns the Url field value if set, zero value otherwise.
+// UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
+func (o *ProjectDetails) UnsetBrandName() {
+	o.BrandName.Unset()
+}
+
+// GetUrl returns the Url field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetUrl() string {
-	if o == nil || IsNil(o.Url) {
+	if o == nil || IsNil(o.Url.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Url
+	return *o.Url.Get()
 }
 
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.Url) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Url, true
+	return o.Url.Get(), o.Url.IsSet()
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *ProjectDetails) HasUrl() bool {
-	if o != nil && !IsNil(o.Url) {
+	if o != nil && o.Url.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetUrl gets a reference to the given string and assigns it to the Url field.
+// SetUrl gets a reference to the given NullableString and assigns it to the Url field.
 func (o *ProjectDetails) SetUrl(v string) {
-	o.Url = &v
+	o.Url.Set(&v)
+}
+// SetUrlNil sets the value for Url to be an explicit nil
+func (o *ProjectDetails) SetUrlNil() {
+	o.Url.Set(nil)
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
+// UnsetUrl ensures that no value is present for Url, not even an explicit nil
+func (o *ProjectDetails) UnsetUrl() {
+	o.Url.Unset()
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
+	if o == nil || IsNil(o.Description.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Description
+	return *o.Description.Get()
 }
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Description, true
+	return o.Description.Get(), o.Description.IsSet()
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *ProjectDetails) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
+	if o != nil && o.Description.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetDescription gets a reference to the given string and assigns it to the Description field.
+// SetDescription gets a reference to the given NullableString and assigns it to the Description field.
 func (o *ProjectDetails) SetDescription(v string) {
-	o.Description = &v
+	o.Description.Set(&v)
+}
+// SetDescriptionNil sets the value for Description to be an explicit nil
+func (o *ProjectDetails) SetDescriptionNil() {
+	o.Description.Set(nil)
+}
+
+// UnsetDescription ensures that no value is present for Description, not even an explicit nil
+func (o *ProjectDetails) UnsetDescription() {
+	o.Description.Unset()
 }
 
 // GetMatchingNames returns the MatchingNames field value if set, zero value otherwise.
@@ -289,36 +319,46 @@ func (o *ProjectDetails) SetIndustry(v interface{}) {
 	o.Industry = v
 }
 
-// GetBusinessModel returns the BusinessModel field value if set, zero value otherwise.
+// GetBusinessModel returns the BusinessModel field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetBusinessModel() string {
-	if o == nil || IsNil(o.BusinessModel) {
+	if o == nil || IsNil(o.BusinessModel.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.BusinessModel
+	return *o.BusinessModel.Get()
 }
 
 // GetBusinessModelOk returns a tuple with the BusinessModel field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetBusinessModelOk() (*string, bool) {
-	if o == nil || IsNil(o.BusinessModel) {
+	if o == nil {
 		return nil, false
 	}
-	return o.BusinessModel, true
+	return o.BusinessModel.Get(), o.BusinessModel.IsSet()
 }
 
 // HasBusinessModel returns a boolean if a field has been set.
 func (o *ProjectDetails) HasBusinessModel() bool {
-	if o != nil && !IsNil(o.BusinessModel) {
+	if o != nil && o.BusinessModel.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetBusinessModel gets a reference to the given string and assigns it to the BusinessModel field.
+// SetBusinessModel gets a reference to the given NullableString and assigns it to the BusinessModel field.
 func (o *ProjectDetails) SetBusinessModel(v string) {
-	o.BusinessModel = &v
+	o.BusinessModel.Set(&v)
+}
+// SetBusinessModelNil sets the value for BusinessModel to be an explicit nil
+func (o *ProjectDetails) SetBusinessModelNil() {
+	o.BusinessModel.Set(nil)
+}
+
+// UnsetBusinessModel ensures that no value is present for BusinessModel, not even an explicit nil
+func (o *ProjectDetails) UnsetBusinessModel() {
+	o.BusinessModel.Unset()
 }
 
 // GetBusinessModelOther returns the BusinessModelOther field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -395,100 +435,130 @@ func (o *ProjectDetails) SetPrimaryProducts(v []string) {
 	o.PrimaryProducts = v
 }
 
-// GetTargetAudience returns the TargetAudience field value if set, zero value otherwise.
+// GetTargetAudience returns the TargetAudience field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetTargetAudience() string {
-	if o == nil || IsNil(o.TargetAudience) {
+	if o == nil || IsNil(o.TargetAudience.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.TargetAudience
+	return *o.TargetAudience.Get()
 }
 
 // GetTargetAudienceOk returns a tuple with the TargetAudience field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetTargetAudienceOk() (*string, bool) {
-	if o == nil || IsNil(o.TargetAudience) {
+	if o == nil {
 		return nil, false
 	}
-	return o.TargetAudience, true
+	return o.TargetAudience.Get(), o.TargetAudience.IsSet()
 }
 
 // HasTargetAudience returns a boolean if a field has been set.
 func (o *ProjectDetails) HasTargetAudience() bool {
-	if o != nil && !IsNil(o.TargetAudience) {
+	if o != nil && o.TargetAudience.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetTargetAudience gets a reference to the given string and assigns it to the TargetAudience field.
+// SetTargetAudience gets a reference to the given NullableString and assigns it to the TargetAudience field.
 func (o *ProjectDetails) SetTargetAudience(v string) {
-	o.TargetAudience = &v
+	o.TargetAudience.Set(&v)
+}
+// SetTargetAudienceNil sets the value for TargetAudience to be an explicit nil
+func (o *ProjectDetails) SetTargetAudienceNil() {
+	o.TargetAudience.Set(nil)
 }
 
-// GetBrandVoice returns the BrandVoice field value if set, zero value otherwise.
+// UnsetTargetAudience ensures that no value is present for TargetAudience, not even an explicit nil
+func (o *ProjectDetails) UnsetTargetAudience() {
+	o.TargetAudience.Unset()
+}
+
+// GetBrandVoice returns the BrandVoice field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetBrandVoice() string {
-	if o == nil || IsNil(o.BrandVoice) {
+	if o == nil || IsNil(o.BrandVoice.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.BrandVoice
+	return *o.BrandVoice.Get()
 }
 
 // GetBrandVoiceOk returns a tuple with the BrandVoice field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetBrandVoiceOk() (*string, bool) {
-	if o == nil || IsNil(o.BrandVoice) {
+	if o == nil {
 		return nil, false
 	}
-	return o.BrandVoice, true
+	return o.BrandVoice.Get(), o.BrandVoice.IsSet()
 }
 
 // HasBrandVoice returns a boolean if a field has been set.
 func (o *ProjectDetails) HasBrandVoice() bool {
-	if o != nil && !IsNil(o.BrandVoice) {
+	if o != nil && o.BrandVoice.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetBrandVoice gets a reference to the given string and assigns it to the BrandVoice field.
+// SetBrandVoice gets a reference to the given NullableString and assigns it to the BrandVoice field.
 func (o *ProjectDetails) SetBrandVoice(v string) {
-	o.BrandVoice = &v
+	o.BrandVoice.Set(&v)
+}
+// SetBrandVoiceNil sets the value for BrandVoice to be an explicit nil
+func (o *ProjectDetails) SetBrandVoiceNil() {
+	o.BrandVoice.Set(nil)
 }
 
-// GetGoals returns the Goals field value if set, zero value otherwise.
+// UnsetBrandVoice ensures that no value is present for BrandVoice, not even an explicit nil
+func (o *ProjectDetails) UnsetBrandVoice() {
+	o.BrandVoice.Unset()
+}
+
+// GetGoals returns the Goals field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetGoals() string {
-	if o == nil || IsNil(o.Goals) {
+	if o == nil || IsNil(o.Goals.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Goals
+	return *o.Goals.Get()
 }
 
 // GetGoalsOk returns a tuple with the Goals field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetGoalsOk() (*string, bool) {
-	if o == nil || IsNil(o.Goals) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Goals, true
+	return o.Goals.Get(), o.Goals.IsSet()
 }
 
 // HasGoals returns a boolean if a field has been set.
 func (o *ProjectDetails) HasGoals() bool {
-	if o != nil && !IsNil(o.Goals) {
+	if o != nil && o.Goals.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetGoals gets a reference to the given string and assigns it to the Goals field.
+// SetGoals gets a reference to the given NullableString and assigns it to the Goals field.
 func (o *ProjectDetails) SetGoals(v string) {
-	o.Goals = &v
+	o.Goals.Set(&v)
+}
+// SetGoalsNil sets the value for Goals to be an explicit nil
+func (o *ProjectDetails) SetGoalsNil() {
+	o.Goals.Set(nil)
+}
+
+// UnsetGoals ensures that no value is present for Goals, not even an explicit nil
+func (o *ProjectDetails) UnsetGoals() {
+	o.Goals.Unset()
 }
 
 // GetCountryCode returns the CountryCode field value if set, zero value otherwise.
@@ -587,68 +657,88 @@ func (o *ProjectDetails) SetPaused(v bool) {
 	o.Paused = &v
 }
 
-// GetGooglePlayId returns the GooglePlayId field value if set, zero value otherwise.
+// GetGooglePlayId returns the GooglePlayId field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetGooglePlayId() string {
-	if o == nil || IsNil(o.GooglePlayId) {
+	if o == nil || IsNil(o.GooglePlayId.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.GooglePlayId
+	return *o.GooglePlayId.Get()
 }
 
 // GetGooglePlayIdOk returns a tuple with the GooglePlayId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetGooglePlayIdOk() (*string, bool) {
-	if o == nil || IsNil(o.GooglePlayId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.GooglePlayId, true
+	return o.GooglePlayId.Get(), o.GooglePlayId.IsSet()
 }
 
 // HasGooglePlayId returns a boolean if a field has been set.
 func (o *ProjectDetails) HasGooglePlayId() bool {
-	if o != nil && !IsNil(o.GooglePlayId) {
+	if o != nil && o.GooglePlayId.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetGooglePlayId gets a reference to the given string and assigns it to the GooglePlayId field.
+// SetGooglePlayId gets a reference to the given NullableString and assigns it to the GooglePlayId field.
 func (o *ProjectDetails) SetGooglePlayId(v string) {
-	o.GooglePlayId = &v
+	o.GooglePlayId.Set(&v)
+}
+// SetGooglePlayIdNil sets the value for GooglePlayId to be an explicit nil
+func (o *ProjectDetails) SetGooglePlayIdNil() {
+	o.GooglePlayId.Set(nil)
 }
 
-// GetAppStoreId returns the AppStoreId field value if set, zero value otherwise.
+// UnsetGooglePlayId ensures that no value is present for GooglePlayId, not even an explicit nil
+func (o *ProjectDetails) UnsetGooglePlayId() {
+	o.GooglePlayId.Unset()
+}
+
+// GetAppStoreId returns the AppStoreId field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *ProjectDetails) GetAppStoreId() string {
-	if o == nil || IsNil(o.AppStoreId) {
+	if o == nil || IsNil(o.AppStoreId.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.AppStoreId
+	return *o.AppStoreId.Get()
 }
 
 // GetAppStoreIdOk returns a tuple with the AppStoreId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ProjectDetails) GetAppStoreIdOk() (*string, bool) {
-	if o == nil || IsNil(o.AppStoreId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.AppStoreId, true
+	return o.AppStoreId.Get(), o.AppStoreId.IsSet()
 }
 
 // HasAppStoreId returns a boolean if a field has been set.
 func (o *ProjectDetails) HasAppStoreId() bool {
-	if o != nil && !IsNil(o.AppStoreId) {
+	if o != nil && o.AppStoreId.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetAppStoreId gets a reference to the given string and assigns it to the AppStoreId field.
+// SetAppStoreId gets a reference to the given NullableString and assigns it to the AppStoreId field.
 func (o *ProjectDetails) SetAppStoreId(v string) {
-	o.AppStoreId = &v
+	o.AppStoreId.Set(&v)
+}
+// SetAppStoreIdNil sets the value for AppStoreId to be an explicit nil
+func (o *ProjectDetails) SetAppStoreIdNil() {
+	o.AppStoreId.Set(nil)
+}
+
+// UnsetAppStoreId ensures that no value is present for AppStoreId, not even an explicit nil
+func (o *ProjectDetails) UnsetAppStoreId() {
+	o.AppStoreId.Unset()
 }
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
@@ -731,14 +821,14 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
-	if !IsNil(o.BrandName) {
-		toSerialize["brand_name"] = o.BrandName
+	if o.BrandName.IsSet() {
+		toSerialize["brand_name"] = o.BrandName.Get()
 	}
-	if !IsNil(o.Url) {
-		toSerialize["url"] = o.Url
+	if o.Url.IsSet() {
+		toSerialize["url"] = o.Url.Get()
 	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
+	if o.Description.IsSet() {
+		toSerialize["description"] = o.Description.Get()
 	}
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
@@ -746,8 +836,8 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if o.Industry != nil {
 		toSerialize["industry"] = o.Industry
 	}
-	if !IsNil(o.BusinessModel) {
-		toSerialize["business_model"] = o.BusinessModel
+	if o.BusinessModel.IsSet() {
+		toSerialize["business_model"] = o.BusinessModel.Get()
 	}
 	if o.BusinessModelOther.IsSet() {
 		toSerialize["business_model_other"] = o.BusinessModelOther.Get()
@@ -755,14 +845,14 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PrimaryProducts) {
 		toSerialize["primary_products"] = o.PrimaryProducts
 	}
-	if !IsNil(o.TargetAudience) {
-		toSerialize["target_audience"] = o.TargetAudience
+	if o.TargetAudience.IsSet() {
+		toSerialize["target_audience"] = o.TargetAudience.Get()
 	}
-	if !IsNil(o.BrandVoice) {
-		toSerialize["brand_voice"] = o.BrandVoice
+	if o.BrandVoice.IsSet() {
+		toSerialize["brand_voice"] = o.BrandVoice.Get()
 	}
-	if !IsNil(o.Goals) {
-		toSerialize["goals"] = o.Goals
+	if o.Goals.IsSet() {
+		toSerialize["goals"] = o.Goals.Get()
 	}
 	if !IsNil(o.CountryCode) {
 		toSerialize["country_code"] = o.CountryCode
@@ -773,11 +863,11 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Paused) {
 		toSerialize["paused"] = o.Paused
 	}
-	if !IsNil(o.GooglePlayId) {
-		toSerialize["google_play_id"] = o.GooglePlayId
+	if o.GooglePlayId.IsSet() {
+		toSerialize["google_play_id"] = o.GooglePlayId.Get()
 	}
-	if !IsNil(o.AppStoreId) {
-		toSerialize["app_store_id"] = o.AppStoreId
+	if o.AppStoreId.IsSet() {
+		toSerialize["app_store_id"] = o.AppStoreId.Get()
 	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
