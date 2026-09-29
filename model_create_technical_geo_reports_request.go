@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.51.0
+API version: 1.52.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,7 +26,7 @@ type CreateTechnicalGeoReportsRequest struct {
 	Url string `json:"url"`
 	// Defaults to the project country
 	CountryCode *string `json:"country_code,omitempty"`
-	// ISO 639-1 code of the language the llms.txt files are written in (for example es). Defaults to the project language, else en. Only the llms.txt report of the bundle uses it; an unsupported code returns 422 ERR_INVALID_PARAM
+	// ISO 639-1 code of the language the llms.txt files are written in (for example es), or auto to keep the language detected on the website. Defaults to the project language, else en. Only the llms.txt report of the bundle uses it; the response echoes the code used, or auto. An unsupported code returns 422 ERR_INVALID_PARAM
 	OutputLanguageCode *string `json:"output_language_code,omitempty"`
 }
 

@@ -71,6 +71,8 @@ docs/ListCompetitors200Response.md
 docs/ListProjects200Response.md
 docs/ListWebhooks200Response.md
 docs/ListWebhooks200ResponseDataInner.md
+docs/LlmsTxtTechnicalGeoReport.md
+docs/LlmsTxtTechnicalGeoReportResultData.md
 docs/MentionsCitationsAPI.md
 docs/MetricsAPI.md
 docs/OwnedMediaCommunitiesAPI.md
@@ -115,6 +117,10 @@ docs/SummaryResponse.md
 docs/SummaryResponseAllOfPositionDistribution.md
 docs/SummaryResponseAllOfSummaryValueInner.md
 docs/TechnicalGEOReportsAPI.md
+docs/TechnicalGeoReportContentRevertRequest.md
+docs/TechnicalGeoReportContentUpdateRequest.md
+docs/TechnicalGeoReportContentUpdateRequestEdits.md
+docs/TechnicalGeoReportContentUpdateResponse.md
 docs/TimeseriesPoint.md
 docs/TimeseriesResponse.md
 docs/TimeseriesSeries.md
@@ -164,6 +170,8 @@ model_list_competitors_200_response.go
 model_list_projects_200_response.go
 model_list_webhooks_200_response.go
 model_list_webhooks_200_response_data_inner.go
+model_llms_txt_technical_geo_report.go
+model_llms_txt_technical_geo_report_result_data.go
 model_ping_200_response.go
 model_project.go
 model_project_create_request.go
@@ -196,6 +204,10 @@ model_sov_response_sample.go
 model_summary_response.go
 model_summary_response_all_of_position_distribution.go
 model_summary_response_all_of_summary_value_inner.go
+model_technical_geo_report_content_revert_request.go
+model_technical_geo_report_content_update_request.go
+model_technical_geo_report_content_update_request_edits.go
+model_technical_geo_report_content_update_response.go
 model_timeseries_point.go
 model_timeseries_response.go
 model_timeseries_series.go
