@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.52.0
+API version: 1.53.0
 Contact: info@llmpulse.ai
 */
 
@@ -320,6 +320,308 @@ func (a *ShoppingAdsAPIService) ListAdsExecute(r ApiListAdsRequest) (*http.Respo
 	}
 
 	return localVarHTTPResponse, nil
+}
+
+type ApiListLocalBusinessesRequest struct {
+	ctx context.Context
+	ApiService *ShoppingAdsAPIService
+	projectId *int32
+	page *int32
+	perPage *int32
+	owned *bool
+	order *string
+	direction *string
+	query *string
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	prompt *int32
+	promptType *string
+	brandKind *string
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	output *string
+}
+
+// Project ID
+func (r ApiListLocalBusinessesRequest) ProjectId(projectId int32) ApiListLocalBusinessesRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListLocalBusinessesRequest) Page(page int32) ApiListLocalBusinessesRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListLocalBusinessesRequest) PerPage(perPage int32) ApiListLocalBusinessesRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Return only listings identified as the tracked brand&#39;s own locations. The totals block stays account-wide.
+func (r ApiListLocalBusinessesRequest) Owned(owned bool) ApiListLocalBusinessesRequest {
+	r.owned = &owned
+	return r
+}
+
+// Sort field
+func (r ApiListLocalBusinessesRequest) Order(order string) ApiListLocalBusinessesRequest {
+	r.order = &order
+	return r
+}
+
+func (r ApiListLocalBusinessesRequest) Direction(direction string) ApiListLocalBusinessesRequest {
+	r.direction = &direction
+	return r
+}
+
+// Case-insensitive substring filter on the business name or address
+func (r ApiListLocalBusinessesRequest) Query(query string) ApiListLocalBusinessesRequest {
+	r.query = &query
+	return r
+}
+
+// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+func (r ApiListLocalBusinessesRequest) Model(model string) ApiListLocalBusinessesRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListLocalBusinessesRequest) CollectionId(collectionId string) ApiListLocalBusinessesRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListLocalBusinessesRequest) CountryCode(countryCode string) ApiListLocalBusinessesRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListLocalBusinessesRequest) LanguageCode(languageCode string) ApiListLocalBusinessesRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiListLocalBusinessesRequest) Prompt(prompt int32) ApiListLocalBusinessesRequest {
+	r.prompt = &prompt
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListLocalBusinessesRequest) PromptType(promptType string) ApiListLocalBusinessesRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListLocalBusinessesRequest) BrandKind(brandKind string) ApiListLocalBusinessesRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListLocalBusinessesRequest) Range_(range_ int32) ApiListLocalBusinessesRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiListLocalBusinessesRequest) From(from time.Time) ApiListLocalBusinessesRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListLocalBusinessesRequest) To(to time.Time) ApiListLocalBusinessesRequest {
+	r.to = &to
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListLocalBusinessesRequest) Output(output string) ApiListLocalBusinessesRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListLocalBusinessesRequest) Execute() (*LocalBusinessesResponse, *http.Response, error) {
+	return r.ApiService.ListLocalBusinessesExecute(r)
+}
+
+/*
+ListLocalBusinesses List local businesses
+
+Local businesses (shops, restaurants, services) listed inside AI answers, one row per business: its name at its address, so two locations of a chain are two rows. Each row carries its appearance count, the number of prompts that listed it, its average rating and average position in the list, its review count, and whether it is yours or a tracked competitor. Every response also carries a totals block matching the KPI cards in the app. Local business lists come from a subset of models and only for prompts with local intent. Available on every plan.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListLocalBusinessesRequest
+*/
+func (a *ShoppingAdsAPIService) ListLocalBusinesses(ctx context.Context) ApiListLocalBusinessesRequest {
+	return ApiListLocalBusinessesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return LocalBusinessesResponse
+func (a *ShoppingAdsAPIService) ListLocalBusinessesExecute(r ApiListLocalBusinessesRequest) (*LocalBusinessesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *LocalBusinessesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ShoppingAdsAPIService.ListLocalBusinesses")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/local_businesses"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.owned != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "owned", r.owned, "form", "")
+	}
+	if r.order != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", r.order, "form", "")
+	} else {
+		var defaultValue string = "appearances"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "order", defaultValue, "form", "")
+		r.order = &defaultValue
+	}
+	if r.direction != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "direction", r.direction, "form", "")
+	} else {
+		var defaultValue string = "desc"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "direction", defaultValue, "form", "")
+		r.direction = &defaultValue
+	}
+	if r.query != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListShoppingRequest struct {

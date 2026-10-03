@@ -73,6 +73,9 @@ docs/ListWebhooks200Response.md
 docs/ListWebhooks200ResponseDataInner.md
 docs/LlmsTxtTechnicalGeoReport.md
 docs/LlmsTxtTechnicalGeoReportResultData.md
+docs/LocalBusiness.md
+docs/LocalBusinessesResponse.md
+docs/LocalBusinessesTotals.md
 docs/MentionsCitationsAPI.md
 docs/MetricsAPI.md
 docs/OwnedMediaCommunitiesAPI.md
@@ -172,6 +175,9 @@ model_list_webhooks_200_response.go
 model_list_webhooks_200_response_data_inner.go
 model_llms_txt_technical_geo_report.go
 model_llms_txt_technical_geo_report_result_data.go
+model_local_business.go
+model_local_businesses_response.go
+model_local_businesses_totals.go
 model_ping_200_response.go
 model_project.go
 model_project_create_request.go
