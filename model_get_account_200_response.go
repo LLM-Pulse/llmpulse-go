@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.53.0
+API version: 1.55.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,14 +20,16 @@ var _ MappedNullable = &GetAccount200Response{}
 
 // GetAccount200Response struct for GetAccount200Response
 type GetAccount200Response struct {
-	// Plan key (starter, growth, scale, ...)
+	// Plan key (starter, growth, scale, ...). Absent for a key limited to some projects.
 	Plan *string `json:"plan,omitempty"`
-	// Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key)
+	// Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key). Absent for a key limited to some projects.
 	PlanName *string `json:"plan_name,omitempty"`
 	// How often prompts run (weekly, daily, monthly, ...)
 	TrackingFrequency *string `json:"tracking_frequency,omitempty"`
 	// Whether the key belongs to the account owner or a team member
 	Role *string `json:"role,omitempty"`
+	// The projects the calling API key is limited to; null for a key that sees the whole account, and for OAuth
+	ApiKeyProjectIds []int32 `json:"api_key_project_ids,omitempty"`
 	Subscription *GetAccount200ResponseSubscription `json:"subscription,omitempty"`
 	Limits *GetAccount200ResponseLimits `json:"limits,omitempty"`
 	RateLimits *GetAccount200ResponseRateLimits `json:"rate_limits,omitempty"`
@@ -179,6 +181,39 @@ func (o *GetAccount200Response) SetRole(v string) {
 	o.Role = &v
 }
 
+// GetApiKeyProjectIds returns the ApiKeyProjectIds field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *GetAccount200Response) GetApiKeyProjectIds() []int32 {
+	if o == nil {
+		var ret []int32
+		return ret
+	}
+	return o.ApiKeyProjectIds
+}
+
+// GetApiKeyProjectIdsOk returns a tuple with the ApiKeyProjectIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GetAccount200Response) GetApiKeyProjectIdsOk() ([]int32, bool) {
+	if o == nil || IsNil(o.ApiKeyProjectIds) {
+		return nil, false
+	}
+	return o.ApiKeyProjectIds, true
+}
+
+// HasApiKeyProjectIds returns a boolean if a field has been set.
+func (o *GetAccount200Response) HasApiKeyProjectIds() bool {
+	if o != nil && !IsNil(o.ApiKeyProjectIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetApiKeyProjectIds gets a reference to the given []int32 and assigns it to the ApiKeyProjectIds field.
+func (o *GetAccount200Response) SetApiKeyProjectIds(v []int32) {
+	o.ApiKeyProjectIds = v
+}
+
 // GetSubscription returns the Subscription field value if set, zero value otherwise.
 func (o *GetAccount200Response) GetSubscription() GetAccount200ResponseSubscription {
 	if o == nil || IsNil(o.Subscription) {
@@ -328,6 +363,9 @@ func (o GetAccount200Response) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Role) {
 		toSerialize["role"] = o.Role
+	}
+	if o.ApiKeyProjectIds != nil {
+		toSerialize["api_key_project_ids"] = o.ApiKeyProjectIds
 	}
 	if !IsNil(o.Subscription) {
 		toSerialize["subscription"] = o.Subscription

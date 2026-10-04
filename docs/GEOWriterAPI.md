@@ -18,6 +18,8 @@ Method | HTTP request | Description
 
 Create a GEO Writer task
 
+
+
 ### Example
 
 ```go

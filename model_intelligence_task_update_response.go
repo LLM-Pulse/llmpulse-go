@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.53.0
+API version: 1.55.0
 Contact: info@llmpulse.ai
 */
 
@@ -34,7 +34,7 @@ type IntelligenceTaskUpdateResponse struct {
 	UserInstructions NullableString `json:"user_instructions,omitempty"`
 	OutputLanguageCode NullableString `json:"output_language_code,omitempty"`
 	WordCount NullableInt32 `json:"word_count,omitempty"`
-	// The generated content once status is completed; null before that
+	// The generated content once status is completed; null before that. A product_listing task returns title, summary, description_html (p, ul, ol, li, strong, em, h3 and br only), faq (question and answer pairs), seo_title, seo_description, image_alts (image_id and alt), changes (field and reason) and labels
 	ResultData map[string]interface{} `json:"result_data,omitempty"`
 	ErrorMessage NullableString `json:"error_message,omitempty"`
 	EstimatedTime NullableString `json:"estimated_time,omitempty"`

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.53.0
+API version: 1.55.0
 Contact: info@llmpulse.ai
 */
 
@@ -41,6 +41,8 @@ func (r ApiCreateIntelligenceTaskRequest) Execute() (*IntelligenceTask, *http.Re
 
 /*
 CreateIntelligenceTask Create a GEO Writer task
+
+Creates a GEO Writer task, processed asynchronously: poll GET /intelligence_tasks/{id} until status is completed. Prompt-based mode takes prompt_id; agentic mode takes custom_topic and/or user_instructions. task_type product_listing is API-only and serves store apps: send a product object (title required) and optionally prompt_ids, and the completed result_data holds ready-to-apply product page copy. Edit and revert it with PATCH /intelligence_tasks/{id} and POST /intelligence_tasks/{id}/revert. Requires a `read_write` scope API key.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateIntelligenceTaskRequest

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.53.0
+API version: 1.55.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,7 +18,7 @@ import (
 // checks if the AccountQuota type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AccountQuota{}
 
-// AccountQuota A consumable quota. limit and remaining are null when unlimited is true.
+// AccountQuota A consumable quota. limit and remaining are null when unlimited is true. For a key limited to some projects, prompts and intelligence_tasks carry no limit (and intelligence_tasks no used): only the capacity left.
 type AccountQuota struct {
 	Limit NullableInt32 `json:"limit,omitempty"`
 	Used *int32 `json:"used,omitempty"`

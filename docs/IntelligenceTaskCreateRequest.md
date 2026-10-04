@@ -5,13 +5,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProjectId** | **int32** |  | 
-**TaskType** | **string** |  | 
-**PromptId** | Pointer to **int32** |  | [optional] 
+**TaskType** | **string** | product_listing is API-only: it needs product and returns ready-to-apply product page copy | 
+**PromptId** | Pointer to **NullableInt32** | Not used by product_listing; send null or omit it | [optional] 
 **CustomTopic** | Pointer to **string** |  | [optional] 
 **UserInstructions** | Pointer to **string** |  | [optional] 
 **OutputLanguageCode** | Pointer to **string** |  | [optional] 
 **ExistingContent** | Pointer to **string** |  | [optional] 
 **ExistingContentUrl** | Pointer to **string** |  | [optional] 
+**Product** | Pointer to [**IntelligenceTaskProduct**](IntelligenceTaskProduct.md) |  | [optional] 
+**PromptIds** | Pointer to **[]int32** | product_listing only: up to 20 project prompts the copy should answer | [optional] 
 
 ## Methods
 
@@ -97,6 +99,16 @@ SetPromptId sets PromptId field to given value.
 
 HasPromptId returns a boolean if a field has been set.
 
+### SetPromptIdNil
+
+`func (o *IntelligenceTaskCreateRequest) SetPromptIdNil(b bool)`
+
+ SetPromptIdNil sets the value for PromptId to be an explicit nil
+
+### UnsetPromptId
+`func (o *IntelligenceTaskCreateRequest) UnsetPromptId()`
+
+UnsetPromptId ensures that no value is present for PromptId, not even an explicit nil
 ### GetCustomTopic
 
 `func (o *IntelligenceTaskCreateRequest) GetCustomTopic() string`
@@ -221,6 +233,56 @@ SetExistingContentUrl sets ExistingContentUrl field to given value.
 `func (o *IntelligenceTaskCreateRequest) HasExistingContentUrl() bool`
 
 HasExistingContentUrl returns a boolean if a field has been set.
+
+### GetProduct
+
+`func (o *IntelligenceTaskCreateRequest) GetProduct() IntelligenceTaskProduct`
+
+GetProduct returns the Product field if non-nil, zero value otherwise.
+
+### GetProductOk
+
+`func (o *IntelligenceTaskCreateRequest) GetProductOk() (*IntelligenceTaskProduct, bool)`
+
+GetProductOk returns a tuple with the Product field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProduct
+
+`func (o *IntelligenceTaskCreateRequest) SetProduct(v IntelligenceTaskProduct)`
+
+SetProduct sets Product field to given value.
+
+### HasProduct
+
+`func (o *IntelligenceTaskCreateRequest) HasProduct() bool`
+
+HasProduct returns a boolean if a field has been set.
+
+### GetPromptIds
+
+`func (o *IntelligenceTaskCreateRequest) GetPromptIds() []int32`
+
+GetPromptIds returns the PromptIds field if non-nil, zero value otherwise.
+
+### GetPromptIdsOk
+
+`func (o *IntelligenceTaskCreateRequest) GetPromptIdsOk() (*[]int32, bool)`
+
+GetPromptIdsOk returns a tuple with the PromptIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptIds
+
+`func (o *IntelligenceTaskCreateRequest) SetPromptIds(v []int32)`
+
+SetPromptIds sets PromptIds field to given value.
+
+### HasPromptIds
+
+`func (o *IntelligenceTaskCreateRequest) HasPromptIds() bool`
+
+HasPromptIds returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

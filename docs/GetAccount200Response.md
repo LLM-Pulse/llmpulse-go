@@ -4,10 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Plan** | Pointer to **string** | Plan key (starter, growth, scale, ...) | [optional] 
-**PlanName** | Pointer to **string** | Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key) | [optional] 
+**Plan** | Pointer to **string** | Plan key (starter, growth, scale, ...). Absent for a key limited to some projects. | [optional] 
+**PlanName** | Pointer to **string** | Display name of the plan to show people (e.g. Scale++ for the scaleplusplus key). Absent for a key limited to some projects. | [optional] 
 **TrackingFrequency** | Pointer to **string** | How often prompts run (weekly, daily, monthly, ...) | [optional] 
 **Role** | Pointer to **string** | Whether the key belongs to the account owner or a team member | [optional] 
+**ApiKeyProjectIds** | Pointer to **[]int32** | The projects the calling API key is limited to; null for a key that sees the whole account, and for OAuth | [optional] 
 **Subscription** | Pointer to [**GetAccount200ResponseSubscription**](GetAccount200ResponseSubscription.md) |  | [optional] 
 **Limits** | Pointer to [**GetAccount200ResponseLimits**](GetAccount200ResponseLimits.md) |  | [optional] 
 **RateLimits** | Pointer to [**GetAccount200ResponseRateLimits**](GetAccount200ResponseRateLimits.md) |  | [optional] 
@@ -132,6 +133,41 @@ SetRole sets Role field to given value.
 
 HasRole returns a boolean if a field has been set.
 
+### GetApiKeyProjectIds
+
+`func (o *GetAccount200Response) GetApiKeyProjectIds() []int32`
+
+GetApiKeyProjectIds returns the ApiKeyProjectIds field if non-nil, zero value otherwise.
+
+### GetApiKeyProjectIdsOk
+
+`func (o *GetAccount200Response) GetApiKeyProjectIdsOk() (*[]int32, bool)`
+
+GetApiKeyProjectIdsOk returns a tuple with the ApiKeyProjectIds field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetApiKeyProjectIds
+
+`func (o *GetAccount200Response) SetApiKeyProjectIds(v []int32)`
+
+SetApiKeyProjectIds sets ApiKeyProjectIds field to given value.
+
+### HasApiKeyProjectIds
+
+`func (o *GetAccount200Response) HasApiKeyProjectIds() bool`
+
+HasApiKeyProjectIds returns a boolean if a field has been set.
+
+### SetApiKeyProjectIdsNil
+
+`func (o *GetAccount200Response) SetApiKeyProjectIdsNil(b bool)`
+
+ SetApiKeyProjectIdsNil sets the value for ApiKeyProjectIds to be an explicit nil
+
+### UnsetApiKeyProjectIds
+`func (o *GetAccount200Response) UnsetApiKeyProjectIds()`
+
+UnsetApiKeyProjectIds ensures that no value is present for ApiKeyProjectIds, not even an explicit nil
 ### GetSubscription
 
 `func (o *GetAccount200Response) GetSubscription() GetAccount200ResponseSubscription`

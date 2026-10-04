@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.53.0
+API version: 1.55.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,13 +23,18 @@ var _ MappedNullable = &IntelligenceTaskCreateRequest{}
 // IntelligenceTaskCreateRequest struct for IntelligenceTaskCreateRequest
 type IntelligenceTaskCreateRequest struct {
 	ProjectId int32 `json:"project_id"`
+	// product_listing is API-only: it needs product and returns ready-to-apply product page copy
 	TaskType string `json:"task_type"`
-	PromptId *int32 `json:"prompt_id,omitempty"`
+	// Not used by product_listing; send null or omit it
+	PromptId NullableInt32 `json:"prompt_id,omitempty"`
 	CustomTopic *string `json:"custom_topic,omitempty"`
 	UserInstructions *string `json:"user_instructions,omitempty"`
 	OutputLanguageCode *string `json:"output_language_code,omitempty"`
 	ExistingContent *string `json:"existing_content,omitempty"`
 	ExistingContentUrl *string `json:"existing_content_url,omitempty"`
+	Product *IntelligenceTaskProduct `json:"product,omitempty"`
+	// product_listing only: up to 20 project prompts the copy should answer
+	PromptIds []int32 `json:"prompt_ids,omitempty"`
 }
 
 type _IntelligenceTaskCreateRequest IntelligenceTaskCreateRequest
@@ -101,36 +106,46 @@ func (o *IntelligenceTaskCreateRequest) SetTaskType(v string) {
 	o.TaskType = v
 }
 
-// GetPromptId returns the PromptId field value if set, zero value otherwise.
+// GetPromptId returns the PromptId field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *IntelligenceTaskCreateRequest) GetPromptId() int32 {
-	if o == nil || IsNil(o.PromptId) {
+	if o == nil || IsNil(o.PromptId.Get()) {
 		var ret int32
 		return ret
 	}
-	return *o.PromptId
+	return *o.PromptId.Get()
 }
 
 // GetPromptIdOk returns a tuple with the PromptId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *IntelligenceTaskCreateRequest) GetPromptIdOk() (*int32, bool) {
-	if o == nil || IsNil(o.PromptId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.PromptId, true
+	return o.PromptId.Get(), o.PromptId.IsSet()
 }
 
 // HasPromptId returns a boolean if a field has been set.
 func (o *IntelligenceTaskCreateRequest) HasPromptId() bool {
-	if o != nil && !IsNil(o.PromptId) {
+	if o != nil && o.PromptId.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetPromptId gets a reference to the given int32 and assigns it to the PromptId field.
+// SetPromptId gets a reference to the given NullableInt32 and assigns it to the PromptId field.
 func (o *IntelligenceTaskCreateRequest) SetPromptId(v int32) {
-	o.PromptId = &v
+	o.PromptId.Set(&v)
+}
+// SetPromptIdNil sets the value for PromptId to be an explicit nil
+func (o *IntelligenceTaskCreateRequest) SetPromptIdNil() {
+	o.PromptId.Set(nil)
+}
+
+// UnsetPromptId ensures that no value is present for PromptId, not even an explicit nil
+func (o *IntelligenceTaskCreateRequest) UnsetPromptId() {
+	o.PromptId.Unset()
 }
 
 // GetCustomTopic returns the CustomTopic field value if set, zero value otherwise.
@@ -293,6 +308,70 @@ func (o *IntelligenceTaskCreateRequest) SetExistingContentUrl(v string) {
 	o.ExistingContentUrl = &v
 }
 
+// GetProduct returns the Product field value if set, zero value otherwise.
+func (o *IntelligenceTaskCreateRequest) GetProduct() IntelligenceTaskProduct {
+	if o == nil || IsNil(o.Product) {
+		var ret IntelligenceTaskProduct
+		return ret
+	}
+	return *o.Product
+}
+
+// GetProductOk returns a tuple with the Product field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntelligenceTaskCreateRequest) GetProductOk() (*IntelligenceTaskProduct, bool) {
+	if o == nil || IsNil(o.Product) {
+		return nil, false
+	}
+	return o.Product, true
+}
+
+// HasProduct returns a boolean if a field has been set.
+func (o *IntelligenceTaskCreateRequest) HasProduct() bool {
+	if o != nil && !IsNil(o.Product) {
+		return true
+	}
+
+	return false
+}
+
+// SetProduct gets a reference to the given IntelligenceTaskProduct and assigns it to the Product field.
+func (o *IntelligenceTaskCreateRequest) SetProduct(v IntelligenceTaskProduct) {
+	o.Product = &v
+}
+
+// GetPromptIds returns the PromptIds field value if set, zero value otherwise.
+func (o *IntelligenceTaskCreateRequest) GetPromptIds() []int32 {
+	if o == nil || IsNil(o.PromptIds) {
+		var ret []int32
+		return ret
+	}
+	return o.PromptIds
+}
+
+// GetPromptIdsOk returns a tuple with the PromptIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntelligenceTaskCreateRequest) GetPromptIdsOk() ([]int32, bool) {
+	if o == nil || IsNil(o.PromptIds) {
+		return nil, false
+	}
+	return o.PromptIds, true
+}
+
+// HasPromptIds returns a boolean if a field has been set.
+func (o *IntelligenceTaskCreateRequest) HasPromptIds() bool {
+	if o != nil && !IsNil(o.PromptIds) {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptIds gets a reference to the given []int32 and assigns it to the PromptIds field.
+func (o *IntelligenceTaskCreateRequest) SetPromptIds(v []int32) {
+	o.PromptIds = v
+}
+
 func (o IntelligenceTaskCreateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -305,8 +384,8 @@ func (o IntelligenceTaskCreateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["project_id"] = o.ProjectId
 	toSerialize["task_type"] = o.TaskType
-	if !IsNil(o.PromptId) {
-		toSerialize["prompt_id"] = o.PromptId
+	if o.PromptId.IsSet() {
+		toSerialize["prompt_id"] = o.PromptId.Get()
 	}
 	if !IsNil(o.CustomTopic) {
 		toSerialize["custom_topic"] = o.CustomTopic
@@ -322,6 +401,12 @@ func (o IntelligenceTaskCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ExistingContentUrl) {
 		toSerialize["existing_content_url"] = o.ExistingContentUrl
+	}
+	if !IsNil(o.Product) {
+		toSerialize["product"] = o.Product
+	}
+	if !IsNil(o.PromptIds) {
+		toSerialize["prompt_ids"] = o.PromptIds
 	}
 	return toSerialize, nil
 }
