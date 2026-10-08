@@ -7,6 +7,9 @@ Name | Type | Description | Notes
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Domain** | Pointer to **NullableString** | Bare (scheme-less) domain. Null only on the own-brand row (include_project_brand&#x3D;true) when the project has no URL. | [optional] 
+**MatchingNames** | Pointer to **[]string** | Alternative names matched as this competitor. Absent on the own-brand row | [optional] 
+**CitationMatchMode** | Pointer to [**CitationMatchMode**](CitationMatchMode.md) |  | [optional] 
+**CitationMatchPath** | Pointer to **NullableString** | Set only when citation_match_mode is path_prefix | [optional] 
 **ActorType** | Pointer to **string** | Only present when include_project_brand&#x3D;true | [optional] 
 **IsOwn** | Pointer to **bool** | Only present when include_project_brand&#x3D;true | [optional] 
 
@@ -114,6 +117,91 @@ HasDomain returns a boolean if a field has been set.
 `func (o *Competitor) UnsetDomain()`
 
 UnsetDomain ensures that no value is present for Domain, not even an explicit nil
+### GetMatchingNames
+
+`func (o *Competitor) GetMatchingNames() []string`
+
+GetMatchingNames returns the MatchingNames field if non-nil, zero value otherwise.
+
+### GetMatchingNamesOk
+
+`func (o *Competitor) GetMatchingNamesOk() (*[]string, bool)`
+
+GetMatchingNamesOk returns a tuple with the MatchingNames field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMatchingNames
+
+`func (o *Competitor) SetMatchingNames(v []string)`
+
+SetMatchingNames sets MatchingNames field to given value.
+
+### HasMatchingNames
+
+`func (o *Competitor) HasMatchingNames() bool`
+
+HasMatchingNames returns a boolean if a field has been set.
+
+### GetCitationMatchMode
+
+`func (o *Competitor) GetCitationMatchMode() CitationMatchMode`
+
+GetCitationMatchMode returns the CitationMatchMode field if non-nil, zero value otherwise.
+
+### GetCitationMatchModeOk
+
+`func (o *Competitor) GetCitationMatchModeOk() (*CitationMatchMode, bool)`
+
+GetCitationMatchModeOk returns a tuple with the CitationMatchMode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCitationMatchMode
+
+`func (o *Competitor) SetCitationMatchMode(v CitationMatchMode)`
+
+SetCitationMatchMode sets CitationMatchMode field to given value.
+
+### HasCitationMatchMode
+
+`func (o *Competitor) HasCitationMatchMode() bool`
+
+HasCitationMatchMode returns a boolean if a field has been set.
+
+### GetCitationMatchPath
+
+`func (o *Competitor) GetCitationMatchPath() string`
+
+GetCitationMatchPath returns the CitationMatchPath field if non-nil, zero value otherwise.
+
+### GetCitationMatchPathOk
+
+`func (o *Competitor) GetCitationMatchPathOk() (*string, bool)`
+
+GetCitationMatchPathOk returns a tuple with the CitationMatchPath field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCitationMatchPath
+
+`func (o *Competitor) SetCitationMatchPath(v string)`
+
+SetCitationMatchPath sets CitationMatchPath field to given value.
+
+### HasCitationMatchPath
+
+`func (o *Competitor) HasCitationMatchPath() bool`
+
+HasCitationMatchPath returns a boolean if a field has been set.
+
+### SetCitationMatchPathNil
+
+`func (o *Competitor) SetCitationMatchPathNil(b bool)`
+
+ SetCitationMatchPathNil sets the value for CitationMatchPath to be an explicit nil
+
+### UnsetCitationMatchPath
+`func (o *Competitor) UnsetCitationMatchPath()`
+
+UnsetCitationMatchPath ensures that no value is present for CitationMatchPath, not even an explicit nil
 ### GetActorType
 
 `func (o *Competitor) GetActorType() string`

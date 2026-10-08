@@ -357,7 +357,7 @@ Name | Type | Description  | Notes
 
 ## ListLocales
 
-> ListLocales(ctx).ProjectId(projectId).Execute()
+> LocalesResponse ListLocales(ctx).ProjectId(projectId).Execute()
 
 List locales with data
 
@@ -378,11 +378,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.ListLocales(context.Background()).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.ProjectsAPI.ListLocales(context.Background()).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.ListLocales``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListLocales`: LocalesResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.ListLocales`: %v\n", resp)
 }
 ```
 
@@ -401,7 +403,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**LocalesResponse**](LocalesResponse.md)
 
 ### Authorization
 
@@ -410,7 +412,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -419,7 +421,7 @@ Name | Type | Description  | Notes
 
 ## ListModels
 
-> ListModels(ctx).ProjectId(projectId).Execute()
+> ModelsResponse ListModels(ctx).ProjectId(projectId).Execute()
 
 List models with data
 
@@ -440,11 +442,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.ListModels(context.Background()).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.ProjectsAPI.ListModels(context.Background()).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.ListModels``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListModels`: ModelsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.ListModels`: %v\n", resp)
 }
 ```
 
@@ -463,7 +467,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ModelsResponse**](ModelsResponse.md)
 
 ### Authorization
 
@@ -472,7 +476,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

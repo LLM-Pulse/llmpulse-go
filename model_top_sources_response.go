@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,11 +24,13 @@ type TopSourcesResponse struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
 	From *time.Time `json:"from,omitempty"`
 	To *time.Time `json:"to,omitempty"`
+	Filters *MetricsFiltersEcho `json:"filters,omitempty"`
 	Sort *string `json:"sort,omitempty"`
 	Page *int32 `json:"page,omitempty"`
 	PerPage *int32 `json:"per_page,omitempty"`
 	Total *int32 `json:"total,omitempty"`
 	Data []TopSourcesResponseDataInner `json:"data,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewTopSourcesResponse instantiates a new TopSourcesResponse object
@@ -142,6 +144,38 @@ func (o *TopSourcesResponse) HasTo() bool {
 // SetTo gets a reference to the given time.Time and assigns it to the To field.
 func (o *TopSourcesResponse) SetTo(v time.Time) {
 	o.To = &v
+}
+
+// GetFilters returns the Filters field value if set, zero value otherwise.
+func (o *TopSourcesResponse) GetFilters() MetricsFiltersEcho {
+	if o == nil || IsNil(o.Filters) {
+		var ret MetricsFiltersEcho
+		return ret
+	}
+	return *o.Filters
+}
+
+// GetFiltersOk returns a tuple with the Filters field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TopSourcesResponse) GetFiltersOk() (*MetricsFiltersEcho, bool) {
+	if o == nil || IsNil(o.Filters) {
+		return nil, false
+	}
+	return o.Filters, true
+}
+
+// HasFilters returns a boolean if a field has been set.
+func (o *TopSourcesResponse) HasFilters() bool {
+	if o != nil && !IsNil(o.Filters) {
+		return true
+	}
+
+	return false
+}
+
+// SetFilters gets a reference to the given MetricsFiltersEcho and assigns it to the Filters field.
+func (o *TopSourcesResponse) SetFilters(v MetricsFiltersEcho) {
+	o.Filters = &v
 }
 
 // GetSort returns the Sort field value if set, zero value otherwise.
@@ -304,6 +338,38 @@ func (o *TopSourcesResponse) SetData(v []TopSourcesResponseDataInner) {
 	o.Data = v
 }
 
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *TopSourcesResponse) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *TopSourcesResponse) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *TopSourcesResponse) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *TopSourcesResponse) SetRequestId(v string) {
+	o.RequestId = &v
+}
+
 func (o TopSourcesResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -323,6 +389,9 @@ func (o TopSourcesResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.To) {
 		toSerialize["to"] = o.To
 	}
+	if !IsNil(o.Filters) {
+		toSerialize["filters"] = o.Filters
+	}
 	if !IsNil(o.Sort) {
 		toSerialize["sort"] = o.Sort
 	}
@@ -337,6 +406,9 @@ func (o TopSourcesResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

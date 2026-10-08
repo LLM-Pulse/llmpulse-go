@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **PromptsCount** | Pointer to **int32** |  | [optional] 
+**PromptsByBrandKind** | Pointer to [**ProjectDetailsAllOfStatsPromptsByBrandKind**](ProjectDetailsAllOfStatsPromptsByBrandKind.md) |  | [optional] 
 **CompetitorsCount** | Pointer to **int32** |  | [optional] 
 **CollectionsCount** | Pointer to **int32** |  | [optional] 
 
@@ -51,6 +52,31 @@ SetPromptsCount sets PromptsCount field to given value.
 `func (o *ProjectDetailsAllOfStats) HasPromptsCount() bool`
 
 HasPromptsCount returns a boolean if a field has been set.
+
+### GetPromptsByBrandKind
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsByBrandKind() ProjectDetailsAllOfStatsPromptsByBrandKind`
+
+GetPromptsByBrandKind returns the PromptsByBrandKind field if non-nil, zero value otherwise.
+
+### GetPromptsByBrandKindOk
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsByBrandKindOk() (*ProjectDetailsAllOfStatsPromptsByBrandKind, bool)`
+
+GetPromptsByBrandKindOk returns a tuple with the PromptsByBrandKind field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptsByBrandKind
+
+`func (o *ProjectDetailsAllOfStats) SetPromptsByBrandKind(v ProjectDetailsAllOfStatsPromptsByBrandKind)`
+
+SetPromptsByBrandKind sets PromptsByBrandKind field to given value.
+
+### HasPromptsByBrandKind
+
+`func (o *ProjectDetailsAllOfStats) HasPromptsByBrandKind() bool`
+
+HasPromptsByBrandKind returns a boolean if a field has been set.
 
 ### GetCompetitorsCount
 

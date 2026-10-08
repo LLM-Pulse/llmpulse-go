@@ -7,11 +7,13 @@ Name | Type | Description | Notes
 **ProjectId** | Pointer to **int32** |  | [optional] 
 **From** | Pointer to **time.Time** |  | [optional] 
 **To** | Pointer to **time.Time** |  | [optional] 
+**Filters** | Pointer to [**MetricsFiltersEcho**](MetricsFiltersEcho.md) |  | [optional] 
 **Sort** | Pointer to **string** |  | [optional] 
 **Page** | Pointer to **int32** |  | [optional] 
 **PerPage** | Pointer to **int32** |  | [optional] 
 **Total** | Pointer to **int32** |  | [optional] 
 **Data** | Pointer to [**[]TopSourcesResponseDataInner**](TopSourcesResponseDataInner.md) |  | [optional] 
+**RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -106,6 +108,31 @@ SetTo sets To field to given value.
 `func (o *TopSourcesResponse) HasTo() bool`
 
 HasTo returns a boolean if a field has been set.
+
+### GetFilters
+
+`func (o *TopSourcesResponse) GetFilters() MetricsFiltersEcho`
+
+GetFilters returns the Filters field if non-nil, zero value otherwise.
+
+### GetFiltersOk
+
+`func (o *TopSourcesResponse) GetFiltersOk() (*MetricsFiltersEcho, bool)`
+
+GetFiltersOk returns a tuple with the Filters field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFilters
+
+`func (o *TopSourcesResponse) SetFilters(v MetricsFiltersEcho)`
+
+SetFilters sets Filters field to given value.
+
+### HasFilters
+
+`func (o *TopSourcesResponse) HasFilters() bool`
+
+HasFilters returns a boolean if a field has been set.
 
 ### GetSort
 
@@ -231,6 +258,31 @@ SetData sets Data field to given value.
 `func (o *TopSourcesResponse) HasData() bool`
 
 HasData returns a boolean if a field has been set.
+
+### GetRequestId
+
+`func (o *TopSourcesResponse) GetRequestId() string`
+
+GetRequestId returns the RequestId field if non-nil, zero value otherwise.
+
+### GetRequestIdOk
+
+`func (o *TopSourcesResponse) GetRequestIdOk() (*string, bool)`
+
+GetRequestIdOk returns a tuple with the RequestId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestId
+
+`func (o *TopSourcesResponse) SetRequestId(v string)`
+
+SetRequestId sets RequestId field to given value.
+
+### HasRequestId
+
+`func (o *TopSourcesResponse) HasRequestId() bool`
+
+HasRequestId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

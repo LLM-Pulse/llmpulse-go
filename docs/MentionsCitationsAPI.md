@@ -181,7 +181,7 @@ Name | Type | Description  | Notes
 
 ## ListCitations
 
-> ListCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> CitationsResponse ListCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
 
 List brand citations
 
@@ -215,11 +215,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCitations`: CitationsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListCitations`: %v\n", resp)
 }
 ```
 
@@ -248,7 +250,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitationsResponse**](CitationsResponse.md)
 
 ### Authorization
 
@@ -257,7 +259,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -349,7 +351,7 @@ Name | Type | Description  | Notes
 
 ## ListCompetitorMentions
 
-> ListCompetitorMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> CompetitorMentionsResponse ListCompetitorMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
 
 List competitor mentions
 
@@ -380,11 +382,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListCompetitorMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListCompetitorMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCompetitorMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCompetitorMentions`: CompetitorMentionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListCompetitorMentions`: %v\n", resp)
 }
 ```
 
@@ -412,7 +416,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CompetitorMentionsResponse**](CompetitorMentionsResponse.md)
 
 ### Authorization
 
@@ -421,7 +425,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -430,7 +434,7 @@ Name | Type | Description  | Notes
 
 ## ListMentions
 
-> ListMentions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> MentionsResponse ListMentions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
 
 List brand mentions
 
@@ -462,11 +466,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListMentions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListMentions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListMentions`: MentionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListMentions`: %v\n", resp)
 }
 ```
 
@@ -495,7 +501,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**MentionsResponse**](MentionsResponse.md)
 
 ### Authorization
 
@@ -504,7 +510,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **ProjectId** | Pointer to **int32** |  | [optional] 
 **From** | Pointer to **time.Time** |  | [optional] 
 **To** | Pointer to **time.Time** |  | [optional] 
-**Filters** | Pointer to **map[string]interface{}** |  | [optional] 
+**Filters** | Pointer to [**MetricsFiltersEcho**](MetricsFiltersEcho.md) |  | [optional] 
 **Breakdown** | Pointer to **NullableString** |  | [optional] 
 **Sort** | Pointer to **string** |  | [optional] 
 **SortDir** | Pointer to **string** |  | [optional] 
@@ -113,20 +113,20 @@ HasTo returns a boolean if a field has been set.
 
 ### GetFilters
 
-`func (o *PromptSummaryResponse) GetFilters() map[string]interface{}`
+`func (o *PromptSummaryResponse) GetFilters() MetricsFiltersEcho`
 
 GetFilters returns the Filters field if non-nil, zero value otherwise.
 
 ### GetFiltersOk
 
-`func (o *PromptSummaryResponse) GetFiltersOk() (*map[string]interface{}, bool)`
+`func (o *PromptSummaryResponse) GetFiltersOk() (*MetricsFiltersEcho, bool)`
 
 GetFiltersOk returns a tuple with the Filters field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetFilters
 
-`func (o *PromptSummaryResponse) SetFilters(v map[string]interface{})`
+`func (o *PromptSummaryResponse) SetFilters(v MetricsFiltersEcho)`
 
 SetFilters sets Filters field to given value.
 

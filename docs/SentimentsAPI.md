@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
 ## ListSentimentRecords
 
-> ListSentimentRecords(ctx).ProjectId(projectId).CompetitorId(competitorId).BrandOnly(brandOnly).Analysis(analysis).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).From(from).To(to).Page(page).PerPage(perPage).Execute()
+> SentimentsResponse ListSentimentRecords(ctx).ProjectId(projectId).CompetitorId(competitorId).BrandOnly(brandOnly).Analysis(analysis).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).From(from).To(to).Page(page).PerPage(perPage).Execute()
 
 List sentiment records (Growth plan or above)
 
@@ -112,11 +112,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SentimentsAPI.ListSentimentRecords(context.Background()).ProjectId(projectId).CompetitorId(competitorId).BrandOnly(brandOnly).Analysis(analysis).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).From(from).To(to).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.SentimentsAPI.ListSentimentRecords(context.Background()).ProjectId(projectId).CompetitorId(competitorId).BrandOnly(brandOnly).Analysis(analysis).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).From(from).To(to).Page(page).PerPage(perPage).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SentimentsAPI.ListSentimentRecords``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListSentimentRecords`: SentimentsResponse
+	fmt.Fprintf(os.Stdout, "Response from `SentimentsAPI.ListSentimentRecords`: %v\n", resp)
 }
 ```
 
@@ -146,7 +148,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**SentimentsResponse**](SentimentsResponse.md)
 
 ### Authorization
 

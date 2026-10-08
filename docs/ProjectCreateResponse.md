@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**DraftId** | Pointer to **string** | The finalized draft; only present on POST /project_drafts/{id}/finalize | [optional] 
 **Project** | Pointer to **map[string]interface{}** | Same shape as GET /dimensions/projects/{id} | [optional] 
 **Prompts** | Pointer to [**ProjectCreateResponsePrompts**](ProjectCreateResponsePrompts.md) |  | [optional] 
 **Competitors** | Pointer to [**ProjectCreateResponseCompetitors**](ProjectCreateResponseCompetitors.md) |  | [optional] 
@@ -32,6 +33,31 @@ will change when the set of required properties is changed
 NewProjectCreateResponseWithDefaults instantiates a new ProjectCreateResponse object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetDraftId
+
+`func (o *ProjectCreateResponse) GetDraftId() string`
+
+GetDraftId returns the DraftId field if non-nil, zero value otherwise.
+
+### GetDraftIdOk
+
+`func (o *ProjectCreateResponse) GetDraftIdOk() (*string, bool)`
+
+GetDraftIdOk returns a tuple with the DraftId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDraftId
+
+`func (o *ProjectCreateResponse) SetDraftId(v string)`
+
+SetDraftId sets DraftId field to given value.
+
+### HasDraftId
+
+`func (o *ProjectCreateResponse) HasDraftId() bool`
+
+HasDraftId returns a boolean if a field has been set.
 
 ### GetProject
 

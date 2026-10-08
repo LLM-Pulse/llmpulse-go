@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,8 +20,8 @@ var _ MappedNullable = &AnswerDetailsLocale{}
 
 // AnswerDetailsLocale struct for AnswerDetailsLocale
 type AnswerDetailsLocale struct {
-	CountryCode *string `json:"country_code,omitempty"`
-	LanguageCode *string `json:"language_code,omitempty"`
+	CountryCode NullableString `json:"country_code,omitempty"`
+	LanguageCode NullableString `json:"language_code,omitempty"`
 }
 
 // NewAnswerDetailsLocale instantiates a new AnswerDetailsLocale object
@@ -41,68 +41,88 @@ func NewAnswerDetailsLocaleWithDefaults() *AnswerDetailsLocale {
 	return &this
 }
 
-// GetCountryCode returns the CountryCode field value if set, zero value otherwise.
+// GetCountryCode returns the CountryCode field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetailsLocale) GetCountryCode() string {
-	if o == nil || IsNil(o.CountryCode) {
+	if o == nil || IsNil(o.CountryCode.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.CountryCode
+	return *o.CountryCode.Get()
 }
 
 // GetCountryCodeOk returns a tuple with the CountryCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetailsLocale) GetCountryCodeOk() (*string, bool) {
-	if o == nil || IsNil(o.CountryCode) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CountryCode, true
+	return o.CountryCode.Get(), o.CountryCode.IsSet()
 }
 
 // HasCountryCode returns a boolean if a field has been set.
 func (o *AnswerDetailsLocale) HasCountryCode() bool {
-	if o != nil && !IsNil(o.CountryCode) {
+	if o != nil && o.CountryCode.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetCountryCode gets a reference to the given string and assigns it to the CountryCode field.
+// SetCountryCode gets a reference to the given NullableString and assigns it to the CountryCode field.
 func (o *AnswerDetailsLocale) SetCountryCode(v string) {
-	o.CountryCode = &v
+	o.CountryCode.Set(&v)
+}
+// SetCountryCodeNil sets the value for CountryCode to be an explicit nil
+func (o *AnswerDetailsLocale) SetCountryCodeNil() {
+	o.CountryCode.Set(nil)
 }
 
-// GetLanguageCode returns the LanguageCode field value if set, zero value otherwise.
+// UnsetCountryCode ensures that no value is present for CountryCode, not even an explicit nil
+func (o *AnswerDetailsLocale) UnsetCountryCode() {
+	o.CountryCode.Unset()
+}
+
+// GetLanguageCode returns the LanguageCode field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *AnswerDetailsLocale) GetLanguageCode() string {
-	if o == nil || IsNil(o.LanguageCode) {
+	if o == nil || IsNil(o.LanguageCode.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.LanguageCode
+	return *o.LanguageCode.Get()
 }
 
 // GetLanguageCodeOk returns a tuple with the LanguageCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *AnswerDetailsLocale) GetLanguageCodeOk() (*string, bool) {
-	if o == nil || IsNil(o.LanguageCode) {
+	if o == nil {
 		return nil, false
 	}
-	return o.LanguageCode, true
+	return o.LanguageCode.Get(), o.LanguageCode.IsSet()
 }
 
 // HasLanguageCode returns a boolean if a field has been set.
 func (o *AnswerDetailsLocale) HasLanguageCode() bool {
-	if o != nil && !IsNil(o.LanguageCode) {
+	if o != nil && o.LanguageCode.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetLanguageCode gets a reference to the given string and assigns it to the LanguageCode field.
+// SetLanguageCode gets a reference to the given NullableString and assigns it to the LanguageCode field.
 func (o *AnswerDetailsLocale) SetLanguageCode(v string) {
-	o.LanguageCode = &v
+	o.LanguageCode.Set(&v)
+}
+// SetLanguageCodeNil sets the value for LanguageCode to be an explicit nil
+func (o *AnswerDetailsLocale) SetLanguageCodeNil() {
+	o.LanguageCode.Set(nil)
+}
+
+// UnsetLanguageCode ensures that no value is present for LanguageCode, not even an explicit nil
+func (o *AnswerDetailsLocale) UnsetLanguageCode() {
+	o.LanguageCode.Unset()
 }
 
 func (o AnswerDetailsLocale) MarshalJSON() ([]byte, error) {
@@ -115,11 +135,11 @@ func (o AnswerDetailsLocale) MarshalJSON() ([]byte, error) {
 
 func (o AnswerDetailsLocale) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.CountryCode) {
-		toSerialize["country_code"] = o.CountryCode
+	if o.CountryCode.IsSet() {
+		toSerialize["country_code"] = o.CountryCode.Get()
 	}
-	if !IsNil(o.LanguageCode) {
-		toSerialize["language_code"] = o.LanguageCode
+	if o.LanguageCode.IsSet() {
+		toSerialize["language_code"] = o.LanguageCode.Get()
 	}
 	return toSerialize, nil
 }

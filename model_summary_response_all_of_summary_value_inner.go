@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -21,7 +21,10 @@ var _ MappedNullable = &SummaryResponseAllOfSummaryValueInner{}
 // SummaryResponseAllOfSummaryValueInner struct for SummaryResponseAllOfSummaryValueInner
 type SummaryResponseAllOfSummaryValueInner struct {
 	Actor *Actor `json:"actor,omitempty"`
+	Metric *string `json:"metric,omitempty"`
 	Total *float32 `json:"total,omitempty"`
+	// How total combines the buckets
+	Aggregation *string `json:"aggregation,omitempty"`
 	Min *float32 `json:"min,omitempty"`
 	Max *float32 `json:"max,omitempty"`
 	Last *float32 `json:"last,omitempty"`
@@ -76,6 +79,38 @@ func (o *SummaryResponseAllOfSummaryValueInner) SetActor(v Actor) {
 	o.Actor = &v
 }
 
+// GetMetric returns the Metric field value if set, zero value otherwise.
+func (o *SummaryResponseAllOfSummaryValueInner) GetMetric() string {
+	if o == nil || IsNil(o.Metric) {
+		var ret string
+		return ret
+	}
+	return *o.Metric
+}
+
+// GetMetricOk returns a tuple with the Metric field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SummaryResponseAllOfSummaryValueInner) GetMetricOk() (*string, bool) {
+	if o == nil || IsNil(o.Metric) {
+		return nil, false
+	}
+	return o.Metric, true
+}
+
+// HasMetric returns a boolean if a field has been set.
+func (o *SummaryResponseAllOfSummaryValueInner) HasMetric() bool {
+	if o != nil && !IsNil(o.Metric) {
+		return true
+	}
+
+	return false
+}
+
+// SetMetric gets a reference to the given string and assigns it to the Metric field.
+func (o *SummaryResponseAllOfSummaryValueInner) SetMetric(v string) {
+	o.Metric = &v
+}
+
 // GetTotal returns the Total field value if set, zero value otherwise.
 func (o *SummaryResponseAllOfSummaryValueInner) GetTotal() float32 {
 	if o == nil || IsNil(o.Total) {
@@ -106,6 +141,38 @@ func (o *SummaryResponseAllOfSummaryValueInner) HasTotal() bool {
 // SetTotal gets a reference to the given float32 and assigns it to the Total field.
 func (o *SummaryResponseAllOfSummaryValueInner) SetTotal(v float32) {
 	o.Total = &v
+}
+
+// GetAggregation returns the Aggregation field value if set, zero value otherwise.
+func (o *SummaryResponseAllOfSummaryValueInner) GetAggregation() string {
+	if o == nil || IsNil(o.Aggregation) {
+		var ret string
+		return ret
+	}
+	return *o.Aggregation
+}
+
+// GetAggregationOk returns a tuple with the Aggregation field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SummaryResponseAllOfSummaryValueInner) GetAggregationOk() (*string, bool) {
+	if o == nil || IsNil(o.Aggregation) {
+		return nil, false
+	}
+	return o.Aggregation, true
+}
+
+// HasAggregation returns a boolean if a field has been set.
+func (o *SummaryResponseAllOfSummaryValueInner) HasAggregation() bool {
+	if o != nil && !IsNil(o.Aggregation) {
+		return true
+	}
+
+	return false
+}
+
+// SetAggregation gets a reference to the given string and assigns it to the Aggregation field.
+func (o *SummaryResponseAllOfSummaryValueInner) SetAggregation(v string) {
+	o.Aggregation = &v
 }
 
 // GetMin returns the Min field value if set, zero value otherwise.
@@ -217,8 +284,14 @@ func (o SummaryResponseAllOfSummaryValueInner) ToMap() (map[string]interface{}, 
 	if !IsNil(o.Actor) {
 		toSerialize["actor"] = o.Actor
 	}
+	if !IsNil(o.Metric) {
+		toSerialize["metric"] = o.Metric
+	}
 	if !IsNil(o.Total) {
 		toSerialize["total"] = o.Total
+	}
+	if !IsNil(o.Aggregation) {
+		toSerialize["aggregation"] = o.Aggregation
 	}
 	if !IsNil(o.Min) {
 		toSerialize["min"] = o.Min

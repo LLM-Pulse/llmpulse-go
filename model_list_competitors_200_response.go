@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,6 +22,7 @@ var _ MappedNullable = &ListCompetitors200Response{}
 type ListCompetitors200Response struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
 	Competitors []Competitor `json:"competitors,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewListCompetitors200Response instantiates a new ListCompetitors200Response object
@@ -105,6 +106,38 @@ func (o *ListCompetitors200Response) SetCompetitors(v []Competitor) {
 	o.Competitors = v
 }
 
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *ListCompetitors200Response) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ListCompetitors200Response) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *ListCompetitors200Response) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *ListCompetitors200Response) SetRequestId(v string) {
+	o.RequestId = &v
+}
+
 func (o ListCompetitors200Response) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -120,6 +153,9 @@ func (o ListCompetitors200Response) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Competitors) {
 		toSerialize["competitors"] = o.Competitors
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

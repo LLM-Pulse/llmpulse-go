@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,11 @@ type Competitor struct {
 	Name *string `json:"name,omitempty"`
 	// Bare (scheme-less) domain. Null only on the own-brand row (include_project_brand=true) when the project has no URL.
 	Domain NullableString `json:"domain,omitempty"`
+	// Alternative names matched as this competitor. Absent on the own-brand row
+	MatchingNames []string `json:"matching_names,omitempty"`
+	CitationMatchMode *CitationMatchMode `json:"citation_match_mode,omitempty"`
+	// Set only when citation_match_mode is path_prefix
+	CitationMatchPath NullableString `json:"citation_match_path,omitempty"`
 	// Only present when include_project_brand=true
 	ActorType *string `json:"actor_type,omitempty"`
 	// Only present when include_project_brand=true
@@ -153,6 +158,112 @@ func (o *Competitor) UnsetDomain() {
 	o.Domain.Unset()
 }
 
+// GetMatchingNames returns the MatchingNames field value if set, zero value otherwise.
+func (o *Competitor) GetMatchingNames() []string {
+	if o == nil || IsNil(o.MatchingNames) {
+		var ret []string
+		return ret
+	}
+	return o.MatchingNames
+}
+
+// GetMatchingNamesOk returns a tuple with the MatchingNames field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Competitor) GetMatchingNamesOk() ([]string, bool) {
+	if o == nil || IsNil(o.MatchingNames) {
+		return nil, false
+	}
+	return o.MatchingNames, true
+}
+
+// HasMatchingNames returns a boolean if a field has been set.
+func (o *Competitor) HasMatchingNames() bool {
+	if o != nil && !IsNil(o.MatchingNames) {
+		return true
+	}
+
+	return false
+}
+
+// SetMatchingNames gets a reference to the given []string and assigns it to the MatchingNames field.
+func (o *Competitor) SetMatchingNames(v []string) {
+	o.MatchingNames = v
+}
+
+// GetCitationMatchMode returns the CitationMatchMode field value if set, zero value otherwise.
+func (o *Competitor) GetCitationMatchMode() CitationMatchMode {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		var ret CitationMatchMode
+		return ret
+	}
+	return *o.CitationMatchMode
+}
+
+// GetCitationMatchModeOk returns a tuple with the CitationMatchMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Competitor) GetCitationMatchModeOk() (*CitationMatchMode, bool) {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		return nil, false
+	}
+	return o.CitationMatchMode, true
+}
+
+// HasCitationMatchMode returns a boolean if a field has been set.
+func (o *Competitor) HasCitationMatchMode() bool {
+	if o != nil && !IsNil(o.CitationMatchMode) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchMode gets a reference to the given CitationMatchMode and assigns it to the CitationMatchMode field.
+func (o *Competitor) SetCitationMatchMode(v CitationMatchMode) {
+	o.CitationMatchMode = &v
+}
+
+// GetCitationMatchPath returns the CitationMatchPath field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *Competitor) GetCitationMatchPath() string {
+	if o == nil || IsNil(o.CitationMatchPath.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchPath.Get()
+}
+
+// GetCitationMatchPathOk returns a tuple with the CitationMatchPath field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *Competitor) GetCitationMatchPathOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CitationMatchPath.Get(), o.CitationMatchPath.IsSet()
+}
+
+// HasCitationMatchPath returns a boolean if a field has been set.
+func (o *Competitor) HasCitationMatchPath() bool {
+	if o != nil && o.CitationMatchPath.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchPath gets a reference to the given NullableString and assigns it to the CitationMatchPath field.
+func (o *Competitor) SetCitationMatchPath(v string) {
+	o.CitationMatchPath.Set(&v)
+}
+// SetCitationMatchPathNil sets the value for CitationMatchPath to be an explicit nil
+func (o *Competitor) SetCitationMatchPathNil() {
+	o.CitationMatchPath.Set(nil)
+}
+
+// UnsetCitationMatchPath ensures that no value is present for CitationMatchPath, not even an explicit nil
+func (o *Competitor) UnsetCitationMatchPath() {
+	o.CitationMatchPath.Unset()
+}
+
 // GetActorType returns the ActorType field value if set, zero value otherwise.
 func (o *Competitor) GetActorType() string {
 	if o == nil || IsNil(o.ActorType) {
@@ -235,6 +346,15 @@ func (o Competitor) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Domain.IsSet() {
 		toSerialize["domain"] = o.Domain.Get()
+	}
+	if !IsNil(o.MatchingNames) {
+		toSerialize["matching_names"] = o.MatchingNames
+	}
+	if !IsNil(o.CitationMatchMode) {
+		toSerialize["citation_match_mode"] = o.CitationMatchMode
+	}
+	if o.CitationMatchPath.IsSet() {
+		toSerialize["citation_match_path"] = o.CitationMatchPath.Get()
 	}
 	if !IsNil(o.ActorType) {
 		toSerialize["actor_type"] = o.ActorType

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -13,6 +13,7 @@ package llmpulse
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // checks if the SovResponse type satisfies the MappedNullable interface at compile time
@@ -21,13 +22,20 @@ var _ MappedNullable = &SovResponse{}
 // SovResponse struct for SovResponse
 type SovResponse struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
+	From *time.Time `json:"from,omitempty"`
+	To *time.Time `json:"to,omitempty"`
+	// day, week or month
+	Granularity *string `json:"granularity,omitempty"`
+	Filters *MetricsFiltersEcho `json:"filters,omitempty"`
 	// Per-bucket sample size and completeness: mentions is the total the shares were computed on (1-3 mentions produce the 100/50/33.33 low-sample patterns); partial marks buckets still collecting data or clipped by the requested window; confidence and margin_of_error read the sample size.
 	Periods []SovResponsePeriodsInner `json:"periods,omitempty"`
 	Sample NullableSovResponseSample `json:"sample,omitempty"`
 	OverTime []SovResponseOverTimeInner `json:"over_time,omitempty"`
 	Current []SovResponseCurrentInner `json:"current,omitempty"`
 	Breakdown []SovResponseBreakdownInner `json:"breakdown,omitempty"`
-	Others []map[string]interface{} `json:"others,omitempty"`
+	// Actors ranked fifth and below, folded into the Others share of breakdown
+	Others []SovResponseOthersInner `json:"others,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewSovResponse instantiates a new SovResponse object
@@ -77,6 +85,134 @@ func (o *SovResponse) HasProjectId() bool {
 // SetProjectId gets a reference to the given int32 and assigns it to the ProjectId field.
 func (o *SovResponse) SetProjectId(v int32) {
 	o.ProjectId = &v
+}
+
+// GetFrom returns the From field value if set, zero value otherwise.
+func (o *SovResponse) GetFrom() time.Time {
+	if o == nil || IsNil(o.From) {
+		var ret time.Time
+		return ret
+	}
+	return *o.From
+}
+
+// GetFromOk returns a tuple with the From field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SovResponse) GetFromOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.From) {
+		return nil, false
+	}
+	return o.From, true
+}
+
+// HasFrom returns a boolean if a field has been set.
+func (o *SovResponse) HasFrom() bool {
+	if o != nil && !IsNil(o.From) {
+		return true
+	}
+
+	return false
+}
+
+// SetFrom gets a reference to the given time.Time and assigns it to the From field.
+func (o *SovResponse) SetFrom(v time.Time) {
+	o.From = &v
+}
+
+// GetTo returns the To field value if set, zero value otherwise.
+func (o *SovResponse) GetTo() time.Time {
+	if o == nil || IsNil(o.To) {
+		var ret time.Time
+		return ret
+	}
+	return *o.To
+}
+
+// GetToOk returns a tuple with the To field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SovResponse) GetToOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.To) {
+		return nil, false
+	}
+	return o.To, true
+}
+
+// HasTo returns a boolean if a field has been set.
+func (o *SovResponse) HasTo() bool {
+	if o != nil && !IsNil(o.To) {
+		return true
+	}
+
+	return false
+}
+
+// SetTo gets a reference to the given time.Time and assigns it to the To field.
+func (o *SovResponse) SetTo(v time.Time) {
+	o.To = &v
+}
+
+// GetGranularity returns the Granularity field value if set, zero value otherwise.
+func (o *SovResponse) GetGranularity() string {
+	if o == nil || IsNil(o.Granularity) {
+		var ret string
+		return ret
+	}
+	return *o.Granularity
+}
+
+// GetGranularityOk returns a tuple with the Granularity field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SovResponse) GetGranularityOk() (*string, bool) {
+	if o == nil || IsNil(o.Granularity) {
+		return nil, false
+	}
+	return o.Granularity, true
+}
+
+// HasGranularity returns a boolean if a field has been set.
+func (o *SovResponse) HasGranularity() bool {
+	if o != nil && !IsNil(o.Granularity) {
+		return true
+	}
+
+	return false
+}
+
+// SetGranularity gets a reference to the given string and assigns it to the Granularity field.
+func (o *SovResponse) SetGranularity(v string) {
+	o.Granularity = &v
+}
+
+// GetFilters returns the Filters field value if set, zero value otherwise.
+func (o *SovResponse) GetFilters() MetricsFiltersEcho {
+	if o == nil || IsNil(o.Filters) {
+		var ret MetricsFiltersEcho
+		return ret
+	}
+	return *o.Filters
+}
+
+// GetFiltersOk returns a tuple with the Filters field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SovResponse) GetFiltersOk() (*MetricsFiltersEcho, bool) {
+	if o == nil || IsNil(o.Filters) {
+		return nil, false
+	}
+	return o.Filters, true
+}
+
+// HasFilters returns a boolean if a field has been set.
+func (o *SovResponse) HasFilters() bool {
+	if o != nil && !IsNil(o.Filters) {
+		return true
+	}
+
+	return false
+}
+
+// SetFilters gets a reference to the given MetricsFiltersEcho and assigns it to the Filters field.
+func (o *SovResponse) SetFilters(v MetricsFiltersEcho) {
+	o.Filters = &v
 }
 
 // GetPeriods returns the Periods field value if set, zero value otherwise.
@@ -250,9 +386,9 @@ func (o *SovResponse) SetBreakdown(v []SovResponseBreakdownInner) {
 }
 
 // GetOthers returns the Others field value if set, zero value otherwise.
-func (o *SovResponse) GetOthers() []map[string]interface{} {
+func (o *SovResponse) GetOthers() []SovResponseOthersInner {
 	if o == nil || IsNil(o.Others) {
-		var ret []map[string]interface{}
+		var ret []SovResponseOthersInner
 		return ret
 	}
 	return o.Others
@@ -260,7 +396,7 @@ func (o *SovResponse) GetOthers() []map[string]interface{} {
 
 // GetOthersOk returns a tuple with the Others field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SovResponse) GetOthersOk() ([]map[string]interface{}, bool) {
+func (o *SovResponse) GetOthersOk() ([]SovResponseOthersInner, bool) {
 	if o == nil || IsNil(o.Others) {
 		return nil, false
 	}
@@ -276,9 +412,41 @@ func (o *SovResponse) HasOthers() bool {
 	return false
 }
 
-// SetOthers gets a reference to the given []map[string]interface{} and assigns it to the Others field.
-func (o *SovResponse) SetOthers(v []map[string]interface{}) {
+// SetOthers gets a reference to the given []SovResponseOthersInner and assigns it to the Others field.
+func (o *SovResponse) SetOthers(v []SovResponseOthersInner) {
 	o.Others = v
+}
+
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *SovResponse) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SovResponse) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *SovResponse) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *SovResponse) SetRequestId(v string) {
+	o.RequestId = &v
 }
 
 func (o SovResponse) MarshalJSON() ([]byte, error) {
@@ -293,6 +461,18 @@ func (o SovResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.ProjectId) {
 		toSerialize["project_id"] = o.ProjectId
+	}
+	if !IsNil(o.From) {
+		toSerialize["from"] = o.From
+	}
+	if !IsNil(o.To) {
+		toSerialize["to"] = o.To
+	}
+	if !IsNil(o.Granularity) {
+		toSerialize["granularity"] = o.Granularity
+	}
+	if !IsNil(o.Filters) {
+		toSerialize["filters"] = o.Filters
 	}
 	if !IsNil(o.Periods) {
 		toSerialize["periods"] = o.Periods
@@ -311,6 +491,9 @@ func (o SovResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Others) {
 		toSerialize["others"] = o.Others
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

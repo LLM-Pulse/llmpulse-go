@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,8 +24,9 @@ type SummaryResponse struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
 	From *time.Time `json:"from,omitempty"`
 	To *time.Time `json:"to,omitempty"`
+	// day, week or month
 	Granularity *string `json:"granularity,omitempty"`
-	Filters map[string]interface{} `json:"filters,omitempty"`
+	Filters *MetricsFiltersEcho `json:"filters,omitempty"`
 	Series *map[string][]TimeseriesSeries `json:"series,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 	Summary *map[string][]SummaryResponseAllOfSummaryValueInner `json:"summary,omitempty"`
@@ -178,19 +179,19 @@ func (o *SummaryResponse) SetGranularity(v string) {
 }
 
 // GetFilters returns the Filters field value if set, zero value otherwise.
-func (o *SummaryResponse) GetFilters() map[string]interface{} {
+func (o *SummaryResponse) GetFilters() MetricsFiltersEcho {
 	if o == nil || IsNil(o.Filters) {
-		var ret map[string]interface{}
+		var ret MetricsFiltersEcho
 		return ret
 	}
-	return o.Filters
+	return *o.Filters
 }
 
 // GetFiltersOk returns a tuple with the Filters field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SummaryResponse) GetFiltersOk() (map[string]interface{}, bool) {
+func (o *SummaryResponse) GetFiltersOk() (*MetricsFiltersEcho, bool) {
 	if o == nil || IsNil(o.Filters) {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
 	return o.Filters, true
 }
@@ -204,9 +205,9 @@ func (o *SummaryResponse) HasFilters() bool {
 	return false
 }
 
-// SetFilters gets a reference to the given map[string]interface{} and assigns it to the Filters field.
-func (o *SummaryResponse) SetFilters(v map[string]interface{}) {
-	o.Filters = v
+// SetFilters gets a reference to the given MetricsFiltersEcho and assigns it to the Filters field.
+func (o *SummaryResponse) SetFilters(v MetricsFiltersEcho) {
+	o.Filters = &v
 }
 
 // GetSeries returns the Series field value if set, zero value otherwise.

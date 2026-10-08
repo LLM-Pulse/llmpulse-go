@@ -5,7 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Actor** | Pointer to [**Actor**](Actor.md) |  | [optional] 
+**Metric** | Pointer to **string** |  | [optional] 
 **Total** | Pointer to **float32** |  | [optional] 
+**Aggregation** | Pointer to **string** | How total combines the buckets | [optional] 
 **Min** | Pointer to **float32** |  | [optional] 
 **Max** | Pointer to **float32** |  | [optional] 
 **Last** | Pointer to **float32** |  | [optional] 
@@ -54,6 +56,31 @@ SetActor sets Actor field to given value.
 
 HasActor returns a boolean if a field has been set.
 
+### GetMetric
+
+`func (o *SummaryResponseAllOfSummaryValueInner) GetMetric() string`
+
+GetMetric returns the Metric field if non-nil, zero value otherwise.
+
+### GetMetricOk
+
+`func (o *SummaryResponseAllOfSummaryValueInner) GetMetricOk() (*string, bool)`
+
+GetMetricOk returns a tuple with the Metric field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMetric
+
+`func (o *SummaryResponseAllOfSummaryValueInner) SetMetric(v string)`
+
+SetMetric sets Metric field to given value.
+
+### HasMetric
+
+`func (o *SummaryResponseAllOfSummaryValueInner) HasMetric() bool`
+
+HasMetric returns a boolean if a field has been set.
+
 ### GetTotal
 
 `func (o *SummaryResponseAllOfSummaryValueInner) GetTotal() float32`
@@ -78,6 +105,31 @@ SetTotal sets Total field to given value.
 `func (o *SummaryResponseAllOfSummaryValueInner) HasTotal() bool`
 
 HasTotal returns a boolean if a field has been set.
+
+### GetAggregation
+
+`func (o *SummaryResponseAllOfSummaryValueInner) GetAggregation() string`
+
+GetAggregation returns the Aggregation field if non-nil, zero value otherwise.
+
+### GetAggregationOk
+
+`func (o *SummaryResponseAllOfSummaryValueInner) GetAggregationOk() (*string, bool)`
+
+GetAggregationOk returns a tuple with the Aggregation field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAggregation
+
+`func (o *SummaryResponseAllOfSummaryValueInner) SetAggregation(v string)`
+
+SetAggregation sets Aggregation field to given value.
+
+### HasAggregation
+
+`func (o *SummaryResponseAllOfSummaryValueInner) HasAggregation() bool`
+
+HasAggregation returns a boolean if a field has been set.
 
 ### GetMin
 

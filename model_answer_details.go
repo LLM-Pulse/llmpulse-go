@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,6 +32,8 @@ type AnswerDetails struct {
 	DurationMs NullableFloat32 `json:"duration_ms,omitempty"`
 	// Null while the answer is still pending
 	Success NullableBool `json:"success,omitempty"`
+	// True for a sentinel non-answer (the provider returned nothing after retries); excluded from platform metrics
+	NoResult *bool `json:"no_result,omitempty"`
 	FanOutQueries []string `json:"fan_out_queries,omitempty"`
 	Mentions []map[string]interface{} `json:"mentions,omitempty"`
 	Citations []map[string]interface{} `json:"citations,omitempty"`
@@ -45,6 +47,7 @@ type AnswerDetails struct {
 	Locale *AnswerDetailsLocale `json:"locale,omitempty"`
 	// Opens this answer in the app. The link names its project, so it opens there for any user with access to that project
 	AppUrl *string `json:"app_url,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewAnswerDetails instantiates a new AnswerDetails object
@@ -390,6 +393,38 @@ func (o *AnswerDetails) SetSuccessNil() {
 // UnsetSuccess ensures that no value is present for Success, not even an explicit nil
 func (o *AnswerDetails) UnsetSuccess() {
 	o.Success.Unset()
+}
+
+// GetNoResult returns the NoResult field value if set, zero value otherwise.
+func (o *AnswerDetails) GetNoResult() bool {
+	if o == nil || IsNil(o.NoResult) {
+		var ret bool
+		return ret
+	}
+	return *o.NoResult
+}
+
+// GetNoResultOk returns a tuple with the NoResult field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AnswerDetails) GetNoResultOk() (*bool, bool) {
+	if o == nil || IsNil(o.NoResult) {
+		return nil, false
+	}
+	return o.NoResult, true
+}
+
+// HasNoResult returns a boolean if a field has been set.
+func (o *AnswerDetails) HasNoResult() bool {
+	if o != nil && !IsNil(o.NoResult) {
+		return true
+	}
+
+	return false
+}
+
+// SetNoResult gets a reference to the given bool and assigns it to the NoResult field.
+func (o *AnswerDetails) SetNoResult(v bool) {
+	o.NoResult = &v
 }
 
 // GetFanOutQueries returns the FanOutQueries field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -777,6 +812,38 @@ func (o *AnswerDetails) SetAppUrl(v string) {
 	o.AppUrl = &v
 }
 
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *AnswerDetails) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AnswerDetails) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *AnswerDetails) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *AnswerDetails) SetRequestId(v string) {
+	o.RequestId = &v
+}
+
 func (o AnswerDetails) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -814,6 +881,9 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	if o.Success.IsSet() {
 		toSerialize["success"] = o.Success.Get()
 	}
+	if !IsNil(o.NoResult) {
+		toSerialize["no_result"] = o.NoResult
+	}
 	if o.FanOutQueries != nil {
 		toSerialize["fan_out_queries"] = o.FanOutQueries
 	}
@@ -849,6 +919,9 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AppUrl) {
 		toSerialize["app_url"] = o.AppUrl
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

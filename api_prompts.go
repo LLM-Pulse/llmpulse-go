@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -380,7 +380,7 @@ func (r ApiListPromptExecutionsRequest) Output(output string) ApiListPromptExecu
 	return r
 }
 
-func (r ApiListPromptExecutionsRequest) Execute() (*http.Response, error) {
+func (r ApiListPromptExecutionsRequest) Execute() (*PromptExecutionsResponse, *http.Response, error) {
 	return r.ApiService.ListPromptExecutionsExecute(r)
 }
 
@@ -398,16 +398,18 @@ func (a *PromptsAPIService) ListPromptExecutions(ctx context.Context) ApiListPro
 }
 
 // Execute executes the request
-func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecutionsRequest) (*http.Response, error) {
+//  @return PromptExecutionsResponse
+func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecutionsRequest) (*PromptExecutionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *PromptExecutionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ListPromptExecutions")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/prompt_executions"
@@ -416,7 +418,7 @@ func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecution
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -477,7 +479,7 @@ func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecution
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -486,19 +488,19 @@ func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecution
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -506,10 +508,19 @@ func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecution
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListPromptsRequest struct {
@@ -598,7 +609,7 @@ func (r ApiListPromptsRequest) Output(output string) ApiListPromptsRequest {
 	return r
 }
 
-func (r ApiListPromptsRequest) Execute() (*http.Response, error) {
+func (r ApiListPromptsRequest) Execute() (*PromptsResponse, *http.Response, error) {
 	return r.ApiService.ListPromptsExecute(r)
 }
 
@@ -616,16 +627,18 @@ func (a *PromptsAPIService) ListPrompts(ctx context.Context) ApiListPromptsReque
 }
 
 // Execute executes the request
-func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.Response, error) {
+//  @return PromptsResponse
+func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*PromptsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *PromptsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ListPrompts")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/prompts"
@@ -634,7 +647,7 @@ func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.R
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -689,7 +702,7 @@ func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.R
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -698,19 +711,19 @@ func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.R
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -718,10 +731,19 @@ func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*http.R
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListQueryFanOutsRequest struct {

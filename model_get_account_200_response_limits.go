@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,8 @@ type GetAccount200ResponseLimits struct {
 	CompetitorsPerProject *AccountCapacity `json:"competitors_per_project,omitempty"`
 	IntelligenceTasks *AccountQuota `json:"intelligence_tasks,omitempty"`
 	TeamMembers *AccountCapacity `json:"team_members,omitempty"`
+	RecurringGeoAudits *AccountQuota `json:"recurring_geo_audits,omitempty"`
+	GeoAuditManualRuns *AccountQuota `json:"geo_audit_manual_runs,omitempty"`
 }
 
 // NewGetAccount200ResponseLimits instantiates a new GetAccount200ResponseLimits object
@@ -204,6 +206,70 @@ func (o *GetAccount200ResponseLimits) SetTeamMembers(v AccountCapacity) {
 	o.TeamMembers = &v
 }
 
+// GetRecurringGeoAudits returns the RecurringGeoAudits field value if set, zero value otherwise.
+func (o *GetAccount200ResponseLimits) GetRecurringGeoAudits() AccountQuota {
+	if o == nil || IsNil(o.RecurringGeoAudits) {
+		var ret AccountQuota
+		return ret
+	}
+	return *o.RecurringGeoAudits
+}
+
+// GetRecurringGeoAuditsOk returns a tuple with the RecurringGeoAudits field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200ResponseLimits) GetRecurringGeoAuditsOk() (*AccountQuota, bool) {
+	if o == nil || IsNil(o.RecurringGeoAudits) {
+		return nil, false
+	}
+	return o.RecurringGeoAudits, true
+}
+
+// HasRecurringGeoAudits returns a boolean if a field has been set.
+func (o *GetAccount200ResponseLimits) HasRecurringGeoAudits() bool {
+	if o != nil && !IsNil(o.RecurringGeoAudits) {
+		return true
+	}
+
+	return false
+}
+
+// SetRecurringGeoAudits gets a reference to the given AccountQuota and assigns it to the RecurringGeoAudits field.
+func (o *GetAccount200ResponseLimits) SetRecurringGeoAudits(v AccountQuota) {
+	o.RecurringGeoAudits = &v
+}
+
+// GetGeoAuditManualRuns returns the GeoAuditManualRuns field value if set, zero value otherwise.
+func (o *GetAccount200ResponseLimits) GetGeoAuditManualRuns() AccountQuota {
+	if o == nil || IsNil(o.GeoAuditManualRuns) {
+		var ret AccountQuota
+		return ret
+	}
+	return *o.GeoAuditManualRuns
+}
+
+// GetGeoAuditManualRunsOk returns a tuple with the GeoAuditManualRuns field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200ResponseLimits) GetGeoAuditManualRunsOk() (*AccountQuota, bool) {
+	if o == nil || IsNil(o.GeoAuditManualRuns) {
+		return nil, false
+	}
+	return o.GeoAuditManualRuns, true
+}
+
+// HasGeoAuditManualRuns returns a boolean if a field has been set.
+func (o *GetAccount200ResponseLimits) HasGeoAuditManualRuns() bool {
+	if o != nil && !IsNil(o.GeoAuditManualRuns) {
+		return true
+	}
+
+	return false
+}
+
+// SetGeoAuditManualRuns gets a reference to the given AccountQuota and assigns it to the GeoAuditManualRuns field.
+func (o *GetAccount200ResponseLimits) SetGeoAuditManualRuns(v AccountQuota) {
+	o.GeoAuditManualRuns = &v
+}
+
 func (o GetAccount200ResponseLimits) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -228,6 +294,12 @@ func (o GetAccount200ResponseLimits) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.TeamMembers) {
 		toSerialize["team_members"] = o.TeamMembers
+	}
+	if !IsNil(o.RecurringGeoAudits) {
+		toSerialize["recurring_geo_audits"] = o.RecurringGeoAudits
+	}
+	if !IsNil(o.GeoAuditManualRuns) {
+		toSerialize["geo_audit_manual_runs"] = o.GeoAuditManualRuns
 	}
 	return toSerialize, nil
 }

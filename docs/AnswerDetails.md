@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **ExecutedAt** | Pointer to **NullableTime** |  | [optional] 
 **DurationMs** | Pointer to **NullableFloat32** | Milliseconds, rounded to one decimal place | [optional] 
 **Success** | Pointer to **NullableBool** | Null while the answer is still pending | [optional] 
+**NoResult** | Pointer to **bool** | True for a sentinel non-answer (the provider returned nothing after retries); excluded from platform metrics | [optional] 
 **FanOutQueries** | Pointer to **[]string** |  | [optional] 
 **Mentions** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Citations** | Pointer to **[]map[string]interface{}** |  | [optional] 
@@ -25,6 +26,7 @@ Name | Type | Description | Notes
 **LocalBusinesses** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Locale** | Pointer to [**AnswerDetailsLocale**](AnswerDetailsLocale.md) |  | [optional] 
 **AppUrl** | Pointer to **string** | Opens this answer in the app. The link names its project, so it opens there for any user with access to that project | [optional] 
+**RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -310,6 +312,31 @@ HasSuccess returns a boolean if a field has been set.
 `func (o *AnswerDetails) UnsetSuccess()`
 
 UnsetSuccess ensures that no value is present for Success, not even an explicit nil
+### GetNoResult
+
+`func (o *AnswerDetails) GetNoResult() bool`
+
+GetNoResult returns the NoResult field if non-nil, zero value otherwise.
+
+### GetNoResultOk
+
+`func (o *AnswerDetails) GetNoResultOk() (*bool, bool)`
+
+GetNoResultOk returns a tuple with the NoResult field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNoResult
+
+`func (o *AnswerDetails) SetNoResult(v bool)`
+
+SetNoResult sets NoResult field to given value.
+
+### HasNoResult
+
+`func (o *AnswerDetails) HasNoResult() bool`
+
+HasNoResult returns a boolean if a field has been set.
+
 ### GetFanOutQueries
 
 `func (o *AnswerDetails) GetFanOutQueries() []string`
@@ -619,6 +646,31 @@ SetAppUrl sets AppUrl field to given value.
 `func (o *AnswerDetails) HasAppUrl() bool`
 
 HasAppUrl returns a boolean if a field has been set.
+
+### GetRequestId
+
+`func (o *AnswerDetails) GetRequestId() string`
+
+GetRequestId returns the RequestId field if non-nil, zero value otherwise.
+
+### GetRequestIdOk
+
+`func (o *AnswerDetails) GetRequestIdOk() (*string, bool)`
+
+GetRequestIdOk returns a tuple with the RequestId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestId
+
+`func (o *AnswerDetails) SetRequestId(v string)`
+
+SetRequestId sets RequestId field to given value.
+
+### HasRequestId
+
+`func (o *AnswerDetails) HasRequestId() bool`
+
+HasRequestId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -491,7 +491,7 @@ func (r ApiListCitationsRequest) Output(output string) ApiListCitationsRequest {
 	return r
 }
 
-func (r ApiListCitationsRequest) Execute() (*http.Response, error) {
+func (r ApiListCitationsRequest) Execute() (*CitationsResponse, *http.Response, error) {
 	return r.ApiService.ListCitationsExecute(r)
 }
 
@@ -511,16 +511,18 @@ func (a *MentionsCitationsAPIService) ListCitations(ctx context.Context) ApiList
 }
 
 // Execute executes the request
-func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsRequest) (*http.Response, error) {
+//  @return CitationsResponse
+func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsRequest) (*CitationsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitationsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MentionsCitationsAPIService.ListCitations")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/citations"
@@ -529,7 +531,7 @@ func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -581,7 +583,7 @@ func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsReq
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -590,19 +592,19 @@ func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsReq
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -610,10 +612,19 @@ func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsReq
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListCompetitorCitationsRequest struct {
@@ -882,7 +893,7 @@ func (r ApiListCompetitorMentionsRequest) Output(output string) ApiListCompetito
 	return r
 }
 
-func (r ApiListCompetitorMentionsRequest) Execute() (*http.Response, error) {
+func (r ApiListCompetitorMentionsRequest) Execute() (*CompetitorMentionsResponse, *http.Response, error) {
 	return r.ApiService.ListCompetitorMentionsExecute(r)
 }
 
@@ -900,16 +911,18 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentions(ctx context.Context
 }
 
 // Execute executes the request
-func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCompetitorMentionsRequest) (*http.Response, error) {
+//  @return CompetitorMentionsResponse
+func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCompetitorMentionsRequest) (*CompetitorMentionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CompetitorMentionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MentionsCitationsAPIService.ListCompetitorMentions")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/competitor_mentions"
@@ -918,7 +931,7 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCom
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -967,7 +980,7 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCom
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -976,19 +989,19 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCom
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -996,10 +1009,19 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCom
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListMentionsRequest struct {
@@ -1081,7 +1103,7 @@ func (r ApiListMentionsRequest) Output(output string) ApiListMentionsRequest {
 	return r
 }
 
-func (r ApiListMentionsRequest) Execute() (*http.Response, error) {
+func (r ApiListMentionsRequest) Execute() (*MentionsResponse, *http.Response, error) {
 	return r.ApiService.ListMentionsExecute(r)
 }
 
@@ -1099,16 +1121,18 @@ func (a *MentionsCitationsAPIService) ListMentions(ctx context.Context) ApiListM
 }
 
 // Execute executes the request
-func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsRequest) (*http.Response, error) {
+//  @return MentionsResponse
+func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsRequest) (*MentionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *MentionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MentionsCitationsAPIService.ListMentions")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/mentions"
@@ -1117,7 +1141,7 @@ func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsReque
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -1169,7 +1193,7 @@ func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsReque
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -1178,19 +1202,19 @@ func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsReque
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1198,8 +1222,17 @@ func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsReque
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

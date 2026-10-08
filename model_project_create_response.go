@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,6 +20,8 @@ var _ MappedNullable = &ProjectCreateResponse{}
 
 // ProjectCreateResponse struct for ProjectCreateResponse
 type ProjectCreateResponse struct {
+	// The finalized draft; only present on POST /project_drafts/{id}/finalize
+	DraftId *string `json:"draft_id,omitempty"`
 	// Same shape as GET /dimensions/projects/{id}
 	Project map[string]interface{} `json:"project,omitempty"`
 	Prompts *ProjectCreateResponsePrompts `json:"prompts,omitempty"`
@@ -50,6 +52,38 @@ func NewProjectCreateResponse() *ProjectCreateResponse {
 func NewProjectCreateResponseWithDefaults() *ProjectCreateResponse {
 	this := ProjectCreateResponse{}
 	return &this
+}
+
+// GetDraftId returns the DraftId field value if set, zero value otherwise.
+func (o *ProjectCreateResponse) GetDraftId() string {
+	if o == nil || IsNil(o.DraftId) {
+		var ret string
+		return ret
+	}
+	return *o.DraftId
+}
+
+// GetDraftIdOk returns a tuple with the DraftId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateResponse) GetDraftIdOk() (*string, bool) {
+	if o == nil || IsNil(o.DraftId) {
+		return nil, false
+	}
+	return o.DraftId, true
+}
+
+// HasDraftId returns a boolean if a field has been set.
+func (o *ProjectCreateResponse) HasDraftId() bool {
+	if o != nil && !IsNil(o.DraftId) {
+		return true
+	}
+
+	return false
+}
+
+// SetDraftId gets a reference to the given string and assigns it to the DraftId field.
+func (o *ProjectCreateResponse) SetDraftId(v string) {
+	o.DraftId = &v
 }
 
 // GetProject returns the Project field value if set, zero value otherwise.
@@ -350,6 +384,9 @@ func (o ProjectCreateResponse) MarshalJSON() ([]byte, error) {
 
 func (o ProjectCreateResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.DraftId) {
+		toSerialize["draft_id"] = o.DraftId
+	}
 	if !IsNil(o.Project) {
 		toSerialize["project"] = o.Project
 	}

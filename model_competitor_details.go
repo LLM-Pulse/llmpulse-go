@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -28,8 +28,20 @@ type CompetitorDetails struct {
 	MatchingNames []string `json:"matching_names,omitempty"`
 	GooglePlayId NullableString `json:"google_play_id,omitempty"`
 	AppStoreId NullableString `json:"app_store_id,omitempty"`
+	CitationMatchMode *CitationMatchMode `json:"citation_match_mode,omitempty"`
+	// Set only when citation_match_mode is path_prefix
+	CitationMatchPath NullableString `json:"citation_match_path,omitempty"`
+	// English app name on Google Play, when the competitor has an Android app
+	GooglePlayName NullableString `json:"google_play_name,omitempty"`
+	// English app name on the App Store, when the competitor has an iOS app
+	AppStoreName NullableString `json:"app_store_name,omitempty"`
+	GooglePlayIconUrl NullableString `json:"google_play_icon_url,omitempty"`
+	AppStoreIconUrl NullableString `json:"app_store_icon_url,omitempty"`
 	Color NullableString `json:"color,omitempty"`
+	// True while the competitor's historical mentions are being recalculated
+	Processing *bool `json:"processing,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewCompetitorDetails instantiates a new CompetitorDetails object
@@ -294,6 +306,248 @@ func (o *CompetitorDetails) UnsetAppStoreId() {
 	o.AppStoreId.Unset()
 }
 
+// GetCitationMatchMode returns the CitationMatchMode field value if set, zero value otherwise.
+func (o *CompetitorDetails) GetCitationMatchMode() CitationMatchMode {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		var ret CitationMatchMode
+		return ret
+	}
+	return *o.CitationMatchMode
+}
+
+// GetCitationMatchModeOk returns a tuple with the CitationMatchMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CompetitorDetails) GetCitationMatchModeOk() (*CitationMatchMode, bool) {
+	if o == nil || IsNil(o.CitationMatchMode) {
+		return nil, false
+	}
+	return o.CitationMatchMode, true
+}
+
+// HasCitationMatchMode returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasCitationMatchMode() bool {
+	if o != nil && !IsNil(o.CitationMatchMode) {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchMode gets a reference to the given CitationMatchMode and assigns it to the CitationMatchMode field.
+func (o *CompetitorDetails) SetCitationMatchMode(v CitationMatchMode) {
+	o.CitationMatchMode = &v
+}
+
+// GetCitationMatchPath returns the CitationMatchPath field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *CompetitorDetails) GetCitationMatchPath() string {
+	if o == nil || IsNil(o.CitationMatchPath.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.CitationMatchPath.Get()
+}
+
+// GetCitationMatchPathOk returns a tuple with the CitationMatchPath field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CompetitorDetails) GetCitationMatchPathOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CitationMatchPath.Get(), o.CitationMatchPath.IsSet()
+}
+
+// HasCitationMatchPath returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasCitationMatchPath() bool {
+	if o != nil && o.CitationMatchPath.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCitationMatchPath gets a reference to the given NullableString and assigns it to the CitationMatchPath field.
+func (o *CompetitorDetails) SetCitationMatchPath(v string) {
+	o.CitationMatchPath.Set(&v)
+}
+// SetCitationMatchPathNil sets the value for CitationMatchPath to be an explicit nil
+func (o *CompetitorDetails) SetCitationMatchPathNil() {
+	o.CitationMatchPath.Set(nil)
+}
+
+// UnsetCitationMatchPath ensures that no value is present for CitationMatchPath, not even an explicit nil
+func (o *CompetitorDetails) UnsetCitationMatchPath() {
+	o.CitationMatchPath.Unset()
+}
+
+// GetGooglePlayName returns the GooglePlayName field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *CompetitorDetails) GetGooglePlayName() string {
+	if o == nil || IsNil(o.GooglePlayName.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.GooglePlayName.Get()
+}
+
+// GetGooglePlayNameOk returns a tuple with the GooglePlayName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CompetitorDetails) GetGooglePlayNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GooglePlayName.Get(), o.GooglePlayName.IsSet()
+}
+
+// HasGooglePlayName returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasGooglePlayName() bool {
+	if o != nil && o.GooglePlayName.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetGooglePlayName gets a reference to the given NullableString and assigns it to the GooglePlayName field.
+func (o *CompetitorDetails) SetGooglePlayName(v string) {
+	o.GooglePlayName.Set(&v)
+}
+// SetGooglePlayNameNil sets the value for GooglePlayName to be an explicit nil
+func (o *CompetitorDetails) SetGooglePlayNameNil() {
+	o.GooglePlayName.Set(nil)
+}
+
+// UnsetGooglePlayName ensures that no value is present for GooglePlayName, not even an explicit nil
+func (o *CompetitorDetails) UnsetGooglePlayName() {
+	o.GooglePlayName.Unset()
+}
+
+// GetAppStoreName returns the AppStoreName field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *CompetitorDetails) GetAppStoreName() string {
+	if o == nil || IsNil(o.AppStoreName.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.AppStoreName.Get()
+}
+
+// GetAppStoreNameOk returns a tuple with the AppStoreName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CompetitorDetails) GetAppStoreNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.AppStoreName.Get(), o.AppStoreName.IsSet()
+}
+
+// HasAppStoreName returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasAppStoreName() bool {
+	if o != nil && o.AppStoreName.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetAppStoreName gets a reference to the given NullableString and assigns it to the AppStoreName field.
+func (o *CompetitorDetails) SetAppStoreName(v string) {
+	o.AppStoreName.Set(&v)
+}
+// SetAppStoreNameNil sets the value for AppStoreName to be an explicit nil
+func (o *CompetitorDetails) SetAppStoreNameNil() {
+	o.AppStoreName.Set(nil)
+}
+
+// UnsetAppStoreName ensures that no value is present for AppStoreName, not even an explicit nil
+func (o *CompetitorDetails) UnsetAppStoreName() {
+	o.AppStoreName.Unset()
+}
+
+// GetGooglePlayIconUrl returns the GooglePlayIconUrl field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *CompetitorDetails) GetGooglePlayIconUrl() string {
+	if o == nil || IsNil(o.GooglePlayIconUrl.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.GooglePlayIconUrl.Get()
+}
+
+// GetGooglePlayIconUrlOk returns a tuple with the GooglePlayIconUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CompetitorDetails) GetGooglePlayIconUrlOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.GooglePlayIconUrl.Get(), o.GooglePlayIconUrl.IsSet()
+}
+
+// HasGooglePlayIconUrl returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasGooglePlayIconUrl() bool {
+	if o != nil && o.GooglePlayIconUrl.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetGooglePlayIconUrl gets a reference to the given NullableString and assigns it to the GooglePlayIconUrl field.
+func (o *CompetitorDetails) SetGooglePlayIconUrl(v string) {
+	o.GooglePlayIconUrl.Set(&v)
+}
+// SetGooglePlayIconUrlNil sets the value for GooglePlayIconUrl to be an explicit nil
+func (o *CompetitorDetails) SetGooglePlayIconUrlNil() {
+	o.GooglePlayIconUrl.Set(nil)
+}
+
+// UnsetGooglePlayIconUrl ensures that no value is present for GooglePlayIconUrl, not even an explicit nil
+func (o *CompetitorDetails) UnsetGooglePlayIconUrl() {
+	o.GooglePlayIconUrl.Unset()
+}
+
+// GetAppStoreIconUrl returns the AppStoreIconUrl field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *CompetitorDetails) GetAppStoreIconUrl() string {
+	if o == nil || IsNil(o.AppStoreIconUrl.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.AppStoreIconUrl.Get()
+}
+
+// GetAppStoreIconUrlOk returns a tuple with the AppStoreIconUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CompetitorDetails) GetAppStoreIconUrlOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.AppStoreIconUrl.Get(), o.AppStoreIconUrl.IsSet()
+}
+
+// HasAppStoreIconUrl returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasAppStoreIconUrl() bool {
+	if o != nil && o.AppStoreIconUrl.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetAppStoreIconUrl gets a reference to the given NullableString and assigns it to the AppStoreIconUrl field.
+func (o *CompetitorDetails) SetAppStoreIconUrl(v string) {
+	o.AppStoreIconUrl.Set(&v)
+}
+// SetAppStoreIconUrlNil sets the value for AppStoreIconUrl to be an explicit nil
+func (o *CompetitorDetails) SetAppStoreIconUrlNil() {
+	o.AppStoreIconUrl.Set(nil)
+}
+
+// UnsetAppStoreIconUrl ensures that no value is present for AppStoreIconUrl, not even an explicit nil
+func (o *CompetitorDetails) UnsetAppStoreIconUrl() {
+	o.AppStoreIconUrl.Unset()
+}
+
 // GetColor returns the Color field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *CompetitorDetails) GetColor() string {
 	if o == nil || IsNil(o.Color.Get()) {
@@ -336,6 +590,38 @@ func (o *CompetitorDetails) UnsetColor() {
 	o.Color.Unset()
 }
 
+// GetProcessing returns the Processing field value if set, zero value otherwise.
+func (o *CompetitorDetails) GetProcessing() bool {
+	if o == nil || IsNil(o.Processing) {
+		var ret bool
+		return ret
+	}
+	return *o.Processing
+}
+
+// GetProcessingOk returns a tuple with the Processing field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CompetitorDetails) GetProcessingOk() (*bool, bool) {
+	if o == nil || IsNil(o.Processing) {
+		return nil, false
+	}
+	return o.Processing, true
+}
+
+// HasProcessing returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasProcessing() bool {
+	if o != nil && !IsNil(o.Processing) {
+		return true
+	}
+
+	return false
+}
+
+// SetProcessing gets a reference to the given bool and assigns it to the Processing field.
+func (o *CompetitorDetails) SetProcessing(v bool) {
+	o.Processing = &v
+}
+
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *CompetitorDetails) GetCreatedAt() time.Time {
 	if o == nil || IsNil(o.CreatedAt) {
@@ -366,6 +652,38 @@ func (o *CompetitorDetails) HasCreatedAt() bool {
 // SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
 func (o *CompetitorDetails) SetCreatedAt(v time.Time) {
 	o.CreatedAt = &v
+}
+
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *CompetitorDetails) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CompetitorDetails) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *CompetitorDetails) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *CompetitorDetails) SetRequestId(v string) {
+	o.RequestId = &v
 }
 
 func (o CompetitorDetails) MarshalJSON() ([]byte, error) {
@@ -399,11 +717,35 @@ func (o CompetitorDetails) ToMap() (map[string]interface{}, error) {
 	if o.AppStoreId.IsSet() {
 		toSerialize["app_store_id"] = o.AppStoreId.Get()
 	}
+	if !IsNil(o.CitationMatchMode) {
+		toSerialize["citation_match_mode"] = o.CitationMatchMode
+	}
+	if o.CitationMatchPath.IsSet() {
+		toSerialize["citation_match_path"] = o.CitationMatchPath.Get()
+	}
+	if o.GooglePlayName.IsSet() {
+		toSerialize["google_play_name"] = o.GooglePlayName.Get()
+	}
+	if o.AppStoreName.IsSet() {
+		toSerialize["app_store_name"] = o.AppStoreName.Get()
+	}
+	if o.GooglePlayIconUrl.IsSet() {
+		toSerialize["google_play_icon_url"] = o.GooglePlayIconUrl.Get()
+	}
+	if o.AppStoreIconUrl.IsSet() {
+		toSerialize["app_store_icon_url"] = o.AppStoreIconUrl.Get()
+	}
 	if o.Color.IsSet() {
 		toSerialize["color"] = o.Color.Get()
 	}
+	if !IsNil(o.Processing) {
+		toSerialize["processing"] = o.Processing
+	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

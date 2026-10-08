@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -45,6 +45,8 @@ type ProjectDetails struct {
 	AppStoreId NullableString `json:"app_store_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
+	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewProjectDetails instantiates a new ProjectDetails object
@@ -805,6 +807,70 @@ func (o *ProjectDetails) SetStats(v ProjectDetailsAllOfStats) {
 	o.Stats = &v
 }
 
+// GetDataCoverage returns the DataCoverage field value if set, zero value otherwise.
+func (o *ProjectDetails) GetDataCoverage() ProjectDetailsAllOfDataCoverage {
+	if o == nil || IsNil(o.DataCoverage) {
+		var ret ProjectDetailsAllOfDataCoverage
+		return ret
+	}
+	return *o.DataCoverage
+}
+
+// GetDataCoverageOk returns a tuple with the DataCoverage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetDataCoverageOk() (*ProjectDetailsAllOfDataCoverage, bool) {
+	if o == nil || IsNil(o.DataCoverage) {
+		return nil, false
+	}
+	return o.DataCoverage, true
+}
+
+// HasDataCoverage returns a boolean if a field has been set.
+func (o *ProjectDetails) HasDataCoverage() bool {
+	if o != nil && !IsNil(o.DataCoverage) {
+		return true
+	}
+
+	return false
+}
+
+// SetDataCoverage gets a reference to the given ProjectDetailsAllOfDataCoverage and assigns it to the DataCoverage field.
+func (o *ProjectDetails) SetDataCoverage(v ProjectDetailsAllOfDataCoverage) {
+	o.DataCoverage = &v
+}
+
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *ProjectDetails) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *ProjectDetails) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *ProjectDetails) SetRequestId(v string) {
+	o.RequestId = &v
+}
+
 func (o ProjectDetails) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -874,6 +940,12 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Stats) {
 		toSerialize["stats"] = o.Stats
+	}
+	if !IsNil(o.DataCoverage) {
+		toSerialize["data_coverage"] = o.DataCoverage
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

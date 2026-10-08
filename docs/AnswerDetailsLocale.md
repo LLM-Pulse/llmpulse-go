@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CountryCode** | Pointer to **string** |  | [optional] 
-**LanguageCode** | Pointer to **string** |  | [optional] 
+**CountryCode** | Pointer to **NullableString** |  | [optional] 
+**LanguageCode** | Pointer to **NullableString** |  | [optional] 
 
 ## Methods
 
@@ -51,6 +51,16 @@ SetCountryCode sets CountryCode field to given value.
 
 HasCountryCode returns a boolean if a field has been set.
 
+### SetCountryCodeNil
+
+`func (o *AnswerDetailsLocale) SetCountryCodeNil(b bool)`
+
+ SetCountryCodeNil sets the value for CountryCode to be an explicit nil
+
+### UnsetCountryCode
+`func (o *AnswerDetailsLocale) UnsetCountryCode()`
+
+UnsetCountryCode ensures that no value is present for CountryCode, not even an explicit nil
 ### GetLanguageCode
 
 `func (o *AnswerDetailsLocale) GetLanguageCode() string`
@@ -76,6 +86,16 @@ SetLanguageCode sets LanguageCode field to given value.
 
 HasLanguageCode returns a boolean if a field has been set.
 
+### SetLanguageCodeNil
+
+`func (o *AnswerDetailsLocale) SetLanguageCodeNil(b bool)`
+
+ SetLanguageCodeNil sets the value for LanguageCode to be an explicit nil
+
+### UnsetLanguageCode
+`func (o *AnswerDetailsLocale) UnsetLanguageCode()`
+
+UnsetLanguageCode ensures that no value is present for LanguageCode, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

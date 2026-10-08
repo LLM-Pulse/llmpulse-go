@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,7 +24,7 @@ type PromptSummaryResponse struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
 	From *time.Time `json:"from,omitempty"`
 	To *time.Time `json:"to,omitempty"`
-	Filters map[string]interface{} `json:"filters,omitempty"`
+	Filters *MetricsFiltersEcho `json:"filters,omitempty"`
 	Breakdown NullableString `json:"breakdown,omitempty"`
 	Sort *string `json:"sort,omitempty"`
 	SortDir *string `json:"sort_dir,omitempty"`
@@ -149,19 +149,19 @@ func (o *PromptSummaryResponse) SetTo(v time.Time) {
 }
 
 // GetFilters returns the Filters field value if set, zero value otherwise.
-func (o *PromptSummaryResponse) GetFilters() map[string]interface{} {
+func (o *PromptSummaryResponse) GetFilters() MetricsFiltersEcho {
 	if o == nil || IsNil(o.Filters) {
-		var ret map[string]interface{}
+		var ret MetricsFiltersEcho
 		return ret
 	}
-	return o.Filters
+	return *o.Filters
 }
 
 // GetFiltersOk returns a tuple with the Filters field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PromptSummaryResponse) GetFiltersOk() (map[string]interface{}, bool) {
+func (o *PromptSummaryResponse) GetFiltersOk() (*MetricsFiltersEcho, bool) {
 	if o == nil || IsNil(o.Filters) {
-		return map[string]interface{}{}, false
+		return nil, false
 	}
 	return o.Filters, true
 }
@@ -175,9 +175,9 @@ func (o *PromptSummaryResponse) HasFilters() bool {
 	return false
 }
 
-// SetFilters gets a reference to the given map[string]interface{} and assigns it to the Filters field.
-func (o *PromptSummaryResponse) SetFilters(v map[string]interface{}) {
-	o.Filters = v
+// SetFilters gets a reference to the given MetricsFiltersEcho and assigns it to the Filters field.
+func (o *PromptSummaryResponse) SetFilters(v MetricsFiltersEcho) {
+	o.Filters = &v
 }
 
 // GetBreakdown returns the Breakdown field value if set, zero value otherwise (both if not set or set to explicit null).

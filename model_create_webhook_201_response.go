@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -31,6 +31,7 @@ type CreateWebhook201Response struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// HMAC signing secret (whsec_...). Only returned on create.
 	Secret *string `json:"secret,omitempty"`
+	RequestId *string `json:"request_id,omitempty"`
 }
 
 // NewCreateWebhook201Response instantiates a new CreateWebhook201Response object
@@ -348,6 +349,38 @@ func (o *CreateWebhook201Response) SetSecret(v string) {
 	o.Secret = &v
 }
 
+// GetRequestId returns the RequestId field value if set, zero value otherwise.
+func (o *CreateWebhook201Response) GetRequestId() string {
+	if o == nil || IsNil(o.RequestId) {
+		var ret string
+		return ret
+	}
+	return *o.RequestId
+}
+
+// GetRequestIdOk returns a tuple with the RequestId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CreateWebhook201Response) GetRequestIdOk() (*string, bool) {
+	if o == nil || IsNil(o.RequestId) {
+		return nil, false
+	}
+	return o.RequestId, true
+}
+
+// HasRequestId returns a boolean if a field has been set.
+func (o *CreateWebhook201Response) HasRequestId() bool {
+	if o != nil && !IsNil(o.RequestId) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestId gets a reference to the given string and assigns it to the RequestId field.
+func (o *CreateWebhook201Response) SetRequestId(v string) {
+	o.RequestId = &v
+}
+
 func (o CreateWebhook201Response) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -384,6 +417,9 @@ func (o CreateWebhook201Response) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Secret) {
 		toSerialize["secret"] = o.Secret
+	}
+	if !IsNil(o.RequestId) {
+		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
 }

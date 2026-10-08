@@ -150,7 +150,7 @@ Name | Type | Description  | Notes
 
 ## ListIntelligenceTasks
 
-> ListIntelligenceTasks(ctx).ProjectId(projectId).TaskType(taskType).Status(status).Page(page).PerPage(perPage).Execute()
+> IntelligenceTasksResponse ListIntelligenceTasks(ctx).ProjectId(projectId).TaskType(taskType).Status(status).Page(page).PerPage(perPage).Execute()
 
 List GEO Writer tasks
 
@@ -175,11 +175,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.GEOWriterAPI.ListIntelligenceTasks(context.Background()).ProjectId(projectId).TaskType(taskType).Status(status).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.GEOWriterAPI.ListIntelligenceTasks(context.Background()).ProjectId(projectId).TaskType(taskType).Status(status).Page(page).PerPage(perPage).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.ListIntelligenceTasks``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListIntelligenceTasks`: IntelligenceTasksResponse
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.ListIntelligenceTasks`: %v\n", resp)
 }
 ```
 
@@ -202,7 +204,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**IntelligenceTasksResponse**](IntelligenceTasksResponse.md)
 
 ### Authorization
 
@@ -211,7 +213,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

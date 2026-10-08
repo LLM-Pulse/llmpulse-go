@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -303,7 +303,7 @@ func (r ApiListIntelligenceTasksRequest) PerPage(perPage int32) ApiListIntellige
 	return r
 }
 
-func (r ApiListIntelligenceTasksRequest) Execute() (*http.Response, error) {
+func (r ApiListIntelligenceTasksRequest) Execute() (*IntelligenceTasksResponse, *http.Response, error) {
 	return r.ApiService.ListIntelligenceTasksExecute(r)
 }
 
@@ -321,16 +321,18 @@ func (a *GEOWriterAPIService) ListIntelligenceTasks(ctx context.Context) ApiList
 }
 
 // Execute executes the request
-func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligenceTasksRequest) (*http.Response, error) {
+//  @return IntelligenceTasksResponse
+func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligenceTasksRequest) (*IntelligenceTasksResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *IntelligenceTasksResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GEOWriterAPIService.ListIntelligenceTasks")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/intelligence_tasks"
@@ -339,7 +341,7 @@ func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligence
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -373,7 +375,7 @@ func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligence
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -382,19 +384,19 @@ func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligence
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -402,10 +404,19 @@ func (a *GEOWriterAPIService) ListIntelligenceTasksExecute(r ApiListIntelligence
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiRevertIntelligenceTaskContentRequest struct {

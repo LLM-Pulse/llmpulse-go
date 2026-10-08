@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **LastDeliveredAt** | Pointer to **NullableTime** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Secret** | Pointer to **string** | HMAC signing secret (whsec_...). Only returned on create. | [optional] 
+**RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -267,6 +268,31 @@ SetSecret sets Secret field to given value.
 `func (o *CreateWebhook201Response) HasSecret() bool`
 
 HasSecret returns a boolean if a field has been set.
+
+### GetRequestId
+
+`func (o *CreateWebhook201Response) GetRequestId() string`
+
+GetRequestId returns the RequestId field if non-nil, zero value otherwise.
+
+### GetRequestIdOk
+
+`func (o *CreateWebhook201Response) GetRequestIdOk() (*string, bool)`
+
+GetRequestIdOk returns a tuple with the RequestId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestId
+
+`func (o *CreateWebhook201Response) SetRequestId(v string)`
+
+SetRequestId sets RequestId field to given value.
+
+### HasRequestId
+
+`func (o *CreateWebhook201Response) HasRequestId() bool`
+
+HasRequestId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,7 +35,7 @@ func (r ApiCreateAnnotationRequest) CreateAnnotationRequest(createAnnotationRequ
 	return r
 }
 
-func (r ApiCreateAnnotationRequest) Execute() (*http.Response, error) {
+func (r ApiCreateAnnotationRequest) Execute() (*AnnotationCreateResponse, *http.Response, error) {
 	return r.ApiService.CreateAnnotationExecute(r)
 }
 
@@ -55,16 +55,18 @@ func (a *AnnotationsAPIService) CreateAnnotation(ctx context.Context) ApiCreateA
 }
 
 // Execute executes the request
-func (a *AnnotationsAPIService) CreateAnnotationExecute(r ApiCreateAnnotationRequest) (*http.Response, error) {
+//  @return AnnotationCreateResponse
+func (a *AnnotationsAPIService) CreateAnnotationExecute(r ApiCreateAnnotationRequest) (*AnnotationCreateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AnnotationCreateResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AnnotationsAPIService.CreateAnnotation")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/annotations"
@@ -73,7 +75,7 @@ func (a *AnnotationsAPIService) CreateAnnotationExecute(r ApiCreateAnnotationReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.createAnnotationRequest == nil {
-		return nil, reportError("createAnnotationRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("createAnnotationRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -97,19 +99,19 @@ func (a *AnnotationsAPIService) CreateAnnotationExecute(r ApiCreateAnnotationReq
 	localVarPostBody = r.createAnnotationRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -122,26 +124,35 @@ func (a *AnnotationsAPIService) CreateAnnotationExecute(r ApiCreateAnnotationReq
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiDeleteAnnotationRequest struct {

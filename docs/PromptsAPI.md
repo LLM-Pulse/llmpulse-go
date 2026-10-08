@@ -150,7 +150,7 @@ Name | Type | Description  | Notes
 
 ## ListPromptExecutions
 
-> ListPromptExecutions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).Output(output).Execute()
+> PromptExecutionsResponse ListPromptExecutions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).Output(output).Execute()
 
 List prompt executions
 
@@ -185,11 +185,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PromptsAPI.ListPromptExecutions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).Output(output).Execute()
+	resp, r, err := apiClient.PromptsAPI.ListPromptExecutions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ListPromptExecutions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListPromptExecutions`: PromptExecutionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ListPromptExecutions`: %v\n", resp)
 }
 ```
 
@@ -221,7 +223,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**PromptExecutionsResponse**](PromptExecutionsResponse.md)
 
 ### Authorization
 
@@ -230,7 +232,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -239,7 +241,7 @@ Name | Type | Description  | Notes
 
 ## ListPrompts
 
-> ListPrompts(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).From(from).To(to).Output(output).Execute()
+> PromptsResponse ListPrompts(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).From(from).To(to).Output(output).Execute()
 
 List prompts
 
@@ -272,11 +274,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PromptsAPI.ListPrompts(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.PromptsAPI.ListPrompts(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ListPrompts``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListPrompts`: PromptsResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ListPrompts`: %v\n", resp)
 }
 ```
 
@@ -306,7 +310,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**PromptsResponse**](PromptsResponse.md)
 
 ### Authorization
 
@@ -315,7 +319,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

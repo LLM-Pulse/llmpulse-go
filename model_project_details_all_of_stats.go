@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -21,6 +21,7 @@ var _ MappedNullable = &ProjectDetailsAllOfStats{}
 // ProjectDetailsAllOfStats struct for ProjectDetailsAllOfStats
 type ProjectDetailsAllOfStats struct {
 	PromptsCount *int32 `json:"prompts_count,omitempty"`
+	PromptsByBrandKind *ProjectDetailsAllOfStatsPromptsByBrandKind `json:"prompts_by_brand_kind,omitempty"`
 	CompetitorsCount *int32 `json:"competitors_count,omitempty"`
 	CollectionsCount *int32 `json:"collections_count,omitempty"`
 }
@@ -72,6 +73,38 @@ func (o *ProjectDetailsAllOfStats) HasPromptsCount() bool {
 // SetPromptsCount gets a reference to the given int32 and assigns it to the PromptsCount field.
 func (o *ProjectDetailsAllOfStats) SetPromptsCount(v int32) {
 	o.PromptsCount = &v
+}
+
+// GetPromptsByBrandKind returns the PromptsByBrandKind field value if set, zero value otherwise.
+func (o *ProjectDetailsAllOfStats) GetPromptsByBrandKind() ProjectDetailsAllOfStatsPromptsByBrandKind {
+	if o == nil || IsNil(o.PromptsByBrandKind) {
+		var ret ProjectDetailsAllOfStatsPromptsByBrandKind
+		return ret
+	}
+	return *o.PromptsByBrandKind
+}
+
+// GetPromptsByBrandKindOk returns a tuple with the PromptsByBrandKind field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetailsAllOfStats) GetPromptsByBrandKindOk() (*ProjectDetailsAllOfStatsPromptsByBrandKind, bool) {
+	if o == nil || IsNil(o.PromptsByBrandKind) {
+		return nil, false
+	}
+	return o.PromptsByBrandKind, true
+}
+
+// HasPromptsByBrandKind returns a boolean if a field has been set.
+func (o *ProjectDetailsAllOfStats) HasPromptsByBrandKind() bool {
+	if o != nil && !IsNil(o.PromptsByBrandKind) {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptsByBrandKind gets a reference to the given ProjectDetailsAllOfStatsPromptsByBrandKind and assigns it to the PromptsByBrandKind field.
+func (o *ProjectDetailsAllOfStats) SetPromptsByBrandKind(v ProjectDetailsAllOfStatsPromptsByBrandKind) {
+	o.PromptsByBrandKind = &v
 }
 
 // GetCompetitorsCount returns the CompetitorsCount field value if set, zero value otherwise.
@@ -150,6 +183,9 @@ func (o ProjectDetailsAllOfStats) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.PromptsCount) {
 		toSerialize["prompts_count"] = o.PromptsCount
+	}
+	if !IsNil(o.PromptsByBrandKind) {
+		toSerialize["prompts_by_brand_kind"] = o.PromptsByBrandKind
 	}
 	if !IsNil(o.CompetitorsCount) {
 		toSerialize["competitors_count"] = o.CompetitorsCount

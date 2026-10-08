@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 
 ## ListRecommendations
 
-> ListRecommendations(ctx).ProjectId(projectId).RecommendationType(recommendationType).Status(status).Page(page).PerPage(perPage).Execute()
+> RecommendationsResponse ListRecommendations(ctx).ProjectId(projectId).RecommendationType(recommendationType).Status(status).Page(page).PerPage(perPage).Execute()
 
 List recommendation runs
 
@@ -173,11 +173,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.RecommendationsAPI.ListRecommendations(context.Background()).ProjectId(projectId).RecommendationType(recommendationType).Status(status).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.RecommendationsAPI.ListRecommendations(context.Background()).ProjectId(projectId).RecommendationType(recommendationType).Status(status).Page(page).PerPage(perPage).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `RecommendationsAPI.ListRecommendations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListRecommendations`: RecommendationsResponse
+	fmt.Fprintf(os.Stdout, "Response from `RecommendationsAPI.ListRecommendations`: %v\n", resp)
 }
 ```
 
@@ -200,7 +202,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**RecommendationsResponse**](RecommendationsResponse.md)
 
 ### Authorization
 
@@ -209,7 +211,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

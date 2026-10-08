@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## CreateAnnotation
 
-> CreateAnnotation(ctx).CreateAnnotationRequest(createAnnotationRequest).Execute()
+> AnnotationCreateResponse CreateAnnotation(ctx).CreateAnnotationRequest(createAnnotationRequest).Execute()
 
 Create a timeline annotation
 
@@ -36,11 +36,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AnnotationsAPI.CreateAnnotation(context.Background()).CreateAnnotationRequest(createAnnotationRequest).Execute()
+	resp, r, err := apiClient.AnnotationsAPI.CreateAnnotation(context.Background()).CreateAnnotationRequest(createAnnotationRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AnnotationsAPI.CreateAnnotation``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `CreateAnnotation`: AnnotationCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `AnnotationsAPI.CreateAnnotation`: %v\n", resp)
 }
 ```
 
@@ -59,7 +61,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AnnotationCreateResponse**](AnnotationCreateResponse.md)
 
 ### Authorization
 

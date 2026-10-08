@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## AssignPromptTags
 
-> AssignPromptTags(ctx).AssignPromptTagsRequest(assignPromptTagsRequest).Execute()
+> PromptTagsAssignResponse AssignPromptTags(ctx).AssignPromptTagsRequest(assignPromptTagsRequest).Execute()
 
 Bulk-attach tags to prompts
 
@@ -38,11 +38,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.AssignPromptTags(context.Background()).AssignPromptTagsRequest(assignPromptTagsRequest).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.AssignPromptTags(context.Background()).AssignPromptTagsRequest(assignPromptTagsRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.AssignPromptTags``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `AssignPromptTags`: PromptTagsAssignResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.AssignPromptTags`: %v\n", resp)
 }
 ```
 
@@ -61,7 +63,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**PromptTagsAssignResponse**](PromptTagsAssignResponse.md)
 
 ### Authorization
 
@@ -79,7 +81,7 @@ Name | Type | Description  | Notes
 
 ## CreateCollection
 
-> CreateCollection(ctx).CreateCollectionRequest(createCollectionRequest).Execute()
+> CollectionCreateResponse CreateCollection(ctx).CreateCollectionRequest(createCollectionRequest).Execute()
 
 Create a tag
 
@@ -102,11 +104,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.CreateCollection(context.Background()).CreateCollectionRequest(createCollectionRequest).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.CreateCollection(context.Background()).CreateCollectionRequest(createCollectionRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.CreateCollection``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `CreateCollection`: CollectionCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.CreateCollection`: %v\n", resp)
 }
 ```
 
@@ -125,7 +129,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CollectionCreateResponse**](CollectionCreateResponse.md)
 
 ### Authorization
 
@@ -213,7 +217,7 @@ Name | Type | Description  | Notes
 
 ## ListCollections
 
-> ListCollections(ctx).ProjectId(projectId).Output(output).Execute()
+> CollectionsResponse ListCollections(ctx).ProjectId(projectId).Output(output).Execute()
 
 List tags/collections
 
@@ -235,11 +239,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.ListCollections(context.Background()).ProjectId(projectId).Output(output).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.ListCollections(context.Background()).ProjectId(projectId).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.ListCollections``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCollections`: CollectionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.ListCollections`: %v\n", resp)
 }
 ```
 
@@ -259,7 +265,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CollectionsResponse**](CollectionsResponse.md)
 
 ### Authorization
 
@@ -268,7 +274,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -277,7 +283,7 @@ Name | Type | Description  | Notes
 
 ## ListTags
 
-> ListTags(ctx).ProjectId(projectId).Output(output).Execute()
+> CollectionsResponse ListTags(ctx).ProjectId(projectId).Output(output).Execute()
 
 List tags (alias for /collections)
 
@@ -299,11 +305,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.ListTags(context.Background()).ProjectId(projectId).Output(output).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.ListTags(context.Background()).ProjectId(projectId).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.ListTags``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListTags`: CollectionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.ListTags`: %v\n", resp)
 }
 ```
 
@@ -323,7 +331,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CollectionsResponse**](CollectionsResponse.md)
 
 ### Authorization
 
@@ -332,7 +340,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

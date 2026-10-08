@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateCompetitor
 
-> CreateCompetitor(ctx).CreateCompetitorRequest(createCompetitorRequest).Execute()
+> CompetitorCreateResponse CreateCompetitor(ctx).CreateCompetitorRequest(createCompetitorRequest).Execute()
 
 Add a competitor
 
@@ -37,11 +37,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CompetitorsAPI.CreateCompetitor(context.Background()).CreateCompetitorRequest(createCompetitorRequest).Execute()
+	resp, r, err := apiClient.CompetitorsAPI.CreateCompetitor(context.Background()).CreateCompetitorRequest(createCompetitorRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CompetitorsAPI.CreateCompetitor``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `CreateCompetitor`: CompetitorCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `CompetitorsAPI.CreateCompetitor`: %v\n", resp)
 }
 ```
 
@@ -60,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CompetitorCreateResponse**](CompetitorCreateResponse.md)
 
 ### Authorization
 

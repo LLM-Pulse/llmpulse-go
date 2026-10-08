@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.55.0
+API version: 1.56.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,7 +35,7 @@ func (r ApiAssignPromptTagsRequest) AssignPromptTagsRequest(assignPromptTagsRequ
 	return r
 }
 
-func (r ApiAssignPromptTagsRequest) Execute() (*http.Response, error) {
+func (r ApiAssignPromptTagsRequest) Execute() (*PromptTagsAssignResponse, *http.Response, error) {
 	return r.ApiService.AssignPromptTagsExecute(r)
 }
 
@@ -55,16 +55,18 @@ func (a *CollectionsTagsAPIService) AssignPromptTags(ctx context.Context) ApiAss
 }
 
 // Execute executes the request
-func (a *CollectionsTagsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTagsRequest) (*http.Response, error) {
+//  @return PromptTagsAssignResponse
+func (a *CollectionsTagsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTagsRequest) (*PromptTagsAssignResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *PromptTagsAssignResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsTagsAPIService.AssignPromptTags")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/prompts/assign_tags"
@@ -73,7 +75,7 @@ func (a *CollectionsTagsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTag
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.assignPromptTagsRequest == nil {
-		return nil, reportError("assignPromptTagsRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("assignPromptTagsRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -97,19 +99,19 @@ func (a *CollectionsTagsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTag
 	localVarPostBody = r.assignPromptTagsRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -122,26 +124,35 @@ func (a *CollectionsTagsAPIService) AssignPromptTagsExecute(r ApiAssignPromptTag
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiCreateCollectionRequest struct {
@@ -155,7 +166,7 @@ func (r ApiCreateCollectionRequest) CreateCollectionRequest(createCollectionRequ
 	return r
 }
 
-func (r ApiCreateCollectionRequest) Execute() (*http.Response, error) {
+func (r ApiCreateCollectionRequest) Execute() (*CollectionCreateResponse, *http.Response, error) {
 	return r.ApiService.CreateCollectionExecute(r)
 }
 
@@ -175,16 +186,18 @@ func (a *CollectionsTagsAPIService) CreateCollection(ctx context.Context) ApiCre
 }
 
 // Execute executes the request
-func (a *CollectionsTagsAPIService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*http.Response, error) {
+//  @return CollectionCreateResponse
+func (a *CollectionsTagsAPIService) CreateCollectionExecute(r ApiCreateCollectionRequest) (*CollectionCreateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CollectionCreateResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsTagsAPIService.CreateCollection")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/collections"
@@ -193,7 +206,7 @@ func (a *CollectionsTagsAPIService) CreateCollectionExecute(r ApiCreateCollectio
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.createCollectionRequest == nil {
-		return nil, reportError("createCollectionRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("createCollectionRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -217,19 +230,19 @@ func (a *CollectionsTagsAPIService) CreateCollectionExecute(r ApiCreateCollectio
 	localVarPostBody = r.createCollectionRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -242,26 +255,35 @@ func (a *CollectionsTagsAPIService) CreateCollectionExecute(r ApiCreateCollectio
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiDeleteCollectionRequest struct {
@@ -407,7 +429,7 @@ func (r ApiListCollectionsRequest) Output(output string) ApiListCollectionsReque
 	return r
 }
 
-func (r ApiListCollectionsRequest) Execute() (*http.Response, error) {
+func (r ApiListCollectionsRequest) Execute() (*CollectionsResponse, *http.Response, error) {
 	return r.ApiService.ListCollectionsExecute(r)
 }
 
@@ -425,16 +447,18 @@ func (a *CollectionsTagsAPIService) ListCollections(ctx context.Context) ApiList
 }
 
 // Execute executes the request
-func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsRequest) (*http.Response, error) {
+//  @return CollectionsResponse
+func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsRequest) (*CollectionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CollectionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsTagsAPIService.ListCollections")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/collections"
@@ -443,7 +467,7 @@ func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsR
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -460,7 +484,7 @@ func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsR
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -469,19 +493,19 @@ func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsR
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -489,10 +513,19 @@ func (a *CollectionsTagsAPIService) ListCollectionsExecute(r ApiListCollectionsR
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListTagsRequest struct {
@@ -514,7 +547,7 @@ func (r ApiListTagsRequest) Output(output string) ApiListTagsRequest {
 	return r
 }
 
-func (r ApiListTagsRequest) Execute() (*http.Response, error) {
+func (r ApiListTagsRequest) Execute() (*CollectionsResponse, *http.Response, error) {
 	return r.ApiService.ListTagsExecute(r)
 }
 
@@ -532,16 +565,18 @@ func (a *CollectionsTagsAPIService) ListTags(ctx context.Context) ApiListTagsReq
 }
 
 // Execute executes the request
-func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*http.Response, error) {
+//  @return CollectionsResponse
+func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*CollectionsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CollectionsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CollectionsTagsAPIService.ListTags")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/tags"
@@ -550,7 +585,7 @@ func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*http
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -567,7 +602,7 @@ func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*http
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -576,19 +611,19 @@ func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*http
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -596,10 +631,19 @@ func (a *CollectionsTagsAPIService) ListTagsExecute(r ApiListTagsRequest) (*http
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiUpdateCollectionRequest struct {

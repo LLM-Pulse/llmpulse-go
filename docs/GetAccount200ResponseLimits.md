@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **CompetitorsPerProject** | Pointer to [**AccountCapacity**](AccountCapacity.md) |  | [optional] 
 **IntelligenceTasks** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
 **TeamMembers** | Pointer to [**AccountCapacity**](AccountCapacity.md) |  | [optional] 
+**RecurringGeoAudits** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
+**GeoAuditManualRuns** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
 
 ## Methods
 
@@ -153,6 +155,56 @@ SetTeamMembers sets TeamMembers field to given value.
 `func (o *GetAccount200ResponseLimits) HasTeamMembers() bool`
 
 HasTeamMembers returns a boolean if a field has been set.
+
+### GetRecurringGeoAudits
+
+`func (o *GetAccount200ResponseLimits) GetRecurringGeoAudits() AccountQuota`
+
+GetRecurringGeoAudits returns the RecurringGeoAudits field if non-nil, zero value otherwise.
+
+### GetRecurringGeoAuditsOk
+
+`func (o *GetAccount200ResponseLimits) GetRecurringGeoAuditsOk() (*AccountQuota, bool)`
+
+GetRecurringGeoAuditsOk returns a tuple with the RecurringGeoAudits field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRecurringGeoAudits
+
+`func (o *GetAccount200ResponseLimits) SetRecurringGeoAudits(v AccountQuota)`
+
+SetRecurringGeoAudits sets RecurringGeoAudits field to given value.
+
+### HasRecurringGeoAudits
+
+`func (o *GetAccount200ResponseLimits) HasRecurringGeoAudits() bool`
+
+HasRecurringGeoAudits returns a boolean if a field has been set.
+
+### GetGeoAuditManualRuns
+
+`func (o *GetAccount200ResponseLimits) GetGeoAuditManualRuns() AccountQuota`
+
+GetGeoAuditManualRuns returns the GeoAuditManualRuns field if non-nil, zero value otherwise.
+
+### GetGeoAuditManualRunsOk
+
+`func (o *GetAccount200ResponseLimits) GetGeoAuditManualRunsOk() (*AccountQuota, bool)`
+
+GetGeoAuditManualRunsOk returns a tuple with the GeoAuditManualRuns field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGeoAuditManualRuns
+
+`func (o *GetAccount200ResponseLimits) SetGeoAuditManualRuns(v AccountQuota)`
+
+SetGeoAuditManualRuns sets GeoAuditManualRuns field to given value.
+
+### HasGeoAuditManualRuns
+
+`func (o *GetAccount200ResponseLimits) HasGeoAuditManualRuns() bool`
+
+HasGeoAuditManualRuns returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
