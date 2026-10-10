@@ -6,7 +6,9 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetAgentTraffic**](AIAgentTrafficAPI.md#GetAgentTraffic) | **Get** /metrics/agent_traffic | AI bot crawler traffic (Scale plan or above, Beta)
 [**GetAiTraffic**](AIAgentTrafficAPI.md#GetAiTraffic) | **Get** /metrics/ai_traffic | AI referral traffic (Scale plan or above)
+[**GetWebAnalyticsSchema**](AIAgentTrafficAPI.md#GetWebAnalyticsSchema) | **Get** /web_analytics/schema | Web analytics query format (Growth+)
 [**ListAgentBots**](AIAgentTrafficAPI.md#ListAgentBots) | **Get** /dimensions/agent_bots | AI bot catalog (Scale plan or above)
+[**QueryWebAnalytics**](AIAgentTrafficAPI.md#QueryWebAnalytics) | **Post** /web_analytics/query | Live web analytics query (Growth+)
 
 
 
@@ -166,6 +168,72 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetWebAnalyticsSchema
+
+> WebAnalyticsSchemaResponse GetWebAnalyticsSchema(ctx).ProjectId(projectId).Execute()
+
+Web analytics query format (Growth+)
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.AIAgentTrafficAPI.GetWebAnalyticsSchema(context.Background()).ProjectId(projectId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `AIAgentTrafficAPI.GetWebAnalyticsSchema``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetWebAnalyticsSchema`: WebAnalyticsSchemaResponse
+	fmt.Fprintf(os.Stdout, "Response from `AIAgentTrafficAPI.GetWebAnalyticsSchema`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetWebAnalyticsSchemaRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+### Return type
+
+[**WebAnalyticsSchemaResponse**](WebAnalyticsSchemaResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ListAgentBots
 
 > AgentBotsResponse ListAgentBots(ctx).ProjectId(projectId).Output(output).Execute()
@@ -227,6 +295,72 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## QueryWebAnalytics
+
+> WebAnalyticsQueryResponse QueryWebAnalytics(ctx).QueryWebAnalyticsRequest(queryWebAnalyticsRequest).Execute()
+
+Live web analytics query (Growth+)
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	queryWebAnalyticsRequest := *openapiclient.NewQueryWebAnalyticsRequest(int32(123), interface{}(123)) // QueryWebAnalyticsRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.AIAgentTrafficAPI.QueryWebAnalytics(context.Background()).QueryWebAnalyticsRequest(queryWebAnalyticsRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `AIAgentTrafficAPI.QueryWebAnalytics``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `QueryWebAnalytics`: WebAnalyticsQueryResponse
+	fmt.Fprintf(os.Stdout, "Response from `AIAgentTrafficAPI.QueryWebAnalytics`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiQueryWebAnalyticsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **queryWebAnalyticsRequest** | [**QueryWebAnalyticsRequest**](QueryWebAnalyticsRequest.md) |  | 
+
+### Return type
+
+[**WebAnalyticsQueryResponse**](WebAnalyticsQueryResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
