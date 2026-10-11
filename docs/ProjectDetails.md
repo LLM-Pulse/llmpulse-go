@@ -25,6 +25,7 @@ Name | Type | Description | Notes
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Stats** | Pointer to [**ProjectDetailsAllOfStats**](ProjectDetailsAllOfStats.md) |  | [optional] 
 **DataCoverage** | Pointer to [**ProjectDetailsAllOfDataCoverage**](ProjectDetailsAllOfDataCoverage.md) |  | [optional] 
+**SearchConsole** | Pointer to [**ProjectDetailsAllOfSearchConsole**](ProjectDetailsAllOfSearchConsole.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -680,6 +681,31 @@ SetDataCoverage sets DataCoverage field to given value.
 `func (o *ProjectDetails) HasDataCoverage() bool`
 
 HasDataCoverage returns a boolean if a field has been set.
+
+### GetSearchConsole
+
+`func (o *ProjectDetails) GetSearchConsole() ProjectDetailsAllOfSearchConsole`
+
+GetSearchConsole returns the SearchConsole field if non-nil, zero value otherwise.
+
+### GetSearchConsoleOk
+
+`func (o *ProjectDetails) GetSearchConsoleOk() (*ProjectDetailsAllOfSearchConsole, bool)`
+
+GetSearchConsoleOk returns a tuple with the SearchConsole field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSearchConsole
+
+`func (o *ProjectDetails) SetSearchConsole(v ProjectDetailsAllOfSearchConsole)`
+
+SetSearchConsole sets SearchConsole field to given value.
+
+### HasSearchConsole
+
+`func (o *ProjectDetails) HasSearchConsole() bool`
+
+HasSearchConsole returns a boolean if a field has been set.
 
 ### GetRequestId
 

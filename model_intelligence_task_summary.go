@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,6 +35,8 @@ type IntelligenceTaskSummary struct {
 	ManuallyEditedAt NullableTime `json:"manually_edited_at"`
 	CreatedAt time.Time `json:"created_at"`
 	ProcessedAt NullableTime `json:"processed_at"`
+	// Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \"0\" until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text
+	ResultVersion string `json:"result_version"`
 }
 
 type _IntelligenceTaskSummary IntelligenceTaskSummary
@@ -43,7 +45,7 @@ type _IntelligenceTaskSummary IntelligenceTaskSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIntelligenceTaskSummary(id int32, publicId string, taskType string, title string, status string, promptId NullableInt32, promptText NullableString, wordCount NullableInt32, manuallyEditedAt NullableTime, createdAt time.Time, processedAt NullableTime) *IntelligenceTaskSummary {
+func NewIntelligenceTaskSummary(id int32, publicId string, taskType string, title string, status string, promptId NullableInt32, promptText NullableString, wordCount NullableInt32, manuallyEditedAt NullableTime, createdAt time.Time, processedAt NullableTime, resultVersion string) *IntelligenceTaskSummary {
 	this := IntelligenceTaskSummary{}
 	this.Id = id
 	this.PublicId = publicId
@@ -56,6 +58,7 @@ func NewIntelligenceTaskSummary(id int32, publicId string, taskType string, titl
 	this.ManuallyEditedAt = manuallyEditedAt
 	this.CreatedAt = createdAt
 	this.ProcessedAt = processedAt
+	this.ResultVersion = resultVersion
 	return &this
 }
 
@@ -341,6 +344,30 @@ func (o *IntelligenceTaskSummary) SetProcessedAt(v time.Time) {
 	o.ProcessedAt.Set(&v)
 }
 
+// GetResultVersion returns the ResultVersion field value
+func (o *IntelligenceTaskSummary) GetResultVersion() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.ResultVersion
+}
+
+// GetResultVersionOk returns a tuple with the ResultVersion field value
+// and a boolean to check if the value has been set.
+func (o *IntelligenceTaskSummary) GetResultVersionOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ResultVersion, true
+}
+
+// SetResultVersion sets field value
+func (o *IntelligenceTaskSummary) SetResultVersion(v string) {
+	o.ResultVersion = v
+}
+
 func (o IntelligenceTaskSummary) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -362,6 +389,7 @@ func (o IntelligenceTaskSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize["manually_edited_at"] = o.ManuallyEditedAt.Get()
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["processed_at"] = o.ProcessedAt.Get()
+	toSerialize["result_version"] = o.ResultVersion
 	return toSerialize, nil
 }
 
@@ -381,6 +409,7 @@ func (o *IntelligenceTaskSummary) UnmarshalJSON(data []byte) (err error) {
 		"manually_edited_at",
 		"created_at",
 		"processed_at",
+		"result_version",
 	}
 
 	allProperties := make(map[string]interface{})

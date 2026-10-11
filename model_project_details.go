@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -46,6 +46,7 @@ type ProjectDetails struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
+	SearchConsole *ProjectDetailsAllOfSearchConsole `json:"search_console,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
@@ -839,6 +840,38 @@ func (o *ProjectDetails) SetDataCoverage(v ProjectDetailsAllOfDataCoverage) {
 	o.DataCoverage = &v
 }
 
+// GetSearchConsole returns the SearchConsole field value if set, zero value otherwise.
+func (o *ProjectDetails) GetSearchConsole() ProjectDetailsAllOfSearchConsole {
+	if o == nil || IsNil(o.SearchConsole) {
+		var ret ProjectDetailsAllOfSearchConsole
+		return ret
+	}
+	return *o.SearchConsole
+}
+
+// GetSearchConsoleOk returns a tuple with the SearchConsole field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetSearchConsoleOk() (*ProjectDetailsAllOfSearchConsole, bool) {
+	if o == nil || IsNil(o.SearchConsole) {
+		return nil, false
+	}
+	return o.SearchConsole, true
+}
+
+// HasSearchConsole returns a boolean if a field has been set.
+func (o *ProjectDetails) HasSearchConsole() bool {
+	if o != nil && !IsNil(o.SearchConsole) {
+		return true
+	}
+
+	return false
+}
+
+// SetSearchConsole gets a reference to the given ProjectDetailsAllOfSearchConsole and assigns it to the SearchConsole field.
+func (o *ProjectDetails) SetSearchConsole(v ProjectDetailsAllOfSearchConsole) {
+	o.SearchConsole = &v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *ProjectDetails) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -943,6 +976,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.DataCoverage) {
 		toSerialize["data_coverage"] = o.DataCoverage
+	}
+	if !IsNil(o.SearchConsole) {
+		toSerialize["search_console"] = o.SearchConsole
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId

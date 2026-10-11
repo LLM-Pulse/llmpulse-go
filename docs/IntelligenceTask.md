@@ -24,6 +24,7 @@ Name | Type | Description | Notes
 **ProcessedAt** | Pointer to **NullableTime** |  | [optional] 
 **ManuallyEditedAt** | Pointer to **NullableTime** | When the content was last edited by hand; null while the output is as generated | [optional] 
 **EditedByUserId** | Pointer to **NullableInt32** | User behind the last manual edit; null for an unedited task or an edit made from an embedded portal | [optional] 
+**ResultVersion** | Pointer to **string** | Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \&quot;0\&quot; until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -665,6 +666,31 @@ HasEditedByUserId returns a boolean if a field has been set.
 `func (o *IntelligenceTask) UnsetEditedByUserId()`
 
 UnsetEditedByUserId ensures that no value is present for EditedByUserId, not even an explicit nil
+### GetResultVersion
+
+`func (o *IntelligenceTask) GetResultVersion() string`
+
+GetResultVersion returns the ResultVersion field if non-nil, zero value otherwise.
+
+### GetResultVersionOk
+
+`func (o *IntelligenceTask) GetResultVersionOk() (*string, bool)`
+
+GetResultVersionOk returns a tuple with the ResultVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetResultVersion
+
+`func (o *IntelligenceTask) SetResultVersion(v string)`
+
+SetResultVersion sets ResultVersion field to given value.
+
+### HasResultVersion
+
+`func (o *IntelligenceTask) HasResultVersion() bool`
+
+HasResultVersion returns a boolean if a field has been set.
+
 ### GetRequestId
 
 `func (o *IntelligenceTask) GetRequestId() string`

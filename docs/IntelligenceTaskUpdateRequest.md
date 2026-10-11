@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ProjectId** | **int32** |  | 
 **Edits** | **map[string]string** | Dotted result_data paths (title, sections.0.content, key_points.2) mapped to their replacement text. Only string fields that already exist are editable; sections cannot be added or removed. | 
+**ResultVersion** | Pointer to **NullableString** | Optional. The result_version of the task as last read. When sent, the edit is refused with ERR_STALE_CONTENT (409) and nothing is written if the task was regenerated since. Omitted, null or empty, the edits apply to whatever the task holds now | [optional] 
 
 ## Methods
 
@@ -66,6 +67,41 @@ and a boolean to check if the value has been set.
 SetEdits sets Edits field to given value.
 
 
+### GetResultVersion
+
+`func (o *IntelligenceTaskUpdateRequest) GetResultVersion() string`
+
+GetResultVersion returns the ResultVersion field if non-nil, zero value otherwise.
+
+### GetResultVersionOk
+
+`func (o *IntelligenceTaskUpdateRequest) GetResultVersionOk() (*string, bool)`
+
+GetResultVersionOk returns a tuple with the ResultVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetResultVersion
+
+`func (o *IntelligenceTaskUpdateRequest) SetResultVersion(v string)`
+
+SetResultVersion sets ResultVersion field to given value.
+
+### HasResultVersion
+
+`func (o *IntelligenceTaskUpdateRequest) HasResultVersion() bool`
+
+HasResultVersion returns a boolean if a field has been set.
+
+### SetResultVersionNil
+
+`func (o *IntelligenceTaskUpdateRequest) SetResultVersionNil(b bool)`
+
+ SetResultVersionNil sets the value for ResultVersion to be an explicit nil
+
+### UnsetResultVersion
+`func (o *IntelligenceTaskUpdateRequest) UnsetResultVersion()`
+
+UnsetResultVersion ensures that no value is present for ResultVersion, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

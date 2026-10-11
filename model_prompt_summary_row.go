@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -34,6 +34,30 @@ type PromptSummaryRow struct {
 	AvgPosition NullableFloat32 `json:"avg_position,omitempty"`
 	// Opens this prompt in the app. The link names its project, so it opens there for any user with access to that project
 	AppUrl *string `json:"app_url,omitempty"`
+	// Country of the prompt, as in /dimensions/prompts
+	CountryCode NullableString `json:"country_code,omitempty"`
+	// Language of the prompt, as in /dimensions/prompts
+	LanguageCode NullableString `json:"language_code,omitempty"`
+	// Search intent: informational, navigational, commercial or transactional. Null until the prompt is classified
+	PromptType NullableString `json:"prompt_type,omitempty"`
+	// Brand focus: brand, brand_other or non_brand. Null until the prompt is classified
+	BrandKind NullableString `json:"brand_kind,omitempty"`
+	// Every tag the prompt belongs to
+	Tags []TagRef `json:"tags,omitempty"`
+	// Responses in the window with a sentiment verdict for the brand, the base of the sentiment percentages (deduplicated like the sentiment timeseries)
+	SentimentResponses *int32 `json:"sentiment_responses,omitempty"`
+	// Percentage (0-100) of sentiment_responses whose brand verdict is very positive; null when sentiment_responses is 0
+	SentimentVeryPositive NullableFloat32 `json:"sentiment_very_positive,omitempty"`
+	// Percentage (0-100) of sentiment_responses whose brand verdict is positive; null when sentiment_responses is 0
+	SentimentPositive NullableFloat32 `json:"sentiment_positive,omitempty"`
+	// Percentage (0-100) of sentiment_responses whose brand verdict is neutral; null when sentiment_responses is 0
+	SentimentNeutral NullableFloat32 `json:"sentiment_neutral,omitempty"`
+	// Percentage (0-100) of sentiment_responses whose brand verdict is negative; null when sentiment_responses is 0
+	SentimentNegative NullableFloat32 `json:"sentiment_negative,omitempty"`
+	// Percentage (0-100) of sentiment_responses whose brand verdict is very negative; null when sentiment_responses is 0
+	SentimentVeryNegative NullableFloat32 `json:"sentiment_very_negative,omitempty"`
+	// Positive minus negative percentages (-100 to 100), neutral counted in the base; null when sentiment_responses is 0
+	NetSentiment NullableFloat32 `json:"net_sentiment,omitempty"`
 }
 
 // NewPromptSummaryRow instantiates a new PromptSummaryRow object
@@ -457,6 +481,490 @@ func (o *PromptSummaryRow) SetAppUrl(v string) {
 	o.AppUrl = &v
 }
 
+// GetCountryCode returns the CountryCode field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetCountryCode() string {
+	if o == nil || IsNil(o.CountryCode.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.CountryCode.Get()
+}
+
+// GetCountryCodeOk returns a tuple with the CountryCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetCountryCodeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CountryCode.Get(), o.CountryCode.IsSet()
+}
+
+// HasCountryCode returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasCountryCode() bool {
+	if o != nil && o.CountryCode.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCountryCode gets a reference to the given NullableString and assigns it to the CountryCode field.
+func (o *PromptSummaryRow) SetCountryCode(v string) {
+	o.CountryCode.Set(&v)
+}
+// SetCountryCodeNil sets the value for CountryCode to be an explicit nil
+func (o *PromptSummaryRow) SetCountryCodeNil() {
+	o.CountryCode.Set(nil)
+}
+
+// UnsetCountryCode ensures that no value is present for CountryCode, not even an explicit nil
+func (o *PromptSummaryRow) UnsetCountryCode() {
+	o.CountryCode.Unset()
+}
+
+// GetLanguageCode returns the LanguageCode field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetLanguageCode() string {
+	if o == nil || IsNil(o.LanguageCode.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.LanguageCode.Get()
+}
+
+// GetLanguageCodeOk returns a tuple with the LanguageCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetLanguageCodeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.LanguageCode.Get(), o.LanguageCode.IsSet()
+}
+
+// HasLanguageCode returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasLanguageCode() bool {
+	if o != nil && o.LanguageCode.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetLanguageCode gets a reference to the given NullableString and assigns it to the LanguageCode field.
+func (o *PromptSummaryRow) SetLanguageCode(v string) {
+	o.LanguageCode.Set(&v)
+}
+// SetLanguageCodeNil sets the value for LanguageCode to be an explicit nil
+func (o *PromptSummaryRow) SetLanguageCodeNil() {
+	o.LanguageCode.Set(nil)
+}
+
+// UnsetLanguageCode ensures that no value is present for LanguageCode, not even an explicit nil
+func (o *PromptSummaryRow) UnsetLanguageCode() {
+	o.LanguageCode.Unset()
+}
+
+// GetPromptType returns the PromptType field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetPromptType() string {
+	if o == nil || IsNil(o.PromptType.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.PromptType.Get()
+}
+
+// GetPromptTypeOk returns a tuple with the PromptType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetPromptTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PromptType.Get(), o.PromptType.IsSet()
+}
+
+// HasPromptType returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasPromptType() bool {
+	if o != nil && o.PromptType.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptType gets a reference to the given NullableString and assigns it to the PromptType field.
+func (o *PromptSummaryRow) SetPromptType(v string) {
+	o.PromptType.Set(&v)
+}
+// SetPromptTypeNil sets the value for PromptType to be an explicit nil
+func (o *PromptSummaryRow) SetPromptTypeNil() {
+	o.PromptType.Set(nil)
+}
+
+// UnsetPromptType ensures that no value is present for PromptType, not even an explicit nil
+func (o *PromptSummaryRow) UnsetPromptType() {
+	o.PromptType.Unset()
+}
+
+// GetBrandKind returns the BrandKind field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetBrandKind() string {
+	if o == nil || IsNil(o.BrandKind.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.BrandKind.Get()
+}
+
+// GetBrandKindOk returns a tuple with the BrandKind field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetBrandKindOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.BrandKind.Get(), o.BrandKind.IsSet()
+}
+
+// HasBrandKind returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasBrandKind() bool {
+	if o != nil && o.BrandKind.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetBrandKind gets a reference to the given NullableString and assigns it to the BrandKind field.
+func (o *PromptSummaryRow) SetBrandKind(v string) {
+	o.BrandKind.Set(&v)
+}
+// SetBrandKindNil sets the value for BrandKind to be an explicit nil
+func (o *PromptSummaryRow) SetBrandKindNil() {
+	o.BrandKind.Set(nil)
+}
+
+// UnsetBrandKind ensures that no value is present for BrandKind, not even an explicit nil
+func (o *PromptSummaryRow) UnsetBrandKind() {
+	o.BrandKind.Unset()
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *PromptSummaryRow) GetTags() []TagRef {
+	if o == nil || IsNil(o.Tags) {
+		var ret []TagRef
+		return ret
+	}
+	return o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromptSummaryRow) GetTagsOk() ([]TagRef, bool) {
+	if o == nil || IsNil(o.Tags) {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasTags() bool {
+	if o != nil && !IsNil(o.Tags) {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []TagRef and assigns it to the Tags field.
+func (o *PromptSummaryRow) SetTags(v []TagRef) {
+	o.Tags = v
+}
+
+// GetSentimentResponses returns the SentimentResponses field value if set, zero value otherwise.
+func (o *PromptSummaryRow) GetSentimentResponses() int32 {
+	if o == nil || IsNil(o.SentimentResponses) {
+		var ret int32
+		return ret
+	}
+	return *o.SentimentResponses
+}
+
+// GetSentimentResponsesOk returns a tuple with the SentimentResponses field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromptSummaryRow) GetSentimentResponsesOk() (*int32, bool) {
+	if o == nil || IsNil(o.SentimentResponses) {
+		return nil, false
+	}
+	return o.SentimentResponses, true
+}
+
+// HasSentimentResponses returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentResponses() bool {
+	if o != nil && !IsNil(o.SentimentResponses) {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentResponses gets a reference to the given int32 and assigns it to the SentimentResponses field.
+func (o *PromptSummaryRow) SetSentimentResponses(v int32) {
+	o.SentimentResponses = &v
+}
+
+// GetSentimentVeryPositive returns the SentimentVeryPositive field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetSentimentVeryPositive() float32 {
+	if o == nil || IsNil(o.SentimentVeryPositive.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.SentimentVeryPositive.Get()
+}
+
+// GetSentimentVeryPositiveOk returns a tuple with the SentimentVeryPositive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetSentimentVeryPositiveOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SentimentVeryPositive.Get(), o.SentimentVeryPositive.IsSet()
+}
+
+// HasSentimentVeryPositive returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentVeryPositive() bool {
+	if o != nil && o.SentimentVeryPositive.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentVeryPositive gets a reference to the given NullableFloat32 and assigns it to the SentimentVeryPositive field.
+func (o *PromptSummaryRow) SetSentimentVeryPositive(v float32) {
+	o.SentimentVeryPositive.Set(&v)
+}
+// SetSentimentVeryPositiveNil sets the value for SentimentVeryPositive to be an explicit nil
+func (o *PromptSummaryRow) SetSentimentVeryPositiveNil() {
+	o.SentimentVeryPositive.Set(nil)
+}
+
+// UnsetSentimentVeryPositive ensures that no value is present for SentimentVeryPositive, not even an explicit nil
+func (o *PromptSummaryRow) UnsetSentimentVeryPositive() {
+	o.SentimentVeryPositive.Unset()
+}
+
+// GetSentimentPositive returns the SentimentPositive field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetSentimentPositive() float32 {
+	if o == nil || IsNil(o.SentimentPositive.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.SentimentPositive.Get()
+}
+
+// GetSentimentPositiveOk returns a tuple with the SentimentPositive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetSentimentPositiveOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SentimentPositive.Get(), o.SentimentPositive.IsSet()
+}
+
+// HasSentimentPositive returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentPositive() bool {
+	if o != nil && o.SentimentPositive.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentPositive gets a reference to the given NullableFloat32 and assigns it to the SentimentPositive field.
+func (o *PromptSummaryRow) SetSentimentPositive(v float32) {
+	o.SentimentPositive.Set(&v)
+}
+// SetSentimentPositiveNil sets the value for SentimentPositive to be an explicit nil
+func (o *PromptSummaryRow) SetSentimentPositiveNil() {
+	o.SentimentPositive.Set(nil)
+}
+
+// UnsetSentimentPositive ensures that no value is present for SentimentPositive, not even an explicit nil
+func (o *PromptSummaryRow) UnsetSentimentPositive() {
+	o.SentimentPositive.Unset()
+}
+
+// GetSentimentNeutral returns the SentimentNeutral field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetSentimentNeutral() float32 {
+	if o == nil || IsNil(o.SentimentNeutral.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.SentimentNeutral.Get()
+}
+
+// GetSentimentNeutralOk returns a tuple with the SentimentNeutral field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetSentimentNeutralOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SentimentNeutral.Get(), o.SentimentNeutral.IsSet()
+}
+
+// HasSentimentNeutral returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentNeutral() bool {
+	if o != nil && o.SentimentNeutral.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentNeutral gets a reference to the given NullableFloat32 and assigns it to the SentimentNeutral field.
+func (o *PromptSummaryRow) SetSentimentNeutral(v float32) {
+	o.SentimentNeutral.Set(&v)
+}
+// SetSentimentNeutralNil sets the value for SentimentNeutral to be an explicit nil
+func (o *PromptSummaryRow) SetSentimentNeutralNil() {
+	o.SentimentNeutral.Set(nil)
+}
+
+// UnsetSentimentNeutral ensures that no value is present for SentimentNeutral, not even an explicit nil
+func (o *PromptSummaryRow) UnsetSentimentNeutral() {
+	o.SentimentNeutral.Unset()
+}
+
+// GetSentimentNegative returns the SentimentNegative field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetSentimentNegative() float32 {
+	if o == nil || IsNil(o.SentimentNegative.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.SentimentNegative.Get()
+}
+
+// GetSentimentNegativeOk returns a tuple with the SentimentNegative field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetSentimentNegativeOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SentimentNegative.Get(), o.SentimentNegative.IsSet()
+}
+
+// HasSentimentNegative returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentNegative() bool {
+	if o != nil && o.SentimentNegative.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentNegative gets a reference to the given NullableFloat32 and assigns it to the SentimentNegative field.
+func (o *PromptSummaryRow) SetSentimentNegative(v float32) {
+	o.SentimentNegative.Set(&v)
+}
+// SetSentimentNegativeNil sets the value for SentimentNegative to be an explicit nil
+func (o *PromptSummaryRow) SetSentimentNegativeNil() {
+	o.SentimentNegative.Set(nil)
+}
+
+// UnsetSentimentNegative ensures that no value is present for SentimentNegative, not even an explicit nil
+func (o *PromptSummaryRow) UnsetSentimentNegative() {
+	o.SentimentNegative.Unset()
+}
+
+// GetSentimentVeryNegative returns the SentimentVeryNegative field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetSentimentVeryNegative() float32 {
+	if o == nil || IsNil(o.SentimentVeryNegative.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.SentimentVeryNegative.Get()
+}
+
+// GetSentimentVeryNegativeOk returns a tuple with the SentimentVeryNegative field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetSentimentVeryNegativeOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.SentimentVeryNegative.Get(), o.SentimentVeryNegative.IsSet()
+}
+
+// HasSentimentVeryNegative returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasSentimentVeryNegative() bool {
+	if o != nil && o.SentimentVeryNegative.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetSentimentVeryNegative gets a reference to the given NullableFloat32 and assigns it to the SentimentVeryNegative field.
+func (o *PromptSummaryRow) SetSentimentVeryNegative(v float32) {
+	o.SentimentVeryNegative.Set(&v)
+}
+// SetSentimentVeryNegativeNil sets the value for SentimentVeryNegative to be an explicit nil
+func (o *PromptSummaryRow) SetSentimentVeryNegativeNil() {
+	o.SentimentVeryNegative.Set(nil)
+}
+
+// UnsetSentimentVeryNegative ensures that no value is present for SentimentVeryNegative, not even an explicit nil
+func (o *PromptSummaryRow) UnsetSentimentVeryNegative() {
+	o.SentimentVeryNegative.Unset()
+}
+
+// GetNetSentiment returns the NetSentiment field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptSummaryRow) GetNetSentiment() float32 {
+	if o == nil || IsNil(o.NetSentiment.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.NetSentiment.Get()
+}
+
+// GetNetSentimentOk returns a tuple with the NetSentiment field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptSummaryRow) GetNetSentimentOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.NetSentiment.Get(), o.NetSentiment.IsSet()
+}
+
+// HasNetSentiment returns a boolean if a field has been set.
+func (o *PromptSummaryRow) HasNetSentiment() bool {
+	if o != nil && o.NetSentiment.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetNetSentiment gets a reference to the given NullableFloat32 and assigns it to the NetSentiment field.
+func (o *PromptSummaryRow) SetNetSentiment(v float32) {
+	o.NetSentiment.Set(&v)
+}
+// SetNetSentimentNil sets the value for NetSentiment to be an explicit nil
+func (o *PromptSummaryRow) SetNetSentimentNil() {
+	o.NetSentiment.Set(nil)
+}
+
+// UnsetNetSentiment ensures that no value is present for NetSentiment, not even an explicit nil
+func (o *PromptSummaryRow) UnsetNetSentiment() {
+	o.NetSentiment.Unset()
+}
+
 func (o PromptSummaryRow) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -502,6 +1010,42 @@ func (o PromptSummaryRow) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AppUrl) {
 		toSerialize["app_url"] = o.AppUrl
+	}
+	if o.CountryCode.IsSet() {
+		toSerialize["country_code"] = o.CountryCode.Get()
+	}
+	if o.LanguageCode.IsSet() {
+		toSerialize["language_code"] = o.LanguageCode.Get()
+	}
+	if o.PromptType.IsSet() {
+		toSerialize["prompt_type"] = o.PromptType.Get()
+	}
+	if o.BrandKind.IsSet() {
+		toSerialize["brand_kind"] = o.BrandKind.Get()
+	}
+	if !IsNil(o.Tags) {
+		toSerialize["tags"] = o.Tags
+	}
+	if !IsNil(o.SentimentResponses) {
+		toSerialize["sentiment_responses"] = o.SentimentResponses
+	}
+	if o.SentimentVeryPositive.IsSet() {
+		toSerialize["sentiment_very_positive"] = o.SentimentVeryPositive.Get()
+	}
+	if o.SentimentPositive.IsSet() {
+		toSerialize["sentiment_positive"] = o.SentimentPositive.Get()
+	}
+	if o.SentimentNeutral.IsSet() {
+		toSerialize["sentiment_neutral"] = o.SentimentNeutral.Get()
+	}
+	if o.SentimentNegative.IsSet() {
+		toSerialize["sentiment_negative"] = o.SentimentNegative.Get()
+	}
+	if o.SentimentVeryNegative.IsSet() {
+		toSerialize["sentiment_very_negative"] = o.SentimentVeryNegative.Get()
+	}
+	if o.NetSentiment.IsSet() {
+		toSerialize["net_sentiment"] = o.NetSentiment.Get()
 	}
 	return toSerialize, nil
 }

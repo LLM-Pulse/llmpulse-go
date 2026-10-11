@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -17,7 +17,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"time"
 )
 
 
@@ -29,15 +28,17 @@ type ApiGetSearchConsolePagesRequest struct {
 	ApiService *SearchConsoleAPIService
 	projectId *int32
 	range_ *int32
-	from *time.Time
-	to *time.Time
+	from *string
+	to *string
 	sort *string
 	page *int32
 	perPage *int32
+	startRow *int32
 	output *string
 	searchType *string
 	filters *string
 	dataState *string
+	aggregationType *string
 }
 
 // Project ID
@@ -46,19 +47,20 @@ func (r ApiGetSearchConsolePagesRequest) ProjectId(projectId int32) ApiGetSearch
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
 func (r ApiGetSearchConsolePagesRequest) Range_(range_ int32) ApiGetSearchConsolePagesRequest {
 	r.range_ = &range_
 	return r
 }
 
-func (r ApiGetSearchConsolePagesRequest) From(from time.Time) ApiGetSearchConsolePagesRequest {
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsolePagesRequest) From(from string) ApiGetSearchConsolePagesRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
-func (r ApiGetSearchConsolePagesRequest) To(to time.Time) ApiGetSearchConsolePagesRequest {
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsolePagesRequest) To(to string) ApiGetSearchConsolePagesRequest {
 	r.to = &to
 	return r
 }
@@ -75,6 +77,12 @@ func (r ApiGetSearchConsolePagesRequest) Page(page int32) ApiGetSearchConsolePag
 
 func (r ApiGetSearchConsolePagesRequest) PerPage(perPage int32) ApiGetSearchConsolePagesRequest {
 	r.perPage = &perPage
+	return r
+}
+
+// Google ranks rows by clicks and returns at most 25,000 per request. start_row moves that window down the ranking (e.g. 25000 for the next block); sort and pagination apply within the window.
+func (r ApiGetSearchConsolePagesRequest) StartRow(startRow int32) ApiGetSearchConsolePagesRequest {
+	r.startRow = &startRow
 	return r
 }
 
@@ -102,14 +110,20 @@ func (r ApiGetSearchConsolePagesRequest) DataState(dataState string) ApiGetSearc
 	return r
 }
 
-func (r ApiGetSearchConsolePagesRequest) Execute() (*http.Response, error) {
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsolePagesRequest) AggregationType(aggregationType string) ApiGetSearchConsolePagesRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsolePagesRequest) Execute() (*SearchConsoleListResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsolePagesExecute(r)
 }
 
 /*
 GetSearchConsolePages Top Search Console pages (Growth+)
 
-Top Google Search Console landing pages over a date range, ranked by impressions, clicks, ctr or position, paginated. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts the rows returned by one Google request, up to 25,000; truncated: true means that limit was reached. Page rows are counted per page rather than per property, so they can differ from the totals. Sorting and pagination apply to the available set. Stored reads cannot answer this endpoint and return ERR_INVALID_PARAM.
+Top Google Search Console landing pages over a date range, ranked by impressions, clicks, ctr or position, paginated. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts the rows returned by one Google request, up to 25,000; truncated: true means that limit was reached, and start_row reads the next block. Page rows are counted per page rather than per property, so they can differ from the totals. Sorting and pagination apply to the available set. Stored reads cannot answer this endpoint and return ERR_INVALID_PARAM.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsolePagesRequest
@@ -122,16 +136,18 @@ func (a *SearchConsoleAPIService) GetSearchConsolePages(ctx context.Context) Api
 }
 
 // Execute executes the request
-func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchConsolePagesRequest) (*http.Response, error) {
+//  @return SearchConsoleListResponse
+func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchConsolePagesRequest) (*SearchConsoleListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsolePages")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/search_console/pages"
@@ -140,7 +156,7 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -174,6 +190,13 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
 		r.perPage = &defaultValue
 	}
+	if r.startRow != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", r.startRow, "form", "")
+	} else {
+		var defaultValue int32 = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", defaultValue, "form", "")
+		r.startRow = &defaultValue
+	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
@@ -194,6 +217,13 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
 		r.dataState = &defaultValue
 	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -213,19 +243,19 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -233,42 +263,73 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetSearchConsoleQueriesRequest struct {
@@ -276,15 +337,17 @@ type ApiGetSearchConsoleQueriesRequest struct {
 	ApiService *SearchConsoleAPIService
 	projectId *int32
 	range_ *int32
-	from *time.Time
-	to *time.Time
+	from *string
+	to *string
 	sort *string
 	page *int32
 	perPage *int32
+	startRow *int32
 	output *string
 	searchType *string
 	filters *string
 	dataState *string
+	aggregationType *string
 }
 
 // Project ID
@@ -293,19 +356,20 @@ func (r ApiGetSearchConsoleQueriesRequest) ProjectId(projectId int32) ApiGetSear
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
 func (r ApiGetSearchConsoleQueriesRequest) Range_(range_ int32) ApiGetSearchConsoleQueriesRequest {
 	r.range_ = &range_
 	return r
 }
 
-func (r ApiGetSearchConsoleQueriesRequest) From(from time.Time) ApiGetSearchConsoleQueriesRequest {
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleQueriesRequest) From(from string) ApiGetSearchConsoleQueriesRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
-func (r ApiGetSearchConsoleQueriesRequest) To(to time.Time) ApiGetSearchConsoleQueriesRequest {
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleQueriesRequest) To(to string) ApiGetSearchConsoleQueriesRequest {
 	r.to = &to
 	return r
 }
@@ -322,6 +386,12 @@ func (r ApiGetSearchConsoleQueriesRequest) Page(page int32) ApiGetSearchConsoleQ
 
 func (r ApiGetSearchConsoleQueriesRequest) PerPage(perPage int32) ApiGetSearchConsoleQueriesRequest {
 	r.perPage = &perPage
+	return r
+}
+
+// Google ranks rows by clicks and returns at most 25,000 per request. start_row moves that window down the ranking (e.g. 25000 for the next block); sort and pagination apply within the window.
+func (r ApiGetSearchConsoleQueriesRequest) StartRow(startRow int32) ApiGetSearchConsoleQueriesRequest {
+	r.startRow = &startRow
 	return r
 }
 
@@ -349,14 +419,20 @@ func (r ApiGetSearchConsoleQueriesRequest) DataState(dataState string) ApiGetSea
 	return r
 }
 
-func (r ApiGetSearchConsoleQueriesRequest) Execute() (*http.Response, error) {
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleQueriesRequest) AggregationType(aggregationType string) ApiGetSearchConsoleQueriesRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleQueriesRequest) Execute() (*SearchConsoleListResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsoleQueriesExecute(r)
 }
 
 /*
 GetSearchConsoleQueries Top Search Console queries (Growth+)
 
-Top Google Search Console search queries over a date range, ranked by impressions, clicks, ctr or position, paginated. Excludes anonymized queries; for headline totals use /search_console/summary. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts the rows returned by one Google request, up to 25,000; truncated: true means that limit was reached, so the rows add up to less than the totals. Sorting and pagination apply to the available set. Stored reads cannot answer this endpoint and return ERR_INVALID_PARAM.
+Top Google Search Console search queries over a date range, ranked by impressions, clicks, ctr or position, paginated. Excludes anonymized queries; for headline totals use /search_console/summary. Requires a connected Search Console property (Growth+). X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. total counts the rows returned by one Google request, up to 25,000; truncated: true means that limit was reached, so the rows add up to less than the totals, and start_row reads the next block. Sorting and pagination apply to the available set. Stored reads cannot answer this endpoint and return ERR_INVALID_PARAM.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleQueriesRequest
@@ -369,16 +445,18 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueries(ctx context.Context) A
 }
 
 // Execute executes the request
-func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchConsoleQueriesRequest) (*http.Response, error) {
+//  @return SearchConsoleListResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchConsoleQueriesRequest) (*SearchConsoleListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleQueries")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/search_console/queries"
@@ -387,7 +465,7 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -421,6 +499,13 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
 		r.perPage = &defaultValue
 	}
+	if r.startRow != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", r.startRow, "form", "")
+	} else {
+		var defaultValue int32 = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", defaultValue, "form", "")
+		r.startRow = &defaultValue
+	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
@@ -441,6 +526,13 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
 		r.dataState = &defaultValue
 	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -460,19 +552,19 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -480,42 +572,393 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSearchConsoleRowsRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	dimensions *string
+	range_ *int32
+	from *string
+	to *string
+	sort *string
+	page *int32
+	perPage *int32
+	startRow *int32
+	output *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleRowsRequest) ProjectId(projectId int32) ApiGetSearchConsoleRowsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Comma-separated dimensions to group by, 1 to 3 of date, country, device, page, query, searchAppearance. Each becomes a field of every row; country and device values are lowercase.
+func (r ApiGetSearchConsoleRowsRequest) Dimensions(dimensions string) ApiGetSearchConsoleRowsRequest {
+	r.dimensions = &dimensions
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleRowsRequest) Range_(range_ int32) ApiGetSearchConsoleRowsRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleRowsRequest) From(from string) ApiGetSearchConsoleRowsRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleRowsRequest) To(to string) ApiGetSearchConsoleRowsRequest {
+	r.to = &to
+	return r
+}
+
+func (r ApiGetSearchConsoleRowsRequest) Sort(sort string) ApiGetSearchConsoleRowsRequest {
+	r.sort = &sort
+	return r
+}
+
+func (r ApiGetSearchConsoleRowsRequest) Page(page int32) ApiGetSearchConsoleRowsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSearchConsoleRowsRequest) PerPage(perPage int32) ApiGetSearchConsoleRowsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Google ranks rows by clicks and returns at most 25,000 per request. start_row moves that window down the ranking (e.g. 25000 for the next block); sort and pagination apply within the window.
+func (r ApiGetSearchConsoleRowsRequest) StartRow(startRow int32) ApiGetSearchConsoleRowsRequest {
+	r.startRow = &startRow
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSearchConsoleRowsRequest) Output(output string) ApiGetSearchConsoleRowsRequest {
+	r.output = &output
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleRowsRequest) SearchType(searchType string) ApiGetSearchConsoleRowsRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleRowsRequest) Filters(filters string) ApiGetSearchConsoleRowsRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleRowsRequest) DataState(dataState string) ApiGetSearchConsoleRowsRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleRowsRequest) AggregationType(aggregationType string) ApiGetSearchConsoleRowsRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleRowsRequest) Execute() (*SearchConsoleRowsResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleRowsExecute(r)
+}
+
+/*
+GetSearchConsoleRows Search Console rows by several dimensions (Growth+)
+
+Google Search Console rows grouped by 1 to 3 dimensions (date, country, device, page, query, searchAppearance) over a date range, each row carrying its dimension values as fields plus impressions, clicks, ctr (0..1) and position, ranked by impressions, clicks, ctr or position, paginated. Google ranks rows by clicks and returns at most 25,000 per request (truncated: true when reached); start_row moves that window. Query rows exclude anonymized queries, so rows add up to less than the summary totals. Requires a connected Search Console property (Growth+) and live reads: stored reads return ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access and ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. A combination Google refuses comes back as ERR_INVALID_PARAM with its reason.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleRowsRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleRows(ctx context.Context) ApiGetSearchConsoleRowsRequest {
+	return ApiGetSearchConsoleRowsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleRowsResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleRowsExecute(r ApiGetSearchConsoleRowsRequest) (*SearchConsoleRowsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleRowsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleRows")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/rows"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+	if r.dimensions == nil {
+		return localVarReturnValue, nil, reportError("dimensions is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "dimensions", r.dimensions, "form", "")
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	} else {
+		var defaultValue string = "impressions"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", defaultValue, "form", "")
+		r.sort = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.startRow != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", r.startRow, "form", "")
+	} else {
+		var defaultValue int32 = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "start_row", defaultValue, "form", "")
+		r.startRow = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetSearchConsoleSummaryRequest struct {
@@ -523,13 +966,14 @@ type ApiGetSearchConsoleSummaryRequest struct {
 	ApiService *SearchConsoleAPIService
 	projectId *int32
 	range_ *int32
-	from *time.Time
-	to *time.Time
+	from *string
+	to *string
 	dimension *string
 	limit *int32
 	searchType *string
 	filters *string
 	dataState *string
+	aggregationType *string
 }
 
 // Project ID
@@ -538,19 +982,20 @@ func (r ApiGetSearchConsoleSummaryRequest) ProjectId(projectId int32) ApiGetSear
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
 func (r ApiGetSearchConsoleSummaryRequest) Range_(range_ int32) ApiGetSearchConsoleSummaryRequest {
 	r.range_ = &range_
 	return r
 }
 
-func (r ApiGetSearchConsoleSummaryRequest) From(from time.Time) ApiGetSearchConsoleSummaryRequest {
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleSummaryRequest) From(from string) ApiGetSearchConsoleSummaryRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
-func (r ApiGetSearchConsoleSummaryRequest) To(to time.Time) ApiGetSearchConsoleSummaryRequest {
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleSummaryRequest) To(to string) ApiGetSearchConsoleSummaryRequest {
 	r.to = &to
 	return r
 }
@@ -585,7 +1030,13 @@ func (r ApiGetSearchConsoleSummaryRequest) DataState(dataState string) ApiGetSea
 	return r
 }
 
-func (r ApiGetSearchConsoleSummaryRequest) Execute() (*http.Response, error) {
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleSummaryRequest) AggregationType(aggregationType string) ApiGetSearchConsoleSummaryRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleSummaryRequest) Execute() (*SearchConsoleSummaryResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsoleSummaryExecute(r)
 }
 
@@ -605,16 +1056,18 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummary(ctx context.Context) A
 }
 
 // Execute executes the request
-func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchConsoleSummaryRequest) (*http.Response, error) {
+//  @return SearchConsoleSummaryResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchConsoleSummaryRequest) (*SearchConsoleSummaryResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleSummaryResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleSummary")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/search_console/summary"
@@ -623,7 +1076,7 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -659,6 +1112,13 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
 		r.dataState = &defaultValue
 	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -678,19 +1138,19 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -698,42 +1158,73 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetSearchConsoleTimeseriesRequest struct {
@@ -741,13 +1232,14 @@ type ApiGetSearchConsoleTimeseriesRequest struct {
 	ApiService *SearchConsoleAPIService
 	projectId *int32
 	range_ *int32
-	from *time.Time
-	to *time.Time
+	from *string
+	to *string
 	granularity *string
 	output *string
 	searchType *string
 	filters *string
 	dataState *string
+	aggregationType *string
 }
 
 // Project ID
@@ -756,19 +1248,20 @@ func (r ApiGetSearchConsoleTimeseriesRequest) ProjectId(projectId int32) ApiGetS
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
 func (r ApiGetSearchConsoleTimeseriesRequest) Range_(range_ int32) ApiGetSearchConsoleTimeseriesRequest {
 	r.range_ = &range_
 	return r
 }
 
-func (r ApiGetSearchConsoleTimeseriesRequest) From(from time.Time) ApiGetSearchConsoleTimeseriesRequest {
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleTimeseriesRequest) From(from string) ApiGetSearchConsoleTimeseriesRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
-func (r ApiGetSearchConsoleTimeseriesRequest) To(to time.Time) ApiGetSearchConsoleTimeseriesRequest {
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleTimeseriesRequest) To(to string) ApiGetSearchConsoleTimeseriesRequest {
 	r.to = &to
 	return r
 }
@@ -802,7 +1295,13 @@ func (r ApiGetSearchConsoleTimeseriesRequest) DataState(dataState string) ApiGet
 	return r
 }
 
-func (r ApiGetSearchConsoleTimeseriesRequest) Execute() (*http.Response, error) {
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleTimeseriesRequest) AggregationType(aggregationType string) ApiGetSearchConsoleTimeseriesRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleTimeseriesRequest) Execute() (*SearchConsoleTimeseriesResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsoleTimeseriesExecute(r)
 }
 
@@ -822,16 +1321,18 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseries(ctx context.Context
 }
 
 // Execute executes the request
-func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSearchConsoleTimeseriesRequest) (*http.Response, error) {
+//  @return SearchConsoleTimeseriesResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSearchConsoleTimeseriesRequest) (*SearchConsoleTimeseriesResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleTimeseriesResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleTimeseries")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/search_console/timeseries"
@@ -840,7 +1341,7 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -876,6 +1377,13 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
 		r.dataState = &defaultValue
 	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -895,19 +1403,19 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -915,40 +1423,71 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

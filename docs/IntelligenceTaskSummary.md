@@ -15,12 +15,13 @@ Name | Type | Description | Notes
 **ManuallyEditedAt** | **NullableTime** | When the content was last edited by hand; null while the output is as generated | 
 **CreatedAt** | **time.Time** |  | 
 **ProcessedAt** | **NullableTime** |  | 
+**ResultVersion** | **string** | Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \&quot;0\&quot; until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text | 
 
 ## Methods
 
 ### NewIntelligenceTaskSummary
 
-`func NewIntelligenceTaskSummary(id int32, publicId string, taskType string, title string, status string, promptId NullableInt32, promptText NullableString, wordCount NullableInt32, manuallyEditedAt NullableTime, createdAt time.Time, processedAt NullableTime, ) *IntelligenceTaskSummary`
+`func NewIntelligenceTaskSummary(id int32, publicId string, taskType string, title string, status string, promptId NullableInt32, promptText NullableString, wordCount NullableInt32, manuallyEditedAt NullableTime, createdAt time.Time, processedAt NullableTime, resultVersion string, ) *IntelligenceTaskSummary`
 
 NewIntelligenceTaskSummary instantiates a new IntelligenceTaskSummary object
 This constructor will assign default values to properties that have it defined,
@@ -305,6 +306,26 @@ SetProcessedAt sets ProcessedAt field to given value.
 `func (o *IntelligenceTaskSummary) UnsetProcessedAt()`
 
 UnsetProcessedAt ensures that no value is present for ProcessedAt, not even an explicit nil
+### GetResultVersion
+
+`func (o *IntelligenceTaskSummary) GetResultVersion() string`
+
+GetResultVersion returns the ResultVersion field if non-nil, zero value otherwise.
+
+### GetResultVersionOk
+
+`func (o *IntelligenceTaskSummary) GetResultVersionOk() (*string, bool)`
+
+GetResultVersionOk returns a tuple with the ResultVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetResultVersion
+
+`func (o *IntelligenceTaskSummary) SetResultVersion(v string)`
+
+SetResultVersion sets ResultVersion field to given value.
+
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

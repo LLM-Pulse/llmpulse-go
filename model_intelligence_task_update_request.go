@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,8 @@ type IntelligenceTaskUpdateRequest struct {
 	ProjectId int32 `json:"project_id"`
 	// Dotted result_data paths (title, sections.0.content, key_points.2) mapped to their replacement text. Only string fields that already exist are editable; sections cannot be added or removed.
 	Edits map[string]string `json:"edits"`
+	// Optional. The result_version of the task as last read. When sent, the edit is refused with ERR_STALE_CONTENT (409) and nothing is written if the task was regenerated since. Omitted, null or empty, the edits apply to whatever the task holds now
+	ResultVersion NullableString `json:"result_version,omitempty"`
 }
 
 type _IntelligenceTaskUpdateRequest IntelligenceTaskUpdateRequest
@@ -96,6 +98,48 @@ func (o *IntelligenceTaskUpdateRequest) SetEdits(v map[string]string) {
 	o.Edits = v
 }
 
+// GetResultVersion returns the ResultVersion field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *IntelligenceTaskUpdateRequest) GetResultVersion() string {
+	if o == nil || IsNil(o.ResultVersion.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.ResultVersion.Get()
+}
+
+// GetResultVersionOk returns a tuple with the ResultVersion field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *IntelligenceTaskUpdateRequest) GetResultVersionOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ResultVersion.Get(), o.ResultVersion.IsSet()
+}
+
+// HasResultVersion returns a boolean if a field has been set.
+func (o *IntelligenceTaskUpdateRequest) HasResultVersion() bool {
+	if o != nil && o.ResultVersion.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetResultVersion gets a reference to the given NullableString and assigns it to the ResultVersion field.
+func (o *IntelligenceTaskUpdateRequest) SetResultVersion(v string) {
+	o.ResultVersion.Set(&v)
+}
+// SetResultVersionNil sets the value for ResultVersion to be an explicit nil
+func (o *IntelligenceTaskUpdateRequest) SetResultVersionNil() {
+	o.ResultVersion.Set(nil)
+}
+
+// UnsetResultVersion ensures that no value is present for ResultVersion, not even an explicit nil
+func (o *IntelligenceTaskUpdateRequest) UnsetResultVersion() {
+	o.ResultVersion.Unset()
+}
+
 func (o IntelligenceTaskUpdateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -108,6 +152,9 @@ func (o IntelligenceTaskUpdateRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["project_id"] = o.ProjectId
 	toSerialize["edits"] = o.Edits
+	if o.ResultVersion.IsSet() {
+		toSerialize["result_version"] = o.ResultVersion.Get()
+	}
 	return toSerialize, nil
 }
 

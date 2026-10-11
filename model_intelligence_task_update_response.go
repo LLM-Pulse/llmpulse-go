@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.57.0
+API version: 1.59.0
 Contact: info@llmpulse.ai
 */
 
@@ -44,6 +44,8 @@ type IntelligenceTaskUpdateResponse struct {
 	ManuallyEditedAt NullableTime `json:"manually_edited_at,omitempty"`
 	// User behind the last manual edit; null for an unedited task or an edit made from an embedded portal
 	EditedByUserId NullableInt32 `json:"edited_by_user_id,omitempty"`
+	// Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \"0\" until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text
+	ResultVersion *string `json:"result_version,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 	// Paths whose text actually changed; empty when every value matched the stored text
 	ChangedPaths []string `json:"changed_paths,omitempty"`
@@ -817,6 +819,38 @@ func (o *IntelligenceTaskUpdateResponse) UnsetEditedByUserId() {
 	o.EditedByUserId.Unset()
 }
 
+// GetResultVersion returns the ResultVersion field value if set, zero value otherwise.
+func (o *IntelligenceTaskUpdateResponse) GetResultVersion() string {
+	if o == nil || IsNil(o.ResultVersion) {
+		var ret string
+		return ret
+	}
+	return *o.ResultVersion
+}
+
+// GetResultVersionOk returns a tuple with the ResultVersion field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntelligenceTaskUpdateResponse) GetResultVersionOk() (*string, bool) {
+	if o == nil || IsNil(o.ResultVersion) {
+		return nil, false
+	}
+	return o.ResultVersion, true
+}
+
+// HasResultVersion returns a boolean if a field has been set.
+func (o *IntelligenceTaskUpdateResponse) HasResultVersion() bool {
+	if o != nil && !IsNil(o.ResultVersion) {
+		return true
+	}
+
+	return false
+}
+
+// SetResultVersion gets a reference to the given string and assigns it to the ResultVersion field.
+func (o *IntelligenceTaskUpdateResponse) SetResultVersion(v string) {
+	o.ResultVersion = &v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *IntelligenceTaskUpdateResponse) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -950,6 +984,9 @@ func (o IntelligenceTaskUpdateResponse) ToMap() (map[string]interface{}, error) 
 	}
 	if o.EditedByUserId.IsSet() {
 		toSerialize["edited_by_user_id"] = o.EditedByUserId.Get()
+	}
+	if !IsNil(o.ResultVersion) {
+		toSerialize["result_version"] = o.ResultVersion
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
