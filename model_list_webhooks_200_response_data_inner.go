@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,7 @@ type ListWebhooks200ResponseDataInner struct {
 	ProjectId *int32 `json:"project_id,omitempty"`
 	EventType *string `json:"event_type,omitempty"`
 	TargetUrl *string `json:"target_url,omitempty"`
+	// True when the subscription receives no more events, including when the API key or OAuth connection that created it was revoked. Creating it again with the same project, event and URL replaces it with a new subscription and secret.
 	Disabled *bool `json:"disabled,omitempty"`
 	FailureCount *int32 `json:"failure_count,omitempty"`
 	LastDeliveredAt NullableTime `json:"last_delivered_at,omitempty"`

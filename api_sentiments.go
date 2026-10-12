@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -182,7 +182,7 @@ func (r ApiListSentimentRecordsRequest) Analysis(analysis string) ApiListSentime
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. Here an unknown value, or a model the API key&#39;s user has not enabled, is ignored rather than rejected: the request succeeds and returns the records of every enabled model, as if model were omitted.
 func (r ApiListSentimentRecordsRequest) Model(model string) ApiListSentimentRecordsRequest {
 	r.model = &model
 	return r

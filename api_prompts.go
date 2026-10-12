@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -315,7 +315,7 @@ func (r ApiListPromptExecutionsRequest) PerPage(perPage int32) ApiListPromptExec
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListPromptExecutionsRequest) Model(model string) ApiListPromptExecutionsRequest {
 	r.model = &model
 	return r
@@ -533,6 +533,7 @@ type ApiListPromptsRequest struct {
 	collectionId *string
 	countryCode *string
 	languageCode *string
+	prompt *int32
 	promptType *string
 	brandKind *string
 	from *time.Time
@@ -556,7 +557,7 @@ func (r ApiListPromptsRequest) PerPage(perPage int32) ApiListPromptsRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Keep only the prompts with at least one execution on this AI model, of any outcome and date (the prompts /dimensions/prompt_executions lists for the same model). Prompts have no model of their own, so a prompt with no execution on this model yet (a newly enabled model, or a locale the model does not cover) is left out. An unknown value, or a model the API key&#39;s user has not enabled, returns 422 ERR_INVALID_PARAM. from and to still filter prompt creation.
 func (r ApiListPromptsRequest) Model(model string) ApiListPromptsRequest {
 	r.model = &model
 	return r
@@ -577,6 +578,12 @@ func (r ApiListPromptsRequest) CountryCode(countryCode string) ApiListPromptsReq
 // One ISO language code or a comma-separated list (e.g. en,es,de)
 func (r ApiListPromptsRequest) LanguageCode(languageCode string) ApiListPromptsRequest {
 	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiListPromptsRequest) Prompt(prompt int32) ApiListPromptsRequest {
+	r.prompt = &prompt
 	return r
 }
 
@@ -676,6 +683,9 @@ func (a *PromptsAPIService) ListPromptsExecute(r ApiListPromptsRequest) (*Prompt
 	}
 	if r.languageCode != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
 	}
 	if r.promptType != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
@@ -808,7 +818,7 @@ func (r ApiListQueryFanOutsRequest) Query(query string) ApiListQueryFanOutsReque
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListQueryFanOutsRequest) Model(model string) ApiListQueryFanOutsRequest {
 	r.model = &model
 	return r

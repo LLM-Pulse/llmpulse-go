@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -75,7 +75,7 @@ func (r ApiGetPromptSummaryRequest) Breakdown(breakdown string) ApiGetPromptSumm
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview.
 func (r ApiGetPromptSummaryRequest) Model(model string) ApiGetPromptSummaryRequest {
 	r.model = &model
 	return r
@@ -367,7 +367,7 @@ func (r ApiGetShareOfVoiceRequest) Competitors(competitors string) ApiGetShareOf
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview.
 func (r ApiGetShareOfVoiceRequest) Model(model string) ApiGetShareOfVoiceRequest {
 	r.model = &model
 	return r
@@ -605,7 +605,7 @@ func (r ApiGetSummaryRequest) Competitors(competitors string) ApiGetSummaryReque
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview.
 func (r ApiGetSummaryRequest) Model(model string) ApiGetSummaryRequest {
 	r.model = &model
 	return r
@@ -857,7 +857,7 @@ func (r ApiGetTimeseriesRequest) Competitors(competitors string) ApiGetTimeserie
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview.
 func (r ApiGetTimeseriesRequest) Model(model string) ApiGetTimeseriesRequest {
 	r.model = &model
 	return r
@@ -1133,7 +1133,7 @@ func (r ApiGetTopSourcesRequest) To(to time.Time) ApiGetTopSourcesRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview.
 func (r ApiGetTopSourcesRequest) Model(model string) ApiGetTopSourcesRequest {
 	r.model = &model
 	return r

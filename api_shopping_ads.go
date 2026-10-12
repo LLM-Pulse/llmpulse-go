@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -94,7 +94,7 @@ func (r ApiListAdsRequest) Query(query string) ApiListAdsRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListAdsRequest) Model(model string) ApiListAdsRequest {
 	r.model = &model
 	return r
@@ -384,7 +384,7 @@ func (r ApiListLocalBusinessesRequest) Query(query string) ApiListLocalBusinesse
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListLocalBusinessesRequest) Model(model string) ApiListLocalBusinessesRequest {
 	r.model = &model
 	return r
@@ -693,7 +693,7 @@ func (r ApiListShoppingRequest) Query(query string) ApiListShoppingRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListShoppingRequest) Model(model string) ApiListShoppingRequest {
 	r.model = &model
 	return r

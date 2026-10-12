@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,6 +42,8 @@ type UpdateProjectRequest struct {
 	PrimaryProducts []string `json:"primary_products,omitempty"`
 	// FULL replacement list of the brand-name variants used to detect mentions; send every variant to keep
 	MatchingNames []string `json:"matching_names,omitempty"`
+	// FULL replacement list (at most 10) of other domains the brand owns, such as a blog or a country site; [] clears it. Citations from them count as owned, like the project website. Each entry is a website's own domain and covers its subdomains; a pasted URL is stored as its domain (https://www.acme.co.uk/x becomes acme.co.uk). A list the domain editor would refuse (a subdomain such as blog.acme.com, a platform many companies share such as youtube.com, amazon.com or wordpress.com, the project website, a tracked competitor domain, a duplicate or an entry that is not a domain) is rejected with ERR_INVALID_PARAM and the reason. Order does not matter, and an unchanged list starts nothing. Account owner only, on every plan
+	AdditionalOwnedDomains []string `json:"additional_owned_domains,omitempty"`
 }
 
 // NewUpdateProjectRequest instantiates a new UpdateProjectRequest object
@@ -413,6 +415,38 @@ func (o *UpdateProjectRequest) SetMatchingNames(v []string) {
 	o.MatchingNames = v
 }
 
+// GetAdditionalOwnedDomains returns the AdditionalOwnedDomains field value if set, zero value otherwise.
+func (o *UpdateProjectRequest) GetAdditionalOwnedDomains() []string {
+	if o == nil || IsNil(o.AdditionalOwnedDomains) {
+		var ret []string
+		return ret
+	}
+	return o.AdditionalOwnedDomains
+}
+
+// GetAdditionalOwnedDomainsOk returns a tuple with the AdditionalOwnedDomains field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateProjectRequest) GetAdditionalOwnedDomainsOk() ([]string, bool) {
+	if o == nil || IsNil(o.AdditionalOwnedDomains) {
+		return nil, false
+	}
+	return o.AdditionalOwnedDomains, true
+}
+
+// HasAdditionalOwnedDomains returns a boolean if a field has been set.
+func (o *UpdateProjectRequest) HasAdditionalOwnedDomains() bool {
+	if o != nil && !IsNil(o.AdditionalOwnedDomains) {
+		return true
+	}
+
+	return false
+}
+
+// SetAdditionalOwnedDomains gets a reference to the given []string and assigns it to the AdditionalOwnedDomains field.
+func (o *UpdateProjectRequest) SetAdditionalOwnedDomains(v []string) {
+	o.AdditionalOwnedDomains = v
+}
+
 func (o UpdateProjectRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -455,6 +489,9 @@ func (o UpdateProjectRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
+	}
+	if !IsNil(o.AdditionalOwnedDomains) {
+		toSerialize["additional_owned_domains"] = o.AdditionalOwnedDomains
 	}
 	return toSerialize, nil
 }

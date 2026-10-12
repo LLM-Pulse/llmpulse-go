@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -279,7 +279,7 @@ func (r ApiGetMentionsByCitingDomainRequest) Domains(domains []string) ApiGetMen
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
 func (r ApiGetMentionsByCitingDomainRequest) Model(model string) ApiGetMentionsByCitingDomainRequest {
 	r.model = &model
 	return r
@@ -514,7 +514,7 @@ func (r ApiListCitationGroupsRequest) Direction(direction string) ApiListCitatio
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
 func (r ApiListCitationGroupsRequest) Model(model string) ApiListCitationGroupsRequest {
 	r.model = &model
 	return r
@@ -905,7 +905,7 @@ func (r ApiListSourcesRequest) PerPage(perPage int32) ApiListSourcesRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListSourcesRequest) Model(model string) ApiListSourcesRequest {
 	r.model = &model
 	return r
@@ -946,7 +946,7 @@ func (r ApiListSourcesRequest) To(to time.Time) ApiListSourcesRequest {
 	return r
 }
 
-// Filter by source ownership. Owned and competitor matching honor the project&#39;s exact-subdomain setting.
+// Filter by source ownership. Owned and competitor matching honor the project&#39;s exact-subdomain setting. Any other value, including a differently cased one, returns ERR_INVALID_PARAM.
 func (r ApiListSourcesRequest) SourceType(sourceType string) ApiListSourcesRequest {
 	r.sourceType = &sourceType
 	return r
@@ -1067,7 +1067,7 @@ func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSour
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -1095,6 +1095,16 @@ func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSour
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

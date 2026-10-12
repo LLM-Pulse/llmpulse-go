@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -29,6 +29,8 @@ type ProjectDetails struct {
 	Url NullableString `json:"url,omitempty"`
 	Description NullableString `json:"description,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
+	// Other domains the brand owns (at most 10, each a website's own domain covering its subdomains), whose citations count as owned like the project website. Empty when none
+	AdditionalOwnedDomains []string `json:"additional_owned_domains,omitempty"`
 	// Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape
 	Industry interface{} `json:"industry,omitempty"`
 	BusinessModel NullableString `json:"business_model,omitempty"`
@@ -287,6 +289,38 @@ func (o *ProjectDetails) HasMatchingNames() bool {
 // SetMatchingNames gets a reference to the given []string and assigns it to the MatchingNames field.
 func (o *ProjectDetails) SetMatchingNames(v []string) {
 	o.MatchingNames = v
+}
+
+// GetAdditionalOwnedDomains returns the AdditionalOwnedDomains field value if set, zero value otherwise.
+func (o *ProjectDetails) GetAdditionalOwnedDomains() []string {
+	if o == nil || IsNil(o.AdditionalOwnedDomains) {
+		var ret []string
+		return ret
+	}
+	return o.AdditionalOwnedDomains
+}
+
+// GetAdditionalOwnedDomainsOk returns a tuple with the AdditionalOwnedDomains field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetAdditionalOwnedDomainsOk() ([]string, bool) {
+	if o == nil || IsNil(o.AdditionalOwnedDomains) {
+		return nil, false
+	}
+	return o.AdditionalOwnedDomains, true
+}
+
+// HasAdditionalOwnedDomains returns a boolean if a field has been set.
+func (o *ProjectDetails) HasAdditionalOwnedDomains() bool {
+	if o != nil && !IsNil(o.AdditionalOwnedDomains) {
+		return true
+	}
+
+	return false
+}
+
+// SetAdditionalOwnedDomains gets a reference to the given []string and assigns it to the AdditionalOwnedDomains field.
+func (o *ProjectDetails) SetAdditionalOwnedDomains(v []string) {
+	o.AdditionalOwnedDomains = v
 }
 
 // GetIndustry returns the Industry field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -931,6 +965,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.MatchingNames) {
 		toSerialize["matching_names"] = o.MatchingNames
+	}
+	if !IsNil(o.AdditionalOwnedDomains) {
+		toSerialize["additional_owned_domains"] = o.AdditionalOwnedDomains
 	}
 	if o.Industry != nil {
 		toSerialize["industry"] = o.Industry

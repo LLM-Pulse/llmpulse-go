@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -188,7 +188,7 @@ func (r ApiListAnswersRequest) ProjectId(projectId int32) ApiListAnswersRequest 
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListAnswersRequest) Model(model string) ApiListAnswersRequest {
 	r.model = &model
 	return r

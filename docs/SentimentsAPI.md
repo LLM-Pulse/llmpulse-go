@@ -101,7 +101,7 @@ func main() {
 	competitorId := int32(56) // int32 |  (optional)
 	brandOnly := true // bool |  (optional)
 	analysis := "analysis_example" // string | One sentiment level or a comma-separated list: very_positive, positive, neutral, negative, very_negative (optional)
-	model := "model_example" // string | Filter by AI model. Models the API key's user has not enabled are silently dropped. (optional)
+	model := "model_example" // string | Filter by one AI model. Here an unknown value, or a model the API key's user has not enabled, is ignored rather than rejected: the request succeeds and returns the records of every enabled model, as if model were omitted. (optional)
 	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
@@ -137,7 +137,7 @@ Name | Type | Description  | Notes
  **competitorId** | **int32** |  | 
  **brandOnly** | **bool** |  | 
  **analysis** | **string** | One sentiment level or a comma-separated list: very_positive, positive, neutral, negative, very_negative | 
- **model** | **string** | Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped. | 
+ **model** | **string** | Filter by one AI model. Here an unknown value, or a model the API key&#39;s user has not enabled, is ignored rather than rejected: the request succeeds and returns the records of every enabled model, as if model were omitted. | 
  **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -61,7 +61,7 @@ func (r ApiListAllCitationsRequest) PerPage(perPage int32) ApiListAllCitationsRe
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListAllCitationsRequest) Model(model string) ApiListAllCitationsRequest {
 	r.model = &model
 	return r
@@ -255,7 +255,7 @@ func (r ApiListAllMentionsRequest) PerPage(perPage int32) ApiListAllMentionsRequ
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListAllMentionsRequest) Model(model string) ApiListAllMentionsRequest {
 	r.model = &model
 	return r
@@ -444,7 +444,7 @@ func (r ApiListCitationsRequest) PerPage(perPage int32) ApiListCitationsRequest 
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListCitationsRequest) Model(model string) ApiListCitationsRequest {
 	r.model = &model
 	return r
@@ -664,7 +664,7 @@ func (r ApiListCompetitorCitationsRequest) PerPage(perPage int32) ApiListCompeti
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListCompetitorCitationsRequest) Model(model string) ApiListCompetitorCitationsRequest {
 	r.model = &model
 	return r
@@ -858,7 +858,7 @@ func (r ApiListCompetitorMentionsRequest) PerPage(perPage int32) ApiListCompetit
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListCompetitorMentionsRequest) Model(model string) ApiListCompetitorMentionsRequest {
 	r.model = &model
 	return r
@@ -1056,7 +1056,7 @@ func (r ApiListMentionsRequest) PerPage(perPage int32) ApiListMentionsRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListMentionsRequest) Model(model string) ApiListMentionsRequest {
 	r.model = &model
 	return r

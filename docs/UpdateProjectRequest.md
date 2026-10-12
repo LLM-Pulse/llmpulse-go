@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **Goals** | Pointer to **string** | What the brand wants to achieve. Context for GEO Writer and prompt suggestions | [optional] 
 **PrimaryProducts** | Pointer to **[]string** | Full replacement list of the main products or services | [optional] 
 **MatchingNames** | Pointer to **[]string** | FULL replacement list of the brand-name variants used to detect mentions; send every variant to keep | [optional] 
+**AdditionalOwnedDomains** | Pointer to **[]string** | FULL replacement list (at most 10) of other domains the brand owns, such as a blog or a country site; [] clears it. Citations from them count as owned, like the project website. Each entry is a website&#39;s own domain and covers its subdomains; a pasted URL is stored as its domain (https://www.acme.co.uk/x becomes acme.co.uk). A list the domain editor would refuse (a subdomain such as blog.acme.com, a platform many companies share such as youtube.com, amazon.com or wordpress.com, the project website, a tracked competitor domain, a duplicate or an entry that is not a domain) is rejected with ERR_INVALID_PARAM and the reason. Order does not matter, and an unchanged list starts nothing. Account owner only, on every plan | [optional] 
 
 ## Methods
 
@@ -309,6 +310,31 @@ SetMatchingNames sets MatchingNames field to given value.
 `func (o *UpdateProjectRequest) HasMatchingNames() bool`
 
 HasMatchingNames returns a boolean if a field has been set.
+
+### GetAdditionalOwnedDomains
+
+`func (o *UpdateProjectRequest) GetAdditionalOwnedDomains() []string`
+
+GetAdditionalOwnedDomains returns the AdditionalOwnedDomains field if non-nil, zero value otherwise.
+
+### GetAdditionalOwnedDomainsOk
+
+`func (o *UpdateProjectRequest) GetAdditionalOwnedDomainsOk() (*[]string, bool)`
+
+GetAdditionalOwnedDomainsOk returns a tuple with the AdditionalOwnedDomains field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAdditionalOwnedDomains
+
+`func (o *UpdateProjectRequest) SetAdditionalOwnedDomains(v []string)`
+
+SetAdditionalOwnedDomains sets AdditionalOwnedDomains field to given value.
+
+### HasAdditionalOwnedDomains
+
+`func (o *UpdateProjectRequest) HasAdditionalOwnedDomains() bool`
+
+HasAdditionalOwnedDomains returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

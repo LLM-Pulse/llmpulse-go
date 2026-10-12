@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -554,7 +554,7 @@ type ApiListAgentBotsRequest struct {
 	output *string
 }
 
-// Project ID
+// Accepted for compatibility and ignored. The catalog is the same for every project, so any value returns the same list and the project is not checked.
 func (r ApiListAgentBotsRequest) ProjectId(projectId int32) ApiListAgentBotsRequest {
 	r.projectId = &projectId
 	return r

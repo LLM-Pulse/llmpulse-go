@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.59.0
+API version: 1.60.0
 Contact: info@llmpulse.ai
 */
 
@@ -85,7 +85,7 @@ func (r ApiListOwnedMediaRequest) Owned(owned bool) ApiListOwnedMediaRequest {
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListOwnedMediaRequest) Model(model string) ApiListOwnedMediaRequest {
 	r.model = &model
 	return r
@@ -380,7 +380,7 @@ func (r ApiListRedditCitationsRequest) Direction(direction string) ApiListReddit
 	return r
 }
 
-// Filter by AI model. Models the API key&#39;s user has not enabled are silently dropped.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListRedditCitationsRequest) Model(model string) ApiListRedditCitationsRequest {
 	r.model = &model
 	return r

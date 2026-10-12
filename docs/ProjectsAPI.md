@@ -551,7 +551,7 @@ Name | Type | Description  | Notes
 
 ## UpdateProject
 
-> UpdateProject(ctx, id).UpdateProjectRequest(updateProjectRequest).Execute()
+> ProjectUpdateResponse UpdateProject(ctx, id).UpdateProjectRequest(updateProjectRequest).Execute()
 
 Update a project profile (Brand Book)
 
@@ -575,11 +575,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.UpdateProject(context.Background(), id).UpdateProjectRequest(updateProjectRequest).Execute()
+	resp, r, err := apiClient.ProjectsAPI.UpdateProject(context.Background(), id).UpdateProjectRequest(updateProjectRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.UpdateProject``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `UpdateProject`: ProjectUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.UpdateProject`: %v\n", resp)
 }
 ```
 
@@ -603,7 +605,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ProjectUpdateResponse**](ProjectUpdateResponse.md)
 
 ### Authorization
 

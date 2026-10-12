@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **Url** | Pointer to **NullableString** |  | [optional] 
 **Description** | Pointer to **NullableString** |  | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
+**AdditionalOwnedDomains** | Pointer to **[]string** | Other domains the brand owns (at most 10, each a website&#39;s own domain covering its subdomains), whose citations count as owned like the project website. Empty when none | [optional] 
 **Industry** | Pointer to **interface{}** | Industry as stored: one key as a string (e.g. SAAS), or an array of key strings when the project was created with a list or the in-app multi-select. Deliberately untyped so generated clients decode either shape | [optional] 
 **BusinessModel** | Pointer to **NullableString** |  | [optional] 
 **BusinessModelOther** | Pointer to **NullableString** | Set only when business_model is OTHER | [optional] 
@@ -226,6 +227,31 @@ SetMatchingNames sets MatchingNames field to given value.
 `func (o *ProjectDetails) HasMatchingNames() bool`
 
 HasMatchingNames returns a boolean if a field has been set.
+
+### GetAdditionalOwnedDomains
+
+`func (o *ProjectDetails) GetAdditionalOwnedDomains() []string`
+
+GetAdditionalOwnedDomains returns the AdditionalOwnedDomains field if non-nil, zero value otherwise.
+
+### GetAdditionalOwnedDomainsOk
+
+`func (o *ProjectDetails) GetAdditionalOwnedDomainsOk() (*[]string, bool)`
+
+GetAdditionalOwnedDomainsOk returns a tuple with the AdditionalOwnedDomains field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAdditionalOwnedDomains
+
+`func (o *ProjectDetails) SetAdditionalOwnedDomains(v []string)`
+
+SetAdditionalOwnedDomains sets AdditionalOwnedDomains field to given value.
+
+### HasAdditionalOwnedDomains
+
+`func (o *ProjectDetails) HasAdditionalOwnedDomains() bool`
+
+HasAdditionalOwnedDomains returns a boolean if a field has been set.
 
 ### GetIndustry
 
