@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **ExecutedAt** | Pointer to **NullableTime** |  | [optional] 
 **DurationMs** | Pointer to **NullableFloat32** | Milliseconds, rounded to one decimal place | [optional] 
 **Success** | Pointer to **NullableBool** | Null while the answer is still pending | [optional] 
-**NoResult** | Pointer to **bool** | True for a sentinel non-answer (the provider returned nothing after retries); excluded from platform metrics | [optional] 
+**NoResult** | Pointer to **bool** | True for a sentinel non-answer (the provider returned nothing after all retries, or the model declined to answer, today only Gemini); excluded from platform metrics | [optional] 
 **FanOutQueries** | Pointer to **[]string** |  | [optional] 
 **Mentions** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Citations** | Pointer to **[]map[string]interface{}** |  | [optional] 

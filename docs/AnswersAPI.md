@@ -119,7 +119,7 @@ func main() {
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 	query := "query_example" // string | Case-insensitive full-text search inside AI response texts. Switches items to snippet + match_count mode. (optional)
-	noResult := true // bool | Filter sentinel non-answers (provider returned nothing after retries; excluded from platform metrics). false = only real answers, true = only sentinels, omit = both. Every item carries its own no_result flag. (optional)
+	noResult := true // bool | Filter sentinel non-answers (the provider returned nothing after all retries, or the model declined to answer, today only Gemini; excluded from platform metrics). false = only real answers, true = only sentinels, omit = both. Every item carries its own no_result flag. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
  **query** | **string** | Case-insensitive full-text search inside AI response texts. Switches items to snippet + match_count mode. | 
- **noResult** | **bool** | Filter sentinel non-answers (provider returned nothing after retries; excluded from platform metrics). false &#x3D; only real answers, true &#x3D; only sentinels, omit &#x3D; both. Every item carries its own no_result flag. | 
+ **noResult** | **bool** | Filter sentinel non-answers (the provider returned nothing after all retries, or the model declined to answer, today only Gemini; excluded from platform metrics). false &#x3D; only real answers, true &#x3D; only sentinels, omit &#x3D; both. Every item carries its own no_result flag. | 
 
 ### Return type
 

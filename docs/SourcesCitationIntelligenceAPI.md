@@ -85,7 +85,7 @@ Name | Type | Description  | Notes
 
 ## GetCitedUrlDetail
 
-> GetCitedUrlDetail(ctx, urlSha256).ProjectId(projectId).Execute()
+> GetCitedUrlDetail(ctx, urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
 
 Cited URL detail
 
@@ -100,16 +100,29 @@ import (
 	"context"
 	"fmt"
 	"os"
+    "time"
 	openapiclient "github.com/LLM-Pulse/llmpulse-go"
 )
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	urlSha256 := "urlSha256_example" // string | 64-character hex SHA-256 of the cited URL
+	model := "model_example" // string | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key's user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	prompt := int32(56) // int32 | Filter by prompt ID (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	from := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+	sourceType := "sourceType_example" // string |  (optional)
+	sentiment := "sentiment_example" // string |  (optional)
+	contentGap := "contentGap_example" // string | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. (optional)
+	includeSeries := true // bool | Adds citation_series. Without it the response is unchanged. (optional) (default to false)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlDetail(context.Background(), urlSha256).ProjectId(projectId).Execute()
+	r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlDetail(context.Background(), urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.GetCitedUrlDetail``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -134,6 +147,18 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
 
+ **model** | **string** | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **prompt** | **int32** | Filter by prompt ID | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **from** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+ **sourceType** | **string** |  | 
+ **sentiment** | **string** |  | 
+ **contentGap** | **string** | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. | 
+ **includeSeries** | **bool** | Adds citation_series. Without it the response is unchanged. | [default to false]
 
 ### Return type
 
@@ -238,7 +263,7 @@ Name | Type | Description  | Notes
 
 ## ListCitationGroups
 
-> ListCitationGroups(ctx).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
+> ListCitationGroups(ctx).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
 
 Grouped citation intelligence
 
@@ -269,8 +294,11 @@ func main() {
 	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	prompt := int32(56) // int32 | Filter by prompt ID (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+	key := "key_example" // string | Return only this group of the chosen view: a domain (view=domain), a host (view=host) or a cited URL exactly as listed (view=url). Domains and hosts match case-insensitively, without www. A view=url key is one raw URL, so its variants (a tracking parameter, a trailing slash) stay separate rows; GET /citation_intelligence/urls/{url_sha256} merges them, as the app does. No match returns an empty list (total 0), not an error. (optional)
+	includeSeries := true // bool | Requires key, else 422 ERR_INVALID_PARAM. Adds citation_series to the group's row. (optional) (default to false)
 	query := "query_example" // string |  (optional)
 	sourceType := "sourceType_example" // string |  (optional)
 	sentiment := "sentiment_example" // string |  (optional)
@@ -278,7 +306,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitationGroups(context.Background()).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
+	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitationGroups(context.Background()).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListCitationGroups``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -308,8 +336,11 @@ Name | Type | Description  | Notes
  **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **prompt** | **int32** | Filter by prompt ID | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+ **key** | **string** | Return only this group of the chosen view: a domain (view&#x3D;domain), a host (view&#x3D;host) or a cited URL exactly as listed (view&#x3D;url). Domains and hosts match case-insensitively, without www. A view&#x3D;url key is one raw URL, so its variants (a tracking parameter, a trailing slash) stay separate rows; GET /citation_intelligence/urls/{url_sha256} merges them, as the app does. No match returns an empty list (total 0), not an error. | 
+ **includeSeries** | **bool** | Requires key, else 422 ERR_INVALID_PARAM. Adds citation_series to the group&#39;s row. | [default to false]
  **query** | **string** |  | 
  **sourceType** | **string** |  | 
  **sentiment** | **string** |  | 

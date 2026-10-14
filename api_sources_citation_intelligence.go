@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.61.0
+API version: 1.62.0
 Contact: info@llmpulse.ai
 */
 
@@ -144,11 +144,92 @@ type ApiGetCitedUrlDetailRequest struct {
 	ApiService *SourcesCitationIntelligenceAPIService
 	projectId *int32
 	urlSha256 string
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	prompt *int32
+	brandKind *string
+	from *time.Time
+	to *time.Time
+	sourceType *string
+	sentiment *string
+	contentGap *string
+	includeSeries *bool
 }
 
 // Project ID
 func (r ApiGetCitedUrlDetailRequest) ProjectId(projectId int32) ApiGetCitedUrlDetailRequest {
 	r.projectId = &projectId
+	return r
+}
+
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
+func (r ApiGetCitedUrlDetailRequest) Model(model string) ApiGetCitedUrlDetailRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetCitedUrlDetailRequest) CollectionId(collectionId string) ApiGetCitedUrlDetailRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetCitedUrlDetailRequest) CountryCode(countryCode string) ApiGetCitedUrlDetailRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetCitedUrlDetailRequest) LanguageCode(languageCode string) ApiGetCitedUrlDetailRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by prompt ID
+func (r ApiGetCitedUrlDetailRequest) Prompt(prompt int32) ApiGetCitedUrlDetailRequest {
+	r.prompt = &prompt
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetCitedUrlDetailRequest) BrandKind(brandKind string) ApiGetCitedUrlDetailRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+func (r ApiGetCitedUrlDetailRequest) From(from time.Time) ApiGetCitedUrlDetailRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiGetCitedUrlDetailRequest) To(to time.Time) ApiGetCitedUrlDetailRequest {
+	r.to = &to
+	return r
+}
+
+func (r ApiGetCitedUrlDetailRequest) SourceType(sourceType string) ApiGetCitedUrlDetailRequest {
+	r.sourceType = &sourceType
+	return r
+}
+
+func (r ApiGetCitedUrlDetailRequest) Sentiment(sentiment string) ApiGetCitedUrlDetailRequest {
+	r.sentiment = &sentiment
+	return r
+}
+
+// mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match.
+func (r ApiGetCitedUrlDetailRequest) ContentGap(contentGap string) ApiGetCitedUrlDetailRequest {
+	r.contentGap = &contentGap
+	return r
+}
+
+// Adds citation_series. Without it the response is unchanged.
+func (r ApiGetCitedUrlDetailRequest) IncludeSeries(includeSeries bool) ApiGetCitedUrlDetailRequest {
+	r.includeSeries = &includeSeries
 	return r
 }
 
@@ -159,7 +240,7 @@ func (r ApiGetCitedUrlDetailRequest) Execute() (*http.Response, error) {
 /*
 GetCitedUrlDetail Cited URL detail
 
-Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null. content_gap_status is content_unavailable (or missing_page_cache) without usable content, and mentions_not_processed when the page has usable content but its mention analysis has not completed for this project. Mention fields (brand_mentioned, competitor_mentioned, brand_position, brands, mentions, content_gap_status) describe the analysis for the requesting project: a page not yet analyzed for it returns null (never false) brand_mentioned, competitor_mentioned and brand_position, empty brands and mentions arrays and page_cache.mentions_processed false. page_cache.mentions_processed is true exactly when brand_mentioned is not null. An analyzed page keeps its last result until a newer analysis replaces it. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; brand_mentioned_urls_count and competitor_mentioned_urls_count count only URLs analyzed for the project and are null when none is.
+Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null. content_gap_status is content_unavailable (or missing_page_cache) without usable content, and mentions_not_processed when the page has usable content but its mention analysis has not completed for this project. Mention fields (brand_mentioned, competitor_mentioned, brand_position, brands, mentions, content_gap_status) describe the analysis for the requesting project: a page not yet analyzed for it returns null (never false) brand_mentioned, competitor_mentioned and brand_position, empty brands and mentions arrays and page_cache.mentions_processed false. page_cache.mentions_processed is true exactly when brand_mentioned is not null. An analyzed page keeps its last result until a newer analysis replaces it. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; brand_mentioned_urls_count and competitor_mentioned_urls_count count only URLs analyzed for the project and are null when none is. The filters narrow stats and citation_series alike. citation_series (with include_series=true) holds the answers citing the URL under the same filters: granularity (day, week or month, from the account tracking cadence, with weeks when a daily account spans more than 60 days, starting on Monday), total (equal to total_responses), by_model (answers per AI model, largest first, which can include enabled models outside the seven the model filter accepts) and data, one { date, value } point per period that holds a filtered answer, so a zero means answers ran and none cited it. Periods date each answer by its executed_at in Europe/Madrid time, the column from and to filter.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param urlSha256 64-character hex SHA-256 of the cited URL
@@ -197,6 +278,46 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGe
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.prompt != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.sourceType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "source_type", r.sourceType, "form", "")
+	}
+	if r.sentiment != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sentiment", r.sentiment, "form", "")
+	}
+	if r.contentGap != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "content_gap", r.contentGap, "form", "")
+	}
+	if r.includeSeries != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_series", r.includeSeries, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_series", defaultValue, "form", "")
+		r.includeSeries = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -475,8 +596,11 @@ type ApiListCitationGroupsRequest struct {
 	countryCode *string
 	languageCode *string
 	prompt *int32
+	brandKind *string
 	from *time.Time
 	to *time.Time
+	key *string
+	includeSeries *bool
 	query *string
 	sourceType *string
 	sentiment *string
@@ -544,6 +668,12 @@ func (r ApiListCitationGroupsRequest) Prompt(prompt int32) ApiListCitationGroups
 	return r
 }
 
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListCitationGroupsRequest) BrandKind(brandKind string) ApiListCitationGroupsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
 func (r ApiListCitationGroupsRequest) From(from time.Time) ApiListCitationGroupsRequest {
 	r.from = &from
 	return r
@@ -552,6 +682,18 @@ func (r ApiListCitationGroupsRequest) From(from time.Time) ApiListCitationGroups
 // End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
 func (r ApiListCitationGroupsRequest) To(to time.Time) ApiListCitationGroupsRequest {
 	r.to = &to
+	return r
+}
+
+// Return only this group of the chosen view: a domain (view&#x3D;domain), a host (view&#x3D;host) or a cited URL exactly as listed (view&#x3D;url). Domains and hosts match case-insensitively, without www. A view&#x3D;url key is one raw URL, so its variants (a tracking parameter, a trailing slash) stay separate rows; GET /citation_intelligence/urls/{url_sha256} merges them, as the app does. No match returns an empty list (total 0), not an error.
+func (r ApiListCitationGroupsRequest) Key(key string) ApiListCitationGroupsRequest {
+	r.key = &key
+	return r
+}
+
+// Requires key, else 422 ERR_INVALID_PARAM. Adds citation_series to the group&#39;s row.
+func (r ApiListCitationGroupsRequest) IncludeSeries(includeSeries bool) ApiListCitationGroupsRequest {
+	r.includeSeries = &includeSeries
 	return r
 }
 
@@ -583,7 +725,7 @@ func (r ApiListCitationGroupsRequest) Execute() (*http.Response, error) {
 /*
 ListCitationGroups Grouped citation intelligence
 
-Grouped citation intelligence by url / domain / host with per-model breakdown, citation rate, and avg citation position. Counts and citation rate include visible citations and background source references. Average position ignores rows with position=0. Owned and competitor source matching honor the project's exact-subdomain setting. Filter vocabulary aligns with `source_type` returned by the API. Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null. content_gap_status is content_unavailable (or missing_page_cache) without usable content, and mentions_not_processed when the page has usable content but its mention analysis has not completed for this project. Mention fields (brand_mentioned, competitor_mentioned, brand_position, brands, mentions, content_gap_status) describe the analysis for the requesting project: a page not yet analyzed for it returns null (never false) brand_mentioned, competitor_mentioned and brand_position, empty brands and mentions arrays and page_cache.mentions_processed false. page_cache.mentions_processed is true exactly when brand_mentioned is not null. An analyzed page keeps its last result until a newer analysis replaces it. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; brand_mentioned_urls_count and competitor_mentioned_urls_count count only URLs analyzed for the project and are null when none is.
+Grouped citation intelligence by url / domain / host with per-model breakdown, citation rate, and avg citation position. Counts and citation rate include visible citations and background source references. Average position ignores rows with position=0. Owned and competitor source matching honor the project's exact-subdomain setting. Filter vocabulary aligns with `source_type` returned by the API. Unavailable page content keeps the cited URL and citation metrics. Page metadata/content and unknown brand_mentioned/competitor_mentioned return null. content_gap_status is content_unavailable (or missing_page_cache) without usable content, and mentions_not_processed when the page has usable content but its mention analysis has not completed for this project. Mention fields (brand_mentioned, competitor_mentioned, brand_position, brands, mentions, content_gap_status) describe the analysis for the requesting project: a page not yet analyzed for it returns null (never false) brand_mentioned, competitor_mentioned and brand_position, empty brands and mentions arrays and page_cache.mentions_processed false. page_cache.mentions_processed is true exactly when brand_mentioned is not null. An analyzed page keeps its last result until a newer analysis replaces it. status_code shows a saved successful response or observed 404/410; other crawl failures and error_message are hidden. last_crawled_at dates the saved copy. Domain/host crawled_urls_count counts usable copies; brand_mentioned_urls_count and competitor_mentioned_urls_count count only URLs analyzed for the project and are null when none is. Pass key to read one group; brand_kind filters by the brand focus of the prompts, like the source page. citation_series (with include_series=true) holds the answers citing the URL, domain or host under the same filters: granularity (day, week or month, from the account tracking cadence, with weeks when a daily account spans more than 60 days, starting on Monday), total (equal to total_responses), by_model (answers per AI model, largest first, which can include enabled models outside the seven the model filter accepts) and data, one { date, value } point per period that holds a filtered answer, so a zero means answers ran and none cited it. Periods date each answer by its executed_at in Europe/Madrid time, the column from and to filter.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListCitationGroupsRequest
@@ -660,11 +802,24 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiL
 	if r.prompt != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
 	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
 	if r.from != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
 	}
 	if r.to != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.key != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "key", r.key, "form", "")
+	}
+	if r.includeSeries != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_series", r.includeSeries, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_series", defaultValue, "form", "")
+		r.includeSeries = &defaultValue
 	}
 	if r.query != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
