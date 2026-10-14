@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.60.0
+API version: 1.61.0
 Contact: info@llmpulse.ai
 */
 
@@ -30,7 +30,7 @@ type CreateWebhook201Response struct {
 	FailureCount *int32 `json:"failure_count,omitempty"`
 	LastDeliveredAt NullableTime `json:"last_delivered_at,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// HMAC signing secret (whsec_...). Only returned on create.
+	// HMAC signing secret (whsec_...). Returned when the subscription is created, and on a re-post only to the API key or OAuth connection that created it; absent for any other credential.
 	Secret *string `json:"secret,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }

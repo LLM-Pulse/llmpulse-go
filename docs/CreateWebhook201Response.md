@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **FailureCount** | Pointer to **int32** |  | [optional] 
 **LastDeliveredAt** | Pointer to **NullableTime** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
-**Secret** | Pointer to **string** | HMAC signing secret (whsec_...). Only returned on create. | [optional] 
+**Secret** | Pointer to **string** | HMAC signing secret (whsec_...). Returned when the subscription is created, and on a re-post only to the API key or OAuth connection that created it; absent for any other credential. | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
