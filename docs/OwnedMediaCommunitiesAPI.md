@@ -4,14 +4,173 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**GetOwnedMediaProfiles**](OwnedMediaCommunitiesAPI.md#GetOwnedMediaProfiles) | **Get** /projects/{id}/owned_media | Get a project&#39;s owned-media profiles
+[**GetOwnedMediaSummary**](OwnedMediaCommunitiesAPI.md#GetOwnedMediaSummary) | **Get** /dimensions/owned_media/summary | Get an owned-media summary
 [**ListOwnedMedia**](OwnedMediaCommunitiesAPI.md#ListOwnedMedia) | **Get** /dimensions/owned_media | List owned-media citations
+[**ListOwnedMediaCitingPrompts**](OwnedMediaCommunitiesAPI.md#ListOwnedMediaCitingPrompts) | **Get** /dimensions/owned_media/citing_prompts | List the answers citing an owned-media item
 [**ListRedditCitations**](OwnedMediaCommunitiesAPI.md#ListRedditCitations) | **Get** /dimensions/reddit | List cited Reddit content
+[**UpdateOwnedMediaProfiles**](OwnedMediaCommunitiesAPI.md#UpdateOwnedMediaProfiles) | **Patch** /projects/{id}/owned_media | Update a project&#39;s owned-media profiles
 
+
+
+## GetOwnedMediaProfiles
+
+> OwnedMediaProfilesResponse GetOwnedMediaProfiles(ctx, id).Execute()
+
+Get a project's owned-media profiles
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | Project ID
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.GetOwnedMediaProfiles(context.Background(), id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.GetOwnedMediaProfiles``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetOwnedMediaProfiles`: OwnedMediaProfilesResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.GetOwnedMediaProfiles`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** | Project ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetOwnedMediaProfilesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**OwnedMediaProfilesResponse**](OwnedMediaProfilesResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetOwnedMediaSummary
+
+> OwnedMediaSummaryResponse GetOwnedMediaSummary(ctx).ProjectId(projectId).Provider(provider).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Execute()
+
+Get an owned-media summary
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	provider := "provider_example" // string | The platform to summarize, or overview for every platform at once
+	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	from := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.GetOwnedMediaSummary(context.Background()).ProjectId(projectId).Provider(provider).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.GetOwnedMediaSummary``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetOwnedMediaSummary`: OwnedMediaSummaryResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.GetOwnedMediaSummary`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetOwnedMediaSummaryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **provider** | **string** | The platform to summarize, or overview for every platform at once | 
+ **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **from** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+
+### Return type
+
+[**OwnedMediaSummaryResponse**](OwnedMediaSummaryResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## ListOwnedMedia
 
-> ListOwnedMedia(ctx).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).View(view).Store(store).Owned(owned).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+> OwnedMediaListResponse ListOwnedMedia(ctx).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).View(view).Store(store).Owned(owned).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 
 List owned-media citations
 
@@ -50,11 +209,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.OwnedMediaCommunitiesAPI.ListOwnedMedia(context.Background()).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).View(view).Store(store).Owned(owned).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.ListOwnedMedia(context.Background()).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).View(view).Store(store).Owned(owned).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.ListOwnedMedia``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListOwnedMedia`: OwnedMediaListResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.ListOwnedMedia`: %v\n", resp)
 }
 ```
 
@@ -88,7 +249,102 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**OwnedMediaListResponse**](OwnedMediaListResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListOwnedMediaCitingPrompts
+
+> OwnedMediaCitingPromptsResponse ListOwnedMediaCitingPrompts(ctx).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).Url(url).Profile(profile).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+
+List the answers citing an owned-media item
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	provider := "provider_example" // string | The platform the item belongs to
+	page := int32(56) // int32 |  (optional) (default to 1)
+	perPage := int32(56) // int32 |  (optional) (default to 20)
+	url := "url_example" // string | A post or video URL, or a profile or channel URL. Exclusive with profile (optional)
+	profile := "profile_example" // string | A handle (with or without @), a profile or channel URL, or a YouTube channel key (handle:..., channel:... or name:...). Exclusive with url (optional)
+	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	from := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.ListOwnedMediaCitingPrompts(context.Background()).ProjectId(projectId).Provider(provider).Page(page).PerPage(perPage).Url(url).Profile(profile).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.ListOwnedMediaCitingPrompts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListOwnedMediaCitingPrompts`: OwnedMediaCitingPromptsResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.ListOwnedMediaCitingPrompts`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListOwnedMediaCitingPromptsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **provider** | **string** | The platform the item belongs to | 
+ **page** | **int32** |  | [default to 1]
+ **perPage** | **int32** |  | [default to 20]
+ **url** | **string** | A post or video URL, or a profile or channel URL. Exclusive with profile | 
+ **profile** | **string** | A handle (with or without @), a profile or channel URL, or a YouTube channel key (handle:..., channel:... or name:...). Exclusive with url | 
+ **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **from** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+ **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+
+### Return type
+
+[**OwnedMediaCitingPromptsResponse**](OwnedMediaCitingPromptsResponse.md)
 
 ### Authorization
 
@@ -200,6 +456,78 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateOwnedMediaProfiles
+
+> OwnedMediaProfilesUpdateResponse UpdateOwnedMediaProfiles(ctx, id).UpdateOwnedMediaProfilesRequest(updateOwnedMediaProfilesRequest).Execute()
+
+Update a project's owned-media profiles
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | Project ID
+	updateOwnedMediaProfilesRequest := *openapiclient.NewUpdateOwnedMediaProfilesRequest() // UpdateOwnedMediaProfilesRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.UpdateOwnedMediaProfiles(context.Background(), id).UpdateOwnedMediaProfilesRequest(updateOwnedMediaProfilesRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.UpdateOwnedMediaProfiles``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateOwnedMediaProfiles`: OwnedMediaProfilesUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.UpdateOwnedMediaProfiles`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** | Project ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateOwnedMediaProfilesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **updateOwnedMediaProfilesRequest** | [**UpdateOwnedMediaProfilesRequest**](UpdateOwnedMediaProfilesRequest.md) |  | 
+
+### Return type
+
+[**OwnedMediaProfilesUpdateResponse**](OwnedMediaProfilesUpdateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

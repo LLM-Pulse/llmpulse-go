@@ -4,12 +4,151 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AcceptSuggestedPrompts**](PromptsAPI.md#AcceptSuggestedPrompts) | **Post** /suggested_prompts/accept | Accept suggested prompts
+[**CreatePromptGeneration**](PromptsAPI.md#CreatePromptGeneration) | **Post** /prompt_generations | Generate prompt suggestions
 [**CreatePrompts**](PromptsAPI.md#CreatePrompts) | **Post** /prompts | Bulk-create prompts
 [**DeletePrompt**](PromptsAPI.md#DeletePrompt) | **Delete** /prompts/{id} | Delete a prompt
+[**GetPromptGeneration**](PromptsAPI.md#GetPromptGeneration) | **Get** /prompt_generations/{id} | Get a prompt generation run
+[**ImportPrompts**](PromptsAPI.md#ImportPrompts) | **Post** /prompts/import | Import prompts
 [**ListPromptExecutions**](PromptsAPI.md#ListPromptExecutions) | **Get** /dimensions/prompt_executions | List prompt executions
 [**ListPrompts**](PromptsAPI.md#ListPrompts) | **Get** /dimensions/prompts | List prompts
 [**ListQueryFanOuts**](PromptsAPI.md#ListQueryFanOuts) | **Get** /dimensions/query_fan_outs | List query fan-out
+[**ListSuggestedPrompts**](PromptsAPI.md#ListSuggestedPrompts) | **Get** /suggested_prompts | List suggested prompts
+[**RejectSuggestedPrompts**](PromptsAPI.md#RejectSuggestedPrompts) | **Post** /suggested_prompts/reject | Reject suggested prompts
+[**UpdatePrompt**](PromptsAPI.md#UpdatePrompt) | **Patch** /prompts/{id} | Edit a prompt&#39;s categorization
 
+
+
+## AcceptSuggestedPrompts
+
+> SuggestedPromptsAcceptResponse AcceptSuggestedPrompts(ctx).SuggestedPromptsAcceptRequest(suggestedPromptsAcceptRequest).Execute()
+
+Accept suggested prompts
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	suggestedPromptsAcceptRequest := *openapiclient.NewSuggestedPromptsAcceptRequest(int32(123), []int32{int32(123)}) // SuggestedPromptsAcceptRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.AcceptSuggestedPrompts(context.Background()).SuggestedPromptsAcceptRequest(suggestedPromptsAcceptRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.AcceptSuggestedPrompts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AcceptSuggestedPrompts`: SuggestedPromptsAcceptResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.AcceptSuggestedPrompts`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAcceptSuggestedPromptsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **suggestedPromptsAcceptRequest** | [**SuggestedPromptsAcceptRequest**](SuggestedPromptsAcceptRequest.md) |  | 
+
+### Return type
+
+[**SuggestedPromptsAcceptResponse**](SuggestedPromptsAcceptResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreatePromptGeneration
+
+> PromptGenerationResponse CreatePromptGeneration(ctx).PromptGenerationRequest(promptGenerationRequest).Execute()
+
+Generate prompt suggestions
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	promptGenerationRequest := *openapiclient.NewPromptGenerationRequest(int32(123), "Source_example") // PromptGenerationRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.CreatePromptGeneration(context.Background()).PromptGenerationRequest(promptGenerationRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.CreatePromptGeneration``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreatePromptGeneration`: PromptGenerationResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.CreatePromptGeneration`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreatePromptGenerationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **promptGenerationRequest** | [**PromptGenerationRequest**](PromptGenerationRequest.md) |  | 
+
+### Return type
+
+[**PromptGenerationResponse**](PromptGenerationResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## CreatePrompts
@@ -141,6 +280,144 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetPromptGeneration
+
+> PromptGenerationResponse GetPromptGeneration(ctx, id).ProjectId(projectId).Execute()
+
+Get a prompt generation run
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	id := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.GetPromptGeneration(context.Background(), id).ProjectId(projectId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.GetPromptGeneration``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetPromptGeneration`: PromptGenerationResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.GetPromptGeneration`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPromptGenerationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+
+### Return type
+
+[**PromptGenerationResponse**](PromptGenerationResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ImportPrompts
+
+> PromptsImportResponse ImportPrompts(ctx).PromptsImportRequest(promptsImportRequest).Execute()
+
+Import prompts
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	promptsImportRequest := *openapiclient.NewPromptsImportRequest(int32(123), []openapiclient.PromptsImportRequestRowsInner{*openapiclient.NewPromptsImportRequestRowsInner("Prompt_example")}) // PromptsImportRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.ImportPrompts(context.Background()).PromptsImportRequest(promptsImportRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ImportPrompts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ImportPrompts`: PromptsImportResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ImportPrompts`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiImportPromptsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **promptsImportRequest** | [**PromptsImportRequest**](PromptsImportRequest.md) |  | 
+
+### Return type
+
+[**PromptsImportResponse**](PromptsImportResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -420,6 +697,218 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListSuggestedPrompts
+
+> SuggestedPromptsResponse ListSuggestedPrompts(ctx).ProjectId(projectId).Source(source).Status(status).Page(page).PerPage(perPage).Execute()
+
+List suggested prompts
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	source := "source_example" // string | Only suggestions from this generator (optional)
+	status := "status_example" // string | Only suggestions in this status (optional) (default to "pending")
+	page := int32(56) // int32 |  (optional) (default to 1)
+	perPage := int32(56) // int32 |  (optional) (default to 50)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.ListSuggestedPrompts(context.Background()).ProjectId(projectId).Source(source).Status(status).Page(page).PerPage(perPage).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ListSuggestedPrompts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListSuggestedPrompts`: SuggestedPromptsResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ListSuggestedPrompts`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListSuggestedPromptsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **source** | **string** | Only suggestions from this generator | 
+ **status** | **string** | Only suggestions in this status | [default to &quot;pending&quot;]
+ **page** | **int32** |  | [default to 1]
+ **perPage** | **int32** |  | [default to 50]
+
+### Return type
+
+[**SuggestedPromptsResponse**](SuggestedPromptsResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RejectSuggestedPrompts
+
+> SuggestedPromptsRejectResponse RejectSuggestedPrompts(ctx).SuggestedPromptIdsRequest(suggestedPromptIdsRequest).Execute()
+
+Reject suggested prompts
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	suggestedPromptIdsRequest := *openapiclient.NewSuggestedPromptIdsRequest(int32(123), []int32{int32(123)}) // SuggestedPromptIdsRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.RejectSuggestedPrompts(context.Background()).SuggestedPromptIdsRequest(suggestedPromptIdsRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.RejectSuggestedPrompts``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RejectSuggestedPrompts`: SuggestedPromptsRejectResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.RejectSuggestedPrompts`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRejectSuggestedPromptsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **suggestedPromptIdsRequest** | [**SuggestedPromptIdsRequest**](SuggestedPromptIdsRequest.md) |  | 
+
+### Return type
+
+[**SuggestedPromptsRejectResponse**](SuggestedPromptsRejectResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdatePrompt
+
+> PromptCategorizationResponse UpdatePrompt(ctx, id).UpdatePromptRequest(updatePromptRequest).Execute()
+
+Edit a prompt's categorization
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	updatePromptRequest := *openapiclient.NewUpdatePromptRequest(int32(123)) // UpdatePromptRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.UpdatePrompt(context.Background(), id).UpdatePromptRequest(updatePromptRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.UpdatePrompt``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdatePrompt`: PromptCategorizationResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.UpdatePrompt`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdatePromptRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **updatePromptRequest** | [**UpdatePromptRequest**](UpdatePromptRequest.md) |  | 
+
+### Return type
+
+[**PromptCategorizationResponse**](PromptCategorizationResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

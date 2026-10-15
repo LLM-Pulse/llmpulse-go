@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**GetRecommendation**](RecommendationsAPI.md#GetRecommendation) | **Get** /recommendations/{id} | Get recommendation run with items
 [**LaunchRecommendations**](RecommendationsAPI.md#LaunchRecommendations) | **Post** /recommendations | Launch a recommendations generation
 [**ListRecommendations**](RecommendationsAPI.md#ListRecommendations) | **Get** /recommendations | List recommendation runs
+[**UpdateRecommendationItem**](RecommendationsAPI.md#UpdateRecommendationItem) | **Patch** /recommendations/{id}/items/{item_id} | Complete, archive or restore a recommendation item
 
 
 
@@ -211,6 +212,81 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateRecommendationItem
+
+> RecommendationItemUpdateResponse UpdateRecommendationItem(ctx, id, itemId).UpdateRecommendationItemRequest(updateRecommendationItemRequest).Execute()
+
+Complete, archive or restore a recommendation item
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | Recommendation run id
+	itemId := int32(56) // int32 | Item id, from the items of GET /recommendations/{id}
+	updateRecommendationItemRequest := *openapiclient.NewUpdateRecommendationItemRequest(int32(123), "Status_example") // UpdateRecommendationItemRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RecommendationsAPI.UpdateRecommendationItem(context.Background(), id, itemId).UpdateRecommendationItemRequest(updateRecommendationItemRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RecommendationsAPI.UpdateRecommendationItem``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateRecommendationItem`: RecommendationItemUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `RecommendationsAPI.UpdateRecommendationItem`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** | Recommendation run id | 
+**itemId** | **int32** | Item id, from the items of GET /recommendations/{id} | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateRecommendationItemRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **updateRecommendationItemRequest** | [**UpdateRecommendationItemRequest**](UpdateRecommendationItemRequest.md) |  | 
+
+### Return type
+
+[**RecommendationItemUpdateResponse**](RecommendationItemUpdateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

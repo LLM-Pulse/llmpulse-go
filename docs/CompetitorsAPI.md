@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**CreateCompetitor**](CompetitorsAPI.md#CreateCompetitor) | **Post** /competitors | Add a competitor
 [**DeleteCompetitor**](CompetitorsAPI.md#DeleteCompetitor) | **Delete** /competitors/{id} | Delete a competitor
 [**GetCompetitorDetails**](CompetitorsAPI.md#GetCompetitorDetails) | **Get** /dimensions/competitors/{id} | Competitor details
+[**ListCompetitorSuggestions**](CompetitorsAPI.md#ListCompetitorSuggestions) | **Get** /competitors/suggestions | List competitor suggestions
 [**ListCompetitors**](CompetitorsAPI.md#ListCompetitors) | **Get** /dimensions/competitors | List competitors
 [**UpdateCompetitor**](CompetitorsAPI.md#UpdateCompetitor) | **Patch** /competitors/{id} | Update a competitor
 
@@ -203,6 +204,82 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**CompetitorDetails**](CompetitorDetails.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListCompetitorSuggestions
+
+> CompetitorSuggestionsResponse ListCompetitorSuggestions(ctx).ProjectId(projectId).Basis(basis).Query(query).Page(page).PerPage(perPage).Output(output).Execute()
+
+List competitor suggestions
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	basis := "basis_example" // string |  (optional) (default to "brands")
+	query := "query_example" // string | Only suggestions whose brand name or domain contains this text (optional)
+	page := int32(56) // int32 |  (optional) (default to 1)
+	perPage := int32(56) // int32 |  (optional) (default to 20)
+	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.CompetitorsAPI.ListCompetitorSuggestions(context.Background()).ProjectId(projectId).Basis(basis).Query(query).Page(page).PerPage(perPage).Output(output).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `CompetitorsAPI.ListCompetitorSuggestions``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListCompetitorSuggestions`: CompetitorSuggestionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `CompetitorsAPI.ListCompetitorSuggestions`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListCompetitorSuggestionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **basis** | **string** |  | [default to &quot;brands&quot;]
+ **query** | **string** | Only suggestions whose brand name or domain contains this text | 
+ **page** | **int32** |  | [default to 1]
+ **perPage** | **int32** |  | [default to 20]
+ **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+
+### Return type
+
+[**CompetitorSuggestionsResponse**](CompetitorSuggestionsResponse.md)
 
 ### Authorization
 

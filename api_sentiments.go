@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.62.0
+API version: 1.63.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,6 +23,632 @@ import (
 
 // SentimentsAPIService SentimentsAPI service
 type SentimentsAPIService service
+
+type ApiGetSentimentTagsRequest struct {
+	ctx context.Context
+	ApiService *SentimentsAPIService
+	projectId *int32
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	brandKind *string
+	analysis *string
+	topic *string
+	query *string
+	brand *string
+	sort *string
+	sortDir *string
+	page *int32
+	perPage *int32
+	output *string
+}
+
+// Project ID
+func (r ApiGetSentimentTagsRequest) ProjectId(projectId int32) ApiGetSentimentTagsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Number of days to look back, today included (default 28, like the Sentiment page). Ignored when from or to is given.
+func (r ApiGetSentimentTagsRequest) Range_(range_ int32) ApiGetSentimentTagsRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiGetSentimentTagsRequest) From(from time.Time) ApiGetSentimentTagsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiGetSentimentTagsRequest) To(to time.Time) ApiGetSentimentTagsRequest {
+	r.to = &to
+	return r
+}
+
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
+func (r ApiGetSentimentTagsRequest) Model(model string) ApiGetSentimentTagsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetSentimentTagsRequest) CollectionId(collectionId string) ApiGetSentimentTagsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetSentimentTagsRequest) CountryCode(countryCode string) ApiGetSentimentTagsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetSentimentTagsRequest) LanguageCode(languageCode string) ApiGetSentimentTagsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetSentimentTagsRequest) BrandKind(brandKind string) ApiGetSentimentTagsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// One sentiment level or a comma-separated list: very_positive, positive, neutral, negative, very_negative
+func (r ApiGetSentimentTagsRequest) Analysis(analysis string) ApiGetSentimentTagsRequest {
+	r.analysis = &analysis
+	return r
+}
+
+// Only sentiments tagged with this topic (case-insensitive)
+func (r ApiGetSentimentTagsRequest) Topic(topic string) ApiGetSentimentTagsRequest {
+	r.topic = &topic
+	return r
+}
+
+// Only sentiments whose answer or prompt text contains this text
+func (r ApiGetSentimentTagsRequest) Query(query string) ApiGetSentimentTagsRequest {
+	r.query = &query
+	return r
+}
+
+// Whose sentiment to count. Empty or omitted for your own brand, all for every brand, or a competitor id (an unknown id returns ERR_INVALID_PARAM).
+func (r ApiGetSentimentTagsRequest) Brand(brand string) ApiGetSentimentTagsRequest {
+	r.brand = &brand
+	return r
+}
+
+// Sort column: mentions, name (the topic or tag), positive, negative or neutral (their shares) or net_score. Ties sort by name.
+func (r ApiGetSentimentTagsRequest) Sort(sort string) ApiGetSentimentTagsRequest {
+	r.sort = &sort
+	return r
+}
+
+func (r ApiGetSentimentTagsRequest) SortDir(sortDir string) ApiGetSentimentTagsRequest {
+	r.sortDir = &sortDir
+	return r
+}
+
+func (r ApiGetSentimentTagsRequest) Page(page int32) ApiGetSentimentTagsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSentimentTagsRequest) PerPage(perPage int32) ApiGetSentimentTagsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSentimentTagsRequest) Output(output string) ApiGetSentimentTagsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiGetSentimentTagsRequest) Execute() (*SentimentTagsResponse, *http.Response, error) {
+	return r.ApiService.GetSentimentTagsExecute(r)
+}
+
+/*
+GetSentimentTags Sentiment by tag (Growth plan or above)
+
+One row per tag of the project with at least one analyzed mention, with the positive (very positive included), neutral and negative counts, their shares on a 0-100 scale and the net sentiment score. A mention counts once for every tag its prompt carries, as on the Sentiment page. Same filters as GET /reports/sentiment/topics. Requires the Growth plan; lower tiers receive ERR_PLAN_REQUIRED.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSentimentTagsRequest
+*/
+func (a *SentimentsAPIService) GetSentimentTags(ctx context.Context) ApiGetSentimentTagsRequest {
+	return ApiGetSentimentTagsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SentimentTagsResponse
+func (a *SentimentsAPIService) GetSentimentTagsExecute(r ApiGetSentimentTagsRequest) (*SentimentTagsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SentimentTagsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SentimentsAPIService.GetSentimentTags")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/reports/sentiment/tags"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.analysis != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "analysis", r.analysis, "form", "")
+	}
+	if r.topic != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "topic", r.topic, "form", "")
+	}
+	if r.query != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.brand != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand", r.brand, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	} else {
+		var defaultValue string = "mentions"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", defaultValue, "form", "")
+		r.sort = &defaultValue
+	}
+	if r.sortDir != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort_dir", r.sortDir, "form", "")
+	} else {
+		var defaultValue string = "desc"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort_dir", defaultValue, "form", "")
+		r.sortDir = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSentimentTopicsRequest struct {
+	ctx context.Context
+	ApiService *SentimentsAPIService
+	projectId *int32
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	brandKind *string
+	analysis *string
+	topic *string
+	query *string
+	brand *string
+	sort *string
+	sortDir *string
+	page *int32
+	perPage *int32
+	output *string
+}
+
+// Project ID
+func (r ApiGetSentimentTopicsRequest) ProjectId(projectId int32) ApiGetSentimentTopicsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Number of days to look back, today included (default 28, like the Sentiment page). Ignored when from or to is given.
+func (r ApiGetSentimentTopicsRequest) Range_(range_ int32) ApiGetSentimentTopicsRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiGetSentimentTopicsRequest) From(from time.Time) ApiGetSentimentTopicsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiGetSentimentTopicsRequest) To(to time.Time) ApiGetSentimentTopicsRequest {
+	r.to = &to
+	return r
+}
+
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
+func (r ApiGetSentimentTopicsRequest) Model(model string) ApiGetSentimentTopicsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetSentimentTopicsRequest) CollectionId(collectionId string) ApiGetSentimentTopicsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetSentimentTopicsRequest) CountryCode(countryCode string) ApiGetSentimentTopicsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetSentimentTopicsRequest) LanguageCode(languageCode string) ApiGetSentimentTopicsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetSentimentTopicsRequest) BrandKind(brandKind string) ApiGetSentimentTopicsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// One sentiment level or a comma-separated list: very_positive, positive, neutral, negative, very_negative
+func (r ApiGetSentimentTopicsRequest) Analysis(analysis string) ApiGetSentimentTopicsRequest {
+	r.analysis = &analysis
+	return r
+}
+
+// Only sentiments tagged with this topic (case-insensitive)
+func (r ApiGetSentimentTopicsRequest) Topic(topic string) ApiGetSentimentTopicsRequest {
+	r.topic = &topic
+	return r
+}
+
+// Only sentiments whose answer or prompt text contains this text
+func (r ApiGetSentimentTopicsRequest) Query(query string) ApiGetSentimentTopicsRequest {
+	r.query = &query
+	return r
+}
+
+// Whose sentiment to count. Empty or omitted for your own brand, all for every brand, or a competitor id (an unknown id returns ERR_INVALID_PARAM).
+func (r ApiGetSentimentTopicsRequest) Brand(brand string) ApiGetSentimentTopicsRequest {
+	r.brand = &brand
+	return r
+}
+
+// Sort column: mentions, name (the topic or tag), positive, negative or neutral (their shares) or net_score. Ties sort by name.
+func (r ApiGetSentimentTopicsRequest) Sort(sort string) ApiGetSentimentTopicsRequest {
+	r.sort = &sort
+	return r
+}
+
+func (r ApiGetSentimentTopicsRequest) SortDir(sortDir string) ApiGetSentimentTopicsRequest {
+	r.sortDir = &sortDir
+	return r
+}
+
+func (r ApiGetSentimentTopicsRequest) Page(page int32) ApiGetSentimentTopicsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSentimentTopicsRequest) PerPage(perPage int32) ApiGetSentimentTopicsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSentimentTopicsRequest) Output(output string) ApiGetSentimentTopicsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiGetSentimentTopicsRequest) Execute() (*SentimentTopicsResponse, *http.Response, error) {
+	return r.ApiService.GetSentimentTopicsExecute(r)
+}
+
+/*
+GetSentimentTopics Sentiment by topic (Growth plan or above)
+
+One row per topic AI answers associate with the brand (topics are matched case-insensitively), with its analyzed mentions, the positive (very positive included), neutral and negative counts, their shares on a 0-100 scale and the net sentiment score ((positive - negative) / mentions x 100). The same rows and filters as the Topics tab of the Sentiment page: the window defaults to the last 28 days, `brand` empty counts your own brand, `all` every brand and a competitor id that competitor. Requires the Growth plan; lower tiers receive ERR_PLAN_REQUIRED.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSentimentTopicsRequest
+*/
+func (a *SentimentsAPIService) GetSentimentTopics(ctx context.Context) ApiGetSentimentTopicsRequest {
+	return ApiGetSentimentTopicsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SentimentTopicsResponse
+func (a *SentimentsAPIService) GetSentimentTopicsExecute(r ApiGetSentimentTopicsRequest) (*SentimentTopicsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SentimentTopicsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SentimentsAPIService.GetSentimentTopics")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/reports/sentiment/topics"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.analysis != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "analysis", r.analysis, "form", "")
+	}
+	if r.topic != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "topic", r.topic, "form", "")
+	}
+	if r.query != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.brand != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand", r.brand, "form", "")
+	}
+	if r.sort != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", r.sort, "form", "")
+	} else {
+		var defaultValue string = "mentions"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort", defaultValue, "form", "")
+		r.sort = &defaultValue
+	}
+	if r.sortDir != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort_dir", r.sortDir, "form", "")
+	} else {
+		var defaultValue string = "desc"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sort_dir", defaultValue, "form", "")
+		r.sortDir = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiListSentimentCategoriesRequest struct {
 	ctx context.Context

@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**DeleteCollection**](CollectionsTagsAPI.md#DeleteCollection) | **Delete** /collections/{id} | Delete a tag
 [**ListCollections**](CollectionsTagsAPI.md#ListCollections) | **Get** /dimensions/collections | List tags/collections
 [**ListTags**](CollectionsTagsAPI.md#ListTags) | **Get** /dimensions/tags | List tags (alias for /collections)
+[**RemovePromptTags**](CollectionsTagsAPI.md#RemovePromptTags) | **Post** /prompts/remove_tags | Bulk-detach tags from prompts
 [**UpdateCollection**](CollectionsTagsAPI.md#UpdateCollection) | **Patch** /collections/{id} | Update a tag
 
 
@@ -340,6 +341,72 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RemovePromptTags
+
+> PromptTagsRemoveResponse RemovePromptTags(ctx).RemovePromptTagsRequest(removePromptTagsRequest).Execute()
+
+Bulk-detach tags from prompts
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	removePromptTagsRequest := *openapiclient.NewRemovePromptTagsRequest(int32(123), []int32{int32(123)}) // RemovePromptTagsRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.CollectionsTagsAPI.RemovePromptTags(context.Background()).RemovePromptTagsRequest(removePromptTagsRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.RemovePromptTags``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RemovePromptTags`: PromptTagsRemoveResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.RemovePromptTags`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRemovePromptTagsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **removePromptTagsRequest** | [**RemovePromptTagsRequest**](RemovePromptTagsRequest.md) |  | 
+
+### Return type
+
+[**PromptTagsRemoveResponse**](PromptTagsRemoveResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

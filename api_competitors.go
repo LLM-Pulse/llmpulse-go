@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.62.0
+API version: 1.63.0
 Contact: info@llmpulse.ai
 */
 
@@ -375,6 +375,185 @@ func (a *CompetitorsAPIService) GetCompetitorDetailsExecute(r ApiGetCompetitorDe
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListCompetitorSuggestionsRequest struct {
+	ctx context.Context
+	ApiService *CompetitorsAPIService
+	projectId *int32
+	basis *string
+	query *string
+	page *int32
+	perPage *int32
+	output *string
+}
+
+// Project ID
+func (r ApiListCompetitorSuggestionsRequest) ProjectId(projectId int32) ApiListCompetitorSuggestionsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+func (r ApiListCompetitorSuggestionsRequest) Basis(basis string) ApiListCompetitorSuggestionsRequest {
+	r.basis = &basis
+	return r
+}
+
+// Only suggestions whose brand name or domain contains this text
+func (r ApiListCompetitorSuggestionsRequest) Query(query string) ApiListCompetitorSuggestionsRequest {
+	r.query = &query
+	return r
+}
+
+func (r ApiListCompetitorSuggestionsRequest) Page(page int32) ApiListCompetitorSuggestionsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListCompetitorSuggestionsRequest) PerPage(perPage int32) ApiListCompetitorSuggestionsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListCompetitorSuggestionsRequest) Output(output string) ApiListCompetitorSuggestionsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListCompetitorSuggestionsRequest) Execute() (*CompetitorSuggestionsResponse, *http.Response, error) {
+	return r.ApiService.ListCompetitorSuggestionsExecute(r)
+}
+
+/*
+ListCompetitorSuggestions List competitor suggestions
+
+The two lists of the Suggested tab of the Competitors page. `basis=brands` (default) returns the competing brands the AI discovery proposed that are not tracked or rejected yet, with the names it would match and, when counted, how many answers name it (`mentions`). `basis=citations` returns the domains AI answers cite most that are not your own or tracked yet, with how many answers cite each (`citations`). `discovery` tells whether a discovery run is still loading. Read-only: it never starts a discovery run, which the page starts from its Discover button. Add a suggestion with POST /competitors.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListCompetitorSuggestionsRequest
+*/
+func (a *CompetitorsAPIService) ListCompetitorSuggestions(ctx context.Context) ApiListCompetitorSuggestionsRequest {
+	return ApiListCompetitorSuggestionsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return CompetitorSuggestionsResponse
+func (a *CompetitorsAPIService) ListCompetitorSuggestionsExecute(r ApiListCompetitorSuggestionsRequest) (*CompetitorSuggestionsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *CompetitorSuggestionsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CompetitorsAPIService.ListCompetitorSuggestions")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/competitors/suggestions"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.basis != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "basis", r.basis, "form", "")
+	} else {
+		var defaultValue string = "brands"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "basis", defaultValue, "form", "")
+		r.basis = &defaultValue
+	}
+	if r.query != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "query", r.query, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

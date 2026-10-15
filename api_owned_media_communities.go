@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.62.0
+API version: 1.63.0
 Contact: info@llmpulse.ai
 */
 
@@ -17,12 +17,369 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
 
 // OwnedMediaCommunitiesAPIService OwnedMediaCommunitiesAPI service
 type OwnedMediaCommunitiesAPIService service
+
+type ApiGetOwnedMediaProfilesRequest struct {
+	ctx context.Context
+	ApiService *OwnedMediaCommunitiesAPIService
+	id int32
+}
+
+func (r ApiGetOwnedMediaProfilesRequest) Execute() (*OwnedMediaProfilesResponse, *http.Response, error) {
+	return r.ApiService.GetOwnedMediaProfilesExecute(r)
+}
+
+/*
+GetOwnedMediaProfiles Get a project's owned-media profiles
+
+The profiles whose citations count as yours in the Owned Media and YouTube Intelligence reports, as Project Settings > Owned Media shows them. platforms holds one entry per platform with whether it is connected, how many extra profiles it accepts and its profiles: the main one, the extra ones, and on Reddit the claimed subreddits and usernames, each with its URL, handle, store (for apps), name, avatar and the state of the scrape that reads them. settings holds the current value of every field PATCH accepts, ready to edit and send back. Requires the Growth plan or above.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param id Project ID
+ @return ApiGetOwnedMediaProfilesRequest
+*/
+func (a *OwnedMediaCommunitiesAPIService) GetOwnedMediaProfiles(ctx context.Context, id int32) ApiGetOwnedMediaProfilesRequest {
+	return ApiGetOwnedMediaProfilesRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+// Execute executes the request
+//  @return OwnedMediaProfilesResponse
+func (a *OwnedMediaCommunitiesAPIService) GetOwnedMediaProfilesExecute(r ApiGetOwnedMediaProfilesRequest) (*OwnedMediaProfilesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *OwnedMediaProfilesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnedMediaCommunitiesAPIService.GetOwnedMediaProfiles")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects/{id}/owned_media"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetOwnedMediaSummaryRequest struct {
+	ctx context.Context
+	ApiService *OwnedMediaCommunitiesAPIService
+	projectId *int32
+	provider *string
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	brandKind *string
+	range_ *int32
+	from *time.Time
+	to *time.Time
+}
+
+// Project ID
+func (r ApiGetOwnedMediaSummaryRequest) ProjectId(projectId int32) ApiGetOwnedMediaSummaryRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// The platform to summarize, or overview for every platform at once
+func (r ApiGetOwnedMediaSummaryRequest) Provider(provider string) ApiGetOwnedMediaSummaryRequest {
+	r.provider = &provider
+	return r
+}
+
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
+func (r ApiGetOwnedMediaSummaryRequest) Model(model string) ApiGetOwnedMediaSummaryRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetOwnedMediaSummaryRequest) CollectionId(collectionId string) ApiGetOwnedMediaSummaryRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetOwnedMediaSummaryRequest) CountryCode(countryCode string) ApiGetOwnedMediaSummaryRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetOwnedMediaSummaryRequest) LanguageCode(languageCode string) ApiGetOwnedMediaSummaryRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetOwnedMediaSummaryRequest) BrandKind(brandKind string) ApiGetOwnedMediaSummaryRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiGetOwnedMediaSummaryRequest) Range_(range_ int32) ApiGetOwnedMediaSummaryRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiGetOwnedMediaSummaryRequest) From(from time.Time) ApiGetOwnedMediaSummaryRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiGetOwnedMediaSummaryRequest) To(to time.Time) ApiGetOwnedMediaSummaryRequest {
+	r.to = &to
+	return r
+}
+
+func (r ApiGetOwnedMediaSummaryRequest) Execute() (*OwnedMediaSummaryResponse, *http.Response, error) {
+	return r.ApiService.GetOwnedMediaSummaryExecute(r)
+}
+
+/*
+GetOwnedMediaSummary Get an owned-media summary
+
+The numbers behind one Owned Media tab. kpis gives the platform citations (total), yours (your profiles and their content), your_profile and your_content apart, and share_pct; previous gives the same KPIs for the period of the same length that ends just before from, and changes the difference (percent for counts, percentage points for share_pct, null when there is nothing to compare). weekly is the citations per week, yours against everyone else. by_model and by_country split every citation of the platform; content_types (reel, post, tv, pulse, or regular, shorts and live on YouTube) and age_buckets cover posts and videos. provider=mobile_apps adds stores, the per-store totals, and has no content type or age; provider=overview returns platforms, one rollup per platform the caller can read, and no breakdowns. A team member also needs the YouTube Intelligence permission for provider=youtube. Defaults to the last 30 days. Requires the Growth plan or above.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetOwnedMediaSummaryRequest
+*/
+func (a *OwnedMediaCommunitiesAPIService) GetOwnedMediaSummary(ctx context.Context) ApiGetOwnedMediaSummaryRequest {
+	return ApiGetOwnedMediaSummaryRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return OwnedMediaSummaryResponse
+func (a *OwnedMediaCommunitiesAPIService) GetOwnedMediaSummaryExecute(r ApiGetOwnedMediaSummaryRequest) (*OwnedMediaSummaryResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *OwnedMediaSummaryResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnedMediaCommunitiesAPIService.GetOwnedMediaSummary")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/owned_media/summary"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+	if r.provider == nil {
+		return localVarReturnValue, nil, reportError("provider is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "provider", r.provider, "form", "")
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiListOwnedMediaRequest struct {
 	ctx context.Context
@@ -138,14 +495,14 @@ func (r ApiListOwnedMediaRequest) Output(output string) ApiListOwnedMediaRequest
 	return r
 }
 
-func (r ApiListOwnedMediaRequest) Execute() (*http.Response, error) {
+func (r ApiListOwnedMediaRequest) Execute() (*OwnedMediaListResponse, *http.Response, error) {
 	return r.ApiService.ListOwnedMediaExecute(r)
 }
 
 /*
 ListOwnedMedia List owned-media citations
 
-Which owned-media content AI answers cite, by platform. `provider` is required. Each row carries a `yours` flag so you can compare your own presence against everyone else cited on the same platform. view=own_citations returns the raw citations of the connected profile only and stays empty until a profile is connected. For Reddit use /dimensions/reddit. Requires the Growth plan or above.
+Which owned-media content AI answers cite, by platform. `provider` is required. Each row carries a `yours` flag so you can compare your own presence against everyone else cited on the same platform. Video, post, channel and profile rows also carry their image (thumbnail_url or avatar_url, our cached copy where one exists), their average position in the answers and, on YouTube, the video id, the channel handle and URL, and the channel key that /dimensions/owned_media/citing_prompts accepts. view=own_citations returns the raw citations of the connected profile only and stays empty until a profile is connected. For Reddit use /dimensions/reddit. Requires the Growth plan or above.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListOwnedMediaRequest
@@ -158,16 +515,18 @@ func (a *OwnedMediaCommunitiesAPIService) ListOwnedMedia(ctx context.Context) Ap
 }
 
 // Execute executes the request
-func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaExecute(r ApiListOwnedMediaRequest) (*http.Response, error) {
+//  @return OwnedMediaListResponse
+func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaExecute(r ApiListOwnedMediaRequest) (*OwnedMediaListResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *OwnedMediaListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnedMediaCommunitiesAPIService.ListOwnedMedia")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/owned_media"
@@ -176,10 +535,10 @@ func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaExecute(r ApiListOwnedMe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 	if r.provider == nil {
-		return nil, reportError("provider is required and must be specified")
+		return localVarReturnValue, nil, reportError("provider is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -257,19 +616,19 @@ func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaExecute(r ApiListOwnedMe
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -282,15 +641,312 @@ func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaExecute(r ApiListOwnedMe
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListOwnedMediaCitingPromptsRequest struct {
+	ctx context.Context
+	ApiService *OwnedMediaCommunitiesAPIService
+	projectId *int32
+	provider *string
+	page *int32
+	perPage *int32
+	url *string
+	profile *string
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	brandKind *string
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	output *string
+}
+
+// Project ID
+func (r ApiListOwnedMediaCitingPromptsRequest) ProjectId(projectId int32) ApiListOwnedMediaCitingPromptsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// The platform the item belongs to
+func (r ApiListOwnedMediaCitingPromptsRequest) Provider(provider string) ApiListOwnedMediaCitingPromptsRequest {
+	r.provider = &provider
+	return r
+}
+
+func (r ApiListOwnedMediaCitingPromptsRequest) Page(page int32) ApiListOwnedMediaCitingPromptsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListOwnedMediaCitingPromptsRequest) PerPage(perPage int32) ApiListOwnedMediaCitingPromptsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// A post or video URL, or a profile or channel URL. Exclusive with profile
+func (r ApiListOwnedMediaCitingPromptsRequest) Url(url string) ApiListOwnedMediaCitingPromptsRequest {
+	r.url = &url
+	return r
+}
+
+// A handle (with or without @), a profile or channel URL, or a YouTube channel key (handle:..., channel:... or name:...). Exclusive with url
+func (r ApiListOwnedMediaCitingPromptsRequest) Profile(profile string) ApiListOwnedMediaCitingPromptsRequest {
+	r.profile = &profile
+	return r
+}
+
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
+func (r ApiListOwnedMediaCitingPromptsRequest) Model(model string) ApiListOwnedMediaCitingPromptsRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiListOwnedMediaCitingPromptsRequest) CollectionId(collectionId string) ApiListOwnedMediaCitingPromptsRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListOwnedMediaCitingPromptsRequest) CountryCode(countryCode string) ApiListOwnedMediaCitingPromptsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListOwnedMediaCitingPromptsRequest) LanguageCode(languageCode string) ApiListOwnedMediaCitingPromptsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListOwnedMediaCitingPromptsRequest) BrandKind(brandKind string) ApiListOwnedMediaCitingPromptsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListOwnedMediaCitingPromptsRequest) Range_(range_ int32) ApiListOwnedMediaCitingPromptsRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiListOwnedMediaCitingPromptsRequest) From(from time.Time) ApiListOwnedMediaCitingPromptsRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiListOwnedMediaCitingPromptsRequest) To(to time.Time) ApiListOwnedMediaCitingPromptsRequest {
+	r.to = &to
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListOwnedMediaCitingPromptsRequest) Output(output string) ApiListOwnedMediaCitingPromptsRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListOwnedMediaCitingPromptsRequest) Execute() (*OwnedMediaCitingPromptsResponse, *http.Response, error) {
+	return r.ApiService.ListOwnedMediaCitingPromptsExecute(r)
+}
+
+/*
+ListOwnedMediaCitingPrompts List the answers citing an owned-media item
+
+The drill-down behind one row of an Owned Media or YouTube Intelligence table. Pass exactly one of url (a post or video URL, any variant of it) or profile (a handle with or without @, a profile or channel URL, or the channel key the YouTube channels rows return). item describes it (title, image, owner, whether it is yours and its stats), citation_count and prompt_count count its citations in the window, and data lists the citing answers newest first, each with its prompt, answer id, model, country, language, execution date, a plain-text excerpt and its link in the app. It shows prompt and answer text, so a team member also needs the Prompts permission, and YouTube Intelligence for provider=youtube. Defaults to the last 30 days. Requires the Growth plan or above.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListOwnedMediaCitingPromptsRequest
+*/
+func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaCitingPrompts(ctx context.Context) ApiListOwnedMediaCitingPromptsRequest {
+	return ApiListOwnedMediaCitingPromptsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return OwnedMediaCitingPromptsResponse
+func (a *OwnedMediaCommunitiesAPIService) ListOwnedMediaCitingPromptsExecute(r ApiListOwnedMediaCitingPromptsRequest) (*OwnedMediaCitingPromptsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *OwnedMediaCitingPromptsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnedMediaCommunitiesAPIService.ListOwnedMediaCitingPrompts")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dimensions/owned_media/citing_prompts"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+	if r.provider == nil {
+		return localVarReturnValue, nil, reportError("provider is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	parameterAddToHeaderOrQuery(localVarQueryParams, "provider", r.provider, "form", "")
+	if r.url != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "url", r.url, "form", "")
+	}
+	if r.profile != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "profile", r.profile, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListRedditCitationsRequest struct {
@@ -601,4 +1257,150 @@ func (a *OwnedMediaCommunitiesAPIService) ListRedditCitationsExecute(r ApiListRe
 	}
 
 	return localVarHTTPResponse, nil
+}
+
+type ApiUpdateOwnedMediaProfilesRequest struct {
+	ctx context.Context
+	ApiService *OwnedMediaCommunitiesAPIService
+	id int32
+	updateOwnedMediaProfilesRequest *UpdateOwnedMediaProfilesRequest
+}
+
+func (r ApiUpdateOwnedMediaProfilesRequest) UpdateOwnedMediaProfilesRequest(updateOwnedMediaProfilesRequest UpdateOwnedMediaProfilesRequest) ApiUpdateOwnedMediaProfilesRequest {
+	r.updateOwnedMediaProfilesRequest = &updateOwnedMediaProfilesRequest
+	return r
+}
+
+func (r ApiUpdateOwnedMediaProfilesRequest) Execute() (*OwnedMediaProfilesUpdateResponse, *http.Response, error) {
+	return r.ApiService.UpdateOwnedMediaProfilesExecute(r)
+}
+
+/*
+UpdateOwnedMediaProfiles Update a project's owned-media profiles
+
+Sets the profiles whose citations count as yours, like Project Settings > Owned Media. Send only the fields to change: a URL field takes a URL, or an empty string or null to clear it, and every list REPLACES the stored one ([] clears it). URLs are normalized like the app (a profile URL is stored in its canonical form, a Google Play package name becomes its listing URL), and anything the app would refuse (a URL from another platform, an extra profile equal to the main one, more than 10 extra profiles, a malformed subreddit) is rejected with ERR_INVALID_PARAM and nothing is applied. A new main or extra profile is scraped in the background for its name and avatar, listed in profile_scrapes_queued. The response is the GET payload after the change. A team member needs the Owned Media create permission, and YouTube Intelligence create to change the YouTube channel. Requires the Growth plan or above and a `read_write` scope API key.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param id Project ID
+ @return ApiUpdateOwnedMediaProfilesRequest
+*/
+func (a *OwnedMediaCommunitiesAPIService) UpdateOwnedMediaProfiles(ctx context.Context, id int32) ApiUpdateOwnedMediaProfilesRequest {
+	return ApiUpdateOwnedMediaProfilesRequest{
+		ApiService: a,
+		ctx: ctx,
+		id: id,
+	}
+}
+
+// Execute executes the request
+//  @return OwnedMediaProfilesUpdateResponse
+func (a *OwnedMediaCommunitiesAPIService) UpdateOwnedMediaProfilesExecute(r ApiUpdateOwnedMediaProfilesRequest) (*OwnedMediaProfilesUpdateResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPatch
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *OwnedMediaProfilesUpdateResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OwnedMediaCommunitiesAPIService.UpdateOwnedMediaProfiles")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects/{id}/owned_media"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterValueToString(r.id, "id")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.updateOwnedMediaProfilesRequest == nil {
+		return localVarReturnValue, nil, reportError("updateOwnedMediaProfilesRequest is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.updateOwnedMediaProfilesRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
