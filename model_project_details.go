@@ -46,7 +46,7 @@ type ProjectDetails struct {
 	GooglePlayId NullableString `json:"google_play_id,omitempty"`
 	AppStoreId NullableString `json:"app_store_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// Maximum number of active prompts this project may hold, set by the account owner or a co-owner in Account Settings > Prompt Limits; null when the project has no limit of its own and only the account quota applies
+	// The most prompts this project can hold, set by the account owner or a co-owner (Account Settings > Prompt Limits). Null when the project has no limit of its own; the account's plan allowance applies either way
 	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`

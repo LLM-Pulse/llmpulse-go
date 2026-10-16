@@ -38,7 +38,7 @@ type ProjectProfile struct {
 	MatchingNames []string `json:"matching_names"`
 	// Other domains the brand owns (at most 10, each a website's own domain covering its subdomains), whose citations count as owned like the project website. Empty when none
 	AdditionalOwnedDomains []string `json:"additional_owned_domains"`
-	// Maximum number of active prompts this project may hold; null when only the account quota applies
+	// The most prompts this project can hold, set by the account owner or a co-owner (Account Settings > Prompt Limits). Null when the project has no limit of its own; the account's plan allowance applies either way
 	PromptLimit NullableInt32 `json:"prompt_limit"`
 }
 

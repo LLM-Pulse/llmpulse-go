@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **Goals** | Pointer to **NullableString** |  | [optional] 
 **MatchingNames** | **[]string** |  | 
 **AdditionalOwnedDomains** | **[]string** | Other domains the brand owns (at most 10, each a website&#39;s own domain covering its subdomains), whose citations count as owned like the project website. Empty when none | 
-**PromptLimit** | **NullableInt32** | Maximum number of active prompts this project may hold; null when only the account quota applies | 
+**PromptLimit** | **NullableInt32** | The most prompts this project can hold, set by the account owner or a co-owner (Account Settings &gt; Prompt Limits). Null when the project has no limit of its own; the account&#39;s plan allowance applies either way | 
 
 ## Methods
 
