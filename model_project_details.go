@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -46,6 +46,8 @@ type ProjectDetails struct {
 	GooglePlayId NullableString `json:"google_play_id,omitempty"`
 	AppStoreId NullableString `json:"app_store_id,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
+	// Maximum number of active prompts this project may hold, set by the account owner or a co-owner in Account Settings > Prompt Limits; null when the project has no limit of its own and only the account quota applies
+	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
 	SearchConsole *ProjectDetailsAllOfSearchConsole `json:"search_console,omitempty"`
@@ -810,6 +812,48 @@ func (o *ProjectDetails) SetCreatedAt(v time.Time) {
 	o.CreatedAt = &v
 }
 
+// GetPromptLimit returns the PromptLimit field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ProjectDetails) GetPromptLimit() int32 {
+	if o == nil || IsNil(o.PromptLimit.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.PromptLimit.Get()
+}
+
+// GetPromptLimitOk returns a tuple with the PromptLimit field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetails) GetPromptLimitOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PromptLimit.Get(), o.PromptLimit.IsSet()
+}
+
+// HasPromptLimit returns a boolean if a field has been set.
+func (o *ProjectDetails) HasPromptLimit() bool {
+	if o != nil && o.PromptLimit.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptLimit gets a reference to the given NullableInt32 and assigns it to the PromptLimit field.
+func (o *ProjectDetails) SetPromptLimit(v int32) {
+	o.PromptLimit.Set(&v)
+}
+// SetPromptLimitNil sets the value for PromptLimit to be an explicit nil
+func (o *ProjectDetails) SetPromptLimitNil() {
+	o.PromptLimit.Set(nil)
+}
+
+// UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
+func (o *ProjectDetails) UnsetPromptLimit() {
+	o.PromptLimit.Unset()
+}
+
 // GetStats returns the Stats field value if set, zero value otherwise.
 func (o *ProjectDetails) GetStats() ProjectDetailsAllOfStats {
 	if o == nil || IsNil(o.Stats) {
@@ -1007,6 +1051,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.CreatedAt) {
 		toSerialize["created_at"] = o.CreatedAt
+	}
+	if o.PromptLimit.IsSet() {
+		toSerialize["prompt_limit"] = o.PromptLimit.Get()
 	}
 	if !IsNil(o.Stats) {
 		toSerialize["stats"] = o.Stats

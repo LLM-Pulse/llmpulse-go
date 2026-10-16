@@ -4,7 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PromptsCount** | Pointer to **int32** |  | [optional] 
+**PromptsCount** | Pointer to **int32** | Active prompts in the project | [optional] 
+**PromptsAvailable** | Pointer to **NullableInt32** | Prompts that can still be added to this project, the lower of its free slots under prompt_limit and the prompts left in the account quota; null when neither caps it | [optional] 
 **PromptsByBrandKind** | Pointer to [**ProjectDetailsAllOfStatsPromptsByBrandKind**](ProjectDetailsAllOfStatsPromptsByBrandKind.md) |  | [optional] 
 **CompetitorsCount** | Pointer to **int32** |  | [optional] 
 **CollectionsCount** | Pointer to **int32** |  | [optional] 
@@ -53,6 +54,41 @@ SetPromptsCount sets PromptsCount field to given value.
 
 HasPromptsCount returns a boolean if a field has been set.
 
+### GetPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsAvailable() int32`
+
+GetPromptsAvailable returns the PromptsAvailable field if non-nil, zero value otherwise.
+
+### GetPromptsAvailableOk
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsAvailableOk() (*int32, bool)`
+
+GetPromptsAvailableOk returns a tuple with the PromptsAvailable field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) SetPromptsAvailable(v int32)`
+
+SetPromptsAvailable sets PromptsAvailable field to given value.
+
+### HasPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) HasPromptsAvailable() bool`
+
+HasPromptsAvailable returns a boolean if a field has been set.
+
+### SetPromptsAvailableNil
+
+`func (o *ProjectDetailsAllOfStats) SetPromptsAvailableNil(b bool)`
+
+ SetPromptsAvailableNil sets the value for PromptsAvailable to be an explicit nil
+
+### UnsetPromptsAvailable
+`func (o *ProjectDetailsAllOfStats) UnsetPromptsAvailable()`
+
+UnsetPromptsAvailable ensures that no value is present for PromptsAvailable, not even an explicit nil
 ### GetPromptsByBrandKind
 
 `func (o *ProjectDetailsAllOfStats) GetPromptsByBrandKind() ProjectDetailsAllOfStatsPromptsByBrandKind`

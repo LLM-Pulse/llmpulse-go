@@ -12,7 +12,7 @@ Method | HTTP request | Description
 [**ListLocales**](ProjectsAPI.md#ListLocales) | **Get** /dimensions/locales | List locales with data
 [**ListModels**](ProjectsAPI.md#ListModels) | **Get** /dimensions/models | List models with data
 [**ListProjects**](ProjectsAPI.md#ListProjects) | **Get** /dimensions/projects | List projects
-[**UpdateProject**](ProjectsAPI.md#UpdateProject) | **Patch** /projects/{id} | Update a project profile (Brand Book)
+[**UpdateProject**](ProjectsAPI.md#UpdateProject) | **Patch** /projects/{id} | Update a project profile (Brand Book) or prompt limit
 [**UpdateProjectDraft**](ProjectsAPI.md#UpdateProjectDraft) | **Patch** /project_drafts/{id} | Submit a wizard step
 
 
@@ -553,7 +553,7 @@ Name | Type | Description  | Notes
 
 > ProjectUpdateResponse UpdateProject(ctx, id).UpdateProjectRequest(updateProjectRequest).Execute()
 
-Update a project profile (Brand Book)
+Update a project profile (Brand Book) or prompt limit
 
 
 

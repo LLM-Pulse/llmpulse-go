@@ -17,12 +17,13 @@ Name | Type | Description | Notes
 **Goals** | Pointer to **NullableString** |  | [optional] 
 **MatchingNames** | **[]string** |  | 
 **AdditionalOwnedDomains** | **[]string** | Other domains the brand owns (at most 10, each a website&#39;s own domain covering its subdomains), whose citations count as owned like the project website. Empty when none | 
+**PromptLimit** | **NullableInt32** | Maximum number of active prompts this project may hold; null when only the account quota applies | 
 
 ## Methods
 
 ### NewProjectProfile
 
-`func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, ) *ProjectProfile`
+`func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32, ) *ProjectProfile`
 
 NewProjectProfile instantiates a new ProjectProfile object
 This constructor will assign default values to properties that have it defined,
@@ -422,6 +423,36 @@ and a boolean to check if the value has been set.
 SetAdditionalOwnedDomains sets AdditionalOwnedDomains field to given value.
 
 
+### GetPromptLimit
+
+`func (o *ProjectProfile) GetPromptLimit() int32`
+
+GetPromptLimit returns the PromptLimit field if non-nil, zero value otherwise.
+
+### GetPromptLimitOk
+
+`func (o *ProjectProfile) GetPromptLimitOk() (*int32, bool)`
+
+GetPromptLimitOk returns a tuple with the PromptLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptLimit
+
+`func (o *ProjectProfile) SetPromptLimit(v int32)`
+
+SetPromptLimit sets PromptLimit field to given value.
+
+
+### SetPromptLimitNil
+
+`func (o *ProjectProfile) SetPromptLimitNil(b bool)`
+
+ SetPromptLimitNil sets the value for PromptLimit to be an explicit nil
+
+### UnsetPromptLimit
+`func (o *ProjectProfile) UnsetPromptLimit()`
+
+UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

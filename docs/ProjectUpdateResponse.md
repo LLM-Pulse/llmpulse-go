@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Project** | [**ProjectProfile**](ProjectProfile.md) |  | 
 **UpdatedFields** | **[]string** | The fields the request sent | 
 **Rematching** | **bool** | True when a matching_names or additional_owned_domains change started a background recalculation of past answers; further edits are rejected until it finishes | 
-**Note** | **string** | What the change does to mention detection, citation ownership and historical numbers | 
+**Note** | **string** | What the change does to mention detection, citation ownership, historical numbers and the prompts the project can hold | 
 **RequestId** | **string** |  | 
 
 ## Methods

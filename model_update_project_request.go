@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -44,6 +44,8 @@ type UpdateProjectRequest struct {
 	MatchingNames []string `json:"matching_names,omitempty"`
 	// FULL replacement list (at most 10) of other domains the brand owns, such as a blog or a country site; [] clears it. Citations from them count as owned, like the project website. Each entry is a website's own domain and covers its subdomains; a pasted URL is stored as its domain (https://www.acme.co.uk/x becomes acme.co.uk). A list the domain editor would refuse (a subdomain such as blog.acme.com, a platform many companies share such as youtube.com, amazon.com or wordpress.com, the project website, a tracked competitor domain, a duplicate or an entry that is not a domain) is rejected with ERR_INVALID_PARAM and the reason. Order does not matter, and an unchanged list starts nothing. Account owner only, on every plan
 	AdditionalOwnedDomains []string `json:"additional_owned_domains,omitempty"`
+	// Maximum number of active prompts this project may hold, within the account prompt quota; null removes the project limit so it can use any prompts left in the account. A limit below the current count keeps every existing prompt and refuses new ones. Account owner or co-owner only; a key limited to some projects cannot send it
+	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
 }
 
 // NewUpdateProjectRequest instantiates a new UpdateProjectRequest object
@@ -447,6 +449,48 @@ func (o *UpdateProjectRequest) SetAdditionalOwnedDomains(v []string) {
 	o.AdditionalOwnedDomains = v
 }
 
+// GetPromptLimit returns the PromptLimit field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *UpdateProjectRequest) GetPromptLimit() int32 {
+	if o == nil || IsNil(o.PromptLimit.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.PromptLimit.Get()
+}
+
+// GetPromptLimitOk returns a tuple with the PromptLimit field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UpdateProjectRequest) GetPromptLimitOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PromptLimit.Get(), o.PromptLimit.IsSet()
+}
+
+// HasPromptLimit returns a boolean if a field has been set.
+func (o *UpdateProjectRequest) HasPromptLimit() bool {
+	if o != nil && o.PromptLimit.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptLimit gets a reference to the given NullableInt32 and assigns it to the PromptLimit field.
+func (o *UpdateProjectRequest) SetPromptLimit(v int32) {
+	o.PromptLimit.Set(&v)
+}
+// SetPromptLimitNil sets the value for PromptLimit to be an explicit nil
+func (o *UpdateProjectRequest) SetPromptLimitNil() {
+	o.PromptLimit.Set(nil)
+}
+
+// UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
+func (o *UpdateProjectRequest) UnsetPromptLimit() {
+	o.PromptLimit.Unset()
+}
+
 func (o UpdateProjectRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -492,6 +536,9 @@ func (o UpdateProjectRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.AdditionalOwnedDomains) {
 		toSerialize["additional_owned_domains"] = o.AdditionalOwnedDomains
+	}
+	if o.PromptLimit.IsSet() {
+		toSerialize["prompt_limit"] = o.PromptLimit.Get()
 	}
 	return toSerialize, nil
 }

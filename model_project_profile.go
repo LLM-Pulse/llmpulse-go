@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -38,6 +38,8 @@ type ProjectProfile struct {
 	MatchingNames []string `json:"matching_names"`
 	// Other domains the brand owns (at most 10, each a website's own domain covering its subdomains), whose citations count as owned like the project website. Empty when none
 	AdditionalOwnedDomains []string `json:"additional_owned_domains"`
+	// Maximum number of active prompts this project may hold; null when only the account quota applies
+	PromptLimit NullableInt32 `json:"prompt_limit"`
 }
 
 type _ProjectProfile ProjectProfile
@@ -46,12 +48,13 @@ type _ProjectProfile ProjectProfile
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string) *ProjectProfile {
+func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32) *ProjectProfile {
 	this := ProjectProfile{}
 	this.Id = id
 	this.Name = name
 	this.MatchingNames = matchingNames
 	this.AdditionalOwnedDomains = additionalOwnedDomains
+	this.PromptLimit = promptLimit
 	return &this
 }
 
@@ -518,6 +521,32 @@ func (o *ProjectProfile) SetAdditionalOwnedDomains(v []string) {
 	o.AdditionalOwnedDomains = v
 }
 
+// GetPromptLimit returns the PromptLimit field value
+// If the value is explicit nil, the zero value for int32 will be returned
+func (o *ProjectProfile) GetPromptLimit() int32 {
+	if o == nil || o.PromptLimit.Get() == nil {
+		var ret int32
+		return ret
+	}
+
+	return *o.PromptLimit.Get()
+}
+
+// GetPromptLimitOk returns a tuple with the PromptLimit field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectProfile) GetPromptLimitOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PromptLimit.Get(), o.PromptLimit.IsSet()
+}
+
+// SetPromptLimit sets field value
+func (o *ProjectProfile) SetPromptLimit(v int32) {
+	o.PromptLimit.Set(&v)
+}
+
 func (o ProjectProfile) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -559,6 +588,7 @@ func (o ProjectProfile) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["matching_names"] = o.MatchingNames
 	toSerialize["additional_owned_domains"] = o.AdditionalOwnedDomains
+	toSerialize["prompt_limit"] = o.PromptLimit.Get()
 	return toSerialize, nil
 }
 
@@ -571,6 +601,7 @@ func (o *ProjectProfile) UnmarshalJSON(data []byte) (err error) {
 		"name",
 		"matching_names",
 		"additional_owned_domains",
+		"prompt_limit",
 	}
 
 	allProperties := make(map[string]interface{})
