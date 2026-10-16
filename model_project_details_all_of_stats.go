@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,8 @@ type ProjectDetailsAllOfStats struct {
 	PromptsByBrandKind *ProjectDetailsAllOfStatsPromptsByBrandKind `json:"prompts_by_brand_kind,omitempty"`
 	CompetitorsCount *int32 `json:"competitors_count,omitempty"`
 	CollectionsCount *int32 `json:"collections_count,omitempty"`
+	// How many prompts can still be added to this project now, the same number the Prompts page offers. The lower of the project's free slots under prompt_limit and the account's remaining prompts; 0 when either is full (a project over its limit keeps its prompts). Null when neither caps it
+	PromptsAvailable NullableInt32 `json:"prompts_available,omitempty"`
 }
 
 // NewProjectDetailsAllOfStats instantiates a new ProjectDetailsAllOfStats object
@@ -171,6 +173,48 @@ func (o *ProjectDetailsAllOfStats) SetCollectionsCount(v int32) {
 	o.CollectionsCount = &v
 }
 
+// GetPromptsAvailable returns the PromptsAvailable field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ProjectDetailsAllOfStats) GetPromptsAvailable() int32 {
+	if o == nil || IsNil(o.PromptsAvailable.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.PromptsAvailable.Get()
+}
+
+// GetPromptsAvailableOk returns a tuple with the PromptsAvailable field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetailsAllOfStats) GetPromptsAvailableOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PromptsAvailable.Get(), o.PromptsAvailable.IsSet()
+}
+
+// HasPromptsAvailable returns a boolean if a field has been set.
+func (o *ProjectDetailsAllOfStats) HasPromptsAvailable() bool {
+	if o != nil && o.PromptsAvailable.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptsAvailable gets a reference to the given NullableInt32 and assigns it to the PromptsAvailable field.
+func (o *ProjectDetailsAllOfStats) SetPromptsAvailable(v int32) {
+	o.PromptsAvailable.Set(&v)
+}
+// SetPromptsAvailableNil sets the value for PromptsAvailable to be an explicit nil
+func (o *ProjectDetailsAllOfStats) SetPromptsAvailableNil() {
+	o.PromptsAvailable.Set(nil)
+}
+
+// UnsetPromptsAvailable ensures that no value is present for PromptsAvailable, not even an explicit nil
+func (o *ProjectDetailsAllOfStats) UnsetPromptsAvailable() {
+	o.PromptsAvailable.Unset()
+}
+
 func (o ProjectDetailsAllOfStats) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -192,6 +236,9 @@ func (o ProjectDetailsAllOfStats) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.CollectionsCount) {
 		toSerialize["collections_count"] = o.CollectionsCount
+	}
+	if o.PromptsAvailable.IsSet() {
+		toSerialize["prompts_available"] = o.PromptsAvailable.Get()
 	}
 	return toSerialize, nil
 }

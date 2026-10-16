@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,7 +27,7 @@ type ProjectUpdateResponse struct {
 	UpdatedFields []string `json:"updated_fields"`
 	// True when a matching_names or additional_owned_domains change started a background recalculation of past answers; further edits are rejected until it finishes
 	Rematching bool `json:"rematching"`
-	// What the change does to mention detection, citation ownership and historical numbers
+	// What the change does to mention detection, citation ownership and historical numbers, and, when prompt_limit was sent, how many prompts the project holds and how many more can be added
 	Note string `json:"note"`
 	RequestId string `json:"request_id"`
 }

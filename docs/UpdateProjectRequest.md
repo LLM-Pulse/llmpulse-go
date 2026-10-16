@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **PrimaryProducts** | Pointer to **[]string** | Full replacement list of the main products or services | [optional] 
 **MatchingNames** | Pointer to **[]string** | FULL replacement list of the brand-name variants used to detect mentions; send every variant to keep | [optional] 
 **AdditionalOwnedDomains** | Pointer to **[]string** | FULL replacement list (at most 10) of other domains the brand owns, such as a blog or a country site; [] clears it. Citations from them count as owned, like the project website. Each entry is a website&#39;s own domain and covers its subdomains; a pasted URL is stored as its domain (https://www.acme.co.uk/x becomes acme.co.uk). A list the domain editor would refuse (a subdomain such as blog.acme.com, a platform many companies share such as youtube.com, amazon.com or wordpress.com, the project website, a tracked competitor domain, a duplicate or an entry that is not a domain) is rejected with ERR_INVALID_PARAM and the reason. Order does not matter, and an unchanged list starts nothing. Account owner only, on every plan | [optional] 
+**PromptLimit** | Pointer to **NullableInt32** | The most prompts this project can hold, a JSON integer from 1 to 2147483647; null removes the project&#39;s limit. A string, a decimal, 0 or a negative number is rejected with ERR_INVALID_PARAM. The account&#39;s plan allowance still applies, so the lower of the two wins (GET /dimensions/projects/{id} returns prompt_limit and stats.prompts_available). A limit below the current count keeps every prompt and refuses new ones until the project is under it; note says what the project can now hold. Account owner or a co-owner with Projects update permission only; a key limited to some projects answers ERR_KEY_PROJECT_SCOPED. The Swift, Kotlin, Dart and R clients leave a null field out of the request body, so they can set a limit but not remove one: remove it with a plain HTTP request that sends prompt_limit as null | [optional] 
 
 ## Methods
 
@@ -336,6 +337,41 @@ SetAdditionalOwnedDomains sets AdditionalOwnedDomains field to given value.
 
 HasAdditionalOwnedDomains returns a boolean if a field has been set.
 
+### GetPromptLimit
+
+`func (o *UpdateProjectRequest) GetPromptLimit() int32`
+
+GetPromptLimit returns the PromptLimit field if non-nil, zero value otherwise.
+
+### GetPromptLimitOk
+
+`func (o *UpdateProjectRequest) GetPromptLimitOk() (*int32, bool)`
+
+GetPromptLimitOk returns a tuple with the PromptLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptLimit
+
+`func (o *UpdateProjectRequest) SetPromptLimit(v int32)`
+
+SetPromptLimit sets PromptLimit field to given value.
+
+### HasPromptLimit
+
+`func (o *UpdateProjectRequest) HasPromptLimit() bool`
+
+HasPromptLimit returns a boolean if a field has been set.
+
+### SetPromptLimitNil
+
+`func (o *UpdateProjectRequest) SetPromptLimitNil(b bool)`
+
+ SetPromptLimitNil sets the value for PromptLimit to be an explicit nil
+
+### UnsetPromptLimit
+`func (o *UpdateProjectRequest) UnsetPromptLimit()`
+
+UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

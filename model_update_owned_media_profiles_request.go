@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.63.0
+API version: 1.64.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,7 +32,7 @@ type UpdateOwnedMediaProfilesRequest struct {
 	FacebookPageUrl NullableString `json:"facebook_page_url,omitempty"`
 	// The main TikTok profile URL. An empty string or null clears it
 	TiktokProfileUrl NullableString `json:"tiktok_profile_url,omitempty"`
-	// The main LinkedIn Company Page URL (/company/...). An empty string or null clears it
+	// The main LinkedIn page URL: a company (/company/...), school (/school/...) or showcase (/showcase/...) page. An empty string or null clears it
 	LinkedinCompanyUrl NullableString `json:"linkedin_company_url,omitempty"`
 	// FULL replacement list of extra YouTube channel URLs (at most 10); [] clears it
 	YoutubeExtraProfileUrls []string `json:"youtube_extra_profile_urls,omitempty"`
@@ -44,7 +44,7 @@ type UpdateOwnedMediaProfilesRequest struct {
 	FacebookExtraProfileUrls []string `json:"facebook_extra_profile_urls,omitempty"`
 	// FULL replacement list of extra TikTok profile URLs (at most 10); [] clears it
 	TiktokExtraProfileUrls []string `json:"tiktok_extra_profile_urls,omitempty"`
-	// FULL replacement list of extra LinkedIn Company Page URLs (at most 10); [] clears it
+	// FULL replacement list of extra LinkedIn company, school or showcase page URLs (at most 10); [] clears it
 	LinkedinExtraProfileUrls []string `json:"linkedin_extra_profile_urls,omitempty"`
 	// FULL replacement list (at most 10) of subreddit names the brand owns, without r/; [] clears it
 	RedditSubreddits []string `json:"reddit_subreddits,omitempty"`

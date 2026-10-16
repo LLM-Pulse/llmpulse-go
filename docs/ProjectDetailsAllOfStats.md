@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **PromptsByBrandKind** | Pointer to [**ProjectDetailsAllOfStatsPromptsByBrandKind**](ProjectDetailsAllOfStatsPromptsByBrandKind.md) |  | [optional] 
 **CompetitorsCount** | Pointer to **int32** |  | [optional] 
 **CollectionsCount** | Pointer to **int32** |  | [optional] 
+**PromptsAvailable** | Pointer to **NullableInt32** | How many prompts can still be added to this project now, the same number the Prompts page offers. The lower of the project&#39;s free slots under prompt_limit and the account&#39;s remaining prompts; 0 when either is full (a project over its limit keeps its prompts). Null when neither caps it | [optional] 
 
 ## Methods
 
@@ -128,6 +129,41 @@ SetCollectionsCount sets CollectionsCount field to given value.
 
 HasCollectionsCount returns a boolean if a field has been set.
 
+### GetPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsAvailable() int32`
+
+GetPromptsAvailable returns the PromptsAvailable field if non-nil, zero value otherwise.
+
+### GetPromptsAvailableOk
+
+`func (o *ProjectDetailsAllOfStats) GetPromptsAvailableOk() (*int32, bool)`
+
+GetPromptsAvailableOk returns a tuple with the PromptsAvailable field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) SetPromptsAvailable(v int32)`
+
+SetPromptsAvailable sets PromptsAvailable field to given value.
+
+### HasPromptsAvailable
+
+`func (o *ProjectDetailsAllOfStats) HasPromptsAvailable() bool`
+
+HasPromptsAvailable returns a boolean if a field has been set.
+
+### SetPromptsAvailableNil
+
+`func (o *ProjectDetailsAllOfStats) SetPromptsAvailableNil(b bool)`
+
+ SetPromptsAvailableNil sets the value for PromptsAvailable to be an explicit nil
+
+### UnsetPromptsAvailable
+`func (o *ProjectDetailsAllOfStats) UnsetPromptsAvailable()`
+
+UnsetPromptsAvailable ensures that no value is present for PromptsAvailable, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

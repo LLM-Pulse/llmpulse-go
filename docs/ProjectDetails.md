@@ -24,6 +24,7 @@ Name | Type | Description | Notes
 **GooglePlayId** | Pointer to **NullableString** |  | [optional] 
 **AppStoreId** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
+**PromptLimit** | Pointer to **NullableInt32** | The most prompts this project can hold, set by the account owner or a co-owner (Account Settings &gt; Prompt Limits). Null when the project has no limit of its own; the account&#39;s plan allowance applies either way | [optional] 
 **Stats** | Pointer to [**ProjectDetailsAllOfStats**](ProjectDetailsAllOfStats.md) |  | [optional] 
 **DataCoverage** | Pointer to [**ProjectDetailsAllOfDataCoverage**](ProjectDetailsAllOfDataCoverage.md) |  | [optional] 
 **SearchConsole** | Pointer to [**ProjectDetailsAllOfSearchConsole**](ProjectDetailsAllOfSearchConsole.md) |  | [optional] 
@@ -658,6 +659,41 @@ SetCreatedAt sets CreatedAt field to given value.
 
 HasCreatedAt returns a boolean if a field has been set.
 
+### GetPromptLimit
+
+`func (o *ProjectDetails) GetPromptLimit() int32`
+
+GetPromptLimit returns the PromptLimit field if non-nil, zero value otherwise.
+
+### GetPromptLimitOk
+
+`func (o *ProjectDetails) GetPromptLimitOk() (*int32, bool)`
+
+GetPromptLimitOk returns a tuple with the PromptLimit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptLimit
+
+`func (o *ProjectDetails) SetPromptLimit(v int32)`
+
+SetPromptLimit sets PromptLimit field to given value.
+
+### HasPromptLimit
+
+`func (o *ProjectDetails) HasPromptLimit() bool`
+
+HasPromptLimit returns a boolean if a field has been set.
+
+### SetPromptLimitNil
+
+`func (o *ProjectDetails) SetPromptLimitNil(b bool)`
+
+ SetPromptLimitNil sets the value for PromptLimit to be an explicit nil
+
+### UnsetPromptLimit
+`func (o *ProjectDetails) UnsetPromptLimit()`
+
+UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
 ### GetStats
 
 `func (o *ProjectDetails) GetStats() ProjectDetailsAllOfStats`
