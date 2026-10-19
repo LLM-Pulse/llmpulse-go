@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.65.0
+API version: 1.66.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,12 +26,12 @@ type PromptsImportResponse struct {
 	// Distinct rows imported or matched to an existing prompt
 	ProcessedRows int32 `json:"processed_rows"`
 	Created int32 `json:"created"`
-	// Rows that matched an existing prompt (they still get the row's tags)
+	// Rows that matched an existing prompt (they still get the row's tags, unless a team member lacks update access to Prompts)
 	Duplicates int32 `json:"duplicates"`
 	// New prompt-tag links
 	Tagged int32 `json:"tagged"`
 	CreatedTags int32 `json:"created_tags"`
-	// Rows that were skipped, by their index in rows
+	// Rows that were skipped or whose tags were not added, by their index in rows
 	RowErrors []PromptsImportResponseRowErrorsInner `json:"row_errors"`
 	// Which tracked AI models will skip new prompts that are too long for them
 	LengthWarning NullableString `json:"length_warning"`

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.65.0
+API version: 1.66.0
 Contact: info@llmpulse.ai
 */
 
@@ -14,6 +14,8 @@ package llmpulse
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the AnswerDetails type satisfies the MappedNullable interface at compile time
@@ -39,23 +41,30 @@ type AnswerDetails struct {
 	Citations []map[string]interface{} `json:"citations,omitempty"`
 	CompetitorMentions []map[string]interface{} `json:"competitor_mentions,omitempty"`
 	CompetitorCitations []map[string]interface{} `json:"competitor_citations,omitempty"`
+	// Needs the Growth plan or above; left out below it and named in plan_required_fields
 	Sentiments []map[string]interface{} `json:"sentiments,omitempty"`
 	Sources []map[string]interface{} `json:"sources,omitempty"`
+	// Needs the Scale plan or above; left out below it and named in plan_required_fields
 	ShoppingProducts []map[string]interface{} `json:"shopping_products,omitempty"`
 	BrandEntities []map[string]interface{} `json:"brand_entities,omitempty"`
 	LocalBusinesses []map[string]interface{} `json:"local_businesses,omitempty"`
 	Locale *AnswerDetailsLocale `json:"locale,omitempty"`
+	// The fields left out of this answer because the account's plan does not include them (sentiments below Growth, shopping_products below Scale). Always present, empty when nothing is left out
+	PlanRequiredFields []string `json:"plan_required_fields"`
 	// Opens this answer in the app. The link names its project, so it opens there for any user with access to that project
 	AppUrl *string `json:"app_url,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
+type _AnswerDetails AnswerDetails
+
 // NewAnswerDetails instantiates a new AnswerDetails object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnswerDetails() *AnswerDetails {
+func NewAnswerDetails(planRequiredFields []string) *AnswerDetails {
 	this := AnswerDetails{}
+	this.PlanRequiredFields = planRequiredFields
 	return &this
 }
 
@@ -780,6 +789,30 @@ func (o *AnswerDetails) SetLocale(v AnswerDetailsLocale) {
 	o.Locale = &v
 }
 
+// GetPlanRequiredFields returns the PlanRequiredFields field value
+func (o *AnswerDetails) GetPlanRequiredFields() []string {
+	if o == nil {
+		var ret []string
+		return ret
+	}
+
+	return o.PlanRequiredFields
+}
+
+// GetPlanRequiredFieldsOk returns a tuple with the PlanRequiredFields field value
+// and a boolean to check if the value has been set.
+func (o *AnswerDetails) GetPlanRequiredFieldsOk() ([]string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PlanRequiredFields, true
+}
+
+// SetPlanRequiredFields sets field value
+func (o *AnswerDetails) SetPlanRequiredFields(v []string) {
+	o.PlanRequiredFields = v
+}
+
 // GetAppUrl returns the AppUrl field value if set, zero value otherwise.
 func (o *AnswerDetails) GetAppUrl() string {
 	if o == nil || IsNil(o.AppUrl) {
@@ -917,6 +950,7 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Locale) {
 		toSerialize["locale"] = o.Locale
 	}
+	toSerialize["plan_required_fields"] = o.PlanRequiredFields
 	if !IsNil(o.AppUrl) {
 		toSerialize["app_url"] = o.AppUrl
 	}
@@ -924,6 +958,43 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
+}
+
+func (o *AnswerDetails) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"plan_required_fields",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAnswerDetails := _AnswerDetails{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAnswerDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AnswerDetails(varAnswerDetails)
+
+	return err
 }
 
 type NullableAnswerDetails struct {

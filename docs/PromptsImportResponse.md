@@ -7,10 +7,10 @@ Name | Type | Description | Notes
 **ProjectId** | **int32** |  | 
 **ProcessedRows** | **int32** | Distinct rows imported or matched to an existing prompt | 
 **Created** | **int32** |  | 
-**Duplicates** | **int32** | Rows that matched an existing prompt (they still get the row&#39;s tags) | 
+**Duplicates** | **int32** | Rows that matched an existing prompt (they still get the row&#39;s tags, unless a team member lacks update access to Prompts) | 
 **Tagged** | **int32** | New prompt-tag links | 
 **CreatedTags** | **int32** |  | 
-**RowErrors** | [**[]PromptsImportResponseRowErrorsInner**](PromptsImportResponseRowErrorsInner.md) | Rows that were skipped, by their index in rows | 
+**RowErrors** | [**[]PromptsImportResponseRowErrorsInner**](PromptsImportResponseRowErrorsInner.md) | Rows that were skipped or whose tags were not added, by their index in rows | 
 **LengthWarning** | **NullableString** | Which tracked AI models will skip new prompts that are too long for them | 
 **PromptsAvailable** | **NullableInt32** | Prompt slots left on the plan; null when unlimited | 
 **RequestId** | **string** |  | 

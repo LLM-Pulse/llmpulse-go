@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.65.0
+API version: 1.66.0
 Contact: info@llmpulse.ai
 */
 
@@ -51,7 +51,7 @@ func (r ApiGetAnswerRequest) Execute() (*AnswerDetails, *http.Response, error) {
 /*
 GetAnswer Get one AI response
 
-Full answer with mentions, citations, sentiments, sources, shopping_products, brand_entities, fan_out_queries. Pass `include_source_page_details=true` to nest page-cache metadata under each source.
+Full answer with mentions, citations, sentiments, sources, shopping_products, brand_entities, fan_out_queries. `sentiments` need the Growth plan or above and `shopping_products` the Scale plan or above; below those plans each is left out and listed in `plan_required_fields`, which is always present and empty when nothing is left out. Pass `include_source_page_details=true` to nest page-cache metadata under each source.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param id

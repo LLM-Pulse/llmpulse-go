@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.65.0
+API version: 1.66.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,8 +24,9 @@ type ListWebhooks200ResponseDataInner struct {
 	Id *int32 `json:"id,omitempty"`
 	ProjectId *int32 `json:"project_id,omitempty"`
 	EventType *string `json:"event_type,omitempty"`
+	// The URL deliveries are sent to. A read-only API key receives only its scheme, host and any non-default port followed by `/…` (for example `https://hook.eu1.make.com/…`); a `read_write` scope key receives the full URL.
 	TargetUrl *string `json:"target_url,omitempty"`
-	// True when the subscription receives no more events, including when the API key or OAuth connection that created it was revoked. Creating it again with the same project, event and URL replaces it with a new subscription and secret.
+	// True when the subscription receives no more events, including when the API key or OAuth connection that created it was revoked, or when that API key is limited to some projects and no longer covers the subscription's project. Creating it again with the same project, event and URL replaces it with a new subscription and secret.
 	Disabled *bool `json:"disabled,omitempty"`
 	FailureCount *int32 `json:"failure_count,omitempty"`
 	LastDeliveredAt NullableTime `json:"last_delivered_at,omitempty"`

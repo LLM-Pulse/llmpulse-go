@@ -19,12 +19,13 @@ Name | Type | Description | Notes
 **Citations** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **CompetitorMentions** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **CompetitorCitations** | Pointer to **[]map[string]interface{}** |  | [optional] 
-**Sentiments** | Pointer to **[]map[string]interface{}** |  | [optional] 
+**Sentiments** | Pointer to **[]map[string]interface{}** | Needs the Growth plan or above; left out below it and named in plan_required_fields | [optional] 
 **Sources** | Pointer to **[]map[string]interface{}** |  | [optional] 
-**ShoppingProducts** | Pointer to **[]map[string]interface{}** |  | [optional] 
+**ShoppingProducts** | Pointer to **[]map[string]interface{}** | Needs the Scale plan or above; left out below it and named in plan_required_fields | [optional] 
 **BrandEntities** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **LocalBusinesses** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Locale** | Pointer to [**AnswerDetailsLocale**](AnswerDetailsLocale.md) |  | [optional] 
+**PlanRequiredFields** | **[]string** | The fields left out of this answer because the account&#39;s plan does not include them (sentiments below Growth, shopping_products below Scale). Always present, empty when nothing is left out | 
 **AppUrl** | Pointer to **string** | Opens this answer in the app. The link names its project, so it opens there for any user with access to that project | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
@@ -32,7 +33,7 @@ Name | Type | Description | Notes
 
 ### NewAnswerDetails
 
-`func NewAnswerDetails() *AnswerDetails`
+`func NewAnswerDetails(planRequiredFields []string, ) *AnswerDetails`
 
 NewAnswerDetails instantiates a new AnswerDetails object
 This constructor will assign default values to properties that have it defined,
@@ -621,6 +622,26 @@ SetLocale sets Locale field to given value.
 `func (o *AnswerDetails) HasLocale() bool`
 
 HasLocale returns a boolean if a field has been set.
+
+### GetPlanRequiredFields
+
+`func (o *AnswerDetails) GetPlanRequiredFields() []string`
+
+GetPlanRequiredFields returns the PlanRequiredFields field if non-nil, zero value otherwise.
+
+### GetPlanRequiredFieldsOk
+
+`func (o *AnswerDetails) GetPlanRequiredFieldsOk() (*[]string, bool)`
+
+GetPlanRequiredFieldsOk returns a tuple with the PlanRequiredFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPlanRequiredFields
+
+`func (o *AnswerDetails) SetPlanRequiredFields(v []string)`
+
+SetPlanRequiredFields sets PlanRequiredFields field to given value.
+
 
 ### GetAppUrl
 
