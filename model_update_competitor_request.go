@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.64.0
+API version: 1.65.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,6 +26,7 @@ type UpdateCompetitorRequest struct {
 	BrandName *string `json:"brand_name,omitempty"`
 	// Website domain or host used for citation matching. A full URL is accepted and normalised to its host.
 	Domain *string `json:"domain,omitempty"`
+	// FULL replacement list of the names this competitor is matched by; brand_name is added automatically. At most 50 names in all, brand_name included, of up to 100 characters each; a longer list or name is refused with ERR_INVALID_PARAM (422) and nothing in the request is applied
 	MatchingNames []string `json:"matching_names,omitempty"`
 	// Hex color, e.g. #1a2b3c
 	Color *string `json:"color,omitempty"`

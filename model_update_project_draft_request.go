@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.64.0
+API version: 1.65.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,9 +27,11 @@ type UpdateProjectDraftRequest struct {
 	BrandName *string `json:"brand_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Industry []string `json:"industry,omitempty"`
+	// Brand-name variants used to detect mentions (details step). At most 50 names of up to 100 characters each; the step stores the list as sent, and finalize refuses a longer list or name with ERR_INVALID_PARAM (422)
 	MatchingNames []string `json:"matching_names,omitempty"`
 	ExternalIdentifier *string `json:"external_identifier,omitempty"`
 	Prompts []string `json:"prompts,omitempty"`
+	// Competitors step: objects {domain, brand_name, matching_names}, capped by plan. Each competitor's matching_names takes at most 50 names of up to 100 characters, checked at finalize like POST /projects
 	Competitors []map[string]interface{} `json:"competitors,omitempty"`
 	YoutubeChannelUrl *string `json:"youtube_channel_url,omitempty"`
 	InstagramProfileUrl *string `json:"instagram_profile_url,omitempty"`

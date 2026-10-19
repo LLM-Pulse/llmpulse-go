@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.64.0
+API version: 1.65.0
 Contact: info@llmpulse.ai
 */
 
@@ -44,6 +44,7 @@ type ProjectCreateRequest struct {
 	Goals *string `json:"goals,omitempty"`
 	// Main products or services
 	PrimaryProducts []string `json:"primary_products,omitempty"`
+	// Brand-name variants used to detect mentions. At most 50 names of up to 100 characters each; a longer list or name is refused with ERR_INVALID_PARAM (422) and nothing is created
 	MatchingNames []string `json:"matching_names,omitempty"`
 	Prompts []string `json:"prompts,omitempty"`
 	// Collections (prompt tags) created with the project, each tagging prompts of this request by their exact text, so no separate tagging calls are needed. A text that is not in prompts returns ERR_INVALID_PARAM. A team member also needs Tags: Create permission.

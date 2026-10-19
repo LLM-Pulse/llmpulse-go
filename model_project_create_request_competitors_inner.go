@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.64.0
+API version: 1.65.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,7 @@ var _ MappedNullable = &ProjectCreateRequestCompetitorsInner{}
 type ProjectCreateRequestCompetitorsInner struct {
 	Domain string `json:"domain"`
 	BrandName *string `json:"brand_name,omitempty"`
+	// Names this competitor is matched by. At most 50 names of up to 100 characters each; a longer list or name is refused with ERR_INVALID_PARAM (422) and nothing is created
 	MatchingNames []string `json:"matching_names,omitempty"`
 }
 
