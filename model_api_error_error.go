@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.66.0
+API version: 1.67.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,6 +22,7 @@ var _ MappedNullable = &ApiErrorError{}
 type ApiErrorError struct {
 	Code *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
+	// Extra detail for some codes. A not-connected or access-revoked error from the Search Console, AI traffic, web analytics or agent traffic endpoints carries connect_url, the in-app page where the user connects or reconnects the source.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 }
 

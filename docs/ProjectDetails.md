@@ -28,6 +28,8 @@ Name | Type | Description | Notes
 **Stats** | Pointer to [**ProjectDetailsAllOfStats**](ProjectDetailsAllOfStats.md) |  | [optional] 
 **DataCoverage** | Pointer to [**ProjectDetailsAllOfDataCoverage**](ProjectDetailsAllOfDataCoverage.md) |  | [optional] 
 **SearchConsole** | Pointer to [**ProjectDetailsAllOfSearchConsole**](ProjectDetailsAllOfSearchConsole.md) |  | [optional] 
+**AiTraffic** | Pointer to [**ProjectDetailsAllOfAiTraffic**](ProjectDetailsAllOfAiTraffic.md) |  | [optional] 
+**AgentTraffic** | Pointer to [**ProjectDetailsAllOfAgentTraffic**](ProjectDetailsAllOfAgentTraffic.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -768,6 +770,56 @@ SetSearchConsole sets SearchConsole field to given value.
 `func (o *ProjectDetails) HasSearchConsole() bool`
 
 HasSearchConsole returns a boolean if a field has been set.
+
+### GetAiTraffic
+
+`func (o *ProjectDetails) GetAiTraffic() ProjectDetailsAllOfAiTraffic`
+
+GetAiTraffic returns the AiTraffic field if non-nil, zero value otherwise.
+
+### GetAiTrafficOk
+
+`func (o *ProjectDetails) GetAiTrafficOk() (*ProjectDetailsAllOfAiTraffic, bool)`
+
+GetAiTrafficOk returns a tuple with the AiTraffic field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAiTraffic
+
+`func (o *ProjectDetails) SetAiTraffic(v ProjectDetailsAllOfAiTraffic)`
+
+SetAiTraffic sets AiTraffic field to given value.
+
+### HasAiTraffic
+
+`func (o *ProjectDetails) HasAiTraffic() bool`
+
+HasAiTraffic returns a boolean if a field has been set.
+
+### GetAgentTraffic
+
+`func (o *ProjectDetails) GetAgentTraffic() ProjectDetailsAllOfAgentTraffic`
+
+GetAgentTraffic returns the AgentTraffic field if non-nil, zero value otherwise.
+
+### GetAgentTrafficOk
+
+`func (o *ProjectDetails) GetAgentTrafficOk() (*ProjectDetailsAllOfAgentTraffic, bool)`
+
+GetAgentTrafficOk returns a tuple with the AgentTraffic field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAgentTraffic
+
+`func (o *ProjectDetails) SetAgentTraffic(v ProjectDetailsAllOfAgentTraffic)`
+
+SetAgentTraffic sets AgentTraffic field to given value.
+
+### HasAgentTraffic
+
+`func (o *ProjectDetails) HasAgentTraffic() bool`
+
+HasAgentTraffic returns a boolean if a field has been set.
 
 ### GetRequestId
 

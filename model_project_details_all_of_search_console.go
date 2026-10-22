@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.66.0
+API version: 1.67.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,11 +18,13 @@ import (
 // checks if the ProjectDetailsAllOfSearchConsole type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ProjectDetailsAllOfSearchConsole{}
 
-// ProjectDetailsAllOfSearchConsole Google Search Console connection of the project. connected means the Search Console endpoints can answer; reconnect_required means Google refused the stored access and the property must be reconnected in Preferences > Project Settings > Data Connections.
+// ProjectDetailsAllOfSearchConsole Google Search Console connection of the project. connected means the Search Console endpoints can answer; reconnect_required means Google refused the stored access, so the endpoints return ERR_SEARCH_CONSOLE_ACCESS_REVOKED until the property is reconnected at connect_url; not_connected means the endpoints return ERR_SEARCH_CONSOLE_NOT_CONNECTED.
 type ProjectDetailsAllOfSearchConsole struct {
 	Status *string `json:"status,omitempty"`
 	// The connected property (e.g. sc-domain:example.com), null when not connected
 	Property NullableString `json:"property,omitempty"`
+	// The in-app page where the property is connected or reconnected (Preferences > Project Settings > Data Connections)
+	ConnectUrl *string `json:"connect_url,omitempty"`
 }
 
 // NewProjectDetailsAllOfSearchConsole instantiates a new ProjectDetailsAllOfSearchConsole object
@@ -116,6 +118,38 @@ func (o *ProjectDetailsAllOfSearchConsole) UnsetProperty() {
 	o.Property.Unset()
 }
 
+// GetConnectUrl returns the ConnectUrl field value if set, zero value otherwise.
+func (o *ProjectDetailsAllOfSearchConsole) GetConnectUrl() string {
+	if o == nil || IsNil(o.ConnectUrl) {
+		var ret string
+		return ret
+	}
+	return *o.ConnectUrl
+}
+
+// GetConnectUrlOk returns a tuple with the ConnectUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetailsAllOfSearchConsole) GetConnectUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.ConnectUrl) {
+		return nil, false
+	}
+	return o.ConnectUrl, true
+}
+
+// HasConnectUrl returns a boolean if a field has been set.
+func (o *ProjectDetailsAllOfSearchConsole) HasConnectUrl() bool {
+	if o != nil && !IsNil(o.ConnectUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetConnectUrl gets a reference to the given string and assigns it to the ConnectUrl field.
+func (o *ProjectDetailsAllOfSearchConsole) SetConnectUrl(v string) {
+	o.ConnectUrl = &v
+}
+
 func (o ProjectDetailsAllOfSearchConsole) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -131,6 +165,9 @@ func (o ProjectDetailsAllOfSearchConsole) ToMap() (map[string]interface{}, error
 	}
 	if o.Property.IsSet() {
 		toSerialize["property"] = o.Property.Get()
+	}
+	if !IsNil(o.ConnectUrl) {
+		toSerialize["connect_url"] = o.ConnectUrl
 	}
 	return toSerialize, nil
 }

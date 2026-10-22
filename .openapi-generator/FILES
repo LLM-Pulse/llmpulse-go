@@ -202,6 +202,8 @@ docs/ProjectCreateResponseLimits.md
 docs/ProjectCreateResponsePrompts.md
 docs/ProjectCreateResponseSameDomainProjectsInner.md
 docs/ProjectDetails.md
+docs/ProjectDetailsAllOfAgentTraffic.md
+docs/ProjectDetailsAllOfAiTraffic.md
 docs/ProjectDetailsAllOfDataCoverage.md
 docs/ProjectDetailsAllOfSearchConsole.md
 docs/ProjectDetailsAllOfStats.md
@@ -478,6 +480,8 @@ model_project_create_response_limits.go
 model_project_create_response_prompts.go
 model_project_create_response_same_domain_projects_inner.go
 model_project_details.go
+model_project_details_all_of_agent_traffic.go
+model_project_details_all_of_ai_traffic.go
 model_project_details_all_of_data_coverage.go
 model_project_details_all_of_search_console.go
 model_project_details_all_of_stats.go

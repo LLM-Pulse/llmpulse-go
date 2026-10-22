@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.66.0
+API version: 1.67.0
 Contact: info@llmpulse.ai
 */
 
@@ -51,6 +51,8 @@ type ProjectDetails struct {
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
 	SearchConsole *ProjectDetailsAllOfSearchConsole `json:"search_console,omitempty"`
+	AiTraffic *ProjectDetailsAllOfAiTraffic `json:"ai_traffic,omitempty"`
+	AgentTraffic *ProjectDetailsAllOfAgentTraffic `json:"agent_traffic,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
@@ -950,6 +952,70 @@ func (o *ProjectDetails) SetSearchConsole(v ProjectDetailsAllOfSearchConsole) {
 	o.SearchConsole = &v
 }
 
+// GetAiTraffic returns the AiTraffic field value if set, zero value otherwise.
+func (o *ProjectDetails) GetAiTraffic() ProjectDetailsAllOfAiTraffic {
+	if o == nil || IsNil(o.AiTraffic) {
+		var ret ProjectDetailsAllOfAiTraffic
+		return ret
+	}
+	return *o.AiTraffic
+}
+
+// GetAiTrafficOk returns a tuple with the AiTraffic field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetAiTrafficOk() (*ProjectDetailsAllOfAiTraffic, bool) {
+	if o == nil || IsNil(o.AiTraffic) {
+		return nil, false
+	}
+	return o.AiTraffic, true
+}
+
+// HasAiTraffic returns a boolean if a field has been set.
+func (o *ProjectDetails) HasAiTraffic() bool {
+	if o != nil && !IsNil(o.AiTraffic) {
+		return true
+	}
+
+	return false
+}
+
+// SetAiTraffic gets a reference to the given ProjectDetailsAllOfAiTraffic and assigns it to the AiTraffic field.
+func (o *ProjectDetails) SetAiTraffic(v ProjectDetailsAllOfAiTraffic) {
+	o.AiTraffic = &v
+}
+
+// GetAgentTraffic returns the AgentTraffic field value if set, zero value otherwise.
+func (o *ProjectDetails) GetAgentTraffic() ProjectDetailsAllOfAgentTraffic {
+	if o == nil || IsNil(o.AgentTraffic) {
+		var ret ProjectDetailsAllOfAgentTraffic
+		return ret
+	}
+	return *o.AgentTraffic
+}
+
+// GetAgentTrafficOk returns a tuple with the AgentTraffic field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetAgentTrafficOk() (*ProjectDetailsAllOfAgentTraffic, bool) {
+	if o == nil || IsNil(o.AgentTraffic) {
+		return nil, false
+	}
+	return o.AgentTraffic, true
+}
+
+// HasAgentTraffic returns a boolean if a field has been set.
+func (o *ProjectDetails) HasAgentTraffic() bool {
+	if o != nil && !IsNil(o.AgentTraffic) {
+		return true
+	}
+
+	return false
+}
+
+// SetAgentTraffic gets a reference to the given ProjectDetailsAllOfAgentTraffic and assigns it to the AgentTraffic field.
+func (o *ProjectDetails) SetAgentTraffic(v ProjectDetailsAllOfAgentTraffic) {
+	o.AgentTraffic = &v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *ProjectDetails) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -1063,6 +1129,12 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SearchConsole) {
 		toSerialize["search_console"] = o.SearchConsole
+	}
+	if !IsNil(o.AiTraffic) {
+		toSerialize["ai_traffic"] = o.AiTraffic
+	}
+	if !IsNil(o.AgentTraffic) {
+		toSerialize["agent_traffic"] = o.AgentTraffic
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId

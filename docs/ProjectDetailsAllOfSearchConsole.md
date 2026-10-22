@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | Pointer to **string** |  | [optional] 
 **Property** | Pointer to **NullableString** | The connected property (e.g. sc-domain:example.com), null when not connected | [optional] 
+**ConnectUrl** | Pointer to **string** | The in-app page where the property is connected or reconnected (Preferences &gt; Project Settings &gt; Data Connections) | [optional] 
 
 ## Methods
 
@@ -86,6 +87,31 @@ HasProperty returns a boolean if a field has been set.
 `func (o *ProjectDetailsAllOfSearchConsole) UnsetProperty()`
 
 UnsetProperty ensures that no value is present for Property, not even an explicit nil
+### GetConnectUrl
+
+`func (o *ProjectDetailsAllOfSearchConsole) GetConnectUrl() string`
+
+GetConnectUrl returns the ConnectUrl field if non-nil, zero value otherwise.
+
+### GetConnectUrlOk
+
+`func (o *ProjectDetailsAllOfSearchConsole) GetConnectUrlOk() (*string, bool)`
+
+GetConnectUrlOk returns a tuple with the ConnectUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetConnectUrl
+
+`func (o *ProjectDetailsAllOfSearchConsole) SetConnectUrl(v string)`
+
+SetConnectUrl sets ConnectUrl field to given value.
+
+### HasConnectUrl
+
+`func (o *ProjectDetailsAllOfSearchConsole) HasConnectUrl() bool`
+
+HasConnectUrl returns a boolean if a field has been set.
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.66.0
+API version: 1.67.0
 Contact: info@llmpulse.ai
 */
 
@@ -420,7 +420,7 @@ func (r ApiGetProjectDetailsRequest) Execute() (*ProjectDetails, *http.Response,
 /*
 GetProjectDetails Project details
 
-Detailed info for one project: matching_names, additional_owned_domains, industry, business model, primary products, target audience, brand voice, locale, app store IDs, prompt_limit (the project's own prompt cap, null without one), stats (incl. prompts_by_brand_kind counts and prompts_available, how many prompts can still be added: the lower of the project's free slots and the account's remaining prompts, null when neither caps it) and data_coverage (models, countries and languages with data).
+Detailed info for one project: matching_names, additional_owned_domains, industry, business model, primary products, target audience, brand voice, locale, app store IDs, prompt_limit (the project's own prompt cap, null without one), stats (incl. prompts_by_brand_kind counts and prompts_available, how many prompts can still be added: the lower of the project's free slots and the account's remaining prompts, null when neither caps it), data_coverage (models, countries and languages with data) and the status of each data connection (search_console, ai_traffic, agent_traffic) with the connect_url where the user connects it.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param id
