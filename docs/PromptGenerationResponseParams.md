@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **SourceLanguageCode** | Pointer to **string** |  | [optional] 
 **MinWords** | Pointer to **int32** |  | [optional] 
 **AllCountries** | Pointer to **bool** |  | [optional] 
+**Property** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -309,6 +310,31 @@ SetAllCountries sets AllCountries field to given value.
 `func (o *PromptGenerationResponseParams) HasAllCountries() bool`
 
 HasAllCountries returns a boolean if a field has been set.
+
+### GetProperty
+
+`func (o *PromptGenerationResponseParams) GetProperty() string`
+
+GetProperty returns the Property field if non-nil, zero value otherwise.
+
+### GetPropertyOk
+
+`func (o *PromptGenerationResponseParams) GetPropertyOk() (*string, bool)`
+
+GetPropertyOk returns a tuple with the Property field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperty
+
+`func (o *PromptGenerationResponseParams) SetProperty(v string)`
+
+SetProperty sets Property field to given value.
+
+### HasProperty
+
+`func (o *PromptGenerationResponseParams) HasProperty() bool`
+
+HasProperty returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

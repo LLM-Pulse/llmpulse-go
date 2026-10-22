@@ -5,8 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | Pointer to **string** |  | [optional] 
-**Property** | Pointer to **NullableString** | The connected property (e.g. sc-domain:example.com), null when not connected | [optional] 
+**Property** | Pointer to **NullableString** | The primary property (e.g. sc-domain:example.com), null when not connected | [optional] 
 **ConnectUrl** | Pointer to **string** | The in-app page where the property is connected or reconnected (Preferences &gt; Project Settings &gt; Data Connections) | [optional] 
+**PropertiesCount** | Pointer to **int32** | Connected properties Google still accepts (reconnect_required ones excluded); GET /search_console/properties lists every property with its status | [optional] 
 
 ## Methods
 
@@ -111,6 +112,31 @@ SetConnectUrl sets ConnectUrl field to given value.
 `func (o *ProjectDetailsAllOfSearchConsole) HasConnectUrl() bool`
 
 HasConnectUrl returns a boolean if a field has been set.
+
+### GetPropertiesCount
+
+`func (o *ProjectDetailsAllOfSearchConsole) GetPropertiesCount() int32`
+
+GetPropertiesCount returns the PropertiesCount field if non-nil, zero value otherwise.
+
+### GetPropertiesCountOk
+
+`func (o *ProjectDetailsAllOfSearchConsole) GetPropertiesCountOk() (*int32, bool)`
+
+GetPropertiesCountOk returns a tuple with the PropertiesCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPropertiesCount
+
+`func (o *ProjectDetailsAllOfSearchConsole) SetPropertiesCount(v int32)`
+
+SetPropertiesCount sets PropertiesCount field to given value.
+
+### HasPropertiesCount
+
+`func (o *ProjectDetailsAllOfSearchConsole) HasPropertiesCount() bool`
+
+HasPropertiesCount returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

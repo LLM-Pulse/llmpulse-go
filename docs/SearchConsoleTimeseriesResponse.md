@@ -8,10 +8,13 @@ Name | Type | Description | Notes
 **Property** | Pointer to [**SearchConsoleProperty**](SearchConsoleProperty.md) |  | [optional] 
 **From** | Pointer to **string** |  | [optional] 
 **To** | Pointer to **string** |  | [optional] 
-**DataThrough** | Pointer to **NullableString** | Latest date Google has published for the property (it lags 2-3 days). Later days are missing, not zero. | [optional] 
+**DataThrough** | Pointer to **NullableString** | Latest date Google has published for the property, or for every combined property (it lags 2-3 days). Later days are missing, not zero. | [optional] 
 **Granularity** | Pointer to **string** |  | [optional] 
 **Data** | Pointer to [**[]SearchConsoleTimeseriesResponseDataInner**](SearchConsoleTimeseriesResponseDataInner.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
+**Properties** | Pointer to [**[]SearchConsoleProperty**](SearchConsoleProperty.md) | With a list or all in the property parameter, the properties whose data the response holds (instead of property) | [optional] 
+**ExcludedProperties** | Pointer to [**[]SearchConsoleExcludedProperty**](SearchConsoleExcludedProperty.md) | With a list or all, selected properties left out because another selected property already counts them | [optional] 
+**PropertyErrors** | Pointer to [**[]SearchConsolePropertyError**](SearchConsolePropertyError.md) | With a list or all, selected properties Google refused, left out of the figures | [optional] 
 
 ## Methods
 
@@ -241,6 +244,81 @@ SetRequestId sets RequestId field to given value.
 `func (o *SearchConsoleTimeseriesResponse) HasRequestId() bool`
 
 HasRequestId returns a boolean if a field has been set.
+
+### GetProperties
+
+`func (o *SearchConsoleTimeseriesResponse) GetProperties() []SearchConsoleProperty`
+
+GetProperties returns the Properties field if non-nil, zero value otherwise.
+
+### GetPropertiesOk
+
+`func (o *SearchConsoleTimeseriesResponse) GetPropertiesOk() (*[]SearchConsoleProperty, bool)`
+
+GetPropertiesOk returns a tuple with the Properties field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperties
+
+`func (o *SearchConsoleTimeseriesResponse) SetProperties(v []SearchConsoleProperty)`
+
+SetProperties sets Properties field to given value.
+
+### HasProperties
+
+`func (o *SearchConsoleTimeseriesResponse) HasProperties() bool`
+
+HasProperties returns a boolean if a field has been set.
+
+### GetExcludedProperties
+
+`func (o *SearchConsoleTimeseriesResponse) GetExcludedProperties() []SearchConsoleExcludedProperty`
+
+GetExcludedProperties returns the ExcludedProperties field if non-nil, zero value otherwise.
+
+### GetExcludedPropertiesOk
+
+`func (o *SearchConsoleTimeseriesResponse) GetExcludedPropertiesOk() (*[]SearchConsoleExcludedProperty, bool)`
+
+GetExcludedPropertiesOk returns a tuple with the ExcludedProperties field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludedProperties
+
+`func (o *SearchConsoleTimeseriesResponse) SetExcludedProperties(v []SearchConsoleExcludedProperty)`
+
+SetExcludedProperties sets ExcludedProperties field to given value.
+
+### HasExcludedProperties
+
+`func (o *SearchConsoleTimeseriesResponse) HasExcludedProperties() bool`
+
+HasExcludedProperties returns a boolean if a field has been set.
+
+### GetPropertyErrors
+
+`func (o *SearchConsoleTimeseriesResponse) GetPropertyErrors() []SearchConsolePropertyError`
+
+GetPropertyErrors returns the PropertyErrors field if non-nil, zero value otherwise.
+
+### GetPropertyErrorsOk
+
+`func (o *SearchConsoleTimeseriesResponse) GetPropertyErrorsOk() (*[]SearchConsolePropertyError, bool)`
+
+GetPropertyErrorsOk returns a tuple with the PropertyErrors field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPropertyErrors
+
+`func (o *SearchConsoleTimeseriesResponse) SetPropertyErrors(v []SearchConsolePropertyError)`
+
+SetPropertyErrors sets PropertyErrors field to given value.
+
+### HasPropertyErrors
+
+`func (o *SearchConsoleTimeseriesResponse) HasPropertyErrors() bool`
+
+HasPropertyErrors returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

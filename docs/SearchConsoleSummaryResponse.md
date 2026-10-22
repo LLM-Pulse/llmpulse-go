@@ -8,12 +8,15 @@ Name | Type | Description | Notes
 **Property** | Pointer to [**SearchConsoleProperty**](SearchConsoleProperty.md) |  | [optional] 
 **From** | Pointer to **string** |  | [optional] 
 **To** | Pointer to **string** |  | [optional] 
-**DataThrough** | Pointer to **NullableString** | Latest date Google has published for the property (it lags 2-3 days). Later days are missing, not zero. | [optional] 
+**DataThrough** | Pointer to **NullableString** | Latest date Google has published for the property, or for every combined property (it lags 2-3 days). Later days are missing, not zero. | [optional] 
 **Totals** | Pointer to [**SearchConsoleMetrics**](SearchConsoleMetrics.md) |  | [optional] 
 **Dimension** | Pointer to **string** | Present when a breakdown was requested | [optional] 
 **Breakdown** | Pointer to [**[]SearchConsoleSummaryResponseBreakdownInner**](SearchConsoleSummaryResponseBreakdownInner.md) | Present when a breakdown was requested, sorted by impressions descending | [optional] 
 **BreakdownTruncated** | Pointer to **bool** | Present (true) when limit or Google&#39;s 25,000-row maximum left breakdown rows out, so they add up to less than totals | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
+**Properties** | Pointer to [**[]SearchConsoleProperty**](SearchConsoleProperty.md) | With a list or all in the property parameter, the properties whose data the response holds (instead of property) | [optional] 
+**ExcludedProperties** | Pointer to [**[]SearchConsoleExcludedProperty**](SearchConsoleExcludedProperty.md) | With a list or all, selected properties left out because another selected property already counts them | [optional] 
+**PropertyErrors** | Pointer to [**[]SearchConsolePropertyError**](SearchConsolePropertyError.md) | With a list or all, selected properties Google refused, left out of the figures | [optional] 
 
 ## Methods
 
@@ -293,6 +296,81 @@ SetRequestId sets RequestId field to given value.
 `func (o *SearchConsoleSummaryResponse) HasRequestId() bool`
 
 HasRequestId returns a boolean if a field has been set.
+
+### GetProperties
+
+`func (o *SearchConsoleSummaryResponse) GetProperties() []SearchConsoleProperty`
+
+GetProperties returns the Properties field if non-nil, zero value otherwise.
+
+### GetPropertiesOk
+
+`func (o *SearchConsoleSummaryResponse) GetPropertiesOk() (*[]SearchConsoleProperty, bool)`
+
+GetPropertiesOk returns a tuple with the Properties field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperties
+
+`func (o *SearchConsoleSummaryResponse) SetProperties(v []SearchConsoleProperty)`
+
+SetProperties sets Properties field to given value.
+
+### HasProperties
+
+`func (o *SearchConsoleSummaryResponse) HasProperties() bool`
+
+HasProperties returns a boolean if a field has been set.
+
+### GetExcludedProperties
+
+`func (o *SearchConsoleSummaryResponse) GetExcludedProperties() []SearchConsoleExcludedProperty`
+
+GetExcludedProperties returns the ExcludedProperties field if non-nil, zero value otherwise.
+
+### GetExcludedPropertiesOk
+
+`func (o *SearchConsoleSummaryResponse) GetExcludedPropertiesOk() (*[]SearchConsoleExcludedProperty, bool)`
+
+GetExcludedPropertiesOk returns a tuple with the ExcludedProperties field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludedProperties
+
+`func (o *SearchConsoleSummaryResponse) SetExcludedProperties(v []SearchConsoleExcludedProperty)`
+
+SetExcludedProperties sets ExcludedProperties field to given value.
+
+### HasExcludedProperties
+
+`func (o *SearchConsoleSummaryResponse) HasExcludedProperties() bool`
+
+HasExcludedProperties returns a boolean if a field has been set.
+
+### GetPropertyErrors
+
+`func (o *SearchConsoleSummaryResponse) GetPropertyErrors() []SearchConsolePropertyError`
+
+GetPropertyErrors returns the PropertyErrors field if non-nil, zero value otherwise.
+
+### GetPropertyErrorsOk
+
+`func (o *SearchConsoleSummaryResponse) GetPropertyErrorsOk() (*[]SearchConsolePropertyError, bool)`
+
+GetPropertyErrorsOk returns a tuple with the PropertyErrors field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPropertyErrors
+
+`func (o *SearchConsoleSummaryResponse) SetPropertyErrors(v []SearchConsolePropertyError)`
+
+SetPropertyErrors sets PropertyErrors field to given value.
+
+### HasPropertyErrors
+
+`func (o *SearchConsoleSummaryResponse) HasPropertyErrors() bool`
+
+HasPropertyErrors returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

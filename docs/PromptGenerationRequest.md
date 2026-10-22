@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **SourceLanguageCode** | Pointer to **string** | translate: language of the prompts to translate | [optional] 
 **MinWords** | Pointer to **int32** | search_console: skip queries shorter than this many words | [optional] [default to 0]
 **AllCountries** | Pointer to **bool** | search_console: include queries from every country instead of country_code only | [optional] [default to false]
+**Property** | Pointer to **string** | search_console: the property id to read queries from (GET /search_console/properties lists them); the primary property when omitted | [optional] 
 
 ## Methods
 
@@ -351,6 +352,31 @@ SetAllCountries sets AllCountries field to given value.
 `func (o *PromptGenerationRequest) HasAllCountries() bool`
 
 HasAllCountries returns a boolean if a field has been set.
+
+### GetProperty
+
+`func (o *PromptGenerationRequest) GetProperty() string`
+
+GetProperty returns the Property field if non-nil, zero value otherwise.
+
+### GetPropertyOk
+
+`func (o *PromptGenerationRequest) GetPropertyOk() (*string, bool)`
+
+GetPropertyOk returns a tuple with the Property field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperty
+
+`func (o *PromptGenerationRequest) SetProperty(v string)`
+
+SetProperty sets Property field to given value.
+
+### HasProperty
+
+`func (o *PromptGenerationRequest) HasProperty() bool`
+
+HasProperty returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

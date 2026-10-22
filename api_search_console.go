@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.67.0
+API version: 1.68.0
 Contact: info@llmpulse.ai
 */
 
@@ -39,6 +39,7 @@ type ApiGetSearchConsolePagesRequest struct {
 	filters *string
 	dataState *string
 	aggregationType *string
+	property *string
 }
 
 // Project ID
@@ -113,6 +114,12 @@ func (r ApiGetSearchConsolePagesRequest) DataState(dataState string) ApiGetSearc
 // How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
 func (r ApiGetSearchConsolePagesRequest) AggregationType(aggregationType string) ApiGetSearchConsolePagesRequest {
 	r.aggregationType = &aggregationType
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsolePagesRequest) Property(property string) ApiGetSearchConsolePagesRequest {
+	r.property = &property
 	return r
 }
 
@@ -223,6 +230,9 @@ func (a *SearchConsoleAPIService) GetSearchConsolePagesExecute(r ApiGetSearchCon
 		var defaultValue string = "auto"
 		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
 		r.aggregationType = &defaultValue
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -348,6 +358,7 @@ type ApiGetSearchConsoleQueriesRequest struct {
 	filters *string
 	dataState *string
 	aggregationType *string
+	property *string
 }
 
 // Project ID
@@ -422,6 +433,12 @@ func (r ApiGetSearchConsoleQueriesRequest) DataState(dataState string) ApiGetSea
 // How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
 func (r ApiGetSearchConsoleQueriesRequest) AggregationType(aggregationType string) ApiGetSearchConsoleQueriesRequest {
 	r.aggregationType = &aggregationType
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleQueriesRequest) Property(property string) ApiGetSearchConsoleQueriesRequest {
+	r.property = &property
 	return r
 }
 
@@ -532,6 +549,9 @@ func (a *SearchConsoleAPIService) GetSearchConsoleQueriesExecute(r ApiGetSearchC
 		var defaultValue string = "auto"
 		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
 		r.aggregationType = &defaultValue
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -658,6 +678,7 @@ type ApiGetSearchConsoleRowsRequest struct {
 	filters *string
 	dataState *string
 	aggregationType *string
+	property *string
 }
 
 // Project ID
@@ -666,7 +687,7 @@ func (r ApiGetSearchConsoleRowsRequest) ProjectId(projectId int32) ApiGetSearchC
 	return r
 }
 
-// Comma-separated dimensions to group by, 1 to 3 of date, country, device, page, query, searchAppearance. Each becomes a field of every row; country and device values are lowercase.
+// Comma-separated dimensions to group by, 1 to 3 of date, country, device, page, query, searchAppearance, property. Each becomes a field of every row; country and device values are lowercase. property is the Search Console property the row comes from (see the property parameter).
 func (r ApiGetSearchConsoleRowsRequest) Dimensions(dimensions string) ApiGetSearchConsoleRowsRequest {
 	r.dimensions = &dimensions
 	return r
@@ -741,6 +762,12 @@ func (r ApiGetSearchConsoleRowsRequest) AggregationType(aggregationType string) 
 	return r
 }
 
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleRowsRequest) Property(property string) ApiGetSearchConsoleRowsRequest {
+	r.property = &property
+	return r
+}
+
 func (r ApiGetSearchConsoleRowsRequest) Execute() (*SearchConsoleRowsResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsoleRowsExecute(r)
 }
@@ -748,7 +775,7 @@ func (r ApiGetSearchConsoleRowsRequest) Execute() (*SearchConsoleRowsResponse, *
 /*
 GetSearchConsoleRows Search Console rows by several dimensions (Growth+)
 
-Google Search Console rows grouped by 1 to 3 dimensions (date, country, device, page, query, searchAppearance) over a date range, each row carrying its dimension values as fields plus impressions, clicks, ctr (0..1) and position, ranked by impressions, clicks, ctr or position, paginated. Google ranks rows by clicks and returns at most 25,000 per request (truncated: true when reached); start_row moves that window. Query rows exclude anonymized queries, so rows add up to less than the summary totals. Requires a connected Search Console property (Growth+) and live reads: stored reads return ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access and ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. A combination Google refuses comes back as ERR_INVALID_PARAM with its reason.
+Google Search Console rows grouped by 1 to 3 dimensions (date, country, device, page, query, searchAppearance, property) over a date range, each row carrying its dimension values as fields plus impressions, clicks, ctr (0..1) and position, ranked by impressions, clicks, ctr or position, paginated. Google ranks rows by clicks and returns at most 25,000 per request (truncated: true when reached); start_row moves that window. Query rows exclude anonymized queries, so rows add up to less than the summary totals. Requires a connected Search Console property (Growth+) and live reads: stored reads return ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access and ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying. A combination Google refuses comes back as ERR_INVALID_PARAM with its reason.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleRowsRequest
@@ -852,6 +879,9 @@ func (a *SearchConsoleAPIService) GetSearchConsoleRowsExecute(r ApiGetSearchCons
 		var defaultValue string = "auto"
 		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
 		r.aggregationType = &defaultValue
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -974,6 +1004,7 @@ type ApiGetSearchConsoleSummaryRequest struct {
 	filters *string
 	dataState *string
 	aggregationType *string
+	property *string
 }
 
 // Project ID
@@ -1000,7 +1031,7 @@ func (r ApiGetSearchConsoleSummaryRequest) To(to string) ApiGetSearchConsoleSumm
 	return r
 }
 
-// Optional breakdown aggregated over the range. country and device are lowercased; page and query keep the casing Google returns, because a page URL is case sensitive.
+// Optional breakdown aggregated over the range. country and device are lowercased; page and query keep the casing Google returns, because a page URL is case sensitive. property gives one row per property read (see the property parameter).
 func (r ApiGetSearchConsoleSummaryRequest) Dimension(dimension string) ApiGetSearchConsoleSummaryRequest {
 	r.dimension = &dimension
 	return r
@@ -1036,6 +1067,12 @@ func (r ApiGetSearchConsoleSummaryRequest) AggregationType(aggregationType strin
 	return r
 }
 
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleSummaryRequest) Property(property string) ApiGetSearchConsoleSummaryRequest {
+	r.property = &property
+	return r
+}
+
 func (r ApiGetSearchConsoleSummaryRequest) Execute() (*SearchConsoleSummaryResponse, *http.Response, error) {
 	return r.ApiService.GetSearchConsoleSummaryExecute(r)
 }
@@ -1043,7 +1080,7 @@ func (r ApiGetSearchConsoleSummaryRequest) Execute() (*SearchConsoleSummaryRespo
 /*
 GetSearchConsoleSummary Search Console summary (Growth+)
 
-Google Search Console headline totals (impressions, clicks, ctr as a 0..1 fraction, average position) for the project over a date range. Pass dimension=country, device, page, query or searchAppearance to also receive the breakdown aggregated over the range, capped by limit. With filters and no dimension, totals are the complete figure Google reports for that filter. Breakdown rows are capped by limit and by Google's 25,000-row maximum; breakdown_truncated: true means rows were left out. Query rows exclude anonymized queries, and page and searchAppearance rows are counted per page rather than per property, so breakdown rows can differ from the totals. Requires the project to have a connected Search Console property and the Growth plan or above; otherwise returns ERR_SEARCH_CONSOLE_NOT_CONNECTED or ERR_PLAN_REQUIRED. X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+Google Search Console headline totals (impressions, clicks, ctr as a 0..1 fraction, average position) for the project over a date range. Pass dimension=country, device, page, query or searchAppearance to also receive the breakdown aggregated over the range, capped by limit, or dimension=property for one row per property read (with a property list or property=all). With filters and no dimension, totals are the complete figure Google reports for that filter. Breakdown rows are capped by limit and by Google's 25,000-row maximum; breakdown_truncated: true means rows were left out. Query rows exclude anonymized queries, and page and searchAppearance rows are counted per page rather than per property, so breakdown rows can differ from the totals. Requires the project to have a connected Search Console property and the Growth plan or above; otherwise returns ERR_SEARCH_CONSOLE_NOT_CONNECTED or ERR_PLAN_REQUIRED. X-Search-Console-Backend identifies stored or live reads. Stored reads use synced data without contacting Google. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSearchConsoleSummaryRequest
@@ -1118,6 +1155,9 @@ func (a *SearchConsoleAPIService) GetSearchConsoleSummaryExecute(r ApiGetSearchC
 		var defaultValue string = "auto"
 		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
 		r.aggregationType = &defaultValue
+	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1240,6 +1280,7 @@ type ApiGetSearchConsoleTimeseriesRequest struct {
 	filters *string
 	dataState *string
 	aggregationType *string
+	property *string
 }
 
 // Project ID
@@ -1298,6 +1339,12 @@ func (r ApiGetSearchConsoleTimeseriesRequest) DataState(dataState string) ApiGet
 // How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
 func (r ApiGetSearchConsoleTimeseriesRequest) AggregationType(aggregationType string) ApiGetSearchConsoleTimeseriesRequest {
 	r.aggregationType = &aggregationType
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleTimeseriesRequest) Property(property string) ApiGetSearchConsoleTimeseriesRequest {
+	r.property = &property
 	return r
 }
 
@@ -1384,6 +1431,9 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
 		r.aggregationType = &defaultValue
 	}
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1468,6 +1518,158 @@ func (a *SearchConsoleAPIService) GetSearchConsoleTimeseriesExecute(r ApiGetSear
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListSearchConsolePropertiesRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	output *string
+}
+
+// Project ID
+func (r ApiListSearchConsolePropertiesRequest) ProjectId(projectId int32) ApiListSearchConsolePropertiesRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiListSearchConsolePropertiesRequest) Output(output string) ApiListSearchConsolePropertiesRequest {
+	r.output = &output
+	return r
+}
+
+func (r ApiListSearchConsolePropertiesRequest) Execute() (*SearchConsolePropertiesResponse, *http.Response, error) {
+	return r.ApiService.ListSearchConsolePropertiesExecute(r)
+}
+
+/*
+ListSearchConsoleProperties List Search Console properties (Growth+)
+
+The Google Search Console properties connected to the project, up to max_properties, from one or more Google accounts, primary first. Each id is a value the property parameter of the other /search_console endpoints accepts: omit it for the primary property, pass one id, or a comma-separated list or all to combine several. type is domain (sc-domain:example.com, which counts every subdomain and protocol) or url_prefix. status reconnect_required means Google refused the stored access; reconnect the property in Preferences > Project Settings > Data Connections. An empty data list means the project has no Search Console connection. Requires the Growth plan or above.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListSearchConsolePropertiesRequest
+*/
+func (a *SearchConsoleAPIService) ListSearchConsoleProperties(ctx context.Context) ApiListSearchConsolePropertiesRequest {
+	return ApiListSearchConsolePropertiesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsolePropertiesResponse
+func (a *SearchConsoleAPIService) ListSearchConsolePropertiesExecute(r ApiListSearchConsolePropertiesRequest) (*SearchConsolePropertiesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsolePropertiesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.ListSearchConsoleProperties")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/properties"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

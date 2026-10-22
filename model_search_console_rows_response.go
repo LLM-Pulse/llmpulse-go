@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.67.0
+API version: 1.68.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,7 +24,7 @@ type SearchConsoleRowsResponse struct {
 	Property *SearchConsoleProperty `json:"property,omitempty"`
 	From *string `json:"from,omitempty"`
 	To *string `json:"to,omitempty"`
-	// Latest date Google has published for the property (it lags 2-3 days). Later days are missing, not zero.
+	// Latest date Google has published for the property, or for every combined property (it lags 2-3 days). Later days are missing, not zero.
 	DataThrough NullableString `json:"data_through,omitempty"`
 	Page *int32 `json:"page,omitempty"`
 	PerPage *int32 `json:"per_page,omitempty"`
@@ -39,6 +39,12 @@ type SearchConsoleRowsResponse struct {
 	// One row per combination; only the requested dimensions are present
 	Data []SearchConsoleRowsResponseDataInner `json:"data,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
+	// With a list or all in the property parameter, the properties whose data the response holds (instead of property)
+	Properties []SearchConsoleProperty `json:"properties,omitempty"`
+	// With a list or all, selected properties left out because another selected property already counts them
+	ExcludedProperties []SearchConsoleExcludedProperty `json:"excluded_properties,omitempty"`
+	// With a list or all, selected properties Google refused, left out of the figures
+	PropertyErrors []SearchConsolePropertyError `json:"property_errors,omitempty"`
 }
 
 // NewSearchConsoleRowsResponse instantiates a new SearchConsoleRowsResponse object
@@ -516,6 +522,102 @@ func (o *SearchConsoleRowsResponse) SetRequestId(v string) {
 	o.RequestId = &v
 }
 
+// GetProperties returns the Properties field value if set, zero value otherwise.
+func (o *SearchConsoleRowsResponse) GetProperties() []SearchConsoleProperty {
+	if o == nil || IsNil(o.Properties) {
+		var ret []SearchConsoleProperty
+		return ret
+	}
+	return o.Properties
+}
+
+// GetPropertiesOk returns a tuple with the Properties field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SearchConsoleRowsResponse) GetPropertiesOk() ([]SearchConsoleProperty, bool) {
+	if o == nil || IsNil(o.Properties) {
+		return nil, false
+	}
+	return o.Properties, true
+}
+
+// HasProperties returns a boolean if a field has been set.
+func (o *SearchConsoleRowsResponse) HasProperties() bool {
+	if o != nil && !IsNil(o.Properties) {
+		return true
+	}
+
+	return false
+}
+
+// SetProperties gets a reference to the given []SearchConsoleProperty and assigns it to the Properties field.
+func (o *SearchConsoleRowsResponse) SetProperties(v []SearchConsoleProperty) {
+	o.Properties = v
+}
+
+// GetExcludedProperties returns the ExcludedProperties field value if set, zero value otherwise.
+func (o *SearchConsoleRowsResponse) GetExcludedProperties() []SearchConsoleExcludedProperty {
+	if o == nil || IsNil(o.ExcludedProperties) {
+		var ret []SearchConsoleExcludedProperty
+		return ret
+	}
+	return o.ExcludedProperties
+}
+
+// GetExcludedPropertiesOk returns a tuple with the ExcludedProperties field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SearchConsoleRowsResponse) GetExcludedPropertiesOk() ([]SearchConsoleExcludedProperty, bool) {
+	if o == nil || IsNil(o.ExcludedProperties) {
+		return nil, false
+	}
+	return o.ExcludedProperties, true
+}
+
+// HasExcludedProperties returns a boolean if a field has been set.
+func (o *SearchConsoleRowsResponse) HasExcludedProperties() bool {
+	if o != nil && !IsNil(o.ExcludedProperties) {
+		return true
+	}
+
+	return false
+}
+
+// SetExcludedProperties gets a reference to the given []SearchConsoleExcludedProperty and assigns it to the ExcludedProperties field.
+func (o *SearchConsoleRowsResponse) SetExcludedProperties(v []SearchConsoleExcludedProperty) {
+	o.ExcludedProperties = v
+}
+
+// GetPropertyErrors returns the PropertyErrors field value if set, zero value otherwise.
+func (o *SearchConsoleRowsResponse) GetPropertyErrors() []SearchConsolePropertyError {
+	if o == nil || IsNil(o.PropertyErrors) {
+		var ret []SearchConsolePropertyError
+		return ret
+	}
+	return o.PropertyErrors
+}
+
+// GetPropertyErrorsOk returns a tuple with the PropertyErrors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SearchConsoleRowsResponse) GetPropertyErrorsOk() ([]SearchConsolePropertyError, bool) {
+	if o == nil || IsNil(o.PropertyErrors) {
+		return nil, false
+	}
+	return o.PropertyErrors, true
+}
+
+// HasPropertyErrors returns a boolean if a field has been set.
+func (o *SearchConsoleRowsResponse) HasPropertyErrors() bool {
+	if o != nil && !IsNil(o.PropertyErrors) {
+		return true
+	}
+
+	return false
+}
+
+// SetPropertyErrors gets a reference to the given []SearchConsolePropertyError and assigns it to the PropertyErrors field.
+func (o *SearchConsoleRowsResponse) SetPropertyErrors(v []SearchConsolePropertyError) {
+	o.PropertyErrors = v
+}
+
 func (o SearchConsoleRowsResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -567,6 +669,15 @@ func (o SearchConsoleRowsResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
+	}
+	if !IsNil(o.Properties) {
+		toSerialize["properties"] = o.Properties
+	}
+	if !IsNil(o.ExcludedProperties) {
+		toSerialize["excluded_properties"] = o.ExcludedProperties
+	}
+	if !IsNil(o.PropertyErrors) {
+		toSerialize["property_errors"] = o.PropertyErrors
 	}
 	return toSerialize, nil
 }

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.67.0
+API version: 1.68.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,13 +18,15 @@ import (
 // checks if the ProjectDetailsAllOfSearchConsole type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ProjectDetailsAllOfSearchConsole{}
 
-// ProjectDetailsAllOfSearchConsole Google Search Console connection of the project. connected means the Search Console endpoints can answer; reconnect_required means Google refused the stored access, so the endpoints return ERR_SEARCH_CONSOLE_ACCESS_REVOKED until the property is reconnected at connect_url; not_connected means the endpoints return ERR_SEARCH_CONSOLE_NOT_CONNECTED.
+// ProjectDetailsAllOfSearchConsole Google Search Console connection of the project, judged by its primary property. connected means the Search Console endpoints can answer; reconnect_required means Google refused the primary property's stored access, so reads without property return ERR_SEARCH_CONSOLE_ACCESS_REVOKED until it is reconnected at connect_url, while a property GET /search_console/properties lists as connected, or property=all, still answers; not_connected means the endpoints return ERR_SEARCH_CONSOLE_NOT_CONNECTED.
 type ProjectDetailsAllOfSearchConsole struct {
 	Status *string `json:"status,omitempty"`
-	// The connected property (e.g. sc-domain:example.com), null when not connected
+	// The primary property (e.g. sc-domain:example.com), null when not connected
 	Property NullableString `json:"property,omitempty"`
 	// The in-app page where the property is connected or reconnected (Preferences > Project Settings > Data Connections)
 	ConnectUrl *string `json:"connect_url,omitempty"`
+	// Connected properties Google still accepts (reconnect_required ones excluded); GET /search_console/properties lists every property with its status
+	PropertiesCount *int32 `json:"properties_count,omitempty"`
 }
 
 // NewProjectDetailsAllOfSearchConsole instantiates a new ProjectDetailsAllOfSearchConsole object
@@ -150,6 +152,38 @@ func (o *ProjectDetailsAllOfSearchConsole) SetConnectUrl(v string) {
 	o.ConnectUrl = &v
 }
 
+// GetPropertiesCount returns the PropertiesCount field value if set, zero value otherwise.
+func (o *ProjectDetailsAllOfSearchConsole) GetPropertiesCount() int32 {
+	if o == nil || IsNil(o.PropertiesCount) {
+		var ret int32
+		return ret
+	}
+	return *o.PropertiesCount
+}
+
+// GetPropertiesCountOk returns a tuple with the PropertiesCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetailsAllOfSearchConsole) GetPropertiesCountOk() (*int32, bool) {
+	if o == nil || IsNil(o.PropertiesCount) {
+		return nil, false
+	}
+	return o.PropertiesCount, true
+}
+
+// HasPropertiesCount returns a boolean if a field has been set.
+func (o *ProjectDetailsAllOfSearchConsole) HasPropertiesCount() bool {
+	if o != nil && !IsNil(o.PropertiesCount) {
+		return true
+	}
+
+	return false
+}
+
+// SetPropertiesCount gets a reference to the given int32 and assigns it to the PropertiesCount field.
+func (o *ProjectDetailsAllOfSearchConsole) SetPropertiesCount(v int32) {
+	o.PropertiesCount = &v
+}
+
 func (o ProjectDetailsAllOfSearchConsole) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -168,6 +202,9 @@ func (o ProjectDetailsAllOfSearchConsole) ToMap() (map[string]interface{}, error
 	}
 	if !IsNil(o.ConnectUrl) {
 		toSerialize["connect_url"] = o.ConnectUrl
+	}
+	if !IsNil(o.PropertiesCount) {
+		toSerialize["properties_count"] = o.PropertiesCount
 	}
 	return toSerialize, nil
 }

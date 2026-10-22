@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **Clicks** | Pointer to **int32** |  | [optional] 
 **Ctr** | Pointer to **float32** | 0..1 fraction | [optional] 
 **Position** | Pointer to **float32** | Impression-weighted average position | [optional] 
+**Property** | Pointer to **string** | Present when grouped by property | [optional] 
 
 ## Methods
 
@@ -283,6 +284,31 @@ SetPosition sets Position field to given value.
 `func (o *SearchConsoleRowsResponseDataInner) HasPosition() bool`
 
 HasPosition returns a boolean if a field has been set.
+
+### GetProperty
+
+`func (o *SearchConsoleRowsResponseDataInner) GetProperty() string`
+
+GetProperty returns the Property field if non-nil, zero value otherwise.
+
+### GetPropertyOk
+
+`func (o *SearchConsoleRowsResponseDataInner) GetPropertyOk() (*string, bool)`
+
+GetPropertyOk returns a tuple with the Property field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProperty
+
+`func (o *SearchConsoleRowsResponseDataInner) SetProperty(v string)`
+
+SetProperty sets Property field to given value.
+
+### HasProperty
+
+`func (o *SearchConsoleRowsResponseDataInner) HasProperty() bool`
+
+HasProperty returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

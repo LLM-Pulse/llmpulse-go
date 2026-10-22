@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.67.0
+API version: 1.68.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,6 +32,8 @@ type SearchConsoleRowsResponseDataInner struct {
 	Ctr *float32 `json:"ctr,omitempty"`
 	// Impression-weighted average position
 	Position *float32 `json:"position,omitempty"`
+	// Present when grouped by property
+	Property *string `json:"property,omitempty"`
 }
 
 // NewSearchConsoleRowsResponseDataInner instantiates a new SearchConsoleRowsResponseDataInner object
@@ -371,6 +373,38 @@ func (o *SearchConsoleRowsResponseDataInner) SetPosition(v float32) {
 	o.Position = &v
 }
 
+// GetProperty returns the Property field value if set, zero value otherwise.
+func (o *SearchConsoleRowsResponseDataInner) GetProperty() string {
+	if o == nil || IsNil(o.Property) {
+		var ret string
+		return ret
+	}
+	return *o.Property
+}
+
+// GetPropertyOk returns a tuple with the Property field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SearchConsoleRowsResponseDataInner) GetPropertyOk() (*string, bool) {
+	if o == nil || IsNil(o.Property) {
+		return nil, false
+	}
+	return o.Property, true
+}
+
+// HasProperty returns a boolean if a field has been set.
+func (o *SearchConsoleRowsResponseDataInner) HasProperty() bool {
+	if o != nil && !IsNil(o.Property) {
+		return true
+	}
+
+	return false
+}
+
+// SetProperty gets a reference to the given string and assigns it to the Property field.
+func (o *SearchConsoleRowsResponseDataInner) SetProperty(v string) {
+	o.Property = &v
+}
+
 func (o SearchConsoleRowsResponseDataInner) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -410,6 +444,9 @@ func (o SearchConsoleRowsResponseDataInner) ToMap() (map[string]interface{}, err
 	}
 	if !IsNil(o.Position) {
 		toSerialize["position"] = o.Position
+	}
+	if !IsNil(o.Property) {
+		toSerialize["property"] = o.Property
 	}
 	return toSerialize, nil
 }

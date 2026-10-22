@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.67.0
+API version: 1.68.0
 Contact: info@llmpulse.ai
 */
 
@@ -31,6 +31,7 @@ type PromptGenerationResponseParams struct {
 	SourceLanguageCode *string `json:"source_language_code,omitempty"`
 	MinWords *int32 `json:"min_words,omitempty"`
 	AllCountries *bool `json:"all_countries,omitempty"`
+	Property *string `json:"property,omitempty"`
 }
 
 // NewPromptGenerationResponseParams instantiates a new PromptGenerationResponseParams object
@@ -402,6 +403,38 @@ func (o *PromptGenerationResponseParams) SetAllCountries(v bool) {
 	o.AllCountries = &v
 }
 
+// GetProperty returns the Property field value if set, zero value otherwise.
+func (o *PromptGenerationResponseParams) GetProperty() string {
+	if o == nil || IsNil(o.Property) {
+		var ret string
+		return ret
+	}
+	return *o.Property
+}
+
+// GetPropertyOk returns a tuple with the Property field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromptGenerationResponseParams) GetPropertyOk() (*string, bool) {
+	if o == nil || IsNil(o.Property) {
+		return nil, false
+	}
+	return o.Property, true
+}
+
+// HasProperty returns a boolean if a field has been set.
+func (o *PromptGenerationResponseParams) HasProperty() bool {
+	if o != nil && !IsNil(o.Property) {
+		return true
+	}
+
+	return false
+}
+
+// SetProperty gets a reference to the given string and assigns it to the Property field.
+func (o *PromptGenerationResponseParams) SetProperty(v string) {
+	o.Property = &v
+}
+
 func (o PromptGenerationResponseParams) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -444,6 +477,9 @@ func (o PromptGenerationResponseParams) ToMap() (map[string]interface{}, error) 
 	}
 	if !IsNil(o.AllCountries) {
 		toSerialize["all_countries"] = o.AllCountries
+	}
+	if !IsNil(o.Property) {
+		toSerialize["property"] = o.Property
 	}
 	return toSerialize, nil
 }
