@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 **Status** | **string** |  | 
 **StatusChangedAt** | Pointer to **NullableTime** |  | [optional] 
 **Position** | **int32** |  | 
-**Metadata** | Pointer to **map[string]interface{}** |  | [optional] 
+**Metadata** | Pointer to **map[string]interface{}** | Free-form details. Carries effort (low, medium or high) when the generator rated it, archive_reason (not_relevant, too_complex or competitor) on an item archived with a reason, and domain on PR &amp; Citation Building items. | [optional] 
 **CreatedAt** | **time.Time** |  | 
 **UpdatedAt** | **time.Time** |  | 
 **ResolvedSourceRefs** | Pointer to **[]map[string]interface{}** | The evidence each source_refs code points to (prompt, citation or own page) | [optional] 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.68.0
+API version: 1.69.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,8 @@ type UpdateRecommendationItemRequest struct {
 	ProjectId int32 `json:"project_id"`
 	// completed, archived, or active to restore the item
 	Status string `json:"status"`
+	// Optional, with status archived only. competitor only on a PR & Citation Building item that targets a domain.
+	Reason *string `json:"reason,omitempty"`
 }
 
 type _UpdateRecommendationItemRequest UpdateRecommendationItemRequest
@@ -96,6 +98,38 @@ func (o *UpdateRecommendationItemRequest) SetStatus(v string) {
 	o.Status = v
 }
 
+// GetReason returns the Reason field value if set, zero value otherwise.
+func (o *UpdateRecommendationItemRequest) GetReason() string {
+	if o == nil || IsNil(o.Reason) {
+		var ret string
+		return ret
+	}
+	return *o.Reason
+}
+
+// GetReasonOk returns a tuple with the Reason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateRecommendationItemRequest) GetReasonOk() (*string, bool) {
+	if o == nil || IsNil(o.Reason) {
+		return nil, false
+	}
+	return o.Reason, true
+}
+
+// HasReason returns a boolean if a field has been set.
+func (o *UpdateRecommendationItemRequest) HasReason() bool {
+	if o != nil && !IsNil(o.Reason) {
+		return true
+	}
+
+	return false
+}
+
+// SetReason gets a reference to the given string and assigns it to the Reason field.
+func (o *UpdateRecommendationItemRequest) SetReason(v string) {
+	o.Reason = &v
+}
+
 func (o UpdateRecommendationItemRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -108,6 +142,9 @@ func (o UpdateRecommendationItemRequest) ToMap() (map[string]interface{}, error)
 	toSerialize := map[string]interface{}{}
 	toSerialize["project_id"] = o.ProjectId
 	toSerialize["status"] = o.Status
+	if !IsNil(o.Reason) {
+		toSerialize["reason"] = o.Reason
+	}
 	return toSerialize, nil
 }
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.68.0
+API version: 1.69.0
 Contact: info@llmpulse.ai
 */
 
@@ -37,6 +37,7 @@ type RecommendationItem struct {
 	Status string `json:"status"`
 	StatusChangedAt NullableTime `json:"status_changed_at,omitempty"`
 	Position int32 `json:"position"`
+	// Free-form details. Carries effort (low, medium or high) when the generator rated it, archive_reason (not_relevant, too_complex or competitor) on an item archived with a reason, and domain on PR & Citation Building items.
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
