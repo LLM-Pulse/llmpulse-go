@@ -113,7 +113,7 @@ Name | Type | Description  | Notes
 
 ## GetShareOfVoice
 
-> SovResponse GetShareOfVoice(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).View(view).Execute()
+> SovResponse GetShareOfVoice(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).View(view).CountryCode(countryCode).LanguageCode(languageCode).IncludeProject(includeProject).Execute()
 
 Share of Voice
 
@@ -146,10 +146,13 @@ func main() {
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
 	view := "view_example" // string | Which Share of Voice projection to flatten. Only valid together with 'output'. 'over_time' (default) is one row per date and actor, 'current' the ranked snapshot, 'breakdown' the Top 4 plus Others. (optional) (default to "over_time")
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	includeProject := true // bool |  (optional) (default to true)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MetricsAPI.GetShareOfVoice(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).View(view).Execute()
+	resp, r, err := apiClient.MetricsAPI.GetShareOfVoice(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).View(view).CountryCode(countryCode).LanguageCode(languageCode).IncludeProject(includeProject).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MetricsAPI.GetShareOfVoice``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -183,6 +186,9 @@ Name | Type | Description  | Notes
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
  **view** | **string** | Which Share of Voice projection to flatten. Only valid together with &#39;output&#39;. &#39;over_time&#39; (default) is one row per date and actor, &#39;current&#39; the ranked snapshot, &#39;breakdown&#39; the Top 4 plus Others. | [default to &quot;over_time&quot;]
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **includeProject** | **bool** |  | [default to true]
 
 ### Return type
 
@@ -204,7 +210,7 @@ Name | Type | Description  | Notes
 
 ## GetSummary
 
-> SummaryResponse GetSummary(ctx).ProjectId(projectId).Metrics(metrics).Granularity(granularity).Range_(range_).From(from).To(to).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).Execute()
+> SummaryResponse GetSummary(ctx).ProjectId(projectId).Metrics(metrics).Granularity(granularity).Range_(range_).From(from).To(to).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).CountryCode(countryCode).LanguageCode(languageCode).IncludeProject(includeProject).Execute()
 
 Aggregated metrics summary
 
@@ -237,10 +243,13 @@ func main() {
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	includeProject := true // bool |  (optional) (default to true)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MetricsAPI.GetSummary(context.Background()).ProjectId(projectId).Metrics(metrics).Granularity(granularity).Range_(range_).From(from).To(to).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).Execute()
+	resp, r, err := apiClient.MetricsAPI.GetSummary(context.Background()).ProjectId(projectId).Metrics(metrics).Granularity(granularity).Range_(range_).From(from).To(to).Competitors(competitors).Model(model).CollectionId(collectionId).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Output(output).CountryCode(countryCode).LanguageCode(languageCode).IncludeProject(includeProject).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MetricsAPI.GetSummary``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -274,6 +283,9 @@ Name | Type | Description  | Notes
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **includeProject** | **bool** |  | [default to true]
 
 ### Return type
 
@@ -392,7 +404,7 @@ Name | Type | Description  | Notes
 
 ## GetTopSources
 
-> TopSourcesResponse GetTopSources(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Sort(sort).Query(query).Page(page).PerPage(perPage).Output(output).Execute()
+> TopSourcesResponse GetTopSources(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Sort(sort).Query(query).Page(page).PerPage(perPage).Output(output).CollectionIds(collectionIds).Domains(domains).Execute()
 
 Top cited sources
 
@@ -428,10 +440,12 @@ func main() {
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	collectionIds := []int32{int32(123)} // []int32 | Tags (collections) to include at once, as a union: one ID or a comma-separated list, e.g. collection_ids=12,15 (collection_ids[]=12&collection_ids[]=15 is also accepted). Combines with collection_id. An ID outside the project returns 422 ERR_INVALID_PARAM. (optional)
+	domains := []string{"Inner_example"} // []string | Restrict the result to these exact domains, case-insensitive: one domain or a comma-separated list, e.g. domains=wikipedia.org,reddit.com. The bracket form domains[]=wikipedia.org&domains[]=reddit.com is also accepted. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MetricsAPI.GetTopSources(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Sort(sort).Query(query).Page(page).PerPage(perPage).Output(output).Execute()
+	resp, r, err := apiClient.MetricsAPI.GetTopSources(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Sort(sort).Query(query).Page(page).PerPage(perPage).Output(output).CollectionIds(collectionIds).Domains(domains).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MetricsAPI.GetTopSources``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -468,6 +482,8 @@ Name | Type | Description  | Notes
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **collectionIds** | **[]int32** | Tags (collections) to include at once, as a union: one ID or a comma-separated list, e.g. collection_ids&#x3D;12,15 (collection_ids[]&#x3D;12&amp;collection_ids[]&#x3D;15 is also accepted). Combines with collection_id. An ID outside the project returns 422 ERR_INVALID_PARAM. | 
+ **domains** | **[]string** | Restrict the result to these exact domains, case-insensitive: one domain or a comma-separated list, e.g. domains&#x3D;wikipedia.org,reddit.com. The bracket form domains[]&#x3D;wikipedia.org&amp;domains[]&#x3D;reddit.com is also accepted. | 
 
 ### Return type
 

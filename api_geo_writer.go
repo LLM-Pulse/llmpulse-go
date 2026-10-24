@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.69.0
+API version: 1.70.0
 Contact: info@llmpulse.ai
 */
 
@@ -288,6 +288,7 @@ func (r ApiListIntelligenceTasksRequest) TaskType(taskType string) ApiListIntell
 	return r
 }
 
+// Keep only the tasks in this status. Discarded tasks are never listed, so discarded returns an empty page.
 func (r ApiListIntelligenceTasksRequest) Status(status string) ApiListIntelligenceTasksRequest {
 	r.status = &status
 	return r

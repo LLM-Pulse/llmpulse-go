@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## ListAllCitations
 
-> ListAllCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> ListAllCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List all citations (brand + competitor)
 
@@ -45,10 +45,15 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListAllCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	r, err := apiClient.MentionsCitationsAPI.ListAllCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListAllCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -77,6 +82,11 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 
@@ -98,7 +108,7 @@ Name | Type | Description  | Notes
 
 ## ListAllMentions
 
-> ListAllMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> ListAllMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List all mentions (brand + competitor)
 
@@ -128,10 +138,15 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListAllMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	r, err := apiClient.MentionsCitationsAPI.ListAllMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListAllMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -160,6 +175,11 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 
@@ -181,7 +201,7 @@ Name | Type | Description  | Notes
 
 ## ListCitations
 
-> CitationsResponse ListCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> CitationsResponse ListCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List brand citations
 
@@ -212,10 +232,13 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MentionsCitationsAPI.ListCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -247,6 +270,9 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 
@@ -268,7 +294,7 @@ Name | Type | Description  | Notes
 
 ## ListCompetitorCitations
 
-> ListCompetitorCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> ListCompetitorCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List competitor citations
 
@@ -298,10 +324,15 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListCompetitorCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	r, err := apiClient.MentionsCitationsAPI.ListCompetitorCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCompetitorCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -330,6 +361,11 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 
@@ -351,7 +387,7 @@ Name | Type | Description  | Notes
 
 ## ListCompetitorMentions
 
-> CompetitorMentionsResponse ListCompetitorMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> CompetitorMentionsResponse ListCompetitorMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List competitor mentions
 
@@ -379,10 +415,15 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MentionsCitationsAPI.ListCompetitorMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListCompetitorMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCompetitorMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -413,6 +454,11 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 
@@ -434,7 +480,7 @@ Name | Type | Description  | Notes
 
 ## ListMentions
 
-> MentionsResponse ListMentions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+> MentionsResponse ListMentions(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List brand mentions
 
@@ -463,10 +509,13 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
+	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.MentionsCitationsAPI.ListMentions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListMentions(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -498,6 +547,9 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
+ **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to) | 
 
 ### Return type
 

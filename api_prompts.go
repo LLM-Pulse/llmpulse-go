@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.69.0
+API version: 1.70.0
 Contact: info@llmpulse.ai
 */
 
@@ -858,6 +858,8 @@ type ApiListPromptExecutionsRequest struct {
 	citationFilter *string
 	competitors *string
 	output *string
+	promptType *string
+	brandKind *string
 }
 
 // Project ID
@@ -938,6 +940,18 @@ func (r ApiListPromptExecutionsRequest) Competitors(competitors string) ApiListP
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListPromptExecutionsRequest) Output(output string) ApiListPromptExecutionsRequest {
 	r.output = &output
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListPromptExecutionsRequest) PromptType(promptType string) ApiListPromptExecutionsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListPromptExecutionsRequest) BrandKind(brandKind string) ApiListPromptExecutionsRequest {
+	r.brandKind = &brandKind
 	return r
 }
 
@@ -1029,6 +1043,12 @@ func (a *PromptsAPIService) ListPromptExecutionsExecute(r ApiListPromptExecution
 	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

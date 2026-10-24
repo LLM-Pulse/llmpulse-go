@@ -169,7 +169,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	taskType := "taskType_example" // string |  (optional)
-	status := "status_example" // string |  (optional)
+	status := "status_example" // string | Keep only the tasks in this status. Discarded tasks are never listed, so discarded returns an empty page. (optional)
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 
@@ -198,7 +198,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **taskType** | **string** |  | 
- **status** | **string** |  | 
+ **status** | **string** | Keep only the tasks in this status. Discarded tasks are never listed, so discarded returns an empty page. | 
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.69.0
+API version: 1.70.0
 Contact: info@llmpulse.ai
 */
 
@@ -331,6 +331,9 @@ type ApiGetShareOfVoiceRequest struct {
 	brandKind *string
 	output *string
 	view *string
+	countryCode *string
+	languageCode *string
+	includeProject *bool
 }
 
 // Project ID
@@ -406,6 +409,23 @@ func (r ApiGetShareOfVoiceRequest) Output(output string) ApiGetShareOfVoiceReque
 // Which Share of Voice projection to flatten. Only valid together with &#39;output&#39;. &#39;over_time&#39; (default) is one row per date and actor, &#39;current&#39; the ranked snapshot, &#39;breakdown&#39; the Top 4 plus Others.
 func (r ApiGetShareOfVoiceRequest) View(view string) ApiGetShareOfVoiceRequest {
 	r.view = &view
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetShareOfVoiceRequest) CountryCode(countryCode string) ApiGetShareOfVoiceRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetShareOfVoiceRequest) LanguageCode(languageCode string) ApiGetShareOfVoiceRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+func (r ApiGetShareOfVoiceRequest) IncludeProject(includeProject bool) ApiGetShareOfVoiceRequest {
+	r.includeProject = &includeProject
 	return r
 }
 
@@ -493,6 +513,19 @@ func (a *MetricsAPIService) GetShareOfVoiceExecute(r ApiGetShareOfVoiceRequest) 
 		parameterAddToHeaderOrQuery(localVarQueryParams, "view", defaultValue, "form", "")
 		r.view = &defaultValue
 	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.includeProject != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_project", r.includeProject, "form", "")
+	} else {
+		var defaultValue bool = true
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_project", defaultValue, "form", "")
+		r.includeProject = &defaultValue
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -563,6 +596,9 @@ type ApiGetSummaryRequest struct {
 	promptType *string
 	brandKind *string
 	output *string
+	countryCode *string
+	languageCode *string
+	includeProject *bool
 }
 
 // Project ID
@@ -638,6 +674,23 @@ func (r ApiGetSummaryRequest) BrandKind(brandKind string) ApiGetSummaryRequest {
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiGetSummaryRequest) Output(output string) ApiGetSummaryRequest {
 	r.output = &output
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetSummaryRequest) CountryCode(countryCode string) ApiGetSummaryRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetSummaryRequest) LanguageCode(languageCode string) ApiGetSummaryRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+func (r ApiGetSummaryRequest) IncludeProject(includeProject bool) ApiGetSummaryRequest {
+	r.includeProject = &includeProject
 	return r
 }
 
@@ -720,6 +773,19 @@ func (a *MetricsAPIService) GetSummaryExecute(r ApiGetSummaryRequest) (*SummaryR
 	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.includeProject != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_project", r.includeProject, "form", "")
+	} else {
+		var defaultValue bool = true
+		parameterAddToHeaderOrQuery(localVarQueryParams, "include_project", defaultValue, "form", "")
+		r.includeProject = &defaultValue
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1108,6 +1174,8 @@ type ApiGetTopSourcesRequest struct {
 	page *int32
 	perPage *int32
 	output *string
+	collectionIds *[]int32
+	domains *[]string
 }
 
 // Project ID
@@ -1199,6 +1267,18 @@ func (r ApiGetTopSourcesRequest) PerPage(perPage int32) ApiGetTopSourcesRequest 
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiGetTopSourcesRequest) Output(output string) ApiGetTopSourcesRequest {
 	r.output = &output
+	return r
+}
+
+// Tags (collections) to include at once, as a union: one ID or a comma-separated list, e.g. collection_ids&#x3D;12,15 (collection_ids[]&#x3D;12&amp;collection_ids[]&#x3D;15 is also accepted). Combines with collection_id. An ID outside the project returns 422 ERR_INVALID_PARAM.
+func (r ApiGetTopSourcesRequest) CollectionIds(collectionIds []int32) ApiGetTopSourcesRequest {
+	r.collectionIds = &collectionIds
+	return r
+}
+
+// Restrict the result to these exact domains, case-insensitive: one domain or a comma-separated list, e.g. domains&#x3D;wikipedia.org,reddit.com. The bracket form domains[]&#x3D;wikipedia.org&amp;domains[]&#x3D;reddit.com is also accepted.
+func (r ApiGetTopSourcesRequest) Domains(domains []string) ApiGetTopSourcesRequest {
+	r.domains = &domains
 	return r
 }
 
@@ -1302,6 +1382,12 @@ func (a *MetricsAPIService) GetTopSourcesExecute(r ApiGetTopSourcesRequest) (*To
 	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.collectionIds != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_ids", r.collectionIds, "form", "csv")
+	}
+	if r.domains != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "domains", r.domains, "form", "csv")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

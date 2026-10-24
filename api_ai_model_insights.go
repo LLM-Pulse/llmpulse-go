@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.69.0
+API version: 1.70.0
 Contact: info@llmpulse.ai
 */
 
@@ -297,7 +297,7 @@ func (r ApiGetAiModelPositionDistributionRequest) BrandKind(brandKind string) Ap
 	return r
 }
 
-// Restrict the comparison to one AI model: chatgpt, ai_mode, ai_overview, perplexity, gemini, naver_ai or baidu_ai, whether or not that model is enabled for the API key&#39;s user. Any other value returns 422 ERR_INVALID_PARAM (invalid model).
+// Restrict the comparison to one AI model of AI Model Insights, whether or not that model is enabled for the API key&#39;s user. Any other value returns 422 ERR_INVALID_PARAM (invalid model).
 func (r ApiGetAiModelPositionDistributionRequest) Model(model string) ApiGetAiModelPositionDistributionRequest {
 	r.model = &model
 	return r

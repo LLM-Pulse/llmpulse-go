@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.69.0
+API version: 1.70.0
 Contact: info@llmpulse.ai
 */
 
@@ -37,6 +37,11 @@ type ApiListAllCitationsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -93,6 +98,36 @@ func (r ApiListAllCitationsRequest) To(to time.Time) ApiListAllCitationsRequest 
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListAllCitationsRequest) Output(output string) ApiListAllCitationsRequest {
 	r.output = &output
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListAllCitationsRequest) CountryCode(countryCode string) ApiListAllCitationsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListAllCitationsRequest) LanguageCode(languageCode string) ApiListAllCitationsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListAllCitationsRequest) PromptType(promptType string) ApiListAllCitationsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListAllCitationsRequest) BrandKind(brandKind string) ApiListAllCitationsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListAllCitationsRequest) Range_(range_ int32) ApiListAllCitationsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -173,6 +208,21 @@ func (a *MentionsCitationsAPIService) ListAllCitationsExecute(r ApiListAllCitati
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -231,6 +281,11 @@ type ApiListAllMentionsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -287,6 +342,36 @@ func (r ApiListAllMentionsRequest) To(to time.Time) ApiListAllMentionsRequest {
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListAllMentionsRequest) Output(output string) ApiListAllMentionsRequest {
 	r.output = &output
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListAllMentionsRequest) CountryCode(countryCode string) ApiListAllMentionsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListAllMentionsRequest) LanguageCode(languageCode string) ApiListAllMentionsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListAllMentionsRequest) PromptType(promptType string) ApiListAllMentionsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListAllMentionsRequest) BrandKind(brandKind string) ApiListAllMentionsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListAllMentionsRequest) Range_(range_ int32) ApiListAllMentionsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -367,6 +452,21 @@ func (a *MentionsCitationsAPIService) ListAllMentionsExecute(r ApiListAllMention
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -426,6 +526,9 @@ type ApiListCitationsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -488,6 +591,24 @@ func (r ApiListCitationsRequest) To(to time.Time) ApiListCitationsRequest {
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListCitationsRequest) Output(output string) ApiListCitationsRequest {
 	r.output = &output
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListCitationsRequest) PromptType(promptType string) ApiListCitationsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListCitationsRequest) BrandKind(brandKind string) ApiListCitationsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListCitationsRequest) Range_(range_ int32) ApiListCitationsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -573,6 +694,15 @@ func (a *MentionsCitationsAPIService) ListCitationsExecute(r ApiListCitationsReq
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -640,6 +770,11 @@ type ApiListCompetitorCitationsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -696,6 +831,36 @@ func (r ApiListCompetitorCitationsRequest) To(to time.Time) ApiListCompetitorCit
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListCompetitorCitationsRequest) Output(output string) ApiListCompetitorCitationsRequest {
 	r.output = &output
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListCompetitorCitationsRequest) CountryCode(countryCode string) ApiListCompetitorCitationsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListCompetitorCitationsRequest) LanguageCode(languageCode string) ApiListCompetitorCitationsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListCompetitorCitationsRequest) PromptType(promptType string) ApiListCompetitorCitationsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListCompetitorCitationsRequest) BrandKind(brandKind string) ApiListCompetitorCitationsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListCompetitorCitationsRequest) Range_(range_ int32) ApiListCompetitorCitationsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -776,6 +941,21 @@ func (a *MentionsCitationsAPIService) ListCompetitorCitationsExecute(r ApiListCo
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -834,6 +1014,11 @@ type ApiListCompetitorMentionsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -890,6 +1075,36 @@ func (r ApiListCompetitorMentionsRequest) To(to time.Time) ApiListCompetitorMent
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListCompetitorMentionsRequest) Output(output string) ApiListCompetitorMentionsRequest {
 	r.output = &output
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiListCompetitorMentionsRequest) CountryCode(countryCode string) ApiListCompetitorMentionsRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiListCompetitorMentionsRequest) LanguageCode(languageCode string) ApiListCompetitorMentionsRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListCompetitorMentionsRequest) PromptType(promptType string) ApiListCompetitorMentionsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListCompetitorMentionsRequest) BrandKind(brandKind string) ApiListCompetitorMentionsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListCompetitorMentionsRequest) Range_(range_ int32) ApiListCompetitorMentionsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -970,6 +1185,21 @@ func (a *MentionsCitationsAPIService) ListCompetitorMentionsExecute(r ApiListCom
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
 	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1038,6 +1268,9 @@ type ApiListMentionsRequest struct {
 	from *time.Time
 	to *time.Time
 	output *string
+	promptType *string
+	brandKind *string
+	range_ *int32
 }
 
 // Project ID
@@ -1100,6 +1333,24 @@ func (r ApiListMentionsRequest) To(to time.Time) ApiListMentionsRequest {
 // Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
 func (r ApiListMentionsRequest) Output(output string) ApiListMentionsRequest {
 	r.output = &output
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListMentionsRequest) PromptType(promptType string) ApiListMentionsRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListMentionsRequest) BrandKind(brandKind string) ApiListMentionsRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+// Number of days to look back (alternative to from/to)
+func (r ApiListMentionsRequest) Range_(range_ int32) ApiListMentionsRequest {
+	r.range_ = &range_
 	return r
 }
 
@@ -1182,6 +1433,15 @@ func (a *MentionsCitationsAPIService) ListMentionsExecute(r ApiListMentionsReque
 	}
 	if r.output != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
