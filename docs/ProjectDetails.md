@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** | Internal project label (sidebar, settings, admin) | [optional] 
 **BrandName** | Pointer to **NullableString** | LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use &#x60;name&#x60;. | [optional] 
+**Tracked** | **bool** | Whether scheduled runs include this project. False when it is paused, or when the plan&#39;s project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run | 
+**UntrackedReason** | **NullableString** | Why tracked is false: paused or project_limit. Null when tracked | 
 **Url** | Pointer to **NullableString** |  | [optional] 
 **Description** | Pointer to **NullableString** |  | [optional] 
 **MatchingNames** | Pointer to **[]string** |  | [optional] 
@@ -36,7 +38,7 @@ Name | Type | Description | Notes
 
 ### NewProjectDetails
 
-`func NewProjectDetails() *ProjectDetails`
+`func NewProjectDetails(tracked bool, untrackedReason NullableString, ) *ProjectDetails`
 
 NewProjectDetails instantiates a new ProjectDetails object
 This constructor will assign default values to properties that have it defined,
@@ -136,6 +138,56 @@ HasBrandName returns a boolean if a field has been set.
 `func (o *ProjectDetails) UnsetBrandName()`
 
 UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
+### GetTracked
+
+`func (o *ProjectDetails) GetTracked() bool`
+
+GetTracked returns the Tracked field if non-nil, zero value otherwise.
+
+### GetTrackedOk
+
+`func (o *ProjectDetails) GetTrackedOk() (*bool, bool)`
+
+GetTrackedOk returns a tuple with the Tracked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTracked
+
+`func (o *ProjectDetails) SetTracked(v bool)`
+
+SetTracked sets Tracked field to given value.
+
+
+### GetUntrackedReason
+
+`func (o *ProjectDetails) GetUntrackedReason() string`
+
+GetUntrackedReason returns the UntrackedReason field if non-nil, zero value otherwise.
+
+### GetUntrackedReasonOk
+
+`func (o *ProjectDetails) GetUntrackedReasonOk() (*string, bool)`
+
+GetUntrackedReasonOk returns a tuple with the UntrackedReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUntrackedReason
+
+`func (o *ProjectDetails) SetUntrackedReason(v string)`
+
+SetUntrackedReason sets UntrackedReason field to given value.
+
+
+### SetUntrackedReasonNil
+
+`func (o *ProjectDetails) SetUntrackedReasonNil(b bool)`
+
+ SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+
+### UnsetUntrackedReason
+`func (o *ProjectDetails) UnsetUntrackedReason()`
+
+UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
 ### GetUrl
 
 `func (o *ProjectDetails) GetUrl() string`

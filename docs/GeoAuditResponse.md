@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **CountryCode** | Pointer to **NullableString** |  | [optional] 
 **Cadence** | Pointer to **string** |  | [optional] 
 **Status** | Pointer to **string** |  | [optional] 
-**PausedReason** | Pointer to **NullableString** | user, or unreachable when three runs in a row could not reach the site | [optional] 
+**PausedReason** | Pointer to **NullableString** | Null unless status is paused. user (paused by hand), unreachable (three runs in a row could not reach the site) or quota (the account has more active recurring audits than its plan allows; resume it once there is room) | [optional] 
 **Schedule** | Pointer to [**NullableGeoAuditSchedule**](GeoAuditSchedule.md) |  | [optional] 
 **NextRunAt** | Pointer to **NullableTime** |  | [optional] 
 **EmailAlerts** | Pointer to **bool** |  | [optional] 

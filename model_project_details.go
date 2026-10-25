@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -14,6 +14,8 @@ package llmpulse
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the ProjectDetails type satisfies the MappedNullable interface at compile time
@@ -26,6 +28,10 @@ type ProjectDetails struct {
 	Name *string `json:"name,omitempty"`
 	// LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use `name`.
 	BrandName NullableString `json:"brand_name,omitempty"`
+	// Whether scheduled runs include this project. False when it is paused, or when the plan's project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run
+	Tracked bool `json:"tracked"`
+	// Why tracked is false: paused or project_limit. Null when tracked
+	UntrackedReason NullableString `json:"untracked_reason"`
 	Url NullableString `json:"url,omitempty"`
 	Description NullableString `json:"description,omitempty"`
 	MatchingNames []string `json:"matching_names,omitempty"`
@@ -56,12 +62,16 @@ type ProjectDetails struct {
 	RequestId *string `json:"request_id,omitempty"`
 }
 
+type _ProjectDetails ProjectDetails
+
 // NewProjectDetails instantiates a new ProjectDetails object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProjectDetails() *ProjectDetails {
+func NewProjectDetails(tracked bool, untrackedReason NullableString) *ProjectDetails {
 	this := ProjectDetails{}
+	this.Tracked = tracked
+	this.UntrackedReason = untrackedReason
 	return &this
 }
 
@@ -177,6 +187,56 @@ func (o *ProjectDetails) SetBrandNameNil() {
 // UnsetBrandName ensures that no value is present for BrandName, not even an explicit nil
 func (o *ProjectDetails) UnsetBrandName() {
 	o.BrandName.Unset()
+}
+
+// GetTracked returns the Tracked field value
+func (o *ProjectDetails) GetTracked() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Tracked
+}
+
+// GetTrackedOk returns a tuple with the Tracked field value
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetTrackedOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Tracked, true
+}
+
+// SetTracked sets field value
+func (o *ProjectDetails) SetTracked(v bool) {
+	o.Tracked = v
+}
+
+// GetUntrackedReason returns the UntrackedReason field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ProjectDetails) GetUntrackedReason() string {
+	if o == nil || o.UntrackedReason.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.UntrackedReason.Get()
+}
+
+// GetUntrackedReasonOk returns a tuple with the UntrackedReason field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetails) GetUntrackedReasonOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UntrackedReason.Get(), o.UntrackedReason.IsSet()
+}
+
+// SetUntrackedReason sets field value
+func (o *ProjectDetails) SetUntrackedReason(v string) {
+	o.UntrackedReason.Set(&v)
 }
 
 // GetUrl returns the Url field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -1067,6 +1127,8 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	if o.BrandName.IsSet() {
 		toSerialize["brand_name"] = o.BrandName.Get()
 	}
+	toSerialize["tracked"] = o.Tracked
+	toSerialize["untracked_reason"] = o.UntrackedReason.Get()
 	if o.Url.IsSet() {
 		toSerialize["url"] = o.Url.Get()
 	}
@@ -1140,6 +1202,44 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
+}
+
+func (o *ProjectDetails) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"tracked",
+		"untracked_reason",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varProjectDetails := _ProjectDetails{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varProjectDetails)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProjectDetails(varProjectDetails)
+
+	return err
 }
 
 type NullableProjectDetails struct {

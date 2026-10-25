@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -30,7 +30,7 @@ type CustomReportSummary struct {
 	RecipientsCount int32 `json:"recipients_count"`
 	// Whether the shared link is published
 	Published bool `json:"published"`
-	// Whether the shared link opens (published and not made inside a client portal)
+	// Whether the shared link opens (published, not made inside a client portal, and the account is active on the Scale tier or higher)
 	PublicLinkActive bool `json:"public_link_active"`
 	PasswordProtected bool `json:"password_protected"`
 	// Made inside a client portal, so it cannot be shared or emailed

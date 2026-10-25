@@ -14,13 +14,15 @@ Name | Type | Description | Notes
 **PromptType** | **NullableString** | Search intent: informational, navigational, commercial or transactional. Null until the prompt is classified | 
 **BrandKind** | **NullableString** | Brand focus: brand, brand_other or non_brand. Null until the prompt is classified | 
 **LastExecutedAt** | **NullableTime** | Null until the prompt has run | 
+**Tracked** | **bool** | Whether scheduled runs include this prompt. False when its project is paused or beyond the plan&#39;s project limit, or when the prompt is beyond the plan&#39;s prompt limit (the oldest prompts up to the limit run) | 
+**UntrackedReason** | **NullableString** | Why tracked is false: paused, project_limit or prompt_limit. Null when tracked | 
 **AppUrl** | **string** | Opens this prompt in the app. The link names its project, so it opens there for any user with access to that project | 
 
 ## Methods
 
 ### NewPromptRecord
 
-`func NewPromptRecord(id int32, promptText string, collectionId NullableInt32, collectionIds []int32, tags []TagRef, countryCode NullableString, languageCode NullableString, promptType NullableString, brandKind NullableString, lastExecutedAt NullableTime, appUrl string, ) *PromptRecord`
+`func NewPromptRecord(id int32, promptText string, collectionId NullableInt32, collectionIds []int32, tags []TagRef, countryCode NullableString, languageCode NullableString, promptType NullableString, brandKind NullableString, lastExecutedAt NullableTime, tracked bool, untrackedReason NullableString, appUrl string, ) *PromptRecord`
 
 NewPromptRecord instantiates a new PromptRecord object
 This constructor will assign default values to properties that have it defined,
@@ -295,6 +297,56 @@ SetLastExecutedAt sets LastExecutedAt field to given value.
 `func (o *PromptRecord) UnsetLastExecutedAt()`
 
 UnsetLastExecutedAt ensures that no value is present for LastExecutedAt, not even an explicit nil
+### GetTracked
+
+`func (o *PromptRecord) GetTracked() bool`
+
+GetTracked returns the Tracked field if non-nil, zero value otherwise.
+
+### GetTrackedOk
+
+`func (o *PromptRecord) GetTrackedOk() (*bool, bool)`
+
+GetTrackedOk returns a tuple with the Tracked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTracked
+
+`func (o *PromptRecord) SetTracked(v bool)`
+
+SetTracked sets Tracked field to given value.
+
+
+### GetUntrackedReason
+
+`func (o *PromptRecord) GetUntrackedReason() string`
+
+GetUntrackedReason returns the UntrackedReason field if non-nil, zero value otherwise.
+
+### GetUntrackedReasonOk
+
+`func (o *PromptRecord) GetUntrackedReasonOk() (*string, bool)`
+
+GetUntrackedReasonOk returns a tuple with the UntrackedReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUntrackedReason
+
+`func (o *PromptRecord) SetUntrackedReason(v string)`
+
+SetUntrackedReason sets UntrackedReason field to given value.
+
+
+### SetUntrackedReasonNil
+
+`func (o *PromptRecord) SetUntrackedReasonNil(b bool)`
+
+ SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+
+### UnsetUntrackedReason
+`func (o *PromptRecord) UnsetUntrackedReason()`
+
+UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
 ### GetAppUrl
 
 `func (o *PromptRecord) GetAppUrl() string`

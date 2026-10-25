@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -37,6 +37,12 @@ type PromptsImportResponse struct {
 	LengthWarning NullableString `json:"length_warning"`
 	// Prompt slots left on the plan; null when unlimited
 	PromptsAvailable NullableInt32 `json:"prompts_available"`
+	// Whether scheduled runs include the project the prompts were imported into. False when it is paused or beyond the plan's project limit, so the new prompts do not run until that changes
+	Tracked bool `json:"tracked"`
+	// Why tracked is false: paused or project_limit. Null when tracked
+	UntrackedReason NullableString `json:"untracked_reason"`
+	// What to do when tracked is false. Null when tracked
+	Warning NullableString `json:"warning"`
 	RequestId string `json:"request_id"`
 }
 
@@ -46,7 +52,7 @@ type _PromptsImportResponse PromptsImportResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, requestId string) *PromptsImportResponse {
+func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, requestId string) *PromptsImportResponse {
 	this := PromptsImportResponse{}
 	this.ProjectId = projectId
 	this.ProcessedRows = processedRows
@@ -57,6 +63,9 @@ func NewPromptsImportResponse(projectId int32, processedRows int32, created int3
 	this.RowErrors = rowErrors
 	this.LengthWarning = lengthWarning
 	this.PromptsAvailable = promptsAvailable
+	this.Tracked = tracked
+	this.UntrackedReason = untrackedReason
+	this.Warning = warning
 	this.RequestId = requestId
 	return &this
 }
@@ -289,6 +298,82 @@ func (o *PromptsImportResponse) SetPromptsAvailable(v int32) {
 	o.PromptsAvailable.Set(&v)
 }
 
+// GetTracked returns the Tracked field value
+func (o *PromptsImportResponse) GetTracked() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Tracked
+}
+
+// GetTrackedOk returns a tuple with the Tracked field value
+// and a boolean to check if the value has been set.
+func (o *PromptsImportResponse) GetTrackedOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Tracked, true
+}
+
+// SetTracked sets field value
+func (o *PromptsImportResponse) SetTracked(v bool) {
+	o.Tracked = v
+}
+
+// GetUntrackedReason returns the UntrackedReason field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *PromptsImportResponse) GetUntrackedReason() string {
+	if o == nil || o.UntrackedReason.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.UntrackedReason.Get()
+}
+
+// GetUntrackedReasonOk returns a tuple with the UntrackedReason field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsImportResponse) GetUntrackedReasonOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UntrackedReason.Get(), o.UntrackedReason.IsSet()
+}
+
+// SetUntrackedReason sets field value
+func (o *PromptsImportResponse) SetUntrackedReason(v string) {
+	o.UntrackedReason.Set(&v)
+}
+
+// GetWarning returns the Warning field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *PromptsImportResponse) GetWarning() string {
+	if o == nil || o.Warning.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.Warning.Get()
+}
+
+// GetWarningOk returns a tuple with the Warning field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsImportResponse) GetWarningOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Warning.Get(), o.Warning.IsSet()
+}
+
+// SetWarning sets field value
+func (o *PromptsImportResponse) SetWarning(v string) {
+	o.Warning.Set(&v)
+}
+
 // GetRequestId returns the RequestId field value
 func (o *PromptsImportResponse) GetRequestId() string {
 	if o == nil {
@@ -332,6 +417,9 @@ func (o PromptsImportResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["row_errors"] = o.RowErrors
 	toSerialize["length_warning"] = o.LengthWarning.Get()
 	toSerialize["prompts_available"] = o.PromptsAvailable.Get()
+	toSerialize["tracked"] = o.Tracked
+	toSerialize["untracked_reason"] = o.UntrackedReason.Get()
+	toSerialize["warning"] = o.Warning.Get()
 	toSerialize["request_id"] = o.RequestId
 	return toSerialize, nil
 }
@@ -350,6 +438,9 @@ func (o *PromptsImportResponse) UnmarshalJSON(data []byte) (err error) {
 		"row_errors",
 		"length_warning",
 		"prompts_available",
+		"tracked",
+		"untracked_reason",
+		"warning",
 		"request_id",
 	}
 

@@ -9,6 +9,9 @@ Name | Type | Description | Notes
 **Skipped** | Pointer to **int32** |  | [optional] 
 **TotalAfter** | Pointer to **int32** |  | [optional] 
 **PromptsAvailable** | Pointer to **int32** |  | [optional] 
+**Tracked** | Pointer to **bool** | Whether scheduled runs include the project the prompts were added to. False when it is paused or beyond the plan&#39;s project limit, so the new prompts do not run until that changes | [optional] 
+**UntrackedReason** | Pointer to **NullableString** | Why tracked is false: paused or project_limit. Null when tracked | [optional] 
+**Warning** | Pointer to **NullableString** | What to do when tracked is false. Null when tracked | [optional] 
 **Data** | Pointer to [**[]PromptsCreateResponseDataInner**](PromptsCreateResponseDataInner.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
@@ -156,6 +159,101 @@ SetPromptsAvailable sets PromptsAvailable field to given value.
 
 HasPromptsAvailable returns a boolean if a field has been set.
 
+### GetTracked
+
+`func (o *PromptsCreateResponse) GetTracked() bool`
+
+GetTracked returns the Tracked field if non-nil, zero value otherwise.
+
+### GetTrackedOk
+
+`func (o *PromptsCreateResponse) GetTrackedOk() (*bool, bool)`
+
+GetTrackedOk returns a tuple with the Tracked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTracked
+
+`func (o *PromptsCreateResponse) SetTracked(v bool)`
+
+SetTracked sets Tracked field to given value.
+
+### HasTracked
+
+`func (o *PromptsCreateResponse) HasTracked() bool`
+
+HasTracked returns a boolean if a field has been set.
+
+### GetUntrackedReason
+
+`func (o *PromptsCreateResponse) GetUntrackedReason() string`
+
+GetUntrackedReason returns the UntrackedReason field if non-nil, zero value otherwise.
+
+### GetUntrackedReasonOk
+
+`func (o *PromptsCreateResponse) GetUntrackedReasonOk() (*string, bool)`
+
+GetUntrackedReasonOk returns a tuple with the UntrackedReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUntrackedReason
+
+`func (o *PromptsCreateResponse) SetUntrackedReason(v string)`
+
+SetUntrackedReason sets UntrackedReason field to given value.
+
+### HasUntrackedReason
+
+`func (o *PromptsCreateResponse) HasUntrackedReason() bool`
+
+HasUntrackedReason returns a boolean if a field has been set.
+
+### SetUntrackedReasonNil
+
+`func (o *PromptsCreateResponse) SetUntrackedReasonNil(b bool)`
+
+ SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+
+### UnsetUntrackedReason
+`func (o *PromptsCreateResponse) UnsetUntrackedReason()`
+
+UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+### GetWarning
+
+`func (o *PromptsCreateResponse) GetWarning() string`
+
+GetWarning returns the Warning field if non-nil, zero value otherwise.
+
+### GetWarningOk
+
+`func (o *PromptsCreateResponse) GetWarningOk() (*string, bool)`
+
+GetWarningOk returns a tuple with the Warning field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetWarning
+
+`func (o *PromptsCreateResponse) SetWarning(v string)`
+
+SetWarning sets Warning field to given value.
+
+### HasWarning
+
+`func (o *PromptsCreateResponse) HasWarning() bool`
+
+HasWarning returns a boolean if a field has been set.
+
+### SetWarningNil
+
+`func (o *PromptsCreateResponse) SetWarningNil(b bool)`
+
+ SetWarningNil sets the value for Warning to be an explicit nil
+
+### UnsetWarning
+`func (o *PromptsCreateResponse) UnsetWarning()`
+
+UnsetWarning ensures that no value is present for Warning, not even an explicit nil
 ### GetData
 
 `func (o *PromptsCreateResponse) GetData() []PromptsCreateResponseDataInner`

@@ -13,13 +13,16 @@ Name | Type | Description | Notes
 **RowErrors** | [**[]PromptsImportResponseRowErrorsInner**](PromptsImportResponseRowErrorsInner.md) | Rows that were skipped or whose tags were not added, by their index in rows | 
 **LengthWarning** | **NullableString** | Which tracked AI models will skip new prompts that are too long for them | 
 **PromptsAvailable** | **NullableInt32** | Prompt slots left on the plan; null when unlimited | 
+**Tracked** | **bool** | Whether scheduled runs include the project the prompts were imported into. False when it is paused or beyond the plan&#39;s project limit, so the new prompts do not run until that changes | 
+**UntrackedReason** | **NullableString** | Why tracked is false: paused or project_limit. Null when tracked | 
+**Warning** | **NullableString** | What to do when tracked is false. Null when tracked | 
 **RequestId** | **string** |  | 
 
 ## Methods
 
 ### NewPromptsImportResponse
 
-`func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, requestId string, ) *PromptsImportResponse`
+`func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, requestId string, ) *PromptsImportResponse`
 
 NewPromptsImportResponse instantiates a new PromptsImportResponse object
 This constructor will assign default values to properties that have it defined,
@@ -234,6 +237,86 @@ SetPromptsAvailable sets PromptsAvailable field to given value.
 `func (o *PromptsImportResponse) UnsetPromptsAvailable()`
 
 UnsetPromptsAvailable ensures that no value is present for PromptsAvailable, not even an explicit nil
+### GetTracked
+
+`func (o *PromptsImportResponse) GetTracked() bool`
+
+GetTracked returns the Tracked field if non-nil, zero value otherwise.
+
+### GetTrackedOk
+
+`func (o *PromptsImportResponse) GetTrackedOk() (*bool, bool)`
+
+GetTrackedOk returns a tuple with the Tracked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTracked
+
+`func (o *PromptsImportResponse) SetTracked(v bool)`
+
+SetTracked sets Tracked field to given value.
+
+
+### GetUntrackedReason
+
+`func (o *PromptsImportResponse) GetUntrackedReason() string`
+
+GetUntrackedReason returns the UntrackedReason field if non-nil, zero value otherwise.
+
+### GetUntrackedReasonOk
+
+`func (o *PromptsImportResponse) GetUntrackedReasonOk() (*string, bool)`
+
+GetUntrackedReasonOk returns a tuple with the UntrackedReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUntrackedReason
+
+`func (o *PromptsImportResponse) SetUntrackedReason(v string)`
+
+SetUntrackedReason sets UntrackedReason field to given value.
+
+
+### SetUntrackedReasonNil
+
+`func (o *PromptsImportResponse) SetUntrackedReasonNil(b bool)`
+
+ SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+
+### UnsetUntrackedReason
+`func (o *PromptsImportResponse) UnsetUntrackedReason()`
+
+UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+### GetWarning
+
+`func (o *PromptsImportResponse) GetWarning() string`
+
+GetWarning returns the Warning field if non-nil, zero value otherwise.
+
+### GetWarningOk
+
+`func (o *PromptsImportResponse) GetWarningOk() (*string, bool)`
+
+GetWarningOk returns a tuple with the Warning field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetWarning
+
+`func (o *PromptsImportResponse) SetWarning(v string)`
+
+SetWarning sets Warning field to given value.
+
+
+### SetWarningNil
+
+`func (o *PromptsImportResponse) SetWarningNil(b bool)`
+
+ SetWarningNil sets the value for Warning to be an explicit nil
+
+### UnsetWarning
+`func (o *PromptsImportResponse) UnsetWarning()`
+
+UnsetWarning ensures that no value is present for Warning, not even an explicit nil
 ### GetRequestId
 
 `func (o *PromptsImportResponse) GetRequestId() string`

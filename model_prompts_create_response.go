@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,12 @@ type PromptsCreateResponse struct {
 	Skipped *int32 `json:"skipped,omitempty"`
 	TotalAfter *int32 `json:"total_after,omitempty"`
 	PromptsAvailable *int32 `json:"prompts_available,omitempty"`
+	// Whether scheduled runs include the project the prompts were added to. False when it is paused or beyond the plan's project limit, so the new prompts do not run until that changes
+	Tracked *bool `json:"tracked,omitempty"`
+	// Why tracked is false: paused or project_limit. Null when tracked
+	UntrackedReason NullableString `json:"untracked_reason,omitempty"`
+	// What to do when tracked is false. Null when tracked
+	Warning NullableString `json:"warning,omitempty"`
 	Data []PromptsCreateResponseDataInner `json:"data,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
@@ -206,6 +212,122 @@ func (o *PromptsCreateResponse) SetPromptsAvailable(v int32) {
 	o.PromptsAvailable = &v
 }
 
+// GetTracked returns the Tracked field value if set, zero value otherwise.
+func (o *PromptsCreateResponse) GetTracked() bool {
+	if o == nil || IsNil(o.Tracked) {
+		var ret bool
+		return ret
+	}
+	return *o.Tracked
+}
+
+// GetTrackedOk returns a tuple with the Tracked field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PromptsCreateResponse) GetTrackedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Tracked) {
+		return nil, false
+	}
+	return o.Tracked, true
+}
+
+// HasTracked returns a boolean if a field has been set.
+func (o *PromptsCreateResponse) HasTracked() bool {
+	if o != nil && !IsNil(o.Tracked) {
+		return true
+	}
+
+	return false
+}
+
+// SetTracked gets a reference to the given bool and assigns it to the Tracked field.
+func (o *PromptsCreateResponse) SetTracked(v bool) {
+	o.Tracked = &v
+}
+
+// GetUntrackedReason returns the UntrackedReason field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptsCreateResponse) GetUntrackedReason() string {
+	if o == nil || IsNil(o.UntrackedReason.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.UntrackedReason.Get()
+}
+
+// GetUntrackedReasonOk returns a tuple with the UntrackedReason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsCreateResponse) GetUntrackedReasonOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UntrackedReason.Get(), o.UntrackedReason.IsSet()
+}
+
+// HasUntrackedReason returns a boolean if a field has been set.
+func (o *PromptsCreateResponse) HasUntrackedReason() bool {
+	if o != nil && o.UntrackedReason.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUntrackedReason gets a reference to the given NullableString and assigns it to the UntrackedReason field.
+func (o *PromptsCreateResponse) SetUntrackedReason(v string) {
+	o.UntrackedReason.Set(&v)
+}
+// SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+func (o *PromptsCreateResponse) SetUntrackedReasonNil() {
+	o.UntrackedReason.Set(nil)
+}
+
+// UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+func (o *PromptsCreateResponse) UnsetUntrackedReason() {
+	o.UntrackedReason.Unset()
+}
+
+// GetWarning returns the Warning field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptsCreateResponse) GetWarning() string {
+	if o == nil || IsNil(o.Warning.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.Warning.Get()
+}
+
+// GetWarningOk returns a tuple with the Warning field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsCreateResponse) GetWarningOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Warning.Get(), o.Warning.IsSet()
+}
+
+// HasWarning returns a boolean if a field has been set.
+func (o *PromptsCreateResponse) HasWarning() bool {
+	if o != nil && o.Warning.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetWarning gets a reference to the given NullableString and assigns it to the Warning field.
+func (o *PromptsCreateResponse) SetWarning(v string) {
+	o.Warning.Set(&v)
+}
+// SetWarningNil sets the value for Warning to be an explicit nil
+func (o *PromptsCreateResponse) SetWarningNil() {
+	o.Warning.Set(nil)
+}
+
+// UnsetWarning ensures that no value is present for Warning, not even an explicit nil
+func (o *PromptsCreateResponse) UnsetWarning() {
+	o.Warning.Unset()
+}
+
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *PromptsCreateResponse) GetData() []PromptsCreateResponseDataInner {
 	if o == nil || IsNil(o.Data) {
@@ -294,6 +416,15 @@ func (o PromptsCreateResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PromptsAvailable) {
 		toSerialize["prompts_available"] = o.PromptsAvailable
+	}
+	if !IsNil(o.Tracked) {
+		toSerialize["tracked"] = o.Tracked
+	}
+	if o.UntrackedReason.IsSet() {
+		toSerialize["untracked_reason"] = o.UntrackedReason.Get()
+	}
+	if o.Warning.IsSet() {
+		toSerialize["warning"] = o.Warning.Get()
 	}
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data

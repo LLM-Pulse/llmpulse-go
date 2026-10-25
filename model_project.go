@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -25,6 +25,10 @@ type Project struct {
 	Name *string `json:"name,omitempty"`
 	// LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use `name`.
 	BrandName NullableString `json:"brand_name,omitempty"`
+	// Whether scheduled runs include this project. False when it is paused, or when the plan's project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run
+	Tracked *bool `json:"tracked,omitempty"`
+	// Why tracked is false: paused or project_limit. Null when tracked
+	UntrackedReason NullableString `json:"untracked_reason,omitempty"`
 }
 
 // NewProject instantiates a new Project object
@@ -150,6 +154,80 @@ func (o *Project) UnsetBrandName() {
 	o.BrandName.Unset()
 }
 
+// GetTracked returns the Tracked field value if set, zero value otherwise.
+func (o *Project) GetTracked() bool {
+	if o == nil || IsNil(o.Tracked) {
+		var ret bool
+		return ret
+	}
+	return *o.Tracked
+}
+
+// GetTrackedOk returns a tuple with the Tracked field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Project) GetTrackedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Tracked) {
+		return nil, false
+	}
+	return o.Tracked, true
+}
+
+// HasTracked returns a boolean if a field has been set.
+func (o *Project) HasTracked() bool {
+	if o != nil && !IsNil(o.Tracked) {
+		return true
+	}
+
+	return false
+}
+
+// SetTracked gets a reference to the given bool and assigns it to the Tracked field.
+func (o *Project) SetTracked(v bool) {
+	o.Tracked = &v
+}
+
+// GetUntrackedReason returns the UntrackedReason field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *Project) GetUntrackedReason() string {
+	if o == nil || IsNil(o.UntrackedReason.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.UntrackedReason.Get()
+}
+
+// GetUntrackedReasonOk returns a tuple with the UntrackedReason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *Project) GetUntrackedReasonOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UntrackedReason.Get(), o.UntrackedReason.IsSet()
+}
+
+// HasUntrackedReason returns a boolean if a field has been set.
+func (o *Project) HasUntrackedReason() bool {
+	if o != nil && o.UntrackedReason.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUntrackedReason gets a reference to the given NullableString and assigns it to the UntrackedReason field.
+func (o *Project) SetUntrackedReason(v string) {
+	o.UntrackedReason.Set(&v)
+}
+// SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+func (o *Project) SetUntrackedReasonNil() {
+	o.UntrackedReason.Set(nil)
+}
+
+// UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+func (o *Project) UnsetUntrackedReason() {
+	o.UntrackedReason.Unset()
+}
+
 func (o Project) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -168,6 +246,12 @@ func (o Project) ToMap() (map[string]interface{}, error) {
 	}
 	if o.BrandName.IsSet() {
 		toSerialize["brand_name"] = o.BrandName.Get()
+	}
+	if !IsNil(o.Tracked) {
+		toSerialize["tracked"] = o.Tracked
+	}
+	if o.UntrackedReason.IsSet() {
+		toSerialize["untracked_reason"] = o.UntrackedReason.Get()
 	}
 	return toSerialize, nil
 }

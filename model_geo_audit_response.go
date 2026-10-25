@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -29,7 +29,7 @@ type GeoAuditResponse struct {
 	CountryCode NullableString `json:"country_code,omitempty"`
 	Cadence *string `json:"cadence,omitempty"`
 	Status *string `json:"status,omitempty"`
-	// user, or unreachable when three runs in a row could not reach the site
+	// Null unless status is paused. user (paused by hand), unreachable (three runs in a row could not reach the site) or quota (the account has more active recurring audits than its plan allows; resume it once there is room)
 	PausedReason NullableString `json:"paused_reason,omitempty"`
 	Schedule NullableGeoAuditSchedule `json:"schedule,omitempty"`
 	NextRunAt NullableTime `json:"next_run_at,omitempty"`

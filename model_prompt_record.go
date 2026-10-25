@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.70.0
+API version: 1.71.0
 Contact: info@llmpulse.ai
 */
 
@@ -38,6 +38,10 @@ type PromptRecord struct {
 	BrandKind NullableString `json:"brand_kind"`
 	// Null until the prompt has run
 	LastExecutedAt NullableTime `json:"last_executed_at"`
+	// Whether scheduled runs include this prompt. False when its project is paused or beyond the plan's project limit, or when the prompt is beyond the plan's prompt limit (the oldest prompts up to the limit run)
+	Tracked bool `json:"tracked"`
+	// Why tracked is false: paused, project_limit or prompt_limit. Null when tracked
+	UntrackedReason NullableString `json:"untracked_reason"`
 	// Opens this prompt in the app. The link names its project, so it opens there for any user with access to that project
 	AppUrl string `json:"app_url"`
 }
@@ -48,7 +52,7 @@ type _PromptRecord PromptRecord
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPromptRecord(id int32, promptText string, collectionId NullableInt32, collectionIds []int32, tags []TagRef, countryCode NullableString, languageCode NullableString, promptType NullableString, brandKind NullableString, lastExecutedAt NullableTime, appUrl string) *PromptRecord {
+func NewPromptRecord(id int32, promptText string, collectionId NullableInt32, collectionIds []int32, tags []TagRef, countryCode NullableString, languageCode NullableString, promptType NullableString, brandKind NullableString, lastExecutedAt NullableTime, tracked bool, untrackedReason NullableString, appUrl string) *PromptRecord {
 	this := PromptRecord{}
 	this.Id = id
 	this.PromptText = promptText
@@ -60,6 +64,8 @@ func NewPromptRecord(id int32, promptText string, collectionId NullableInt32, co
 	this.PromptType = promptType
 	this.BrandKind = brandKind
 	this.LastExecutedAt = lastExecutedAt
+	this.Tracked = tracked
+	this.UntrackedReason = untrackedReason
 	this.AppUrl = appUrl
 	return &this
 }
@@ -324,6 +330,56 @@ func (o *PromptRecord) SetLastExecutedAt(v time.Time) {
 	o.LastExecutedAt.Set(&v)
 }
 
+// GetTracked returns the Tracked field value
+func (o *PromptRecord) GetTracked() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Tracked
+}
+
+// GetTrackedOk returns a tuple with the Tracked field value
+// and a boolean to check if the value has been set.
+func (o *PromptRecord) GetTrackedOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Tracked, true
+}
+
+// SetTracked sets field value
+func (o *PromptRecord) SetTracked(v bool) {
+	o.Tracked = v
+}
+
+// GetUntrackedReason returns the UntrackedReason field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *PromptRecord) GetUntrackedReason() string {
+	if o == nil || o.UntrackedReason.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.UntrackedReason.Get()
+}
+
+// GetUntrackedReasonOk returns a tuple with the UntrackedReason field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptRecord) GetUntrackedReasonOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UntrackedReason.Get(), o.UntrackedReason.IsSet()
+}
+
+// SetUntrackedReason sets field value
+func (o *PromptRecord) SetUntrackedReason(v string) {
+	o.UntrackedReason.Set(&v)
+}
+
 // GetAppUrl returns the AppUrl field value
 func (o *PromptRecord) GetAppUrl() string {
 	if o == nil {
@@ -368,6 +424,8 @@ func (o PromptRecord) ToMap() (map[string]interface{}, error) {
 	toSerialize["prompt_type"] = o.PromptType.Get()
 	toSerialize["brand_kind"] = o.BrandKind.Get()
 	toSerialize["last_executed_at"] = o.LastExecutedAt.Get()
+	toSerialize["tracked"] = o.Tracked
+	toSerialize["untracked_reason"] = o.UntrackedReason.Get()
 	toSerialize["app_url"] = o.AppUrl
 	return toSerialize, nil
 }
@@ -387,6 +445,8 @@ func (o *PromptRecord) UnmarshalJSON(data []byte) (err error) {
 		"prompt_type",
 		"brand_kind",
 		"last_executed_at",
+		"tracked",
+		"untracked_reason",
 		"app_url",
 	}
 
