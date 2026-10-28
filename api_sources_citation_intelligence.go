@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.73.0
+API version: 1.74.0
 Contact: info@llmpulse.ai
 */
 
@@ -163,7 +163,7 @@ func (r ApiGetCitedUrlDetailRequest) ProjectId(projectId int32) ApiGetCitedUrlDe
 	return r
 }
 
-// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen and doubao are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those ten that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
 func (r ApiGetCitedUrlDetailRequest) Model(model string) ApiGetCitedUrlDetailRequest {
 	r.model = &model
 	return r
@@ -399,7 +399,7 @@ func (r ApiGetMentionsByCitingDomainRequest) Domains(domains []string) ApiGetMen
 	return r
 }
 
-// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen and doubao are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those ten that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
 func (r ApiGetMentionsByCitingDomainRequest) Model(model string) ApiGetMentionsByCitingDomainRequest {
 	r.model = &model
 	return r
@@ -627,7 +627,7 @@ func (r ApiListCitationGroupsRequest) Direction(direction string) ApiListCitatio
 	return r
 }
 
-// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai and baidu_ai are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those seven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
+// Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen and doubao are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those ten that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message.
 func (r ApiListCitationGroupsRequest) Model(model string) ApiListCitationGroupsRequest {
 	r.model = &model
 	return r
