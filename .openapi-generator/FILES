@@ -207,6 +207,7 @@ docs/ProjectCreateResponseEmailSubscription.md
 docs/ProjectCreateResponseLimits.md
 docs/ProjectCreateResponsePrompts.md
 docs/ProjectCreateResponseSameDomainProjectsInner.md
+docs/ProjectDeleteResponse.md
 docs/ProjectDetails.md
 docs/ProjectDetailsAllOfAgentTraffic.md
 docs/ProjectDetailsAllOfAiTraffic.md
@@ -494,6 +495,7 @@ model_project_create_response_email_subscription.go
 model_project_create_response_limits.go
 model_project_create_response_prompts.go
 model_project_create_response_same_domain_projects_inner.go
+model_project_delete_response.go
 model_project_details.go
 model_project_details_all_of_agent_traffic.go
 model_project_details_all_of_ai_traffic.go
