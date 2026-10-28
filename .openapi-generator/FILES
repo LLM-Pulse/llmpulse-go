@@ -8,6 +8,7 @@ api_ai_agent_traffic.go
 api_ai_model_insights.go
 api_annotations.go
 api_answers.go
+api_api_keys.go
 api_collections_tags.go
 api_competitors.go
 api_custom_reports.go
@@ -33,6 +34,7 @@ client.go
 configuration.go
 docs/AIAgentTrafficAPI.md
 docs/AIModelInsightsAPI.md
+docs/APIKeysAPI.md
 docs/AccountAPI.md
 docs/AccountCapacity.md
 docs/AccountQuota.md
@@ -55,6 +57,7 @@ docs/AnswerDetailsLocale.md
 docs/AnswersAPI.md
 docs/ApiError.md
 docs/ApiErrorError.md
+docs/ApiKeyInfo.md
 docs/AssignPromptTagsRequest.md
 docs/CatalogProduct.md
 docs/CatalogPromptSuggestion.md
@@ -85,6 +88,8 @@ docs/CompetitorSuggestion.md
 docs/CompetitorSuggestionsResponse.md
 docs/CompetitorsAPI.md
 docs/CreateAnnotationRequest.md
+docs/CreateApiKey201Response.md
+docs/CreateApiKeyRequest.md
 docs/CreateCollectionRequest.md
 docs/CreateCompetitorRequest.md
 docs/CreateProjectDraftRequest.md
@@ -145,6 +150,7 @@ docs/IntelligenceTaskUpdateRequest.md
 docs/IntelligenceTaskUpdateResponse.md
 docs/IntelligenceTasksResponse.md
 docs/LaunchRecommendationsRequest.md
+docs/ListApiKeys200Response.md
 docs/ListCompetitors200Response.md
 docs/ListProjects200Response.md
 docs/ListTeamInvitations200Response.md
@@ -243,6 +249,7 @@ docs/RecommendationsResponse.md
 docs/RemovePromptTagsRequest.md
 docs/RemoveTeamMember200Response.md
 docs/ReputationStudiesAPI.md
+docs/RevokeApiKey200Response.md
 docs/RevokeTeamInvitation200Response.md
 docs/SampleWebhookPayloads200Response.md
 docs/SampleWebhookPayloads200ResponseDataInner.md
@@ -346,6 +353,7 @@ model_answer_details.go
 model_answer_details_locale.go
 model_api_error.go
 model_api_error_error.go
+model_api_key_info.go
 model_assign_prompt_tags_request.go
 model_catalog_product.go
 model_catalog_prompt_suggestion.go
@@ -374,6 +382,8 @@ model_competitor_mentions_response.go
 model_competitor_suggestion.go
 model_competitor_suggestions_response.go
 model_create_annotation_request.go
+model_create_api_key_201_response.go
+model_create_api_key_request.go
 model_create_collection_request.go
 model_create_competitor_request.go
 model_create_project_draft_request.go
@@ -430,6 +440,7 @@ model_intelligence_task_update_request.go
 model_intelligence_task_update_response.go
 model_intelligence_tasks_response.go
 model_launch_recommendations_request.go
+model_list_api_keys_200_response.go
 model_list_competitors_200_response.go
 model_list_projects_200_response.go
 model_list_team_invitations_200_response.go
@@ -521,6 +532,7 @@ model_recommendation_summary_summary.go
 model_recommendations_response.go
 model_remove_prompt_tags_request.go
 model_remove_team_member_200_response.go
+model_revoke_api_key_200_response.go
 model_revoke_team_invitation_200_response.go
 model_sample_webhook_payloads_200_response.go
 model_sample_webhook_payloads_200_response_data_inner.go

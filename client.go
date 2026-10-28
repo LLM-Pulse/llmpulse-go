@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.71.0
+API version: 1.72.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,7 +42,7 @@ var (
 	queryDescape    = strings.NewReplacer( "%5B", "[", "%5D", "]" )
 )
 
-// APIClient manages communication with the LLM Pulse API API v1.71.0
+// APIClient manages communication with the LLM Pulse API API v1.72.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -53,6 +53,8 @@ type APIClient struct {
 	AIAgentTrafficAPI *AIAgentTrafficAPIService
 
 	AIModelInsightsAPI *AIModelInsightsAPIService
+
+	APIKeysAPI *APIKeysAPIService
 
 	AccountAPI *AccountAPIService
 
@@ -121,6 +123,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	// API Services
 	c.AIAgentTrafficAPI = (*AIAgentTrafficAPIService)(&c.common)
 	c.AIModelInsightsAPI = (*AIModelInsightsAPIService)(&c.common)
+	c.APIKeysAPI = (*APIKeysAPIService)(&c.common)
 	c.AccountAPI = (*AccountAPIService)(&c.common)
 	c.AnnotationsAPI = (*AnnotationsAPIService)(&c.common)
 	c.AnswersAPI = (*AnswersAPIService)(&c.common)
