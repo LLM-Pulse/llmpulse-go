@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.74.0
+API version: 1.75.0
 Contact: info@llmpulse.ai
 */
 
@@ -1036,7 +1036,7 @@ func (r ApiListRedditCitationsRequest) Brand(brand string) ApiListRedditCitation
 	return r
 }
 
-// Sort field; the allowed set depends on view
+// Sort field; the allowed set depends on view, and view&#x3D;breakdowns accepts none
 func (r ApiListRedditCitationsRequest) Order(order string) ApiListRedditCitationsRequest {
 	r.order = &order
 	return r
@@ -1107,7 +1107,7 @@ func (r ApiListRedditCitationsRequest) Execute() (*http.Response, error) {
 /*
 ListRedditCitations List cited Reddit content
 
-Which Reddit content AI answers cite for your tracked prompts. view=subreddits (default) returns one row per subreddit with its citation count, unique authors and positive/negative sentiment split; view=authors returns one row per author; view=threads returns the individual cited threads with upvotes, comments, average position and dominant sentiment. Requires the Growth plan or above.
+Which Reddit content AI answers cite for your tracked prompts. view=subreddits (default) returns one row per subreddit with its citation count, unique authors and positive/negative sentiment split; view=authors returns one row per author; view=threads returns the individual cited threads with upvotes, comments, average position and dominant sentiment. view=breakdowns returns the figures behind Reddit Intelligence > Sentiment and breakdowns: citations is the number of Reddit citations after the filters, and each row is one slice, with breakdown (sentiment, model or country), key, count and pct, the share within its breakdown as the page charts it. Sentiment is that of the AI answer that cited Reddit, with all five labels (very_positive to very_negative) listed, zero included; order and direction do not apply. Requires the Growth plan or above.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListRedditCitationsRequest
