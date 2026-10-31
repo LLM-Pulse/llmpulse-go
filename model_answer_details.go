@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.75.0
+API version: 1.76.0
 Contact: info@llmpulse.ai
 */
 
@@ -34,7 +34,7 @@ type AnswerDetails struct {
 	DurationMs NullableFloat32 `json:"duration_ms,omitempty"`
 	// Null while the answer is still pending
 	Success NullableBool `json:"success,omitempty"`
-	// True for a sentinel non-answer (the provider returned nothing after all retries, or the model declined to answer, today only Gemini); excluded from platform metrics
+	// True for a sentinel non-answer (no answer could be collected after all retries, or the model declined to answer, today only Gemini); excluded from platform metrics
 	NoResult *bool `json:"no_result,omitempty"`
 	FanOutQueries []string `json:"fan_out_queries,omitempty"`
 	Mentions []map[string]interface{} `json:"mentions,omitempty"`
