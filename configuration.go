@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.0
+API version: 1.76.1
 Contact: info@llmpulse.ai
 */
 
@@ -90,7 +90,7 @@ type Configuration struct {
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		DefaultHeader:    make(map[string]string),
-		UserAgent:        "OpenAPI-Generator/1.76.0/go",
+		UserAgent:        "OpenAPI-Generator/1.76.1/go",
 		Debug:            false,
 		Servers:          ServerConfigurations{
 			{

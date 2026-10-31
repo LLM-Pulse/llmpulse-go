@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.0
+API version: 1.76.1
 Contact: info@llmpulse.ai
 */
 
@@ -317,7 +317,7 @@ func (r ApiDeleteGeoAuditRequest) Execute() (*GeoAuditArchived, *http.Response, 
 /*
 DeleteGeoAudit Delete (archive) a GEO audit
 
-Archives the audit. Requires a `read_write` scope API key and, for team members, delete permission on GEO Optimization.
+Archives the audit. Requires a `read_write` scope API key and, for team members, delete permission on GEO Audits.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param id Audit id
@@ -1630,7 +1630,7 @@ func (r ApiUpdateGeoAuditRequest) Execute() (*GeoAuditResponse, *http.Response, 
 /*
 UpdateGeoAudit Update a GEO audit
 
-Updates the schedule, the email alerts or the status. Making an audit recurring or resuming it counts against the plan limit of active recurring audits (ERR_LIMIT_REACHED). Requires a `read_write` scope API key and, for team members, update permission on GEO Optimization.
+Updates the schedule, the email alerts or the status. Making an audit recurring or resuming it counts against the plan limit of active recurring audits (ERR_LIMIT_REACHED). Requires a `read_write` scope API key and, for team members, update permission on GEO Audits.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param id Audit id
@@ -1777,7 +1777,7 @@ func (r ApiUpdateGeoAuditIssueRequest) Execute() (*GeoAuditIssueResponse, *http.
 /*
 UpdateGeoAuditIssue Accept or reopen a GEO audit issue
 
-Requires a `read_write` scope API key and, for team members, update permission on GEO Optimization.
+Requires a `read_write` scope API key and, for team members, update permission on GEO Audits.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param geoAuditId Audit id
