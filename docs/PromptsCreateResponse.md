@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **TotalAfter** | Pointer to **int32** |  | [optional] 
 **PromptsAvailable** | Pointer to **int32** |  | [optional] 
 **Tracked** | Pointer to **bool** | Whether scheduled runs include the project the prompts were added to. False when it is paused or beyond the plan&#39;s project limit, so the new prompts do not run until that changes | [optional] 
-**UntrackedReason** | Pointer to **NullableString** | Why tracked is false: paused or project_limit. Null when tracked | [optional] 
+**UntrackedReason** | Pointer to **NullableString** | Why tracked is false: pitch_project, paused or project_limit. Null when tracked | [optional] 
 **Warning** | Pointer to **NullableString** | What to do when tracked is false. Null when tracked | [optional] 
 **Data** | Pointer to [**[]PromptsCreateResponseDataInner**](PromptsCreateResponseDataInner.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 

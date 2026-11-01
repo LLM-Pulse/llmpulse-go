@@ -37,6 +37,7 @@ docs/AIModelInsightsAPI.md
 docs/APIKeysAPI.md
 docs/AccountAPI.md
 docs/AccountCapacity.md
+docs/AccountPitchQuota.md
 docs/AccountQuota.md
 docs/Actor.md
 docs/AgentBot.md
@@ -212,6 +213,7 @@ docs/ProjectDetails.md
 docs/ProjectDetailsAllOfAgentTraffic.md
 docs/ProjectDetailsAllOfAiTraffic.md
 docs/ProjectDetailsAllOfDataCoverage.md
+docs/ProjectDetailsAllOfPitchRun.md
 docs/ProjectDetailsAllOfSearchConsole.md
 docs/ProjectDetailsAllOfStats.md
 docs/ProjectDetailsAllOfStatsPromptsByBrandKind.md
@@ -336,6 +338,7 @@ git_push.sh
 go.mod
 go.sum
 model_account_capacity.go
+model_account_pitch_quota.go
 model_account_quota.go
 model_actor.go
 model_agent_bot.go
@@ -500,6 +503,7 @@ model_project_details.go
 model_project_details_all_of_agent_traffic.go
 model_project_details_all_of_ai_traffic.go
 model_project_details_all_of_data_coverage.go
+model_project_details_all_of_pitch_run.go
 model_project_details_all_of_search_console.go
 model_project_details_all_of_stats.go
 model_project_details_all_of_stats_prompts_by_brand_kind.go

@@ -556,7 +556,7 @@ Name | Type | Description  | Notes
 
 ## ListProjects
 
-> ListProjects200Response ListProjects(ctx).Output(output).Execute()
+> ListProjects200Response ListProjects(ctx).Pitch(pitch).Output(output).Execute()
 
 List projects
 
@@ -575,11 +575,12 @@ import (
 )
 
 func main() {
+	pitch := "pitch_example" // string | exclude (default) leaves pitch projects out, include lists them with the tracked projects, only lists pitch projects alone (optional) (default to "exclude")
 	output := "output_example" // string | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. 'flat' returns the same metadata plus 'columns' and 'rows'; 'csv' returns those rows as text/csv. Errors are always returned as JSON. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ProjectsAPI.ListProjects(context.Background()).Output(output).Execute()
+	resp, r, err := apiClient.ProjectsAPI.ListProjects(context.Background()).Pitch(pitch).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.ListProjects``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -600,6 +601,7 @@ Other parameters are passed through a pointer to a apiListProjectsRequest struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **pitch** | **string** | exclude (default) leaves pitch projects out, include lists them with the tracked projects, only lists pitch projects alone | [default to &quot;exclude&quot;]
  **output** | **string** | Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON. | 
 
 ### Return type

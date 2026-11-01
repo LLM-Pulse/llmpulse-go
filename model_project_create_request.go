@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -56,6 +56,8 @@ type ProjectCreateRequest struct {
 	// Embed-enabled (Enterprise) accounts only; other accounts receive ERR_PLAN_REQUIRED. Idempotency key and embed-session join key, unique per account
 	ExternalIdentifier *string `json:"external_identifier,omitempty" validate:"regexp=^[a-z0-9_-]{1\\,64}$"`
 	ExecutePromptsImmediately *bool `json:"execute_prompts_immediately,omitempty"`
+	// Create a pitch project, a one-off snapshot for a prospect. It runs its prompts once across the account's AI models right away, takes no project slot and its prompts do not count against the prompt quota, and it is deleted 90 days later unless converted by sending pitch false to PATCH /projects/{id}. It uses one of the month's pitch projects (GET /account, limits.pitch_projects), needs access approved for the account and a paid subscription on the Scale tier or higher, takes 1 to 100 prompts, and cannot use a domain the account already tracks or pitched in the last 90 days. execute_prompts_immediately must not be false
+	Pitch *bool `json:"pitch,omitempty"`
 }
 
 type _ProjectCreateRequest ProjectCreateRequest
@@ -76,6 +78,8 @@ func NewProjectCreateRequest(websiteUrl string, name string, mainCountry string,
 	this.WeeklyEmailSubscribed = &weeklyEmailSubscribed
 	var executePromptsImmediately bool = true
 	this.ExecutePromptsImmediately = &executePromptsImmediately
+	var pitch bool = false
+	this.Pitch = &pitch
 	return &this
 }
 
@@ -90,6 +94,8 @@ func NewProjectCreateRequestWithDefaults() *ProjectCreateRequest {
 	this.WeeklyEmailSubscribed = &weeklyEmailSubscribed
 	var executePromptsImmediately bool = true
 	this.ExecutePromptsImmediately = &executePromptsImmediately
+	var pitch bool = false
+	this.Pitch = &pitch
 	return &this
 }
 
@@ -765,6 +771,38 @@ func (o *ProjectCreateRequest) SetExecutePromptsImmediately(v bool) {
 	o.ExecutePromptsImmediately = &v
 }
 
+// GetPitch returns the Pitch field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetPitch() bool {
+	if o == nil || IsNil(o.Pitch) {
+		var ret bool
+		return ret
+	}
+	return *o.Pitch
+}
+
+// GetPitchOk returns a tuple with the Pitch field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetPitchOk() (*bool, bool) {
+	if o == nil || IsNil(o.Pitch) {
+		return nil, false
+	}
+	return o.Pitch, true
+}
+
+// HasPitch returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasPitch() bool {
+	if o != nil && !IsNil(o.Pitch) {
+		return true
+	}
+
+	return false
+}
+
+// SetPitch gets a reference to the given bool and assigns it to the Pitch field.
+func (o *ProjectCreateRequest) SetPitch(v bool) {
+	o.Pitch = &v
+}
+
 func (o ProjectCreateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -832,6 +870,9 @@ func (o ProjectCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.ExecutePromptsImmediately) {
 		toSerialize["execute_prompts_immediately"] = o.ExecutePromptsImmediately
+	}
+	if !IsNil(o.Pitch) {
+		toSerialize["pitch"] = o.Pitch
 	}
 	return toSerialize, nil
 }

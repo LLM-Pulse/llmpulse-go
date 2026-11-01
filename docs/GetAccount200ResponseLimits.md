@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **TeamMembers** | Pointer to [**AccountCapacity**](AccountCapacity.md) |  | [optional] 
 **RecurringGeoAudits** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
 **GeoAuditManualRuns** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
+**PitchProjects** | Pointer to [**AccountPitchQuota**](AccountPitchQuota.md) |  | [optional] 
 
 ## Methods
 
@@ -205,6 +206,31 @@ SetGeoAuditManualRuns sets GeoAuditManualRuns field to given value.
 `func (o *GetAccount200ResponseLimits) HasGeoAuditManualRuns() bool`
 
 HasGeoAuditManualRuns returns a boolean if a field has been set.
+
+### GetPitchProjects
+
+`func (o *GetAccount200ResponseLimits) GetPitchProjects() AccountPitchQuota`
+
+GetPitchProjects returns the PitchProjects field if non-nil, zero value otherwise.
+
+### GetPitchProjectsOk
+
+`func (o *GetAccount200ResponseLimits) GetPitchProjectsOk() (*AccountPitchQuota, bool)`
+
+GetPitchProjectsOk returns a tuple with the PitchProjects field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPitchProjects
+
+`func (o *GetAccount200ResponseLimits) SetPitchProjects(v AccountPitchQuota)`
+
+SetPitchProjects sets PitchProjects field to given value.
+
+### HasPitchProjects
+
+`func (o *GetAccount200ResponseLimits) HasPitchProjects() bool`
+
+HasPitchProjects returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

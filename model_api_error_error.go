@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,7 +22,7 @@ var _ MappedNullable = &ApiErrorError{}
 type ApiErrorError struct {
 	Code *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
-	// Extra detail for some codes. A not-connected or access-revoked error from the Search Console, AI traffic, web analytics or agent traffic endpoints carries connect_url, the in-app page where the user connects or reconnects the source.
+	// Extra detail for some codes. A not-connected or access-revoked error from the Search Console, AI traffic, web analytics or agent traffic endpoints carries connect_url, the in-app page where the user connects or reconnects the source. A prompt write refused because a launched pitch project's prompts are fixed carries reason pitch_prompts_frozen.
 	Meta map[string]interface{} `json:"meta,omitempty"`
 }
 

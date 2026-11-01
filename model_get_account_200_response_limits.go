@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,6 +27,7 @@ type GetAccount200ResponseLimits struct {
 	TeamMembers *AccountCapacity `json:"team_members,omitempty"`
 	RecurringGeoAudits *AccountQuota `json:"recurring_geo_audits,omitempty"`
 	GeoAuditManualRuns *AccountQuota `json:"geo_audit_manual_runs,omitempty"`
+	PitchProjects *AccountPitchQuota `json:"pitch_projects,omitempty"`
 }
 
 // NewGetAccount200ResponseLimits instantiates a new GetAccount200ResponseLimits object
@@ -270,6 +271,38 @@ func (o *GetAccount200ResponseLimits) SetGeoAuditManualRuns(v AccountQuota) {
 	o.GeoAuditManualRuns = &v
 }
 
+// GetPitchProjects returns the PitchProjects field value if set, zero value otherwise.
+func (o *GetAccount200ResponseLimits) GetPitchProjects() AccountPitchQuota {
+	if o == nil || IsNil(o.PitchProjects) {
+		var ret AccountPitchQuota
+		return ret
+	}
+	return *o.PitchProjects
+}
+
+// GetPitchProjectsOk returns a tuple with the PitchProjects field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200ResponseLimits) GetPitchProjectsOk() (*AccountPitchQuota, bool) {
+	if o == nil || IsNil(o.PitchProjects) {
+		return nil, false
+	}
+	return o.PitchProjects, true
+}
+
+// HasPitchProjects returns a boolean if a field has been set.
+func (o *GetAccount200ResponseLimits) HasPitchProjects() bool {
+	if o != nil && !IsNil(o.PitchProjects) {
+		return true
+	}
+
+	return false
+}
+
+// SetPitchProjects gets a reference to the given AccountPitchQuota and assigns it to the PitchProjects field.
+func (o *GetAccount200ResponseLimits) SetPitchProjects(v AccountPitchQuota) {
+	o.PitchProjects = &v
+}
+
 func (o GetAccount200ResponseLimits) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -300,6 +333,9 @@ func (o GetAccount200ResponseLimits) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.GeoAuditManualRuns) {
 		toSerialize["geo_audit_manual_runs"] = o.GeoAuditManualRuns
+	}
+	if !IsNil(o.PitchProjects) {
+		toSerialize["pitch_projects"] = o.PitchProjects
 	}
 	return toSerialize, nil
 }

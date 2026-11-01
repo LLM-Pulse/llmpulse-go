@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -13,6 +13,7 @@ package llmpulse
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // checks if the Project type satisfies the MappedNullable interface at compile time
@@ -25,10 +26,14 @@ type Project struct {
 	Name *string `json:"name,omitempty"`
 	// LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use `name`.
 	BrandName NullableString `json:"brand_name,omitempty"`
-	// Whether scheduled runs include this project. False when it is paused, or when the plan's project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run
+	// Whether scheduled runs include this project. False when it is a pitch project, which runs once, when it is paused, or when the plan's project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run
 	Tracked *bool `json:"tracked,omitempty"`
-	// Why tracked is false: paused or project_limit. Null when tracked
+	// Why tracked is false: pitch_project, paused or project_limit. Null when tracked
 	UntrackedReason NullableString `json:"untracked_reason,omitempty"`
+	// Whether this is a pitch project, a one-off snapshot that runs its prompts once, takes no project slot and is deleted at pitch_expires_at unless it is converted (PATCH /projects/{id} with pitch false)
+	Pitch *bool `json:"pitch,omitempty"`
+	// When a pitch project is deleted, with its data, unless it is converted first. Null for a tracked project
+	PitchExpiresAt NullableTime `json:"pitch_expires_at,omitempty"`
 }
 
 // NewProject instantiates a new Project object
@@ -228,6 +233,80 @@ func (o *Project) UnsetUntrackedReason() {
 	o.UntrackedReason.Unset()
 }
 
+// GetPitch returns the Pitch field value if set, zero value otherwise.
+func (o *Project) GetPitch() bool {
+	if o == nil || IsNil(o.Pitch) {
+		var ret bool
+		return ret
+	}
+	return *o.Pitch
+}
+
+// GetPitchOk returns a tuple with the Pitch field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Project) GetPitchOk() (*bool, bool) {
+	if o == nil || IsNil(o.Pitch) {
+		return nil, false
+	}
+	return o.Pitch, true
+}
+
+// HasPitch returns a boolean if a field has been set.
+func (o *Project) HasPitch() bool {
+	if o != nil && !IsNil(o.Pitch) {
+		return true
+	}
+
+	return false
+}
+
+// SetPitch gets a reference to the given bool and assigns it to the Pitch field.
+func (o *Project) SetPitch(v bool) {
+	o.Pitch = &v
+}
+
+// GetPitchExpiresAt returns the PitchExpiresAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *Project) GetPitchExpiresAt() time.Time {
+	if o == nil || IsNil(o.PitchExpiresAt.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.PitchExpiresAt.Get()
+}
+
+// GetPitchExpiresAtOk returns a tuple with the PitchExpiresAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *Project) GetPitchExpiresAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PitchExpiresAt.Get(), o.PitchExpiresAt.IsSet()
+}
+
+// HasPitchExpiresAt returns a boolean if a field has been set.
+func (o *Project) HasPitchExpiresAt() bool {
+	if o != nil && o.PitchExpiresAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPitchExpiresAt gets a reference to the given NullableTime and assigns it to the PitchExpiresAt field.
+func (o *Project) SetPitchExpiresAt(v time.Time) {
+	o.PitchExpiresAt.Set(&v)
+}
+// SetPitchExpiresAtNil sets the value for PitchExpiresAt to be an explicit nil
+func (o *Project) SetPitchExpiresAtNil() {
+	o.PitchExpiresAt.Set(nil)
+}
+
+// UnsetPitchExpiresAt ensures that no value is present for PitchExpiresAt, not even an explicit nil
+func (o *Project) UnsetPitchExpiresAt() {
+	o.PitchExpiresAt.Unset()
+}
+
 func (o Project) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -252,6 +331,12 @@ func (o Project) ToMap() (map[string]interface{}, error) {
 	}
 	if o.UntrackedReason.IsSet() {
 		toSerialize["untracked_reason"] = o.UntrackedReason.Get()
+	}
+	if !IsNil(o.Pitch) {
+		toSerialize["pitch"] = o.Pitch
+	}
+	if o.PitchExpiresAt.IsSet() {
+		toSerialize["pitch_expires_at"] = o.PitchExpiresAt.Get()
 	}
 	return toSerialize, nil
 }

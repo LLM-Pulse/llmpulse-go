@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,7 +42,7 @@ func (r ApiPingRequest) Execute() (*Ping200Response, *http.Response, error) {
 /*
 Ping Health check
 
-Validates the API key and optionally pings a project. Returns the authenticated user_id, project (if project_id is supplied), and a request_id.
+Validates the API key and optionally pings a project. Returns the authenticated user_id, project (if project_id is supplied), and a request_id. The project object carries only id, name and brand_name; GET /dimensions/projects/{id} returns the rest, pitch and tracked included.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiPingRequest

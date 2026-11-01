@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -39,7 +39,7 @@ type PromptsImportResponse struct {
 	PromptsAvailable NullableInt32 `json:"prompts_available"`
 	// Whether scheduled runs include the project the prompts were imported into. False when it is paused or beyond the plan's project limit, so the new prompts do not run until that changes
 	Tracked bool `json:"tracked"`
-	// Why tracked is false: paused or project_limit. Null when tracked
+	// Why tracked is false: pitch_project, paused or project_limit. Null when tracked
 	UntrackedReason NullableString `json:"untracked_reason"`
 	// What to do when tracked is false. Null when tracked
 	Warning NullableString `json:"warning"`

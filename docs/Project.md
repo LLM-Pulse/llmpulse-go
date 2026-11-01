@@ -7,8 +7,10 @@ Name | Type | Description | Notes
 **Id** | Pointer to **int32** |  | [optional] 
 **Name** | Pointer to **string** | Internal project label (sidebar, settings, admin) | [optional] 
 **BrandName** | Pointer to **NullableString** | LLM-facing brand label (used in prompts and customer-facing charts). Null when not set, in which case prompts and charts use &#x60;name&#x60;. | [optional] 
-**Tracked** | Pointer to **bool** | Whether scheduled runs include this project. False when it is paused, or when the plan&#39;s project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run | [optional] 
-**UntrackedReason** | Pointer to **NullableString** | Why tracked is false: paused or project_limit. Null when tracked | [optional] 
+**Tracked** | Pointer to **bool** | Whether scheduled runs include this project. False when it is a pitch project, which runs once, when it is paused, or when the plan&#39;s project limit leaves it out (the oldest projects up to the limit run), so its prompts do not run | [optional] 
+**UntrackedReason** | Pointer to **NullableString** | Why tracked is false: pitch_project, paused or project_limit. Null when tracked | [optional] 
+**Pitch** | Pointer to **bool** | Whether this is a pitch project, a one-off snapshot that runs its prompts once, takes no project slot and is deleted at pitch_expires_at unless it is converted (PATCH /projects/{id} with pitch false) | [optional] 
+**PitchExpiresAt** | Pointer to **NullableTime** | When a pitch project is deleted, with its data, unless it is converted first. Null for a tracked project | [optional] 
 
 ## Methods
 
@@ -174,6 +176,66 @@ HasUntrackedReason returns a boolean if a field has been set.
 `func (o *Project) UnsetUntrackedReason()`
 
 UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+### GetPitch
+
+`func (o *Project) GetPitch() bool`
+
+GetPitch returns the Pitch field if non-nil, zero value otherwise.
+
+### GetPitchOk
+
+`func (o *Project) GetPitchOk() (*bool, bool)`
+
+GetPitchOk returns a tuple with the Pitch field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPitch
+
+`func (o *Project) SetPitch(v bool)`
+
+SetPitch sets Pitch field to given value.
+
+### HasPitch
+
+`func (o *Project) HasPitch() bool`
+
+HasPitch returns a boolean if a field has been set.
+
+### GetPitchExpiresAt
+
+`func (o *Project) GetPitchExpiresAt() time.Time`
+
+GetPitchExpiresAt returns the PitchExpiresAt field if non-nil, zero value otherwise.
+
+### GetPitchExpiresAtOk
+
+`func (o *Project) GetPitchExpiresAtOk() (*time.Time, bool)`
+
+GetPitchExpiresAtOk returns a tuple with the PitchExpiresAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPitchExpiresAt
+
+`func (o *Project) SetPitchExpiresAt(v time.Time)`
+
+SetPitchExpiresAt sets PitchExpiresAt field to given value.
+
+### HasPitchExpiresAt
+
+`func (o *Project) HasPitchExpiresAt() bool`
+
+HasPitchExpiresAt returns a boolean if a field has been set.
+
+### SetPitchExpiresAtNil
+
+`func (o *Project) SetPitchExpiresAtNil(b bool)`
+
+ SetPitchExpiresAtNil sets the value for PitchExpiresAt to be an explicit nil
+
+### UnsetPitchExpiresAt
+`func (o *Project) UnsetPitchExpiresAt()`
+
+UnsetPitchExpiresAt ensures that no value is present for PitchExpiresAt, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

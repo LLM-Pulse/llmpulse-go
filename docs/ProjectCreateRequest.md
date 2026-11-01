@@ -26,6 +26,7 @@ Name | Type | Description | Notes
 **WeeklyEmailSubscribed** | Pointer to **bool** |  | [optional] [default to false]
 **ExternalIdentifier** | Pointer to **string** | Embed-enabled (Enterprise) accounts only; other accounts receive ERR_PLAN_REQUIRED. Idempotency key and embed-session join key, unique per account | [optional] 
 **ExecutePromptsImmediately** | Pointer to **bool** |  | [optional] [default to true]
+**Pitch** | Pointer to **bool** | Create a pitch project, a one-off snapshot for a prospect. It runs its prompts once across the account&#39;s AI models right away, takes no project slot and its prompts do not count against the prompt quota, and it is deleted 90 days later unless converted by sending pitch false to PATCH /projects/{id}. It uses one of the month&#39;s pitch projects (GET /account, limits.pitch_projects), needs access approved for the account and a paid subscription on the Scale tier or higher, takes 1 to 100 prompts, and cannot use a domain the account already tracks or pitched in the last 90 days. execute_prompts_immediately must not be false | [optional] [default to false]
 
 ## Methods
 
@@ -575,6 +576,31 @@ SetExecutePromptsImmediately sets ExecutePromptsImmediately field to given value
 `func (o *ProjectCreateRequest) HasExecutePromptsImmediately() bool`
 
 HasExecutePromptsImmediately returns a boolean if a field has been set.
+
+### GetPitch
+
+`func (o *ProjectCreateRequest) GetPitch() bool`
+
+GetPitch returns the Pitch field if non-nil, zero value otherwise.
+
+### GetPitchOk
+
+`func (o *ProjectCreateRequest) GetPitchOk() (*bool, bool)`
+
+GetPitchOk returns a tuple with the Pitch field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPitch
+
+`func (o *ProjectCreateRequest) SetPitch(v bool)`
+
+SetPitch sets Pitch field to given value.
+
+### HasPitch
+
+`func (o *ProjectCreateRequest) HasPitch() bool`
+
+HasPitch returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

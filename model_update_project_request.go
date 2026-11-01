@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.76.1
+API version: 1.77.0
 Contact: info@llmpulse.ai
 */
 
@@ -46,6 +46,8 @@ type UpdateProjectRequest struct {
 	AdditionalOwnedDomains []string `json:"additional_owned_domains,omitempty"`
 	// The most prompts this project can hold, a JSON integer from 1 to 2147483647; null removes the project's limit. A string, a decimal, 0 or a negative number is rejected with ERR_INVALID_PARAM. The account's plan allowance still applies, so the lower of the two wins (GET /dimensions/projects/{id} returns prompt_limit and stats.prompts_available). A limit below the current count keeps every prompt and refuses new ones until the project is under it; note says what the project can now hold. Account owner or a co-owner with Projects update permission only; a key limited to some projects answers ERR_KEY_PROJECT_SCOPED. The Swift, Kotlin, Dart and R clients leave a null field out of the request body, so they can set a limit but not remove one: remove it with a plain HTTP request that sends prompt_limit as null
 	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
+	// false converts a pitch project into a tracked project. Send it on its own, without other fields; true is rejected
+	Pitch *bool `json:"pitch,omitempty"`
 }
 
 // NewUpdateProjectRequest instantiates a new UpdateProjectRequest object
@@ -491,6 +493,38 @@ func (o *UpdateProjectRequest) UnsetPromptLimit() {
 	o.PromptLimit.Unset()
 }
 
+// GetPitch returns the Pitch field value if set, zero value otherwise.
+func (o *UpdateProjectRequest) GetPitch() bool {
+	if o == nil || IsNil(o.Pitch) {
+		var ret bool
+		return ret
+	}
+	return *o.Pitch
+}
+
+// GetPitchOk returns a tuple with the Pitch field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateProjectRequest) GetPitchOk() (*bool, bool) {
+	if o == nil || IsNil(o.Pitch) {
+		return nil, false
+	}
+	return o.Pitch, true
+}
+
+// HasPitch returns a boolean if a field has been set.
+func (o *UpdateProjectRequest) HasPitch() bool {
+	if o != nil && !IsNil(o.Pitch) {
+		return true
+	}
+
+	return false
+}
+
+// SetPitch gets a reference to the given bool and assigns it to the Pitch field.
+func (o *UpdateProjectRequest) SetPitch(v bool) {
+	o.Pitch = &v
+}
+
 func (o UpdateProjectRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -539,6 +573,9 @@ func (o UpdateProjectRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if o.PromptLimit.IsSet() {
 		toSerialize["prompt_limit"] = o.PromptLimit.Get()
+	}
+	if !IsNil(o.Pitch) {
+		toSerialize["pitch"] = o.Pitch
 	}
 	return toSerialize, nil
 }
