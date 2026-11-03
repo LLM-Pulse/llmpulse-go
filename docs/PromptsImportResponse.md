@@ -15,14 +15,15 @@ Name | Type | Description | Notes
 **PromptsAvailable** | **NullableInt32** | Prompt slots left on the plan; null when unlimited | 
 **Tracked** | **bool** | Whether scheduled runs include the project the prompts were imported into. False when it is paused or beyond the plan&#39;s project limit, so the new prompts do not run until that changes | 
 **UntrackedReason** | **NullableString** | Why tracked is false: pitch_project, paused or project_limit. Null when tracked | 
-**Warning** | **NullableString** | What to do when tracked is false. Null when tracked | 
+**Warning** | **NullableString** | What to do when tracked is false, or why some first runs wait when first_runs_wait_until is set. Null otherwise | 
+**FirstRunsWaitUntil** | **NullableTime** | Set when the account&#39;s allowance of AI answers left this cycle cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request&#39;s prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active | 
 **RequestId** | **string** |  | 
 
 ## Methods
 
 ### NewPromptsImportResponse
 
-`func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, requestId string, ) *PromptsImportResponse`
+`func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, firstRunsWaitUntil NullableTime, requestId string, ) *PromptsImportResponse`
 
 NewPromptsImportResponse instantiates a new PromptsImportResponse object
 This constructor will assign default values to properties that have it defined,
@@ -317,6 +318,36 @@ SetWarning sets Warning field to given value.
 `func (o *PromptsImportResponse) UnsetWarning()`
 
 UnsetWarning ensures that no value is present for Warning, not even an explicit nil
+### GetFirstRunsWaitUntil
+
+`func (o *PromptsImportResponse) GetFirstRunsWaitUntil() time.Time`
+
+GetFirstRunsWaitUntil returns the FirstRunsWaitUntil field if non-nil, zero value otherwise.
+
+### GetFirstRunsWaitUntilOk
+
+`func (o *PromptsImportResponse) GetFirstRunsWaitUntilOk() (*time.Time, bool)`
+
+GetFirstRunsWaitUntilOk returns a tuple with the FirstRunsWaitUntil field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirstRunsWaitUntil
+
+`func (o *PromptsImportResponse) SetFirstRunsWaitUntil(v time.Time)`
+
+SetFirstRunsWaitUntil sets FirstRunsWaitUntil field to given value.
+
+
+### SetFirstRunsWaitUntilNil
+
+`func (o *PromptsImportResponse) SetFirstRunsWaitUntilNil(b bool)`
+
+ SetFirstRunsWaitUntilNil sets the value for FirstRunsWaitUntil to be an explicit nil
+
+### UnsetFirstRunsWaitUntil
+`func (o *PromptsImportResponse) UnsetFirstRunsWaitUntil()`
+
+UnsetFirstRunsWaitUntil ensures that no value is present for FirstRunsWaitUntil, not even an explicit nil
 ### GetRequestId
 
 `func (o *PromptsImportResponse) GetRequestId() string`

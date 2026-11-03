@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.78.0
+API version: 1.79.0
 Contact: info@llmpulse.ai
 */
 
@@ -13,6 +13,7 @@ package llmpulse
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // checks if the PromptsCreateResponse type satisfies the MappedNullable interface at compile time
@@ -29,8 +30,10 @@ type PromptsCreateResponse struct {
 	Tracked *bool `json:"tracked,omitempty"`
 	// Why tracked is false: pitch_project, paused or project_limit. Null when tracked
 	UntrackedReason NullableString `json:"untracked_reason,omitempty"`
-	// What to do when tracked is false. Null when tracked
+	// What to do when tracked is false, or why some first runs wait when first_runs_wait_until is set. Null otherwise
 	Warning NullableString `json:"warning,omitempty"`
+	// Set when the account's allowance of AI answers left this cycle cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request's prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active
+	FirstRunsWaitUntil NullableTime `json:"first_runs_wait_until,omitempty"`
 	Data []PromptsCreateResponseDataInner `json:"data,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
@@ -328,6 +331,48 @@ func (o *PromptsCreateResponse) UnsetWarning() {
 	o.Warning.Unset()
 }
 
+// GetFirstRunsWaitUntil returns the FirstRunsWaitUntil field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *PromptsCreateResponse) GetFirstRunsWaitUntil() time.Time {
+	if o == nil || IsNil(o.FirstRunsWaitUntil.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.FirstRunsWaitUntil.Get()
+}
+
+// GetFirstRunsWaitUntilOk returns a tuple with the FirstRunsWaitUntil field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsCreateResponse) GetFirstRunsWaitUntilOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.FirstRunsWaitUntil.Get(), o.FirstRunsWaitUntil.IsSet()
+}
+
+// HasFirstRunsWaitUntil returns a boolean if a field has been set.
+func (o *PromptsCreateResponse) HasFirstRunsWaitUntil() bool {
+	if o != nil && o.FirstRunsWaitUntil.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetFirstRunsWaitUntil gets a reference to the given NullableTime and assigns it to the FirstRunsWaitUntil field.
+func (o *PromptsCreateResponse) SetFirstRunsWaitUntil(v time.Time) {
+	o.FirstRunsWaitUntil.Set(&v)
+}
+// SetFirstRunsWaitUntilNil sets the value for FirstRunsWaitUntil to be an explicit nil
+func (o *PromptsCreateResponse) SetFirstRunsWaitUntilNil() {
+	o.FirstRunsWaitUntil.Set(nil)
+}
+
+// UnsetFirstRunsWaitUntil ensures that no value is present for FirstRunsWaitUntil, not even an explicit nil
+func (o *PromptsCreateResponse) UnsetFirstRunsWaitUntil() {
+	o.FirstRunsWaitUntil.Unset()
+}
+
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *PromptsCreateResponse) GetData() []PromptsCreateResponseDataInner {
 	if o == nil || IsNil(o.Data) {
@@ -425,6 +470,9 @@ func (o PromptsCreateResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Warning.IsSet() {
 		toSerialize["warning"] = o.Warning.Get()
+	}
+	if o.FirstRunsWaitUntil.IsSet() {
+		toSerialize["first_runs_wait_until"] = o.FirstRunsWaitUntil.Get()
 	}
 	if !IsNil(o.Data) {
 		toSerialize["data"] = o.Data

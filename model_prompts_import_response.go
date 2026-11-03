@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.78.0
+API version: 1.79.0
 Contact: info@llmpulse.ai
 */
 
@@ -13,6 +13,7 @@ package llmpulse
 
 import (
 	"encoding/json"
+	"time"
 	"bytes"
 	"fmt"
 )
@@ -41,8 +42,10 @@ type PromptsImportResponse struct {
 	Tracked bool `json:"tracked"`
 	// Why tracked is false: pitch_project, paused or project_limit. Null when tracked
 	UntrackedReason NullableString `json:"untracked_reason"`
-	// What to do when tracked is false. Null when tracked
+	// What to do when tracked is false, or why some first runs wait when first_runs_wait_until is set. Null otherwise
 	Warning NullableString `json:"warning"`
+	// Set when the account's allowance of AI answers left this cycle cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request's prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active
+	FirstRunsWaitUntil NullableTime `json:"first_runs_wait_until"`
 	RequestId string `json:"request_id"`
 }
 
@@ -52,7 +55,7 @@ type _PromptsImportResponse PromptsImportResponse
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, requestId string) *PromptsImportResponse {
+func NewPromptsImportResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []PromptsImportResponseRowErrorsInner, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, firstRunsWaitUntil NullableTime, requestId string) *PromptsImportResponse {
 	this := PromptsImportResponse{}
 	this.ProjectId = projectId
 	this.ProcessedRows = processedRows
@@ -66,6 +69,7 @@ func NewPromptsImportResponse(projectId int32, processedRows int32, created int3
 	this.Tracked = tracked
 	this.UntrackedReason = untrackedReason
 	this.Warning = warning
+	this.FirstRunsWaitUntil = firstRunsWaitUntil
 	this.RequestId = requestId
 	return &this
 }
@@ -374,6 +378,32 @@ func (o *PromptsImportResponse) SetWarning(v string) {
 	o.Warning.Set(&v)
 }
 
+// GetFirstRunsWaitUntil returns the FirstRunsWaitUntil field value
+// If the value is explicit nil, the zero value for time.Time will be returned
+func (o *PromptsImportResponse) GetFirstRunsWaitUntil() time.Time {
+	if o == nil || o.FirstRunsWaitUntil.Get() == nil {
+		var ret time.Time
+		return ret
+	}
+
+	return *o.FirstRunsWaitUntil.Get()
+}
+
+// GetFirstRunsWaitUntilOk returns a tuple with the FirstRunsWaitUntil field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *PromptsImportResponse) GetFirstRunsWaitUntilOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.FirstRunsWaitUntil.Get(), o.FirstRunsWaitUntil.IsSet()
+}
+
+// SetFirstRunsWaitUntil sets field value
+func (o *PromptsImportResponse) SetFirstRunsWaitUntil(v time.Time) {
+	o.FirstRunsWaitUntil.Set(&v)
+}
+
 // GetRequestId returns the RequestId field value
 func (o *PromptsImportResponse) GetRequestId() string {
 	if o == nil {
@@ -420,6 +450,7 @@ func (o PromptsImportResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize["tracked"] = o.Tracked
 	toSerialize["untracked_reason"] = o.UntrackedReason.Get()
 	toSerialize["warning"] = o.Warning.Get()
+	toSerialize["first_runs_wait_until"] = o.FirstRunsWaitUntil.Get()
 	toSerialize["request_id"] = o.RequestId
 	return toSerialize, nil
 }
@@ -441,6 +472,7 @@ func (o *PromptsImportResponse) UnmarshalJSON(data []byte) (err error) {
 		"tracked",
 		"untracked_reason",
 		"warning",
+		"first_runs_wait_until",
 		"request_id",
 	}
 
