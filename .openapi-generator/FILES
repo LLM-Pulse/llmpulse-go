@@ -37,6 +37,7 @@ docs/AIModelInsightsAPI.md
 docs/APIKeysAPI.md
 docs/AccountAPI.md
 docs/AccountCapacity.md
+docs/AccountExecutionQuota.md
 docs/AccountPitchQuota.md
 docs/AccountQuota.md
 docs/Actor.md
@@ -359,6 +360,7 @@ git_push.sh
 go.mod
 go.sum
 model_account_capacity.go
+model_account_execution_quota.go
 model_account_pitch_quota.go
 model_account_quota.go
 model_actor.go

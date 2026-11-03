@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **TeamMembers** | Pointer to [**AccountCapacity**](AccountCapacity.md) |  | [optional] 
 **RecurringGeoAudits** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
 **GeoAuditManualRuns** | Pointer to [**AccountQuota**](AccountQuota.md) |  | [optional] 
+**PromptExecutions** | Pointer to [**AccountExecutionQuota**](AccountExecutionQuota.md) |  | [optional] 
 **PitchProjects** | Pointer to [**AccountPitchQuota**](AccountPitchQuota.md) |  | [optional] 
 
 ## Methods
@@ -206,6 +207,31 @@ SetGeoAuditManualRuns sets GeoAuditManualRuns field to given value.
 `func (o *GetAccount200ResponseLimits) HasGeoAuditManualRuns() bool`
 
 HasGeoAuditManualRuns returns a boolean if a field has been set.
+
+### GetPromptExecutions
+
+`func (o *GetAccount200ResponseLimits) GetPromptExecutions() AccountExecutionQuota`
+
+GetPromptExecutions returns the PromptExecutions field if non-nil, zero value otherwise.
+
+### GetPromptExecutionsOk
+
+`func (o *GetAccount200ResponseLimits) GetPromptExecutionsOk() (*AccountExecutionQuota, bool)`
+
+GetPromptExecutionsOk returns a tuple with the PromptExecutions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptExecutions
+
+`func (o *GetAccount200ResponseLimits) SetPromptExecutions(v AccountExecutionQuota)`
+
+SetPromptExecutions sets PromptExecutions field to given value.
+
+### HasPromptExecutions
+
+`func (o *GetAccount200ResponseLimits) HasPromptExecutions() bool`
+
+HasPromptExecutions returns a boolean if a field has been set.
 
 ### GetPitchProjects
 

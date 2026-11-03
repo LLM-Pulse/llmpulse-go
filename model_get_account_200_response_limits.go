@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.79.0
+API version: 1.80.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,6 +27,7 @@ type GetAccount200ResponseLimits struct {
 	TeamMembers *AccountCapacity `json:"team_members,omitempty"`
 	RecurringGeoAudits *AccountQuota `json:"recurring_geo_audits,omitempty"`
 	GeoAuditManualRuns *AccountQuota `json:"geo_audit_manual_runs,omitempty"`
+	PromptExecutions *AccountExecutionQuota `json:"prompt_executions,omitempty"`
 	PitchProjects *AccountPitchQuota `json:"pitch_projects,omitempty"`
 }
 
@@ -271,6 +272,38 @@ func (o *GetAccount200ResponseLimits) SetGeoAuditManualRuns(v AccountQuota) {
 	o.GeoAuditManualRuns = &v
 }
 
+// GetPromptExecutions returns the PromptExecutions field value if set, zero value otherwise.
+func (o *GetAccount200ResponseLimits) GetPromptExecutions() AccountExecutionQuota {
+	if o == nil || IsNil(o.PromptExecutions) {
+		var ret AccountExecutionQuota
+		return ret
+	}
+	return *o.PromptExecutions
+}
+
+// GetPromptExecutionsOk returns a tuple with the PromptExecutions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200ResponseLimits) GetPromptExecutionsOk() (*AccountExecutionQuota, bool) {
+	if o == nil || IsNil(o.PromptExecutions) {
+		return nil, false
+	}
+	return o.PromptExecutions, true
+}
+
+// HasPromptExecutions returns a boolean if a field has been set.
+func (o *GetAccount200ResponseLimits) HasPromptExecutions() bool {
+	if o != nil && !IsNil(o.PromptExecutions) {
+		return true
+	}
+
+	return false
+}
+
+// SetPromptExecutions gets a reference to the given AccountExecutionQuota and assigns it to the PromptExecutions field.
+func (o *GetAccount200ResponseLimits) SetPromptExecutions(v AccountExecutionQuota) {
+	o.PromptExecutions = &v
+}
+
 // GetPitchProjects returns the PitchProjects field value if set, zero value otherwise.
 func (o *GetAccount200ResponseLimits) GetPitchProjects() AccountPitchQuota {
 	if o == nil || IsNil(o.PitchProjects) {
@@ -333,6 +366,9 @@ func (o GetAccount200ResponseLimits) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.GeoAuditManualRuns) {
 		toSerialize["geo_audit_manual_runs"] = o.GeoAuditManualRuns
+	}
+	if !IsNil(o.PromptExecutions) {
+		toSerialize["prompt_executions"] = o.PromptExecutions
 	}
 	if !IsNil(o.PitchProjects) {
 		toSerialize["pitch_projects"] = o.PitchProjects
