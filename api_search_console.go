@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.80.0
+API version: 1.81.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,6 +22,1556 @@ import (
 
 // SearchConsoleAPIService SearchConsoleAPI service
 type SearchConsoleAPIService service
+
+type ApiGetSearchConsoleAiVisibilityGapsRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	property *string
+	range_ *int32
+	from *string
+	to *string
+	minImpressions *int32
+	unmatchedOnly *bool
+	page *int32
+	perPage *int32
+	output *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) ProjectId(projectId int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Property(property string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.property = &property
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Range_(range_ int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) From(from string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) To(to string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.to = &to
+	return r
+}
+
+// Smallest impressions a query needs.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) MinImpressions(minImpressions int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.minImpressions = &minImpressions
+	return r
+}
+
+// List only the queries no prompt of the project matches (true or false).
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) UnmatchedOnly(unmatchedOnly bool) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.unmatchedOnly = &unmatchedOnly
+	return r
+}
+
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Page(page int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) PerPage(perPage int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Output(output string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.output = &output
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) SearchType(searchType string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Filters(filters string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) DataState(dataState string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) AggregationType(aggregationType string) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Execute() (*SearchConsoleAiVisibilityGapsResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleAiVisibilityGapsExecute(r)
+}
+
+/*
+GetSearchConsoleAiVisibilityGaps Search Console queries vs AI tracking (Growth+)
+
+The property's queries with at least min_impressions impressions, most impressions first, each matched against the project's prompts. The match is exact and deliberately conservative: a query matches a prompt with the same text once both are lowercased, accents and similar letters folded the way AI answers are matched for brand mentions, spacing squeezed and leading or trailing punctuation dropped (best crm for agencies matches Best CRM for agencies?, but not What is the best CRM for agencies). When two prompts share a text (other countries or languages), the oldest is the match. A matched query carries its prompt_id, responses (the prompt's AI answers in the same window, over the account's enabled models) and brand_visibility, the percent of those answers that mention the brand (null before any answer), as /metrics/prompt_summary computes it. unmatched_only=true lists only the queries no prompt matches: search demand the AI tracking does not cover yet, the strongest candidates to add as prompts. Rows with a prompt and a low brand_visibility are queries people search for where AI answers rarely mention the brand; how low is low is the caller's choice. matched_count counts the qualifying queries a prompt matches. A team member also needs read access to the Overview, which holds prompt-level Brand Visibility, or gets ERR_INSUFFICIENT_PERMISSION. Reads Google's top 25,000 queries per property (truncated: true when reached) and excludes anonymized queries. Requires a connected Search Console property (Growth+). Live reads only: under stored reads it returns ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleAiVisibilityGapsRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleAiVisibilityGaps(ctx context.Context) ApiGetSearchConsoleAiVisibilityGapsRequest {
+	return ApiGetSearchConsoleAiVisibilityGapsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleAiVisibilityGapsResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleAiVisibilityGapsExecute(r ApiGetSearchConsoleAiVisibilityGapsRequest) (*SearchConsoleAiVisibilityGapsResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleAiVisibilityGapsResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleAiVisibilityGaps")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/ai_visibility_gaps"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.minImpressions != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", r.minImpressions, "form", "")
+	} else {
+		var defaultValue int32 = 100
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", defaultValue, "form", "")
+		r.minImpressions = &defaultValue
+	}
+	if r.unmatchedOnly != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "unmatched_only", r.unmatchedOnly, "form", "")
+	} else {
+		var defaultValue bool = false
+		parameterAddToHeaderOrQuery(localVarQueryParams, "unmatched_only", defaultValue, "form", "")
+		r.unmatchedOnly = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSearchConsoleBrandSplitRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	property *string
+	range_ *int32
+	from *string
+	to *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleBrandSplitRequest) ProjectId(projectId int32) ApiGetSearchConsoleBrandSplitRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleBrandSplitRequest) Property(property string) ApiGetSearchConsoleBrandSplitRequest {
+	r.property = &property
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleBrandSplitRequest) Range_(range_ int32) ApiGetSearchConsoleBrandSplitRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleBrandSplitRequest) From(from string) ApiGetSearchConsoleBrandSplitRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleBrandSplitRequest) To(to string) ApiGetSearchConsoleBrandSplitRequest {
+	r.to = &to
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleBrandSplitRequest) SearchType(searchType string) ApiGetSearchConsoleBrandSplitRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleBrandSplitRequest) Filters(filters string) ApiGetSearchConsoleBrandSplitRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleBrandSplitRequest) DataState(dataState string) ApiGetSearchConsoleBrandSplitRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleBrandSplitRequest) AggregationType(aggregationType string) ApiGetSearchConsoleBrandSplitRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleBrandSplitRequest) Execute() (*SearchConsoleBrandSplitResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleBrandSplitExecute(r)
+}
+
+/*
+GetSearchConsoleBrandSplit Search Console branded vs non-branded split (Growth+)
+
+Splits the property's impressions and clicks into branded queries, which contain one of the project's brand terms as a whole word, case-insensitively (brand_terms: its brand name, matching names, app names and domain, each also matched with its accents folded and with either apostrophe, so Nestlé also matches nestle and L’Oréal matches l'oreal), and non-branded ones, next to the unfiltered totals. Google applies the split itself as a regular-expression query filter, so it covers every query Google counts, not only the 25,000 rows one read lists. Use it to see how much search traffic comes from people who already know the brand and how much from discovery searches, and how each side evolves across date ranges. Google leaves anonymized queries out of any query filter, so unclassified holds the impressions and clicks neither side counts. Returns ERR_INVALID_PARAM when the brand terms are too long for one Google filter (4,096 characters, Google's documented limit), and ERR_SEARCH_CONSOLE_UPSTREAM (503) if Google refuses the filter built from them; our team is alerted in that case. Requires a connected Search Console property (Growth+). Live reads only: under stored reads it returns ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleBrandSplitRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleBrandSplit(ctx context.Context) ApiGetSearchConsoleBrandSplitRequest {
+	return ApiGetSearchConsoleBrandSplitRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleBrandSplitResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleBrandSplitExecute(r ApiGetSearchConsoleBrandSplitRequest) (*SearchConsoleBrandSplitResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleBrandSplitResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleBrandSplit")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/brand_split"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSearchConsoleCannibalizationRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	property *string
+	range_ *int32
+	from *string
+	to *string
+	minImpressions *int32
+	minShare *float32
+	page *int32
+	perPage *int32
+	output *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleCannibalizationRequest) ProjectId(projectId int32) ApiGetSearchConsoleCannibalizationRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleCannibalizationRequest) Property(property string) ApiGetSearchConsoleCannibalizationRequest {
+	r.property = &property
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleCannibalizationRequest) Range_(range_ int32) ApiGetSearchConsoleCannibalizationRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleCannibalizationRequest) From(from string) ApiGetSearchConsoleCannibalizationRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleCannibalizationRequest) To(to string) ApiGetSearchConsoleCannibalizationRequest {
+	r.to = &to
+	return r
+}
+
+// Smallest impressions a query needs.
+func (r ApiGetSearchConsoleCannibalizationRequest) MinImpressions(minImpressions int32) ApiGetSearchConsoleCannibalizationRequest {
+	r.minImpressions = &minImpressions
+	return r
+}
+
+// Smallest fraction (0.01 to 0.5) of the query&#39;s impressions a page needs to count as competing.
+func (r ApiGetSearchConsoleCannibalizationRequest) MinShare(minShare float32) ApiGetSearchConsoleCannibalizationRequest {
+	r.minShare = &minShare
+	return r
+}
+
+func (r ApiGetSearchConsoleCannibalizationRequest) Page(page int32) ApiGetSearchConsoleCannibalizationRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSearchConsoleCannibalizationRequest) PerPage(perPage int32) ApiGetSearchConsoleCannibalizationRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSearchConsoleCannibalizationRequest) Output(output string) ApiGetSearchConsoleCannibalizationRequest {
+	r.output = &output
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleCannibalizationRequest) SearchType(searchType string) ApiGetSearchConsoleCannibalizationRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleCannibalizationRequest) Filters(filters string) ApiGetSearchConsoleCannibalizationRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleCannibalizationRequest) DataState(dataState string) ApiGetSearchConsoleCannibalizationRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleCannibalizationRequest) AggregationType(aggregationType string) ApiGetSearchConsoleCannibalizationRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleCannibalizationRequest) Execute() (*SearchConsoleCannibalizationResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleCannibalizationExecute(r)
+}
+
+/*
+GetSearchConsoleCannibalization Search Console keyword cannibalization (Growth+)
+
+Queries with at least min_impressions impressions for which two or more pages each take at least min_share (default 0.1) of the query's impressions, most impressions first, each with its competing pages (share, impressions, clicks, ctr, position). Use it to find the keywords several of the site's pages fight over, and decide which pages to merge, redirect or differentiate. Google counts page-by-query impressions per page, so a query's impressions here can exceed its property-wide figure. Reads Google's top 25,000 page-query rows per property (truncated: true when reached). With output=flat or csv, each competing page is its own row, with its URL in page_url. Requires a connected Search Console property (Growth+). Live reads only: under stored reads it returns ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleCannibalizationRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleCannibalization(ctx context.Context) ApiGetSearchConsoleCannibalizationRequest {
+	return ApiGetSearchConsoleCannibalizationRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleCannibalizationResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleCannibalizationExecute(r ApiGetSearchConsoleCannibalizationRequest) (*SearchConsoleCannibalizationResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleCannibalizationResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleCannibalization")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/cannibalization"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.minImpressions != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", r.minImpressions, "form", "")
+	} else {
+		var defaultValue int32 = 100
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", defaultValue, "form", "")
+		r.minImpressions = &defaultValue
+	}
+	if r.minShare != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_share", r.minShare, "form", "")
+	} else {
+		var defaultValue float32 = 0.1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_share", defaultValue, "form", "")
+		r.minShare = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSearchConsoleDecayRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	property *string
+	range_ *int32
+	from *string
+	to *string
+	dimension *string
+	minClicks *int32
+	page *int32
+	perPage *int32
+	output *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleDecayRequest) ProjectId(projectId int32) ApiGetSearchConsoleDecayRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleDecayRequest) Property(property string) ApiGetSearchConsoleDecayRequest {
+	r.property = &property
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleDecayRequest) Range_(range_ int32) ApiGetSearchConsoleDecayRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleDecayRequest) From(from string) ApiGetSearchConsoleDecayRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleDecayRequest) To(to string) ApiGetSearchConsoleDecayRequest {
+	r.to = &to
+	return r
+}
+
+// Compare pages or queries.
+func (r ApiGetSearchConsoleDecayRequest) Dimension(dimension string) ApiGetSearchConsoleDecayRequest {
+	r.dimension = &dimension
+	return r
+}
+
+// Smallest clicks in the previous window.
+func (r ApiGetSearchConsoleDecayRequest) MinClicks(minClicks int32) ApiGetSearchConsoleDecayRequest {
+	r.minClicks = &minClicks
+	return r
+}
+
+func (r ApiGetSearchConsoleDecayRequest) Page(page int32) ApiGetSearchConsoleDecayRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSearchConsoleDecayRequest) PerPage(perPage int32) ApiGetSearchConsoleDecayRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSearchConsoleDecayRequest) Output(output string) ApiGetSearchConsoleDecayRequest {
+	r.output = &output
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleDecayRequest) SearchType(searchType string) ApiGetSearchConsoleDecayRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleDecayRequest) Filters(filters string) ApiGetSearchConsoleDecayRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleDecayRequest) DataState(dataState string) ApiGetSearchConsoleDecayRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleDecayRequest) AggregationType(aggregationType string) ApiGetSearchConsoleDecayRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleDecayRequest) Execute() (*SearchConsoleDecayResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleDecayExecute(r)
+}
+
+/*
+GetSearchConsoleDecay Search Console content decay (Growth+)
+
+Pages (or queries, with dimension=query) that had at least min_clicks clicks in the window just before the requested one (previous_from to previous_to, the same length) and lost clicks since, biggest loss first, with clicks, impressions and average position in both windows. Use it to find the pages losing traffic and to tell lost rankings (a worse position) from lost demand (fewer impressions at a stable position). The requested window ends at compared_through, the last day Google has published when that is before to, so days Google has not filled in yet never read as a loss. Both windows must fit in Google's 487-day retention, or the request returns ERR_INVALID_PARAM. Reads Google's top 25,000 rows per window and property (truncated: true when reached); when the requested window reaches that cap, a page or query missing from it is left out rather than read as a loss. Requires a connected Search Console property (Growth+). Live reads only: under stored reads it returns ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleDecayRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleDecay(ctx context.Context) ApiGetSearchConsoleDecayRequest {
+	return ApiGetSearchConsoleDecayRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleDecayResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleDecayExecute(r ApiGetSearchConsoleDecayRequest) (*SearchConsoleDecayResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleDecayResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleDecay")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/decay"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.dimension != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "dimension", r.dimension, "form", "")
+	} else {
+		var defaultValue string = "page"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "dimension", defaultValue, "form", "")
+		r.dimension = &defaultValue
+	}
+	if r.minClicks != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_clicks", r.minClicks, "form", "")
+	} else {
+		var defaultValue int32 = 10
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_clicks", defaultValue, "form", "")
+		r.minClicks = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetSearchConsoleOpportunitiesRequest struct {
+	ctx context.Context
+	ApiService *SearchConsoleAPIService
+	projectId *int32
+	property *string
+	range_ *int32
+	from *string
+	to *string
+	minImpressions *int32
+	minPosition *float32
+	maxPosition *float32
+	page *int32
+	perPage *int32
+	output *string
+	searchType *string
+	filters *string
+	dataState *string
+	aggregationType *string
+}
+
+// Project ID
+func (r ApiGetSearchConsoleOpportunitiesRequest) ProjectId(projectId int32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would.
+func (r ApiGetSearchConsoleOpportunitiesRequest) Property(property string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.property = &property
+	return r
+}
+
+// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+func (r ApiGetSearchConsoleOpportunitiesRequest) Range_(range_ int32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.range_ = &range_
+	return r
+}
+
+// Start date (YYYY-MM-DD). Defaults to 30 days ago.
+func (r ApiGetSearchConsoleOpportunitiesRequest) From(from string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.from = &from
+	return r
+}
+
+// End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches.
+func (r ApiGetSearchConsoleOpportunitiesRequest) To(to string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.to = &to
+	return r
+}
+
+// Smallest impressions a query needs.
+func (r ApiGetSearchConsoleOpportunitiesRequest) MinImpressions(minImpressions int32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.minImpressions = &minImpressions
+	return r
+}
+
+// Best average position to include.
+func (r ApiGetSearchConsoleOpportunitiesRequest) MinPosition(minPosition float32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.minPosition = &minPosition
+	return r
+}
+
+// Worst average position to include; at least min_position.
+func (r ApiGetSearchConsoleOpportunitiesRequest) MaxPosition(maxPosition float32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.maxPosition = &maxPosition
+	return r
+}
+
+func (r ApiGetSearchConsoleOpportunitiesRequest) Page(page int32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetSearchConsoleOpportunitiesRequest) PerPage(perPage int32) ApiGetSearchConsoleOpportunitiesRequest {
+	r.perPage = &perPage
+	return r
+}
+
+// Rectangular output for BI tools (Tableau, Excel, Sheets, ELT). Omit for the default nested JSON. &#39;flat&#39; returns the same metadata plus &#39;columns&#39; and &#39;rows&#39;; &#39;csv&#39; returns those rows as text/csv. Errors are always returned as JSON.
+func (r ApiGetSearchConsoleOpportunitiesRequest) Output(output string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.output = &output
+	return r
+}
+
+// Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them.
+func (r ApiGetSearchConsoleOpportunitiesRequest) SearchType(searchType string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.searchType = &searchType
+	return r
+}
+
+// Narrow the query; every entry must match (AND). Send the whole list as one JSON value: filters&#x3D;[{\&quot;dimension\&quot;:\&quot;page\&quot;,\&quot;operator\&quot;:\&quot;contains\&quot;,\&quot;expression\&quot;:\&quot;/blog/\&quot;}] (URL-encoded). An array of objects has no query-parameter form a generated client can produce, so the string is what the official SDKs send; see the SearchConsoleFilters schema for the shape it encodes. includingRegex and excludingRegex take RE2 syntax. At most 10 entries, expression at most 500 characters. The bracket form filters[][dimension]&#x3D;page&amp;filters[][operator]&#x3D;contains&amp;filters[][expression]&#x3D;/blog/ is also accepted.
+func (r ApiGetSearchConsoleOpportunitiesRequest) Filters(filters string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.filters = &filters
+	return r
+}
+
+// final (default) counts only rows Google has finalized. all also counts the most recent days, which are still being filled in and will change.
+func (r ApiGetSearchConsoleOpportunitiesRequest) DataState(dataState string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.dataState = &dataState
+	return r
+}
+
+// How Google counts impressions. auto (default) is what Search Console shows (by page when page is grouped or filtered, else by property). Google rejects byProperty with a page dimension or filter.
+func (r ApiGetSearchConsoleOpportunitiesRequest) AggregationType(aggregationType string) ApiGetSearchConsoleOpportunitiesRequest {
+	r.aggregationType = &aggregationType
+	return r
+}
+
+func (r ApiGetSearchConsoleOpportunitiesRequest) Execute() (*SearchConsoleOpportunitiesResponse, *http.Response, error) {
+	return r.ApiService.GetSearchConsoleOpportunitiesExecute(r)
+}
+
+/*
+GetSearchConsoleOpportunities Search Console ranking opportunities (Growth+)
+
+Queries whose average position is between min_position and max_position (default 4 to 20) with at least min_impressions impressions, ranked by potential_clicks: the clicks a move into the top 3 would add at top_ctr, the CTR the property's own queries averaging position 3 or better get in the same window. Use it to find the queries where a small ranking gain would add the most traffic. No outside CTR curve is used: with no top-3 query in the window, top_ctr and potential_clicks are null. Reads Google's top 25,000 queries per property (truncated: true when reached) and excludes anonymized queries. Requires a connected Search Console property (Growth+). Live reads only: under stored reads it returns ERR_INVALID_PARAM. Live reads return ERR_SEARCH_CONSOLE_ACCESS_REVOKED (403) for revoked Google access; reconnect the property in Preferences > Project Settings > Data Connections. They return ERR_SEARCH_CONSOLE_UPSTREAM (503) when Google Search Console is unavailable or over quota; wait for the number of seconds in Retry-After before retrying.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetSearchConsoleOpportunitiesRequest
+*/
+func (a *SearchConsoleAPIService) GetSearchConsoleOpportunities(ctx context.Context) ApiGetSearchConsoleOpportunitiesRequest {
+	return ApiGetSearchConsoleOpportunitiesRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return SearchConsoleOpportunitiesResponse
+func (a *SearchConsoleAPIService) GetSearchConsoleOpportunitiesExecute(r ApiGetSearchConsoleOpportunitiesRequest) (*SearchConsoleOpportunitiesResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *SearchConsoleOpportunitiesResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SearchConsoleAPIService.GetSearchConsoleOpportunities")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search_console/opportunities"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.property != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "property", r.property, "form", "")
+	}
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.minImpressions != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", r.minImpressions, "form", "")
+	} else {
+		var defaultValue int32 = 100
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_impressions", defaultValue, "form", "")
+		r.minImpressions = &defaultValue
+	}
+	if r.minPosition != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_position", r.minPosition, "form", "")
+	} else {
+		var defaultValue float32 = 4
+		parameterAddToHeaderOrQuery(localVarQueryParams, "min_position", defaultValue, "form", "")
+		r.minPosition = &defaultValue
+	}
+	if r.maxPosition != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "max_position", r.maxPosition, "form", "")
+	} else {
+		var defaultValue float32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "max_position", defaultValue, "form", "")
+		r.maxPosition = &defaultValue
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	if r.output != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "output", r.output, "form", "")
+	}
+	if r.searchType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", r.searchType, "form", "")
+	} else {
+		var defaultValue string = "web"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search_type", defaultValue, "form", "")
+		r.searchType = &defaultValue
+	}
+	if r.filters != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "filters", r.filters, "form", "")
+	}
+	if r.dataState != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", r.dataState, "form", "")
+	} else {
+		var defaultValue string = "final"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "data_state", defaultValue, "form", "")
+		r.dataState = &defaultValue
+	}
+	if r.aggregationType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", r.aggregationType, "form", "")
+	} else {
+		var defaultValue string = "auto"
+		parameterAddToHeaderOrQuery(localVarQueryParams, "aggregation_type", defaultValue, "form", "")
+		r.aggregationType = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 503 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
 
 type ApiGetSearchConsolePagesRequest struct {
 	ctx context.Context
