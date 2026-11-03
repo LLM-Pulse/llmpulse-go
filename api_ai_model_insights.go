@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.77.0
+API version: 1.78.0
 Contact: info@llmpulse.ai
 */
 
@@ -104,14 +104,14 @@ func (r ApiGetAiModelInsightsSummaryRequest) Competitors(competitors string) Api
 	return r
 }
 
-func (r ApiGetAiModelInsightsSummaryRequest) Execute() (*http.Response, error) {
+func (r ApiGetAiModelInsightsSummaryRequest) Execute() (*AiModelInsightsSummaryResponse, *http.Response, error) {
 	return r.ApiService.GetAiModelInsightsSummaryExecute(r)
 }
 
 /*
 GetAiModelInsightsSummary AI Model Insights summary
 
-Per-model mentions, citations, brand net sentiment with raw counts, weighted visibility totals/shares, plus actor matrices. All actor entries use the standard shape `{ type, id, competitor_id, name, domain }` with bare (scheme-less) domains.
+Per-model mentions, citations, brand net sentiment with raw counts, weighted visibility totals/shares, plus actor matrices. All actor entries use the standard shape `{ type, id, competitor_id, name, domain }` with bare (scheme-less) domains. Rows cover the AI models the account has enabled or that answered in the window. A share, net sentiment or market share value with nothing behind it is null; counts, totals and weighted visibility scores stay 0.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetAiModelInsightsSummaryRequest
@@ -124,16 +124,18 @@ func (a *AIModelInsightsAPIService) GetAiModelInsightsSummary(ctx context.Contex
 }
 
 // Execute executes the request
-func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiModelInsightsSummaryRequest) (*http.Response, error) {
+//  @return AiModelInsightsSummaryResponse
+func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiModelInsightsSummaryRequest) (*AiModelInsightsSummaryResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AiModelInsightsSummaryResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AIModelInsightsAPIService.GetAiModelInsightsSummary")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/reports/ai_model_insights/summary"
@@ -142,7 +144,7 @@ func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiM
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -186,7 +188,7 @@ func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiM
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -195,19 +197,19 @@ func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiM
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -215,10 +217,19 @@ func (a *AIModelInsightsAPIService) GetAiModelInsightsSummaryExecute(r ApiGetAiM
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetAiModelPositionDistributionRequest struct {

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.77.0
+API version: 1.78.0
 Contact: info@llmpulse.ai
 */
 

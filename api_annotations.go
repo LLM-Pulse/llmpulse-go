@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.77.0
+API version: 1.78.0
 Contact: info@llmpulse.ai
 */
 
@@ -328,7 +328,7 @@ func (r ApiListAnnotationsRequest) Execute() (*http.Response, error) {
 /*
 ListAnnotations List timeline annotations
 
-Lists project timeline annotations, newest first. Rows can come from manual notes, project automations, GEO tests, or platform events. The origin field distinguishes them; editable says whether the requesting user may modify the row. Available on every plan.
+Lists project timeline annotations, newest first. Rows can come from manual notes, project automations, or platform events. The origin field distinguishes them; editable says whether the requesting user may modify the row. Available on every plan.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListAnnotationsRequest

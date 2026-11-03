@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## GetAiModelInsightsSummary
 
-> GetAiModelInsightsSummary(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Competitors(competitors).Execute()
+> AiModelInsightsSummaryResponse GetAiModelInsightsSummary(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Competitors(competitors).Execute()
 
 AI Model Insights summary
 
@@ -46,11 +46,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AIModelInsightsAPI.GetAiModelInsightsSummary(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Competitors(competitors).Execute()
+	resp, r, err := apiClient.AIModelInsightsAPI.GetAiModelInsightsSummary(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Granularity(granularity).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Competitors(competitors).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AIModelInsightsAPI.GetAiModelInsightsSummary``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetAiModelInsightsSummary`: AiModelInsightsSummaryResponse
+	fmt.Fprintf(os.Stdout, "Response from `AIModelInsightsAPI.GetAiModelInsightsSummary`: %v\n", resp)
 }
 ```
 
@@ -79,7 +81,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AiModelInsightsSummaryResponse**](AiModelInsightsSummaryResponse.md)
 
 ### Authorization
 
@@ -88,7 +90,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
