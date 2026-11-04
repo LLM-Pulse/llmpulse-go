@@ -25,6 +25,7 @@ Name | Type | Description | Notes
 **ManuallyEditedAt** | Pointer to **NullableTime** | When the content was last edited by hand; null while the output is as generated | [optional] 
 **EditedByUserId** | Pointer to **NullableInt32** | User behind the last manual edit; null for an unedited task or an edit made from an embedded portal | [optional] 
 **ResultVersion** | Pointer to **string** | Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \&quot;0\&quot; until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text | [optional] 
+**CmsDrafts** | Pointer to [**[]CmsPublication**](CmsPublication.md) | Drafts sent from this task to the connected WordPress site, newest first (up to 10). Only GET /intelligence_tasks/{id} returns it, and never on a white-label portal host | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 **ChangedPaths** | Pointer to **[]string** | Paths whose text actually changed; empty when every value matched the stored text | [optional] 
 
@@ -691,6 +692,31 @@ SetResultVersion sets ResultVersion field to given value.
 `func (o *IntelligenceTaskUpdateResponse) HasResultVersion() bool`
 
 HasResultVersion returns a boolean if a field has been set.
+
+### GetCmsDrafts
+
+`func (o *IntelligenceTaskUpdateResponse) GetCmsDrafts() []CmsPublication`
+
+GetCmsDrafts returns the CmsDrafts field if non-nil, zero value otherwise.
+
+### GetCmsDraftsOk
+
+`func (o *IntelligenceTaskUpdateResponse) GetCmsDraftsOk() (*[]CmsPublication, bool)`
+
+GetCmsDraftsOk returns a tuple with the CmsDrafts field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCmsDrafts
+
+`func (o *IntelligenceTaskUpdateResponse) SetCmsDrafts(v []CmsPublication)`
+
+SetCmsDrafts sets CmsDrafts field to given value.
+
+### HasCmsDrafts
+
+`func (o *IntelligenceTaskUpdateResponse) HasCmsDrafts() bool`
+
+HasCmsDrafts returns a boolean if a field has been set.
 
 ### GetRequestId
 

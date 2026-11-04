@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.82.0
+API version: 1.83.0
 Contact: info@llmpulse.ai
 */
 
@@ -46,6 +46,8 @@ type IntelligenceTaskUpdateResponse struct {
 	EditedByUserId NullableInt32 `json:"edited_by_user_id,omitempty"`
 	// Concurrency token for content edits: send it back as result_version on PATCH /intelligence_tasks/{id} so an edit composed before a regeneration is refused with ERR_STALE_CONTENT (409). It is \"0\" until the task first completes, then changes each time a generation or regeneration replaces result_data, never on a manual edit or a revert. Treat it as opaque text
 	ResultVersion *string `json:"result_version,omitempty"`
+	// Drafts sent from this task to the connected WordPress site, newest first (up to 10). Only GET /intelligence_tasks/{id} returns it, and never on a white-label portal host
+	CmsDrafts []CmsPublication `json:"cms_drafts,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 	// Paths whose text actually changed; empty when every value matched the stored text
 	ChangedPaths []string `json:"changed_paths,omitempty"`
@@ -851,6 +853,38 @@ func (o *IntelligenceTaskUpdateResponse) SetResultVersion(v string) {
 	o.ResultVersion = &v
 }
 
+// GetCmsDrafts returns the CmsDrafts field value if set, zero value otherwise.
+func (o *IntelligenceTaskUpdateResponse) GetCmsDrafts() []CmsPublication {
+	if o == nil || IsNil(o.CmsDrafts) {
+		var ret []CmsPublication
+		return ret
+	}
+	return o.CmsDrafts
+}
+
+// GetCmsDraftsOk returns a tuple with the CmsDrafts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IntelligenceTaskUpdateResponse) GetCmsDraftsOk() ([]CmsPublication, bool) {
+	if o == nil || IsNil(o.CmsDrafts) {
+		return nil, false
+	}
+	return o.CmsDrafts, true
+}
+
+// HasCmsDrafts returns a boolean if a field has been set.
+func (o *IntelligenceTaskUpdateResponse) HasCmsDrafts() bool {
+	if o != nil && !IsNil(o.CmsDrafts) {
+		return true
+	}
+
+	return false
+}
+
+// SetCmsDrafts gets a reference to the given []CmsPublication and assigns it to the CmsDrafts field.
+func (o *IntelligenceTaskUpdateResponse) SetCmsDrafts(v []CmsPublication) {
+	o.CmsDrafts = v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *IntelligenceTaskUpdateResponse) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -987,6 +1021,9 @@ func (o IntelligenceTaskUpdateResponse) ToMap() (map[string]interface{}, error) 
 	}
 	if !IsNil(o.ResultVersion) {
 		toSerialize["result_version"] = o.ResultVersion
+	}
+	if !IsNil(o.CmsDrafts) {
+		toSerialize["cms_drafts"] = o.CmsDrafts
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId

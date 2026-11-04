@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.82.0
+API version: 1.83.0
 Contact: info@llmpulse.ai
 */
 
@@ -52,12 +52,13 @@ func (r ApiGetPromptSummaryRequest) ProjectId(projectId int32) ApiGetPromptSumma
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
 func (r ApiGetPromptSummaryRequest) Range_(range_ int32) ApiGetPromptSummaryRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window, instead of range (to then defaults to the end of today). Required unless range is given.
 func (r ApiGetPromptSummaryRequest) From(from time.Time) ApiGetPromptSummaryRequest {
 	r.from = &from
 	return r
@@ -342,12 +343,13 @@ func (r ApiGetShareOfVoiceRequest) ProjectId(projectId int32) ApiGetShareOfVoice
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
 func (r ApiGetShareOfVoiceRequest) Range_(range_ int32) ApiGetShareOfVoiceRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window, instead of range (to then defaults to the end of today). Required unless range is given.
 func (r ApiGetShareOfVoiceRequest) From(from time.Time) ApiGetShareOfVoiceRequest {
 	r.from = &from
 	return r
@@ -618,12 +620,13 @@ func (r ApiGetSummaryRequest) Granularity(granularity string) ApiGetSummaryReque
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
 func (r ApiGetSummaryRequest) Range_(range_ int32) ApiGetSummaryRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window, instead of range (to then defaults to the end of today). Required unless range is given.
 func (r ApiGetSummaryRequest) From(from time.Time) ApiGetSummaryRequest {
 	r.from = &from
 	return r
@@ -900,12 +903,13 @@ func (r ApiGetTimeseriesRequest) Granularity(granularity string) ApiGetTimeserie
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTimeseriesRequest) Range_(range_ int32) ApiGetTimeseriesRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window, instead of range (to then defaults to the end of today). Required unless range is given.
 func (r ApiGetTimeseriesRequest) From(from time.Time) ApiGetTimeseriesRequest {
 	r.from = &from
 	return r
@@ -1184,12 +1188,13 @@ func (r ApiGetTopSourcesRequest) ProjectId(projectId int32) ApiGetTopSourcesRequ
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTopSourcesRequest) Range_(range_ int32) ApiGetTopSourcesRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window, instead of range (to then defaults to the end of today). Required unless range is given.
 func (r ApiGetTopSourcesRequest) From(from time.Time) ApiGetTopSourcesRequest {
 	r.from = &from
 	return r

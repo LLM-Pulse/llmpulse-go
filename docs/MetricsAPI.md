@@ -35,8 +35,8 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. (optional)
+	from := time.Now() // time.Time | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	breakdown := "breakdown_example" // string | Add per-(prompt, model) rows to the output (optional)
 	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. (optional)
@@ -76,8 +76,8 @@ Other parameters are passed through a pointer to a apiGetPromptSummaryRequest st
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
+ **range_** | **int32** | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. | 
+ **from** | **time.Time** | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **breakdown** | **string** | Add per-(prompt, model) rows to the output | 
  **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. | 
@@ -134,8 +134,8 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. (optional)
+	from := time.Now() // time.Time | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
@@ -174,8 +174,8 @@ Other parameters are passed through a pointer to a apiGetShareOfVoiceRequest str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
+ **range_** | **int32** | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. | 
+ **from** | **time.Time** | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
@@ -233,8 +233,8 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	metrics := "metrics_example" // string | Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. (optional)
 	granularity := "granularity_example" // string |  (optional)
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. (optional)
+	from := time.Now() // time.Time | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. (optional)
@@ -273,8 +273,8 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **metrics** | **string** | Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. | 
  **granularity** | **string** |  | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
+ **range_** | **int32** | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. | 
+ **from** | **time.Time** | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. | 
@@ -330,8 +330,8 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	metrics := "metrics_example" // string | Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. (optional)
 	granularity := "granularity_example" // string |  (optional)
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. (optional)
+	from := time.Now() // time.Time | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
 	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. (optional)
@@ -370,8 +370,8 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **metrics** | **string** | Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. | 
  **granularity** | **string** |  | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
+ **range_** | **int32** | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. | 
+ **from** | **time.Time** | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
  **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. | 
@@ -425,8 +425,8 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
-	from := time.Now() // time.Time |  (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. (optional)
+	from := time.Now() // time.Time | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. (optional)
 	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
@@ -467,8 +467,8 @@ Other parameters are passed through a pointer to a apiGetTopSourcesRequest struc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
- **from** | **time.Time** |  | 
+ **range_** | **int32** | Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM. | 
+ **from** | **time.Time** | Start of the window, instead of range (to then defaults to the end of today). Required unless range is given. | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. The legacy values google-ai-mode and google-ai-overview are also accepted, as ai_mode and ai_overview. | 
  **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 

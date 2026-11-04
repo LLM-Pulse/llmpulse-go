@@ -5,9 +5,12 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateIntelligenceTask**](GEOWriterAPI.md#CreateIntelligenceTask) | **Post** /intelligence_tasks | Create a GEO Writer task
+[**GetCmsContent**](GEOWriterAPI.md#GetCmsContent) | **Get** /cms/content/{id} | Get one post or page of the connected WordPress site
 [**GetIntelligenceTask**](GEOWriterAPI.md#GetIntelligenceTask) | **Get** /intelligence_tasks/{id} | Get a GEO Writer task
+[**ListCmsContent**](GEOWriterAPI.md#ListCmsContent) | **Get** /cms/content | List the posts or pages of the connected WordPress site
 [**ListIntelligenceTasks**](GEOWriterAPI.md#ListIntelligenceTasks) | **Get** /intelligence_tasks | List GEO Writer tasks
 [**RevertIntelligenceTaskContent**](GEOWriterAPI.md#RevertIntelligenceTaskContent) | **Post** /intelligence_tasks/{id}/revert | Revert GEO Writer task content
+[**SendIntelligenceTaskToCms**](GEOWriterAPI.md#SendIntelligenceTaskToCms) | **Post** /intelligence_tasks/{id}/send_to_cms | Send a GEO Writer task to WordPress as a draft
 [**UpdateIntelligenceTaskContent**](GEOWriterAPI.md#UpdateIntelligenceTaskContent) | **Patch** /intelligence_tasks/{id} | Edit GEO Writer task content
 
 
@@ -78,6 +81,80 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetCmsContent
+
+> CmsContentItemResponse GetCmsContent(ctx, id).ProjectId(projectId).Type_(type_).Execute()
+
+Get one post or page of the connected WordPress site
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	id := int32(56) // int32 | WordPress post or page id
+	type_ := "type__example" // string |  (optional) (default to "post")
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GEOWriterAPI.GetCmsContent(context.Background(), id).ProjectId(projectId).Type_(type_).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.GetCmsContent``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetCmsContent`: CmsContentItemResponse
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.GetCmsContent`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** | WordPress post or page id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCmsContentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+ **type_** | **string** |  | [default to &quot;post&quot;]
+
+### Return type
+
+[**CmsContentItemResponse**](CmsContentItemResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetIntelligenceTask
 
 > IntelligenceTask GetIntelligenceTask(ctx, id).ProjectId(projectId).Execute()
@@ -133,6 +210,82 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IntelligenceTask**](IntelligenceTask.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListCmsContent
+
+> CmsContentListResponse ListCmsContent(ctx).ProjectId(projectId).Type_(type_).Status(status).Search(search).Page(page).PerPage(perPage).Execute()
+
+List the posts or pages of the connected WordPress site
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	type_ := "type__example" // string |  (optional) (default to "post")
+	status := "status_example" // string | WordPress status to list; any lists every one of them (optional) (default to "publish")
+	search := "search_example" // string | Words WordPress searches for in titles and content (first 200 characters) (optional)
+	page := int32(56) // int32 |  (optional) (default to 1)
+	perPage := int32(56) // int32 |  (optional) (default to 20)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GEOWriterAPI.ListCmsContent(context.Background()).ProjectId(projectId).Type_(type_).Status(status).Search(search).Page(page).PerPage(perPage).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.ListCmsContent``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListCmsContent`: CmsContentListResponse
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.ListCmsContent`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListCmsContentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **type_** | **string** |  | [default to &quot;post&quot;]
+ **status** | **string** | WordPress status to list; any lists every one of them | [default to &quot;publish&quot;]
+ **search** | **string** | Words WordPress searches for in titles and content (first 200 characters) | 
+ **page** | **int32** |  | [default to 1]
+ **perPage** | **int32** |  | [default to 20]
+
+### Return type
+
+[**CmsContentListResponse**](CmsContentListResponse.md)
 
 ### Authorization
 
@@ -277,6 +430,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**IntelligenceTask**](IntelligenceTask.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## SendIntelligenceTaskToCms
+
+> CmsSendResponse SendIntelligenceTaskToCms(ctx, id).ProjectId(projectId).Execute()
+
+Send a GEO Writer task to WordPress as a draft
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	id := "id_example" // string | Numeric task ID or public_id string token
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GEOWriterAPI.SendIntelligenceTaskToCms(context.Background(), id).ProjectId(projectId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GEOWriterAPI.SendIntelligenceTaskToCms``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SendIntelligenceTaskToCms`: CmsSendResponse
+	fmt.Fprintf(os.Stdout, "Response from `GEOWriterAPI.SendIntelligenceTaskToCms`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string** | Numeric task ID or public_id string token | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSendIntelligenceTaskToCmsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+
+### Return type
+
+[**CmsSendResponse**](CmsSendResponse.md)
 
 ### Authorization
 
