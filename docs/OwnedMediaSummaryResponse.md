@@ -19,6 +19,10 @@ Name | Type | Description | Notes
 **AgeBuckets** | Pointer to [**[]OwnedMediaAgeBucketShare**](OwnedMediaAgeBucketShare.md) | Social and YouTube providers only. Posts or videos without a known publication date are left out | [optional] 
 **Stores** | Pointer to [**[]OwnedMediaStoreTotals**](OwnedMediaStoreTotals.md) | provider&#x3D;mobile_apps only | [optional] 
 **Platforms** | Pointer to [**[]OwnedMediaPlatformRollup**](OwnedMediaPlatformRollup.md) | provider&#x3D;overview only, one row per platform the caller can read | [optional] 
+**Activity** | Pointer to [**[]OwnedMediaSummaryActivityPeriod**](OwnedMediaSummaryActivityPeriod.md) | All providers. One row per actual project reporting period with runs; provider&#x3D;overview has null yours and other, and provider&#x3D;reddit also returns positive, neutral and negative sentiment counts. Citation counts use the selected date window, and periods with runs but no citation have zero | [optional] 
+**SubredditActivity** | Pointer to [**[]RedditSubredditActivityPeriod**](RedditSubredditActivityPeriod.md) | provider&#x3D;reddit only. One row per subreddit and actual reporting period; the top five subreddits are separate and Others has a null subreddit | [optional] 
+**Positions** | Pointer to [**[]RedditPositionShare**](RedditPositionShare.md) | provider&#x3D;reddit only. Position distribution over the selected date window | [optional] 
+**BrandShare** | Pointer to [**[]RedditBrandShare**](RedditBrandShare.md) | provider&#x3D;reddit only. Citation share among the tracked brand and competitors with cited mentions | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -475,6 +479,106 @@ HasPlatforms returns a boolean if a field has been set.
 `func (o *OwnedMediaSummaryResponse) UnsetPlatforms()`
 
 UnsetPlatforms ensures that no value is present for Platforms, not even an explicit nil
+### GetActivity
+
+`func (o *OwnedMediaSummaryResponse) GetActivity() []OwnedMediaSummaryActivityPeriod`
+
+GetActivity returns the Activity field if non-nil, zero value otherwise.
+
+### GetActivityOk
+
+`func (o *OwnedMediaSummaryResponse) GetActivityOk() (*[]OwnedMediaSummaryActivityPeriod, bool)`
+
+GetActivityOk returns a tuple with the Activity field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetActivity
+
+`func (o *OwnedMediaSummaryResponse) SetActivity(v []OwnedMediaSummaryActivityPeriod)`
+
+SetActivity sets Activity field to given value.
+
+### HasActivity
+
+`func (o *OwnedMediaSummaryResponse) HasActivity() bool`
+
+HasActivity returns a boolean if a field has been set.
+
+### GetSubredditActivity
+
+`func (o *OwnedMediaSummaryResponse) GetSubredditActivity() []RedditSubredditActivityPeriod`
+
+GetSubredditActivity returns the SubredditActivity field if non-nil, zero value otherwise.
+
+### GetSubredditActivityOk
+
+`func (o *OwnedMediaSummaryResponse) GetSubredditActivityOk() (*[]RedditSubredditActivityPeriod, bool)`
+
+GetSubredditActivityOk returns a tuple with the SubredditActivity field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSubredditActivity
+
+`func (o *OwnedMediaSummaryResponse) SetSubredditActivity(v []RedditSubredditActivityPeriod)`
+
+SetSubredditActivity sets SubredditActivity field to given value.
+
+### HasSubredditActivity
+
+`func (o *OwnedMediaSummaryResponse) HasSubredditActivity() bool`
+
+HasSubredditActivity returns a boolean if a field has been set.
+
+### GetPositions
+
+`func (o *OwnedMediaSummaryResponse) GetPositions() []RedditPositionShare`
+
+GetPositions returns the Positions field if non-nil, zero value otherwise.
+
+### GetPositionsOk
+
+`func (o *OwnedMediaSummaryResponse) GetPositionsOk() (*[]RedditPositionShare, bool)`
+
+GetPositionsOk returns a tuple with the Positions field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPositions
+
+`func (o *OwnedMediaSummaryResponse) SetPositions(v []RedditPositionShare)`
+
+SetPositions sets Positions field to given value.
+
+### HasPositions
+
+`func (o *OwnedMediaSummaryResponse) HasPositions() bool`
+
+HasPositions returns a boolean if a field has been set.
+
+### GetBrandShare
+
+`func (o *OwnedMediaSummaryResponse) GetBrandShare() []RedditBrandShare`
+
+GetBrandShare returns the BrandShare field if non-nil, zero value otherwise.
+
+### GetBrandShareOk
+
+`func (o *OwnedMediaSummaryResponse) GetBrandShareOk() (*[]RedditBrandShare, bool)`
+
+GetBrandShareOk returns a tuple with the BrandShare field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBrandShare
+
+`func (o *OwnedMediaSummaryResponse) SetBrandShare(v []RedditBrandShare)`
+
+SetBrandShare sets BrandShare field to given value.
+
+### HasBrandShare
+
+`func (o *OwnedMediaSummaryResponse) HasBrandShare() bool`
+
+HasBrandShare returns a boolean if a field has been set.
+
 ### GetRequestId
 
 `func (o *OwnedMediaSummaryResponse) GetRequestId() string`

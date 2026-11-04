@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.83.0
+API version: 1.84.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,6 +26,8 @@ type OwnedMediaPlatformRollup struct {
 	Yours *int32 `json:"yours,omitempty"`
 	SharePct *float32 `json:"share_pct,omitempty"`
 	Weekly []OwnedMediaPlatformRollupWeeklyInner `json:"weekly,omitempty"`
+	// One date/citation row per actual project tracking period with runs
+	Activity []OwnedMediaPlatformActivityPeriod `json:"activity,omitempty"`
 }
 
 // NewOwnedMediaPlatformRollup instantiates a new OwnedMediaPlatformRollup object
@@ -237,6 +239,38 @@ func (o *OwnedMediaPlatformRollup) SetWeekly(v []OwnedMediaPlatformRollupWeeklyI
 	o.Weekly = v
 }
 
+// GetActivity returns the Activity field value if set, zero value otherwise.
+func (o *OwnedMediaPlatformRollup) GetActivity() []OwnedMediaPlatformActivityPeriod {
+	if o == nil || IsNil(o.Activity) {
+		var ret []OwnedMediaPlatformActivityPeriod
+		return ret
+	}
+	return o.Activity
+}
+
+// GetActivityOk returns a tuple with the Activity field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaPlatformRollup) GetActivityOk() ([]OwnedMediaPlatformActivityPeriod, bool) {
+	if o == nil || IsNil(o.Activity) {
+		return nil, false
+	}
+	return o.Activity, true
+}
+
+// HasActivity returns a boolean if a field has been set.
+func (o *OwnedMediaPlatformRollup) HasActivity() bool {
+	if o != nil && !IsNil(o.Activity) {
+		return true
+	}
+
+	return false
+}
+
+// SetActivity gets a reference to the given []OwnedMediaPlatformActivityPeriod and assigns it to the Activity field.
+func (o *OwnedMediaPlatformRollup) SetActivity(v []OwnedMediaPlatformActivityPeriod) {
+	o.Activity = v
+}
+
 func (o OwnedMediaPlatformRollup) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -264,6 +298,9 @@ func (o OwnedMediaPlatformRollup) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Weekly) {
 		toSerialize["weekly"] = o.Weekly
+	}
+	if !IsNil(o.Activity) {
+		toSerialize["activity"] = o.Activity
 	}
 	return toSerialize, nil
 }

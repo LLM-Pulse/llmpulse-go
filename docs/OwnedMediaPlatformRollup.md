@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **Yours** | Pointer to **int32** |  | [optional] 
 **SharePct** | Pointer to **float32** |  | [optional] 
 **Weekly** | Pointer to [**[]OwnedMediaPlatformRollupWeeklyInner**](OwnedMediaPlatformRollupWeeklyInner.md) |  | [optional] 
+**Activity** | Pointer to [**[]OwnedMediaPlatformActivityPeriod**](OwnedMediaPlatformActivityPeriod.md) | One date/citation row per actual project tracking period with runs | [optional] 
 
 ## Methods
 
@@ -179,6 +180,31 @@ SetWeekly sets Weekly field to given value.
 `func (o *OwnedMediaPlatformRollup) HasWeekly() bool`
 
 HasWeekly returns a boolean if a field has been set.
+
+### GetActivity
+
+`func (o *OwnedMediaPlatformRollup) GetActivity() []OwnedMediaPlatformActivityPeriod`
+
+GetActivity returns the Activity field if non-nil, zero value otherwise.
+
+### GetActivityOk
+
+`func (o *OwnedMediaPlatformRollup) GetActivityOk() (*[]OwnedMediaPlatformActivityPeriod, bool)`
+
+GetActivityOk returns a tuple with the Activity field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetActivity
+
+`func (o *OwnedMediaPlatformRollup) SetActivity(v []OwnedMediaPlatformActivityPeriod)`
+
+SetActivity sets Activity field to given value.
+
+### HasActivity
+
+`func (o *OwnedMediaPlatformRollup) HasActivity() bool`
+
+HasActivity returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

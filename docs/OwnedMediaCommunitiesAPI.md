@@ -194,7 +194,7 @@ func main() {
 	provider := "provider_example" // string | The platform to report on
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
-	view := "view_example" // string | Row shape; the allowed set depends on provider (optional)
+	view := "view_example" // string | Row shape; the allowed set depends on provider, and activity is available for each provider (optional)
 	store := "store_example" // string | provider=mobile_apps only (optional) (default to "google_play")
 	owned := true // bool | Return only rows belonging to the account's own connected profile (optional)
 	model := "model_example" // string | Filter by one AI model. It must be a model enabled for the API key's user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. (optional)
@@ -234,7 +234,7 @@ Name | Type | Description  | Notes
  **provider** | **string** | The platform to report on | 
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
- **view** | **string** | Row shape; the allowed set depends on provider | 
+ **view** | **string** | Row shape; the allowed set depends on provider, and activity is available for each provider | 
  **store** | **string** | provider&#x3D;mobile_apps only | [default to &quot;google_play&quot;]
  **owned** | **bool** | Return only rows belonging to the account&#39;s own connected profile | 
  **model** | **string** | Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message. | 

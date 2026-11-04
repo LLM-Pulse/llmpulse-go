@@ -4,6 +4,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Date** | Pointer to **string** | The start date of the actual reporting period (view&#x3D;activity) | [optional] 
+**EntityId** | Pointer to **NullableString** | Platform entity identifier (view&#x3D;activity) | [optional] 
+**EntityName** | Pointer to **NullableString** | Current entity name when known (view&#x3D;activity) | [optional] 
+**EntityUrl** | Pointer to **NullableString** | Current profile, channel or app listing URL when known (view&#x3D;activity) | [optional] 
+**Store** | Pointer to **string** | Store selected for provider&#x3D;mobile_apps (view&#x3D;activity) | [optional] 
+**CompetitorId** | Pointer to **NullableInt32** | Competitor identifier when the activity row represents a competitor app | [optional] 
 **Title** | Pointer to **NullableString** |  | [optional] 
 **Url** | Pointer to **NullableString** |  | [optional] 
 **ChannelName** | Pointer to **NullableString** |  | [optional] 
@@ -18,7 +24,7 @@ Name | Type | Description | Notes
 **ThumbnailUrl** | Pointer to **NullableString** | The post or video image. Our cached copy where one exists, so the link does not expire | [optional] 
 **AvatarUrl** | Pointer to **NullableString** | The profile or channel image. Our cached copy where one exists | [optional] 
 **ContentType** | Pointer to **NullableString** | The post format on its platform: reel, post or tv on Instagram, post or pulse on LinkedIn, post elsewhere | [optional] 
-**Citations** | Pointer to **int32** |  | [optional] 
+**Citations** | Pointer to **int32** | Citations for the row; for view&#x3D;activity, the count in this reporting period | [optional] 
 **UniqueVideos** | Pointer to **int32** |  | [optional] 
 **UniquePosts** | Pointer to **int32** |  | [optional] 
 **Followers** | Pointer to **NullableInt32** |  | [optional] 
@@ -56,6 +62,196 @@ NewOwnedMediaRowWithDefaults instantiates a new OwnedMediaRow object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
+### GetDate
+
+`func (o *OwnedMediaRow) GetDate() string`
+
+GetDate returns the Date field if non-nil, zero value otherwise.
+
+### GetDateOk
+
+`func (o *OwnedMediaRow) GetDateOk() (*string, bool)`
+
+GetDateOk returns a tuple with the Date field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDate
+
+`func (o *OwnedMediaRow) SetDate(v string)`
+
+SetDate sets Date field to given value.
+
+### HasDate
+
+`func (o *OwnedMediaRow) HasDate() bool`
+
+HasDate returns a boolean if a field has been set.
+
+### GetEntityId
+
+`func (o *OwnedMediaRow) GetEntityId() string`
+
+GetEntityId returns the EntityId field if non-nil, zero value otherwise.
+
+### GetEntityIdOk
+
+`func (o *OwnedMediaRow) GetEntityIdOk() (*string, bool)`
+
+GetEntityIdOk returns a tuple with the EntityId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEntityId
+
+`func (o *OwnedMediaRow) SetEntityId(v string)`
+
+SetEntityId sets EntityId field to given value.
+
+### HasEntityId
+
+`func (o *OwnedMediaRow) HasEntityId() bool`
+
+HasEntityId returns a boolean if a field has been set.
+
+### SetEntityIdNil
+
+`func (o *OwnedMediaRow) SetEntityIdNil(b bool)`
+
+ SetEntityIdNil sets the value for EntityId to be an explicit nil
+
+### UnsetEntityId
+`func (o *OwnedMediaRow) UnsetEntityId()`
+
+UnsetEntityId ensures that no value is present for EntityId, not even an explicit nil
+### GetEntityName
+
+`func (o *OwnedMediaRow) GetEntityName() string`
+
+GetEntityName returns the EntityName field if non-nil, zero value otherwise.
+
+### GetEntityNameOk
+
+`func (o *OwnedMediaRow) GetEntityNameOk() (*string, bool)`
+
+GetEntityNameOk returns a tuple with the EntityName field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEntityName
+
+`func (o *OwnedMediaRow) SetEntityName(v string)`
+
+SetEntityName sets EntityName field to given value.
+
+### HasEntityName
+
+`func (o *OwnedMediaRow) HasEntityName() bool`
+
+HasEntityName returns a boolean if a field has been set.
+
+### SetEntityNameNil
+
+`func (o *OwnedMediaRow) SetEntityNameNil(b bool)`
+
+ SetEntityNameNil sets the value for EntityName to be an explicit nil
+
+### UnsetEntityName
+`func (o *OwnedMediaRow) UnsetEntityName()`
+
+UnsetEntityName ensures that no value is present for EntityName, not even an explicit nil
+### GetEntityUrl
+
+`func (o *OwnedMediaRow) GetEntityUrl() string`
+
+GetEntityUrl returns the EntityUrl field if non-nil, zero value otherwise.
+
+### GetEntityUrlOk
+
+`func (o *OwnedMediaRow) GetEntityUrlOk() (*string, bool)`
+
+GetEntityUrlOk returns a tuple with the EntityUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEntityUrl
+
+`func (o *OwnedMediaRow) SetEntityUrl(v string)`
+
+SetEntityUrl sets EntityUrl field to given value.
+
+### HasEntityUrl
+
+`func (o *OwnedMediaRow) HasEntityUrl() bool`
+
+HasEntityUrl returns a boolean if a field has been set.
+
+### SetEntityUrlNil
+
+`func (o *OwnedMediaRow) SetEntityUrlNil(b bool)`
+
+ SetEntityUrlNil sets the value for EntityUrl to be an explicit nil
+
+### UnsetEntityUrl
+`func (o *OwnedMediaRow) UnsetEntityUrl()`
+
+UnsetEntityUrl ensures that no value is present for EntityUrl, not even an explicit nil
+### GetStore
+
+`func (o *OwnedMediaRow) GetStore() string`
+
+GetStore returns the Store field if non-nil, zero value otherwise.
+
+### GetStoreOk
+
+`func (o *OwnedMediaRow) GetStoreOk() (*string, bool)`
+
+GetStoreOk returns a tuple with the Store field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStore
+
+`func (o *OwnedMediaRow) SetStore(v string)`
+
+SetStore sets Store field to given value.
+
+### HasStore
+
+`func (o *OwnedMediaRow) HasStore() bool`
+
+HasStore returns a boolean if a field has been set.
+
+### GetCompetitorId
+
+`func (o *OwnedMediaRow) GetCompetitorId() int32`
+
+GetCompetitorId returns the CompetitorId field if non-nil, zero value otherwise.
+
+### GetCompetitorIdOk
+
+`func (o *OwnedMediaRow) GetCompetitorIdOk() (*int32, bool)`
+
+GetCompetitorIdOk returns a tuple with the CompetitorId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCompetitorId
+
+`func (o *OwnedMediaRow) SetCompetitorId(v int32)`
+
+SetCompetitorId sets CompetitorId field to given value.
+
+### HasCompetitorId
+
+`func (o *OwnedMediaRow) HasCompetitorId() bool`
+
+HasCompetitorId returns a boolean if a field has been set.
+
+### SetCompetitorIdNil
+
+`func (o *OwnedMediaRow) SetCompetitorIdNil(b bool)`
+
+ SetCompetitorIdNil sets the value for CompetitorId to be an explicit nil
+
+### UnsetCompetitorId
+`func (o *OwnedMediaRow) UnsetCompetitorId()`
+
+UnsetCompetitorId ensures that no value is present for CompetitorId, not even an explicit nil
 ### GetTitle
 
 `func (o *OwnedMediaRow) GetTitle() string`

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.83.0
+API version: 1.84.0
 Contact: info@llmpulse.ai
 */
 
@@ -30,6 +30,12 @@ type OwnedMediaKpis struct {
 	YourContent NullableInt32 `json:"your_content,omitempty"`
 	// yours as a percentage of total (0-100)
 	SharePct *float32 `json:"share_pct,omitempty"`
+	// Number of cited subreddits (provider=reddit; null or omitted for other providers)
+	UniqueSubreddits NullableInt32 `json:"unique_subreddits,omitempty"`
+	// Number of cited Reddit authors (provider=reddit; null or omitted for other providers)
+	UniqueAuthors NullableInt32 `json:"unique_authors,omitempty"`
+	// Positive sentiment among rated Reddit citations, as a percentage (provider=reddit; null or omitted for other providers)
+	PositivePct NullableFloat32 `json:"positive_pct,omitempty"`
 }
 
 // NewOwnedMediaKpis instantiates a new OwnedMediaKpis object
@@ -229,6 +235,132 @@ func (o *OwnedMediaKpis) SetSharePct(v float32) {
 	o.SharePct = &v
 }
 
+// GetUniqueSubreddits returns the UniqueSubreddits field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaKpis) GetUniqueSubreddits() int32 {
+	if o == nil || IsNil(o.UniqueSubreddits.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.UniqueSubreddits.Get()
+}
+
+// GetUniqueSubredditsOk returns a tuple with the UniqueSubreddits field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaKpis) GetUniqueSubredditsOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UniqueSubreddits.Get(), o.UniqueSubreddits.IsSet()
+}
+
+// HasUniqueSubreddits returns a boolean if a field has been set.
+func (o *OwnedMediaKpis) HasUniqueSubreddits() bool {
+	if o != nil && o.UniqueSubreddits.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUniqueSubreddits gets a reference to the given NullableInt32 and assigns it to the UniqueSubreddits field.
+func (o *OwnedMediaKpis) SetUniqueSubreddits(v int32) {
+	o.UniqueSubreddits.Set(&v)
+}
+// SetUniqueSubredditsNil sets the value for UniqueSubreddits to be an explicit nil
+func (o *OwnedMediaKpis) SetUniqueSubredditsNil() {
+	o.UniqueSubreddits.Set(nil)
+}
+
+// UnsetUniqueSubreddits ensures that no value is present for UniqueSubreddits, not even an explicit nil
+func (o *OwnedMediaKpis) UnsetUniqueSubreddits() {
+	o.UniqueSubreddits.Unset()
+}
+
+// GetUniqueAuthors returns the UniqueAuthors field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaKpis) GetUniqueAuthors() int32 {
+	if o == nil || IsNil(o.UniqueAuthors.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.UniqueAuthors.Get()
+}
+
+// GetUniqueAuthorsOk returns a tuple with the UniqueAuthors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaKpis) GetUniqueAuthorsOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.UniqueAuthors.Get(), o.UniqueAuthors.IsSet()
+}
+
+// HasUniqueAuthors returns a boolean if a field has been set.
+func (o *OwnedMediaKpis) HasUniqueAuthors() bool {
+	if o != nil && o.UniqueAuthors.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUniqueAuthors gets a reference to the given NullableInt32 and assigns it to the UniqueAuthors field.
+func (o *OwnedMediaKpis) SetUniqueAuthors(v int32) {
+	o.UniqueAuthors.Set(&v)
+}
+// SetUniqueAuthorsNil sets the value for UniqueAuthors to be an explicit nil
+func (o *OwnedMediaKpis) SetUniqueAuthorsNil() {
+	o.UniqueAuthors.Set(nil)
+}
+
+// UnsetUniqueAuthors ensures that no value is present for UniqueAuthors, not even an explicit nil
+func (o *OwnedMediaKpis) UnsetUniqueAuthors() {
+	o.UniqueAuthors.Unset()
+}
+
+// GetPositivePct returns the PositivePct field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaKpis) GetPositivePct() float32 {
+	if o == nil || IsNil(o.PositivePct.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.PositivePct.Get()
+}
+
+// GetPositivePctOk returns a tuple with the PositivePct field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaKpis) GetPositivePctOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PositivePct.Get(), o.PositivePct.IsSet()
+}
+
+// HasPositivePct returns a boolean if a field has been set.
+func (o *OwnedMediaKpis) HasPositivePct() bool {
+	if o != nil && o.PositivePct.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetPositivePct gets a reference to the given NullableFloat32 and assigns it to the PositivePct field.
+func (o *OwnedMediaKpis) SetPositivePct(v float32) {
+	o.PositivePct.Set(&v)
+}
+// SetPositivePctNil sets the value for PositivePct to be an explicit nil
+func (o *OwnedMediaKpis) SetPositivePctNil() {
+	o.PositivePct.Set(nil)
+}
+
+// UnsetPositivePct ensures that no value is present for PositivePct, not even an explicit nil
+func (o *OwnedMediaKpis) UnsetPositivePct() {
+	o.PositivePct.Unset()
+}
+
 func (o OwnedMediaKpis) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -253,6 +385,15 @@ func (o OwnedMediaKpis) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SharePct) {
 		toSerialize["share_pct"] = o.SharePct
+	}
+	if o.UniqueSubreddits.IsSet() {
+		toSerialize["unique_subreddits"] = o.UniqueSubreddits.Get()
+	}
+	if o.UniqueAuthors.IsSet() {
+		toSerialize["unique_authors"] = o.UniqueAuthors.Get()
+	}
+	if o.PositivePct.IsSet() {
+		toSerialize["positive_pct"] = o.PositivePct.Get()
 	}
 	return toSerialize, nil
 }

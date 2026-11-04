@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.83.0
+API version: 1.84.0
 Contact: info@llmpulse.ai
 */
 
@@ -19,8 +19,20 @@ import (
 // checks if the OwnedMediaRow type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OwnedMediaRow{}
 
-// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model) and apps (domain, total_responses, rank, global_rank). Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
+// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model), apps (domain, total_responses, rank, global_rank) and activity (date, entity_id, entity_name, entity_url, yours, citations, plus store and competitor_id where applicable). Activity rows identify a reporting-period start; entity metadata is optional, and entity_id, entity_name and entity_url can be null when unknown. Store and competitor_id appear only where applicable. Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
 type OwnedMediaRow struct {
+	// The start date of the actual reporting period (view=activity)
+	Date *string `json:"date,omitempty"`
+	// Platform entity identifier (view=activity)
+	EntityId NullableString `json:"entity_id,omitempty"`
+	// Current entity name when known (view=activity)
+	EntityName NullableString `json:"entity_name,omitempty"`
+	// Current profile, channel or app listing URL when known (view=activity)
+	EntityUrl NullableString `json:"entity_url,omitempty"`
+	// Store selected for provider=mobile_apps (view=activity)
+	Store *string `json:"store,omitempty"`
+	// Competitor identifier when the activity row represents a competitor app
+	CompetitorId NullableInt32 `json:"competitor_id,omitempty"`
 	Title NullableString `json:"title,omitempty"`
 	Url NullableString `json:"url,omitempty"`
 	ChannelName NullableString `json:"channel_name,omitempty"`
@@ -40,6 +52,7 @@ type OwnedMediaRow struct {
 	AvatarUrl NullableString `json:"avatar_url,omitempty"`
 	// The post format on its platform: reel, post or tv on Instagram, post or pulse on LinkedIn, post elsewhere
 	ContentType NullableString `json:"content_type,omitempty"`
+	// Citations for the row; for view=activity, the count in this reporting period
 	Citations *int32 `json:"citations,omitempty"`
 	UniqueVideos *int32 `json:"unique_videos,omitempty"`
 	UniquePosts *int32 `json:"unique_posts,omitempty"`
@@ -80,6 +93,238 @@ func NewOwnedMediaRow() *OwnedMediaRow {
 func NewOwnedMediaRowWithDefaults() *OwnedMediaRow {
 	this := OwnedMediaRow{}
 	return &this
+}
+
+// GetDate returns the Date field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetDate() string {
+	if o == nil || IsNil(o.Date) {
+		var ret string
+		return ret
+	}
+	return *o.Date
+}
+
+// GetDateOk returns a tuple with the Date field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetDateOk() (*string, bool) {
+	if o == nil || IsNil(o.Date) {
+		return nil, false
+	}
+	return o.Date, true
+}
+
+// HasDate returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasDate() bool {
+	if o != nil && !IsNil(o.Date) {
+		return true
+	}
+
+	return false
+}
+
+// SetDate gets a reference to the given string and assigns it to the Date field.
+func (o *OwnedMediaRow) SetDate(v string) {
+	o.Date = &v
+}
+
+// GetEntityId returns the EntityId field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetEntityId() string {
+	if o == nil || IsNil(o.EntityId.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.EntityId.Get()
+}
+
+// GetEntityIdOk returns a tuple with the EntityId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetEntityIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.EntityId.Get(), o.EntityId.IsSet()
+}
+
+// HasEntityId returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasEntityId() bool {
+	if o != nil && o.EntityId.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetEntityId gets a reference to the given NullableString and assigns it to the EntityId field.
+func (o *OwnedMediaRow) SetEntityId(v string) {
+	o.EntityId.Set(&v)
+}
+// SetEntityIdNil sets the value for EntityId to be an explicit nil
+func (o *OwnedMediaRow) SetEntityIdNil() {
+	o.EntityId.Set(nil)
+}
+
+// UnsetEntityId ensures that no value is present for EntityId, not even an explicit nil
+func (o *OwnedMediaRow) UnsetEntityId() {
+	o.EntityId.Unset()
+}
+
+// GetEntityName returns the EntityName field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetEntityName() string {
+	if o == nil || IsNil(o.EntityName.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.EntityName.Get()
+}
+
+// GetEntityNameOk returns a tuple with the EntityName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetEntityNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.EntityName.Get(), o.EntityName.IsSet()
+}
+
+// HasEntityName returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasEntityName() bool {
+	if o != nil && o.EntityName.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetEntityName gets a reference to the given NullableString and assigns it to the EntityName field.
+func (o *OwnedMediaRow) SetEntityName(v string) {
+	o.EntityName.Set(&v)
+}
+// SetEntityNameNil sets the value for EntityName to be an explicit nil
+func (o *OwnedMediaRow) SetEntityNameNil() {
+	o.EntityName.Set(nil)
+}
+
+// UnsetEntityName ensures that no value is present for EntityName, not even an explicit nil
+func (o *OwnedMediaRow) UnsetEntityName() {
+	o.EntityName.Unset()
+}
+
+// GetEntityUrl returns the EntityUrl field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetEntityUrl() string {
+	if o == nil || IsNil(o.EntityUrl.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.EntityUrl.Get()
+}
+
+// GetEntityUrlOk returns a tuple with the EntityUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetEntityUrlOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.EntityUrl.Get(), o.EntityUrl.IsSet()
+}
+
+// HasEntityUrl returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasEntityUrl() bool {
+	if o != nil && o.EntityUrl.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetEntityUrl gets a reference to the given NullableString and assigns it to the EntityUrl field.
+func (o *OwnedMediaRow) SetEntityUrl(v string) {
+	o.EntityUrl.Set(&v)
+}
+// SetEntityUrlNil sets the value for EntityUrl to be an explicit nil
+func (o *OwnedMediaRow) SetEntityUrlNil() {
+	o.EntityUrl.Set(nil)
+}
+
+// UnsetEntityUrl ensures that no value is present for EntityUrl, not even an explicit nil
+func (o *OwnedMediaRow) UnsetEntityUrl() {
+	o.EntityUrl.Unset()
+}
+
+// GetStore returns the Store field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetStore() string {
+	if o == nil || IsNil(o.Store) {
+		var ret string
+		return ret
+	}
+	return *o.Store
+}
+
+// GetStoreOk returns a tuple with the Store field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetStoreOk() (*string, bool) {
+	if o == nil || IsNil(o.Store) {
+		return nil, false
+	}
+	return o.Store, true
+}
+
+// HasStore returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasStore() bool {
+	if o != nil && !IsNil(o.Store) {
+		return true
+	}
+
+	return false
+}
+
+// SetStore gets a reference to the given string and assigns it to the Store field.
+func (o *OwnedMediaRow) SetStore(v string) {
+	o.Store = &v
+}
+
+// GetCompetitorId returns the CompetitorId field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetCompetitorId() int32 {
+	if o == nil || IsNil(o.CompetitorId.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.CompetitorId.Get()
+}
+
+// GetCompetitorIdOk returns a tuple with the CompetitorId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetCompetitorIdOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CompetitorId.Get(), o.CompetitorId.IsSet()
+}
+
+// HasCompetitorId returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasCompetitorId() bool {
+	if o != nil && o.CompetitorId.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCompetitorId gets a reference to the given NullableInt32 and assigns it to the CompetitorId field.
+func (o *OwnedMediaRow) SetCompetitorId(v int32) {
+	o.CompetitorId.Set(&v)
+}
+// SetCompetitorIdNil sets the value for CompetitorId to be an explicit nil
+func (o *OwnedMediaRow) SetCompetitorIdNil() {
+	o.CompetitorId.Set(nil)
+}
+
+// UnsetCompetitorId ensures that no value is present for CompetitorId, not even an explicit nil
+func (o *OwnedMediaRow) UnsetCompetitorId() {
+	o.CompetitorId.Unset()
 }
 
 // GetTitle returns the Title field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -1347,6 +1592,24 @@ func (o OwnedMediaRow) MarshalJSON() ([]byte, error) {
 
 func (o OwnedMediaRow) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Date) {
+		toSerialize["date"] = o.Date
+	}
+	if o.EntityId.IsSet() {
+		toSerialize["entity_id"] = o.EntityId.Get()
+	}
+	if o.EntityName.IsSet() {
+		toSerialize["entity_name"] = o.EntityName.Get()
+	}
+	if o.EntityUrl.IsSet() {
+		toSerialize["entity_url"] = o.EntityUrl.Get()
+	}
+	if !IsNil(o.Store) {
+		toSerialize["store"] = o.Store
+	}
+	if o.CompetitorId.IsSet() {
+		toSerialize["competitor_id"] = o.CompetitorId.Get()
+	}
 	if o.Title.IsSet() {
 		toSerialize["title"] = o.Title.Get()
 	}

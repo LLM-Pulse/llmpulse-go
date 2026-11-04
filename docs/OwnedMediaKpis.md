@@ -9,6 +9,9 @@ Name | Type | Description | Notes
 **YourProfile** | Pointer to **NullableInt32** | Citations of your profile or channel pages. Null for mobile_apps and overview | [optional] 
 **YourContent** | Pointer to **NullableInt32** | Citations of your posts or videos. Null for mobile_apps and overview | [optional] 
 **SharePct** | Pointer to **float32** | yours as a percentage of total (0-100) | [optional] 
+**UniqueSubreddits** | Pointer to **NullableInt32** | Number of cited subreddits (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
+**UniqueAuthors** | Pointer to **NullableInt32** | Number of cited Reddit authors (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
+**PositivePct** | Pointer to **NullableFloat32** | Positive sentiment among rated Reddit citations, as a percentage (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
 
 ## Methods
 
@@ -174,6 +177,111 @@ SetSharePct sets SharePct field to given value.
 
 HasSharePct returns a boolean if a field has been set.
 
+### GetUniqueSubreddits
+
+`func (o *OwnedMediaKpis) GetUniqueSubreddits() int32`
+
+GetUniqueSubreddits returns the UniqueSubreddits field if non-nil, zero value otherwise.
+
+### GetUniqueSubredditsOk
+
+`func (o *OwnedMediaKpis) GetUniqueSubredditsOk() (*int32, bool)`
+
+GetUniqueSubredditsOk returns a tuple with the UniqueSubreddits field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUniqueSubreddits
+
+`func (o *OwnedMediaKpis) SetUniqueSubreddits(v int32)`
+
+SetUniqueSubreddits sets UniqueSubreddits field to given value.
+
+### HasUniqueSubreddits
+
+`func (o *OwnedMediaKpis) HasUniqueSubreddits() bool`
+
+HasUniqueSubreddits returns a boolean if a field has been set.
+
+### SetUniqueSubredditsNil
+
+`func (o *OwnedMediaKpis) SetUniqueSubredditsNil(b bool)`
+
+ SetUniqueSubredditsNil sets the value for UniqueSubreddits to be an explicit nil
+
+### UnsetUniqueSubreddits
+`func (o *OwnedMediaKpis) UnsetUniqueSubreddits()`
+
+UnsetUniqueSubreddits ensures that no value is present for UniqueSubreddits, not even an explicit nil
+### GetUniqueAuthors
+
+`func (o *OwnedMediaKpis) GetUniqueAuthors() int32`
+
+GetUniqueAuthors returns the UniqueAuthors field if non-nil, zero value otherwise.
+
+### GetUniqueAuthorsOk
+
+`func (o *OwnedMediaKpis) GetUniqueAuthorsOk() (*int32, bool)`
+
+GetUniqueAuthorsOk returns a tuple with the UniqueAuthors field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUniqueAuthors
+
+`func (o *OwnedMediaKpis) SetUniqueAuthors(v int32)`
+
+SetUniqueAuthors sets UniqueAuthors field to given value.
+
+### HasUniqueAuthors
+
+`func (o *OwnedMediaKpis) HasUniqueAuthors() bool`
+
+HasUniqueAuthors returns a boolean if a field has been set.
+
+### SetUniqueAuthorsNil
+
+`func (o *OwnedMediaKpis) SetUniqueAuthorsNil(b bool)`
+
+ SetUniqueAuthorsNil sets the value for UniqueAuthors to be an explicit nil
+
+### UnsetUniqueAuthors
+`func (o *OwnedMediaKpis) UnsetUniqueAuthors()`
+
+UnsetUniqueAuthors ensures that no value is present for UniqueAuthors, not even an explicit nil
+### GetPositivePct
+
+`func (o *OwnedMediaKpis) GetPositivePct() float32`
+
+GetPositivePct returns the PositivePct field if non-nil, zero value otherwise.
+
+### GetPositivePctOk
+
+`func (o *OwnedMediaKpis) GetPositivePctOk() (*float32, bool)`
+
+GetPositivePctOk returns a tuple with the PositivePct field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPositivePct
+
+`func (o *OwnedMediaKpis) SetPositivePct(v float32)`
+
+SetPositivePct sets PositivePct field to given value.
+
+### HasPositivePct
+
+`func (o *OwnedMediaKpis) HasPositivePct() bool`
+
+HasPositivePct returns a boolean if a field has been set.
+
+### SetPositivePctNil
+
+`func (o *OwnedMediaKpis) SetPositivePctNil(b bool)`
+
+ SetPositivePctNil sets the value for PositivePct to be an explicit nil
+
+### UnsetPositivePct
+`func (o *OwnedMediaKpis) UnsetPositivePct()`
+
+UnsetPositivePct ensures that no value is present for PositivePct, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

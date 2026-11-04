@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.83.0
+API version: 1.84.0
 Contact: info@llmpulse.ai
 */
 
@@ -43,6 +43,14 @@ type OwnedMediaSummaryResponse struct {
 	Stores []OwnedMediaStoreTotals `json:"stores,omitempty"`
 	// provider=overview only, one row per platform the caller can read
 	Platforms []OwnedMediaPlatformRollup `json:"platforms,omitempty"`
+	// All providers. One row per actual project reporting period with runs; provider=overview has null yours and other, and provider=reddit also returns positive, neutral and negative sentiment counts. Citation counts use the selected date window, and periods with runs but no citation have zero
+	Activity []OwnedMediaSummaryActivityPeriod `json:"activity,omitempty"`
+	// provider=reddit only. One row per subreddit and actual reporting period; the top five subreddits are separate and Others has a null subreddit
+	SubredditActivity []RedditSubredditActivityPeriod `json:"subreddit_activity,omitempty"`
+	// provider=reddit only. Position distribution over the selected date window
+	Positions []RedditPositionShare `json:"positions,omitempty"`
+	// provider=reddit only. Citation share among the tracked brand and competitors with cited mentions
+	BrandShare []RedditBrandShare `json:"brand_share,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
@@ -549,6 +557,134 @@ func (o *OwnedMediaSummaryResponse) SetPlatforms(v []OwnedMediaPlatformRollup) {
 	o.Platforms = v
 }
 
+// GetActivity returns the Activity field value if set, zero value otherwise.
+func (o *OwnedMediaSummaryResponse) GetActivity() []OwnedMediaSummaryActivityPeriod {
+	if o == nil || IsNil(o.Activity) {
+		var ret []OwnedMediaSummaryActivityPeriod
+		return ret
+	}
+	return o.Activity
+}
+
+// GetActivityOk returns a tuple with the Activity field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaSummaryResponse) GetActivityOk() ([]OwnedMediaSummaryActivityPeriod, bool) {
+	if o == nil || IsNil(o.Activity) {
+		return nil, false
+	}
+	return o.Activity, true
+}
+
+// HasActivity returns a boolean if a field has been set.
+func (o *OwnedMediaSummaryResponse) HasActivity() bool {
+	if o != nil && !IsNil(o.Activity) {
+		return true
+	}
+
+	return false
+}
+
+// SetActivity gets a reference to the given []OwnedMediaSummaryActivityPeriod and assigns it to the Activity field.
+func (o *OwnedMediaSummaryResponse) SetActivity(v []OwnedMediaSummaryActivityPeriod) {
+	o.Activity = v
+}
+
+// GetSubredditActivity returns the SubredditActivity field value if set, zero value otherwise.
+func (o *OwnedMediaSummaryResponse) GetSubredditActivity() []RedditSubredditActivityPeriod {
+	if o == nil || IsNil(o.SubredditActivity) {
+		var ret []RedditSubredditActivityPeriod
+		return ret
+	}
+	return o.SubredditActivity
+}
+
+// GetSubredditActivityOk returns a tuple with the SubredditActivity field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaSummaryResponse) GetSubredditActivityOk() ([]RedditSubredditActivityPeriod, bool) {
+	if o == nil || IsNil(o.SubredditActivity) {
+		return nil, false
+	}
+	return o.SubredditActivity, true
+}
+
+// HasSubredditActivity returns a boolean if a field has been set.
+func (o *OwnedMediaSummaryResponse) HasSubredditActivity() bool {
+	if o != nil && !IsNil(o.SubredditActivity) {
+		return true
+	}
+
+	return false
+}
+
+// SetSubredditActivity gets a reference to the given []RedditSubredditActivityPeriod and assigns it to the SubredditActivity field.
+func (o *OwnedMediaSummaryResponse) SetSubredditActivity(v []RedditSubredditActivityPeriod) {
+	o.SubredditActivity = v
+}
+
+// GetPositions returns the Positions field value if set, zero value otherwise.
+func (o *OwnedMediaSummaryResponse) GetPositions() []RedditPositionShare {
+	if o == nil || IsNil(o.Positions) {
+		var ret []RedditPositionShare
+		return ret
+	}
+	return o.Positions
+}
+
+// GetPositionsOk returns a tuple with the Positions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaSummaryResponse) GetPositionsOk() ([]RedditPositionShare, bool) {
+	if o == nil || IsNil(o.Positions) {
+		return nil, false
+	}
+	return o.Positions, true
+}
+
+// HasPositions returns a boolean if a field has been set.
+func (o *OwnedMediaSummaryResponse) HasPositions() bool {
+	if o != nil && !IsNil(o.Positions) {
+		return true
+	}
+
+	return false
+}
+
+// SetPositions gets a reference to the given []RedditPositionShare and assigns it to the Positions field.
+func (o *OwnedMediaSummaryResponse) SetPositions(v []RedditPositionShare) {
+	o.Positions = v
+}
+
+// GetBrandShare returns the BrandShare field value if set, zero value otherwise.
+func (o *OwnedMediaSummaryResponse) GetBrandShare() []RedditBrandShare {
+	if o == nil || IsNil(o.BrandShare) {
+		var ret []RedditBrandShare
+		return ret
+	}
+	return o.BrandShare
+}
+
+// GetBrandShareOk returns a tuple with the BrandShare field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaSummaryResponse) GetBrandShareOk() ([]RedditBrandShare, bool) {
+	if o == nil || IsNil(o.BrandShare) {
+		return nil, false
+	}
+	return o.BrandShare, true
+}
+
+// HasBrandShare returns a boolean if a field has been set.
+func (o *OwnedMediaSummaryResponse) HasBrandShare() bool {
+	if o != nil && !IsNil(o.BrandShare) {
+		return true
+	}
+
+	return false
+}
+
+// SetBrandShare gets a reference to the given []RedditBrandShare and assigns it to the BrandShare field.
+func (o *OwnedMediaSummaryResponse) SetBrandShare(v []RedditBrandShare) {
+	o.BrandShare = v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *OwnedMediaSummaryResponse) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -635,6 +771,18 @@ func (o OwnedMediaSummaryResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if o.Platforms != nil {
 		toSerialize["platforms"] = o.Platforms
+	}
+	if !IsNil(o.Activity) {
+		toSerialize["activity"] = o.Activity
+	}
+	if !IsNil(o.SubredditActivity) {
+		toSerialize["subreddit_activity"] = o.SubredditActivity
+	}
+	if !IsNil(o.Positions) {
+		toSerialize["positions"] = o.Positions
+	}
+	if !IsNil(o.BrandShare) {
+		toSerialize["brand_share"] = o.BrandShare
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
