@@ -123,6 +123,7 @@ docs/CreateApiKeyRequest.md
 docs/CreateCollectionRequest.md
 docs/CreateCompetitorRequest.md
 docs/CreateProjectDraftRequest.md
+docs/CreateReputationReportRequest.md
 docs/CreateTeamInvitation201Response.md
 docs/CreateTeamInvitationRequest.md
 docs/CreateTechnicalGeoReportsRequest.md
@@ -285,6 +286,8 @@ docs/RedditPositionShare.md
 docs/RedditSubredditActivityPeriod.md
 docs/RemovePromptTagsRequest.md
 docs/RemoveTeamMember200Response.md
+docs/ReputationReportCreateResponse.md
+docs/ReputationReportSummary.md
 docs/ReputationStudiesAPI.md
 docs/RevokeApiKey200Response.md
 docs/RevokeTeamInvitation200Response.md
@@ -465,6 +468,7 @@ model_create_api_key_request.go
 model_create_collection_request.go
 model_create_competitor_request.go
 model_create_project_draft_request.go
+model_create_reputation_report_request.go
 model_create_team_invitation_201_response.go
 model_create_team_invitation_request.go
 model_create_technical_geo_reports_request.go
@@ -617,6 +621,8 @@ model_reddit_position_share.go
 model_reddit_subreddit_activity_period.go
 model_remove_prompt_tags_request.go
 model_remove_team_member_200_response.go
+model_reputation_report_create_response.go
+model_reputation_report_summary.go
 model_revoke_api_key_200_response.go
 model_revoke_team_invitation_200_response.go
 model_sample_webhook_payloads_200_response.go

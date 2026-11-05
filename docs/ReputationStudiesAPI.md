@@ -4,12 +4,79 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**CreateReputationReport**](ReputationStudiesAPI.md#CreateReputationReport) | **Post** /reputation/reports | Start a reputation report
 [**GetReputationReport**](ReputationStudiesAPI.md#GetReputationReport) | **Get** /reputation/reports/{id} | Get reputation report scores
 [**GetStudy**](ReputationStudiesAPI.md#GetStudy) | **Get** /studies/{id} | Get a custom AI study
 [**GetStudyReport**](ReputationStudiesAPI.md#GetStudyReport) | **Get** /studies/{id}/reports/{report_id} | Get custom study report scores
 [**ListReputationReports**](ReputationStudiesAPI.md#ListReputationReports) | **Get** /reputation/reports | List reputation reports
 [**ListStudies**](ReputationStudiesAPI.md#ListStudies) | **Get** /studies | List custom AI studies
 
+
+
+## CreateReputationReport
+
+> ReputationReportCreateResponse CreateReputationReport(ctx).CreateReputationReportRequest(createReputationReportRequest).Execute()
+
+Start a reputation report
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	createReputationReportRequest := *openapiclient.NewCreateReputationReportRequest(int32(123)) // CreateReputationReportRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ReputationStudiesAPI.CreateReputationReport(context.Background()).CreateReputationReportRequest(createReputationReportRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.CreateReputationReport``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateReputationReport`: ReputationReportCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.CreateReputationReport`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateReputationReportRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createReputationReportRequest** | [**CreateReputationReportRequest**](CreateReputationReportRequest.md) |  | 
+
+### Return type
+
+[**ReputationReportCreateResponse**](ReputationReportCreateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetReputationReport
