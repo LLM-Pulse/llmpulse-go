@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.85.0
+API version: 1.86.0
 Contact: info@llmpulse.ai
 */
 
@@ -263,7 +263,7 @@ func (r ApiListAnswersRequest) Query(query string) ApiListAnswersRequest {
 	return r
 }
 
-// Filter sentinel non-answers (no answer could be collected after all retries, or the model declined to answer, today only Gemini; excluded from platform metrics). false &#x3D; only real answers, true &#x3D; only sentinels, omit &#x3D; both. Every item carries its own no_result flag.
+// Filter sentinel non-answers (no answer could be collected after all retries, or the model declined to answer, today only Gemini; excluded from platform metrics). false &#x3D; only real answers, true &#x3D; only sentinels, omit &#x3D; both. Every item carries its own no_result flag, and a sentinel also carries no_result_reason (declined or no_answer).
 func (r ApiListAnswersRequest) NoResult(noResult bool) ApiListAnswersRequest {
 	r.noResult = &noResult
 	return r

@@ -8,12 +8,13 @@ Name | Type | Description | Notes
 **PromptId** | Pointer to **int32** |  | [optional] 
 **PromptText** | Pointer to **string** |  | [optional] 
 **Model** | Pointer to **string** |  | [optional] 
-**Response** | Pointer to **NullableString** |  | [optional] 
+**Response** | Pointer to **NullableString** | The AI answer. For a declined answer (no_result_reason declined) it is the reply the model gave instead; for no_answer it is a placeholder, not an AI response | [optional] 
 **ResponseTruncated** | Pointer to **bool** |  | [optional] 
 **ExecutedAt** | Pointer to **NullableTime** |  | [optional] 
 **DurationMs** | Pointer to **NullableFloat32** | Milliseconds, rounded to one decimal place | [optional] 
 **Success** | Pointer to **NullableBool** | Null while the answer is still pending | [optional] 
 **NoResult** | Pointer to **bool** | True for a sentinel non-answer (no answer could be collected after all retries, or the model declined to answer, today only Gemini); excluded from platform metrics | [optional] 
+**NoResultReason** | Pointer to **string** | Present only when no_result is true. declined &#x3D; the model declined to answer (today only Gemini, shown as Declined in the app) and response holds its reply; no_answer &#x3D; no answer could be collected | [optional] 
 **FanOutQueries** | Pointer to **[]string** |  | [optional] 
 **Mentions** | Pointer to **[]map[string]interface{}** |  | [optional] 
 **Citations** | Pointer to **[]map[string]interface{}** |  | [optional] 
@@ -337,6 +338,31 @@ SetNoResult sets NoResult field to given value.
 `func (o *AnswerDetails) HasNoResult() bool`
 
 HasNoResult returns a boolean if a field has been set.
+
+### GetNoResultReason
+
+`func (o *AnswerDetails) GetNoResultReason() string`
+
+GetNoResultReason returns the NoResultReason field if non-nil, zero value otherwise.
+
+### GetNoResultReasonOk
+
+`func (o *AnswerDetails) GetNoResultReasonOk() (*string, bool)`
+
+GetNoResultReasonOk returns a tuple with the NoResultReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNoResultReason
+
+`func (o *AnswerDetails) SetNoResultReason(v string)`
+
+SetNoResultReason sets NoResultReason field to given value.
+
+### HasNoResultReason
+
+`func (o *AnswerDetails) HasNoResultReason() bool`
+
+HasNoResultReason returns a boolean if a field has been set.
 
 ### GetFanOutQueries
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.85.0
+API version: 1.86.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,6 +27,7 @@ type AnswerDetails struct {
 	PromptId *int32 `json:"prompt_id,omitempty"`
 	PromptText *string `json:"prompt_text,omitempty"`
 	Model *string `json:"model,omitempty"`
+	// The AI answer. For a declined answer (no_result_reason declined) it is the reply the model gave instead; for no_answer it is a placeholder, not an AI response
 	Response NullableString `json:"response,omitempty"`
 	ResponseTruncated *bool `json:"response_truncated,omitempty"`
 	ExecutedAt NullableTime `json:"executed_at,omitempty"`
@@ -36,6 +37,8 @@ type AnswerDetails struct {
 	Success NullableBool `json:"success,omitempty"`
 	// True for a sentinel non-answer (no answer could be collected after all retries, or the model declined to answer, today only Gemini); excluded from platform metrics
 	NoResult *bool `json:"no_result,omitempty"`
+	// Present only when no_result is true. declined = the model declined to answer (today only Gemini, shown as Declined in the app) and response holds its reply; no_answer = no answer could be collected
+	NoResultReason *string `json:"no_result_reason,omitempty"`
 	FanOutQueries []string `json:"fan_out_queries,omitempty"`
 	Mentions []map[string]interface{} `json:"mentions,omitempty"`
 	Citations []map[string]interface{} `json:"citations,omitempty"`
@@ -434,6 +437,38 @@ func (o *AnswerDetails) HasNoResult() bool {
 // SetNoResult gets a reference to the given bool and assigns it to the NoResult field.
 func (o *AnswerDetails) SetNoResult(v bool) {
 	o.NoResult = &v
+}
+
+// GetNoResultReason returns the NoResultReason field value if set, zero value otherwise.
+func (o *AnswerDetails) GetNoResultReason() string {
+	if o == nil || IsNil(o.NoResultReason) {
+		var ret string
+		return ret
+	}
+	return *o.NoResultReason
+}
+
+// GetNoResultReasonOk returns a tuple with the NoResultReason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AnswerDetails) GetNoResultReasonOk() (*string, bool) {
+	if o == nil || IsNil(o.NoResultReason) {
+		return nil, false
+	}
+	return o.NoResultReason, true
+}
+
+// HasNoResultReason returns a boolean if a field has been set.
+func (o *AnswerDetails) HasNoResultReason() bool {
+	if o != nil && !IsNil(o.NoResultReason) {
+		return true
+	}
+
+	return false
+}
+
+// SetNoResultReason gets a reference to the given string and assigns it to the NoResultReason field.
+func (o *AnswerDetails) SetNoResultReason(v string) {
+	o.NoResultReason = &v
 }
 
 // GetFanOutQueries returns the FanOutQueries field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -916,6 +951,9 @@ func (o AnswerDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.NoResult) {
 		toSerialize["no_result"] = o.NoResult
+	}
+	if !IsNil(o.NoResultReason) {
+		toSerialize["no_result_reason"] = o.NoResultReason
 	}
 	if o.FanOutQueries != nil {
 		toSerialize["fan_out_queries"] = o.FanOutQueries
