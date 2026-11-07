@@ -9,9 +9,10 @@ Name | Type | Description | Notes
 **Clicks** | Pointer to **int32** |  | [optional] 
 **Ctr** | Pointer to **float32** | 0..1 fraction | [optional] 
 **Position** | Pointer to **float32** | Impression-weighted average position | [optional] 
-**PromptId** | Pointer to **NullableInt32** | The project&#39;s prompt with the same text as the query; null when no prompt matches | [optional] 
+**PromptId** | Pointer to **NullableInt32** | The project&#39;s prompt the query matches (see match_type); null when no prompt matches | [optional] 
 **Responses** | Pointer to **NullableInt32** | AI answers the matching prompt got in the window over the account&#39;s enabled models; null when no prompt matches | [optional] 
 **BrandVisibility** | Pointer to **NullableFloat32** | Brand Visibility of the matching prompt in the window, percent (0-100) of its AI answers that mention the brand, over the account&#39;s enabled models; null when no prompt matches or it has no answer | [optional] 
+**MatchType** | Pointer to **NullableString** | How the query matched: prompt (the same text as the prompt) or fan_out (the same text as a search the prompt&#39;s AI answers ran in the window); null when no prompt matches | [optional] 
 
 ## Methods
 
@@ -262,6 +263,41 @@ HasBrandVisibility returns a boolean if a field has been set.
 `func (o *SearchConsoleAiVisibilityGapsResponseDataInner) UnsetBrandVisibility()`
 
 UnsetBrandVisibility ensures that no value is present for BrandVisibility, not even an explicit nil
+### GetMatchType
+
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) GetMatchType() string`
+
+GetMatchType returns the MatchType field if non-nil, zero value otherwise.
+
+### GetMatchTypeOk
+
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) GetMatchTypeOk() (*string, bool)`
+
+GetMatchTypeOk returns a tuple with the MatchType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMatchType
+
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) SetMatchType(v string)`
+
+SetMatchType sets MatchType field to given value.
+
+### HasMatchType
+
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) HasMatchType() bool`
+
+HasMatchType returns a boolean if a field has been set.
+
+### SetMatchTypeNil
+
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) SetMatchTypeNil(b bool)`
+
+ SetMatchTypeNil sets the value for MatchType to be an explicit nil
+
+### UnsetMatchType
+`func (o *SearchConsoleAiVisibilityGapsResponseDataInner) UnsetMatchType()`
+
+UnsetMatchType ensures that no value is present for MatchType, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.86.0
+API version: 1.87.0
 Contact: info@llmpulse.ai
 */
 
@@ -27,12 +27,14 @@ type SearchConsoleAiVisibilityGapsResponseDataInner struct {
 	Ctr *float32 `json:"ctr,omitempty"`
 	// Impression-weighted average position
 	Position *float32 `json:"position,omitempty"`
-	// The project's prompt with the same text as the query; null when no prompt matches
+	// The project's prompt the query matches (see match_type); null when no prompt matches
 	PromptId NullableInt32 `json:"prompt_id,omitempty"`
 	// AI answers the matching prompt got in the window over the account's enabled models; null when no prompt matches
 	Responses NullableInt32 `json:"responses,omitempty"`
 	// Brand Visibility of the matching prompt in the window, percent (0-100) of its AI answers that mention the brand, over the account's enabled models; null when no prompt matches or it has no answer
 	BrandVisibility NullableFloat32 `json:"brand_visibility,omitempty"`
+	// How the query matched: prompt (the same text as the prompt) or fan_out (the same text as a search the prompt's AI answers ran in the window); null when no prompt matches
+	MatchType NullableString `json:"match_type,omitempty"`
 }
 
 // NewSearchConsoleAiVisibilityGapsResponseDataInner instantiates a new SearchConsoleAiVisibilityGapsResponseDataInner object
@@ -338,6 +340,48 @@ func (o *SearchConsoleAiVisibilityGapsResponseDataInner) UnsetBrandVisibility() 
 	o.BrandVisibility.Unset()
 }
 
+// GetMatchType returns the MatchType field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) GetMatchType() string {
+	if o == nil || IsNil(o.MatchType.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.MatchType.Get()
+}
+
+// GetMatchTypeOk returns a tuple with the MatchType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) GetMatchTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.MatchType.Get(), o.MatchType.IsSet()
+}
+
+// HasMatchType returns a boolean if a field has been set.
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) HasMatchType() bool {
+	if o != nil && o.MatchType.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetMatchType gets a reference to the given NullableString and assigns it to the MatchType field.
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) SetMatchType(v string) {
+	o.MatchType.Set(&v)
+}
+// SetMatchTypeNil sets the value for MatchType to be an explicit nil
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) SetMatchTypeNil() {
+	o.MatchType.Set(nil)
+}
+
+// UnsetMatchType ensures that no value is present for MatchType, not even an explicit nil
+func (o *SearchConsoleAiVisibilityGapsResponseDataInner) UnsetMatchType() {
+	o.MatchType.Unset()
+}
+
 func (o SearchConsoleAiVisibilityGapsResponseDataInner) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -371,6 +415,9 @@ func (o SearchConsoleAiVisibilityGapsResponseDataInner) ToMap() (map[string]inte
 	}
 	if o.BrandVisibility.IsSet() {
 		toSerialize["brand_visibility"] = o.BrandVisibility.Get()
+	}
+	if o.MatchType.IsSet() {
+		toSerialize["match_type"] = o.MatchType.Get()
 	}
 	return toSerialize, nil
 }
