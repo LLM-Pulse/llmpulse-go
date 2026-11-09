@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.88.0
+API version: 1.89.0
 Contact: info@llmpulse.ai
 */
 
@@ -32,7 +32,7 @@ type PromptsCreateResponse struct {
 	UntrackedReason NullableString `json:"untracked_reason,omitempty"`
 	// What to do when tracked is false, or why some first runs wait when first_runs_wait_until is set. Null otherwise
 	Warning NullableString `json:"warning,omitempty"`
-	// Set when the account's allowance of AI answers left this cycle cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request's prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active
+	// Set when the account's allowance of AI answers left this cycle, or the project's own share of it when the account caps each project's executions, cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request's prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active
 	FirstRunsWaitUntil NullableTime `json:"first_runs_wait_until,omitempty"`
 	Data []PromptsCreateResponseDataInner `json:"data,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
