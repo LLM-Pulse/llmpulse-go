@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.87.0
+API version: 1.88.0
 Contact: info@llmpulse.ai
 */
 
@@ -19,7 +19,7 @@ import (
 // checks if the OwnedMediaRow type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OwnedMediaRow{}
 
-// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model), apps (domain, total_responses, rank, global_rank) and activity (date, entity_id, entity_name, entity_url, yours, citations, plus store and competitor_id where applicable). Activity rows identify a reporting-period start; entity metadata is optional, and entity_id, entity_name and entity_url can be null when unknown. Store and competitor_id appear only where applicable. Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
+// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model), apps (domain, total_responses, rank, global_rank), the Trustpilot views profiles (key, name, rating, reviews_count, url, competitor_id), brands (name, domain, key, rating, rating_change, reviews_count, status, url, competitor_id) and reviews (id, brand, rating, title, text, author, published_at, replied, url, competitor_id), and activity (date, entity_id, entity_name, entity_url, yours, citations, plus store and competitor_id where applicable). Activity rows identify a reporting-period start; entity metadata is optional, and entity_id, entity_name and entity_url can be null when unknown. Store and competitor_id appear only where applicable. Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
 type OwnedMediaRow struct {
 	// The start date of the actual reporting period (view=activity)
 	Date *string `json:"date,omitempty"`
@@ -31,8 +31,26 @@ type OwnedMediaRow struct {
 	EntityUrl NullableString `json:"entity_url,omitempty"`
 	// Store selected for provider=mobile_apps (view=activity)
 	Store *string `json:"store,omitempty"`
-	// Competitor identifier when the activity row represents a competitor app
+	// Competitor identifier when the row represents a competitor's app or Trustpilot profile
 	CompetitorId NullableInt32 `json:"competitor_id,omitempty"`
+	// The review's identifier (provider=trustpilot, view=reviews)
+	Id *int32 `json:"id,omitempty"`
+	// The brand or competitor whose Trustpilot profile carries the review (provider=trustpilot, view=reviews)
+	Brand *string `json:"brand,omitempty"`
+	// Trustpilot rating out of 5: the profile's at its last monthly read (views profiles and brands) or the review's stars (view=reviews)
+	Rating NullableFloat32 `json:"rating,omitempty"`
+	// Change of the profile's rating since the previous monthly read (provider=trustpilot, view=brands); null before a second read
+	RatingChange NullableFloat32 `json:"rating_change,omitempty"`
+	// The profile's review count on Trustpilot at its last monthly read (provider=trustpilot)
+	ReviewsCount NullableInt32 `json:"reviews_count,omitempty"`
+	// Whether the brand's Trustpilot profile has been read (found), Trustpilot has no business for its domain (not_found), or it has not been read yet (pending) (provider=trustpilot, view=brands)
+	Status *string `json:"status,omitempty"`
+	// The review text (provider=trustpilot, view=reviews)
+	Text NullableString `json:"text,omitempty"`
+	// The reviewer's display name (provider=trustpilot, view=reviews)
+	Author NullableString `json:"author,omitempty"`
+	// Whether the business replied to the review (provider=trustpilot, view=reviews)
+	Replied *bool `json:"replied,omitempty"`
 	Title NullableString `json:"title,omitempty"`
 	Url NullableString `json:"url,omitempty"`
 	ChannelName NullableString `json:"channel_name,omitempty"`
@@ -40,8 +58,8 @@ type OwnedMediaRow struct {
 	ChannelHandle NullableString `json:"channel_handle,omitempty"`
 	ChannelUrl NullableString `json:"channel_url,omitempty"`
 	VideoId NullableString `json:"video_id,omitempty"`
-	// The channel key (handle:..., channel:... or name:...), accepted as profile by /dimensions/owned_media/citing_prompts
-	Key *string `json:"key,omitempty"`
+	// The channel key (handle:..., channel:... or name:...), accepted as profile by /dimensions/owned_media/citing_prompts; on provider=trustpilot, the business domain the profile is filed under, null for a brand without a domain
+	Key NullableString `json:"key,omitempty"`
 	Name NullableString `json:"name,omitempty"`
 	Handle NullableString `json:"handle,omitempty"`
 	Caption NullableString `json:"caption,omitempty"`
@@ -71,7 +89,7 @@ type OwnedMediaRow struct {
 	CitationDate NullableTime `json:"citation_date,omitempty"`
 	Position NullableInt32 `json:"position,omitempty"`
 	Model NullableString `json:"model,omitempty"`
-	// The app's store listing URL (provider=mobile_apps)
+	// The app's store listing URL (provider=mobile_apps), or the brand's domain (provider=trustpilot, view=brands)
 	Domain *string `json:"domain,omitempty"`
 	TotalResponses *int32 `json:"total_responses,omitempty"`
 	Rank *int32 `json:"rank,omitempty"`
@@ -327,6 +345,344 @@ func (o *OwnedMediaRow) UnsetCompetitorId() {
 	o.CompetitorId.Unset()
 }
 
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetId() int32 {
+	if o == nil || IsNil(o.Id) {
+		var ret int32
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetIdOk() (*int32, bool) {
+	if o == nil || IsNil(o.Id) {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasId() bool {
+	if o != nil && !IsNil(o.Id) {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given int32 and assigns it to the Id field.
+func (o *OwnedMediaRow) SetId(v int32) {
+	o.Id = &v
+}
+
+// GetBrand returns the Brand field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetBrand() string {
+	if o == nil || IsNil(o.Brand) {
+		var ret string
+		return ret
+	}
+	return *o.Brand
+}
+
+// GetBrandOk returns a tuple with the Brand field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetBrandOk() (*string, bool) {
+	if o == nil || IsNil(o.Brand) {
+		return nil, false
+	}
+	return o.Brand, true
+}
+
+// HasBrand returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasBrand() bool {
+	if o != nil && !IsNil(o.Brand) {
+		return true
+	}
+
+	return false
+}
+
+// SetBrand gets a reference to the given string and assigns it to the Brand field.
+func (o *OwnedMediaRow) SetBrand(v string) {
+	o.Brand = &v
+}
+
+// GetRating returns the Rating field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetRating() float32 {
+	if o == nil || IsNil(o.Rating.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.Rating.Get()
+}
+
+// GetRatingOk returns a tuple with the Rating field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetRatingOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Rating.Get(), o.Rating.IsSet()
+}
+
+// HasRating returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasRating() bool {
+	if o != nil && o.Rating.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRating gets a reference to the given NullableFloat32 and assigns it to the Rating field.
+func (o *OwnedMediaRow) SetRating(v float32) {
+	o.Rating.Set(&v)
+}
+// SetRatingNil sets the value for Rating to be an explicit nil
+func (o *OwnedMediaRow) SetRatingNil() {
+	o.Rating.Set(nil)
+}
+
+// UnsetRating ensures that no value is present for Rating, not even an explicit nil
+func (o *OwnedMediaRow) UnsetRating() {
+	o.Rating.Unset()
+}
+
+// GetRatingChange returns the RatingChange field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetRatingChange() float32 {
+	if o == nil || IsNil(o.RatingChange.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.RatingChange.Get()
+}
+
+// GetRatingChangeOk returns a tuple with the RatingChange field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetRatingChangeOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RatingChange.Get(), o.RatingChange.IsSet()
+}
+
+// HasRatingChange returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasRatingChange() bool {
+	if o != nil && o.RatingChange.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRatingChange gets a reference to the given NullableFloat32 and assigns it to the RatingChange field.
+func (o *OwnedMediaRow) SetRatingChange(v float32) {
+	o.RatingChange.Set(&v)
+}
+// SetRatingChangeNil sets the value for RatingChange to be an explicit nil
+func (o *OwnedMediaRow) SetRatingChangeNil() {
+	o.RatingChange.Set(nil)
+}
+
+// UnsetRatingChange ensures that no value is present for RatingChange, not even an explicit nil
+func (o *OwnedMediaRow) UnsetRatingChange() {
+	o.RatingChange.Unset()
+}
+
+// GetReviewsCount returns the ReviewsCount field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetReviewsCount() int32 {
+	if o == nil || IsNil(o.ReviewsCount.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.ReviewsCount.Get()
+}
+
+// GetReviewsCountOk returns a tuple with the ReviewsCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetReviewsCountOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ReviewsCount.Get(), o.ReviewsCount.IsSet()
+}
+
+// HasReviewsCount returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasReviewsCount() bool {
+	if o != nil && o.ReviewsCount.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetReviewsCount gets a reference to the given NullableInt32 and assigns it to the ReviewsCount field.
+func (o *OwnedMediaRow) SetReviewsCount(v int32) {
+	o.ReviewsCount.Set(&v)
+}
+// SetReviewsCountNil sets the value for ReviewsCount to be an explicit nil
+func (o *OwnedMediaRow) SetReviewsCountNil() {
+	o.ReviewsCount.Set(nil)
+}
+
+// UnsetReviewsCount ensures that no value is present for ReviewsCount, not even an explicit nil
+func (o *OwnedMediaRow) UnsetReviewsCount() {
+	o.ReviewsCount.Unset()
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetStatus() string {
+	if o == nil || IsNil(o.Status) {
+		var ret string
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetStatusOk() (*string, bool) {
+	if o == nil || IsNil(o.Status) {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasStatus() bool {
+	if o != nil && !IsNil(o.Status) {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given string and assigns it to the Status field.
+func (o *OwnedMediaRow) SetStatus(v string) {
+	o.Status = &v
+}
+
+// GetText returns the Text field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetText() string {
+	if o == nil || IsNil(o.Text.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.Text.Get()
+}
+
+// GetTextOk returns a tuple with the Text field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetTextOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Text.Get(), o.Text.IsSet()
+}
+
+// HasText returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasText() bool {
+	if o != nil && o.Text.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetText gets a reference to the given NullableString and assigns it to the Text field.
+func (o *OwnedMediaRow) SetText(v string) {
+	o.Text.Set(&v)
+}
+// SetTextNil sets the value for Text to be an explicit nil
+func (o *OwnedMediaRow) SetTextNil() {
+	o.Text.Set(nil)
+}
+
+// UnsetText ensures that no value is present for Text, not even an explicit nil
+func (o *OwnedMediaRow) UnsetText() {
+	o.Text.Unset()
+}
+
+// GetAuthor returns the Author field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetAuthor() string {
+	if o == nil || IsNil(o.Author.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.Author.Get()
+}
+
+// GetAuthorOk returns a tuple with the Author field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetAuthorOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Author.Get(), o.Author.IsSet()
+}
+
+// HasAuthor returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasAuthor() bool {
+	if o != nil && o.Author.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthor gets a reference to the given NullableString and assigns it to the Author field.
+func (o *OwnedMediaRow) SetAuthor(v string) {
+	o.Author.Set(&v)
+}
+// SetAuthorNil sets the value for Author to be an explicit nil
+func (o *OwnedMediaRow) SetAuthorNil() {
+	o.Author.Set(nil)
+}
+
+// UnsetAuthor ensures that no value is present for Author, not even an explicit nil
+func (o *OwnedMediaRow) UnsetAuthor() {
+	o.Author.Unset()
+}
+
+// GetReplied returns the Replied field value if set, zero value otherwise.
+func (o *OwnedMediaRow) GetReplied() bool {
+	if o == nil || IsNil(o.Replied) {
+		var ret bool
+		return ret
+	}
+	return *o.Replied
+}
+
+// GetRepliedOk returns a tuple with the Replied field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaRow) GetRepliedOk() (*bool, bool) {
+	if o == nil || IsNil(o.Replied) {
+		return nil, false
+	}
+	return o.Replied, true
+}
+
+// HasReplied returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasReplied() bool {
+	if o != nil && !IsNil(o.Replied) {
+		return true
+	}
+
+	return false
+}
+
+// SetReplied gets a reference to the given bool and assigns it to the Replied field.
+func (o *OwnedMediaRow) SetReplied(v bool) {
+	o.Replied = &v
+}
+
 // GetTitle returns the Title field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *OwnedMediaRow) GetTitle() string {
 	if o == nil || IsNil(o.Title.Get()) {
@@ -579,36 +935,46 @@ func (o *OwnedMediaRow) UnsetVideoId() {
 	o.VideoId.Unset()
 }
 
-// GetKey returns the Key field value if set, zero value otherwise.
+// GetKey returns the Key field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *OwnedMediaRow) GetKey() string {
-	if o == nil || IsNil(o.Key) {
+	if o == nil || IsNil(o.Key.Get()) {
 		var ret string
 		return ret
 	}
-	return *o.Key
+	return *o.Key.Get()
 }
 
 // GetKeyOk returns a tuple with the Key field value if set, nil otherwise
 // and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *OwnedMediaRow) GetKeyOk() (*string, bool) {
-	if o == nil || IsNil(o.Key) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Key, true
+	return o.Key.Get(), o.Key.IsSet()
 }
 
 // HasKey returns a boolean if a field has been set.
 func (o *OwnedMediaRow) HasKey() bool {
-	if o != nil && !IsNil(o.Key) {
+	if o != nil && o.Key.IsSet() {
 		return true
 	}
 
 	return false
 }
 
-// SetKey gets a reference to the given string and assigns it to the Key field.
+// SetKey gets a reference to the given NullableString and assigns it to the Key field.
 func (o *OwnedMediaRow) SetKey(v string) {
-	o.Key = &v
+	o.Key.Set(&v)
+}
+// SetKeyNil sets the value for Key to be an explicit nil
+func (o *OwnedMediaRow) SetKeyNil() {
+	o.Key.Set(nil)
+}
+
+// UnsetKey ensures that no value is present for Key, not even an explicit nil
+func (o *OwnedMediaRow) UnsetKey() {
+	o.Key.Unset()
 }
 
 // GetName returns the Name field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -1610,6 +1976,33 @@ func (o OwnedMediaRow) ToMap() (map[string]interface{}, error) {
 	if o.CompetitorId.IsSet() {
 		toSerialize["competitor_id"] = o.CompetitorId.Get()
 	}
+	if !IsNil(o.Id) {
+		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.Brand) {
+		toSerialize["brand"] = o.Brand
+	}
+	if o.Rating.IsSet() {
+		toSerialize["rating"] = o.Rating.Get()
+	}
+	if o.RatingChange.IsSet() {
+		toSerialize["rating_change"] = o.RatingChange.Get()
+	}
+	if o.ReviewsCount.IsSet() {
+		toSerialize["reviews_count"] = o.ReviewsCount.Get()
+	}
+	if !IsNil(o.Status) {
+		toSerialize["status"] = o.Status
+	}
+	if o.Text.IsSet() {
+		toSerialize["text"] = o.Text.Get()
+	}
+	if o.Author.IsSet() {
+		toSerialize["author"] = o.Author.Get()
+	}
+	if !IsNil(o.Replied) {
+		toSerialize["replied"] = o.Replied
+	}
 	if o.Title.IsSet() {
 		toSerialize["title"] = o.Title.Get()
 	}
@@ -1628,8 +2021,8 @@ func (o OwnedMediaRow) ToMap() (map[string]interface{}, error) {
 	if o.VideoId.IsSet() {
 		toSerialize["video_id"] = o.VideoId.Get()
 	}
-	if !IsNil(o.Key) {
-		toSerialize["key"] = o.Key
+	if o.Key.IsSet() {
+		toSerialize["key"] = o.Key.Get()
 	}
 	if o.Name.IsSet() {
 		toSerialize["name"] = o.Name.Get()

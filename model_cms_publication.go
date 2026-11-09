@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.87.0
+API version: 1.88.0
 Contact: info@llmpulse.ai
 */
 
@@ -37,7 +37,7 @@ type CmsPublication struct {
 	RemoteUrl NullableString `json:"remote_url,omitempty"`
 	// The post's edit screen in the WordPress admin
 	EditUrl NullableString `json:"edit_url,omitempty"`
-	// Why the send failed, for example reconnect_required, missing_capability, unreachable or rejected
+	// Why the send failed, the same token as error.meta.reason, for example reconnect_required, authorization_header_lost, missing_capability, firewall_blocked, timeout, unreachable or rejected
 	ErrorCode NullableString `json:"error_code,omitempty"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	SentAt NullableTime `json:"sent_at,omitempty"`

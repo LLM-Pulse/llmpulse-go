@@ -9,14 +9,23 @@ Name | Type | Description | Notes
 **EntityName** | Pointer to **NullableString** | Current entity name when known (view&#x3D;activity) | [optional] 
 **EntityUrl** | Pointer to **NullableString** | Current profile, channel or app listing URL when known (view&#x3D;activity) | [optional] 
 **Store** | Pointer to **string** | Store selected for provider&#x3D;mobile_apps (view&#x3D;activity) | [optional] 
-**CompetitorId** | Pointer to **NullableInt32** | Competitor identifier when the activity row represents a competitor app | [optional] 
+**CompetitorId** | Pointer to **NullableInt32** | Competitor identifier when the row represents a competitor&#39;s app or Trustpilot profile | [optional] 
+**Id** | Pointer to **int32** | The review&#39;s identifier (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
+**Brand** | Pointer to **string** | The brand or competitor whose Trustpilot profile carries the review (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
+**Rating** | Pointer to **NullableFloat32** | Trustpilot rating out of 5: the profile&#39;s at its last monthly read (views profiles and brands) or the review&#39;s stars (view&#x3D;reviews) | [optional] 
+**RatingChange** | Pointer to **NullableFloat32** | Change of the profile&#39;s rating since the previous monthly read (provider&#x3D;trustpilot, view&#x3D;brands); null before a second read | [optional] 
+**ReviewsCount** | Pointer to **NullableInt32** | The profile&#39;s review count on Trustpilot at its last monthly read (provider&#x3D;trustpilot) | [optional] 
+**Status** | Pointer to **string** | Whether the brand&#39;s Trustpilot profile has been read (found), Trustpilot has no business for its domain (not_found), or it has not been read yet (pending) (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
+**Text** | Pointer to **NullableString** | The review text (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
+**Author** | Pointer to **NullableString** | The reviewer&#39;s display name (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
+**Replied** | Pointer to **bool** | Whether the business replied to the review (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
 **Title** | Pointer to **NullableString** |  | [optional] 
 **Url** | Pointer to **NullableString** |  | [optional] 
 **ChannelName** | Pointer to **NullableString** |  | [optional] 
 **ChannelHandle** | Pointer to **NullableString** | The video&#39;s channel handle, without the @ | [optional] 
 **ChannelUrl** | Pointer to **NullableString** |  | [optional] 
 **VideoId** | Pointer to **NullableString** |  | [optional] 
-**Key** | Pointer to **string** | The channel key (handle:..., channel:... or name:...), accepted as profile by /dimensions/owned_media/citing_prompts | [optional] 
+**Key** | Pointer to **NullableString** | The channel key (handle:..., channel:... or name:...), accepted as profile by /dimensions/owned_media/citing_prompts; on provider&#x3D;trustpilot, the business domain the profile is filed under, null for a brand without a domain | [optional] 
 **Name** | Pointer to **NullableString** |  | [optional] 
 **Handle** | Pointer to **NullableString** |  | [optional] 
 **Caption** | Pointer to **NullableString** |  | [optional] 
@@ -38,7 +47,7 @@ Name | Type | Description | Notes
 **CitationDate** | Pointer to **NullableTime** |  | [optional] 
 **Position** | Pointer to **NullableInt32** |  | [optional] 
 **Model** | Pointer to **NullableString** |  | [optional] 
-**Domain** | Pointer to **string** | The app&#39;s store listing URL (provider&#x3D;mobile_apps) | [optional] 
+**Domain** | Pointer to **string** | The app&#39;s store listing URL (provider&#x3D;mobile_apps), or the brand&#39;s domain (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
 **TotalResponses** | Pointer to **int32** |  | [optional] 
 **Rank** | Pointer to **int32** |  | [optional] 
 **GlobalRank** | Pointer to **NullableInt32** |  | [optional] 
@@ -252,6 +261,281 @@ HasCompetitorId returns a boolean if a field has been set.
 `func (o *OwnedMediaRow) UnsetCompetitorId()`
 
 UnsetCompetitorId ensures that no value is present for CompetitorId, not even an explicit nil
+### GetId
+
+`func (o *OwnedMediaRow) GetId() int32`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *OwnedMediaRow) GetIdOk() (*int32, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *OwnedMediaRow) SetId(v int32)`
+
+SetId sets Id field to given value.
+
+### HasId
+
+`func (o *OwnedMediaRow) HasId() bool`
+
+HasId returns a boolean if a field has been set.
+
+### GetBrand
+
+`func (o *OwnedMediaRow) GetBrand() string`
+
+GetBrand returns the Brand field if non-nil, zero value otherwise.
+
+### GetBrandOk
+
+`func (o *OwnedMediaRow) GetBrandOk() (*string, bool)`
+
+GetBrandOk returns a tuple with the Brand field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBrand
+
+`func (o *OwnedMediaRow) SetBrand(v string)`
+
+SetBrand sets Brand field to given value.
+
+### HasBrand
+
+`func (o *OwnedMediaRow) HasBrand() bool`
+
+HasBrand returns a boolean if a field has been set.
+
+### GetRating
+
+`func (o *OwnedMediaRow) GetRating() float32`
+
+GetRating returns the Rating field if non-nil, zero value otherwise.
+
+### GetRatingOk
+
+`func (o *OwnedMediaRow) GetRatingOk() (*float32, bool)`
+
+GetRatingOk returns a tuple with the Rating field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRating
+
+`func (o *OwnedMediaRow) SetRating(v float32)`
+
+SetRating sets Rating field to given value.
+
+### HasRating
+
+`func (o *OwnedMediaRow) HasRating() bool`
+
+HasRating returns a boolean if a field has been set.
+
+### SetRatingNil
+
+`func (o *OwnedMediaRow) SetRatingNil(b bool)`
+
+ SetRatingNil sets the value for Rating to be an explicit nil
+
+### UnsetRating
+`func (o *OwnedMediaRow) UnsetRating()`
+
+UnsetRating ensures that no value is present for Rating, not even an explicit nil
+### GetRatingChange
+
+`func (o *OwnedMediaRow) GetRatingChange() float32`
+
+GetRatingChange returns the RatingChange field if non-nil, zero value otherwise.
+
+### GetRatingChangeOk
+
+`func (o *OwnedMediaRow) GetRatingChangeOk() (*float32, bool)`
+
+GetRatingChangeOk returns a tuple with the RatingChange field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRatingChange
+
+`func (o *OwnedMediaRow) SetRatingChange(v float32)`
+
+SetRatingChange sets RatingChange field to given value.
+
+### HasRatingChange
+
+`func (o *OwnedMediaRow) HasRatingChange() bool`
+
+HasRatingChange returns a boolean if a field has been set.
+
+### SetRatingChangeNil
+
+`func (o *OwnedMediaRow) SetRatingChangeNil(b bool)`
+
+ SetRatingChangeNil sets the value for RatingChange to be an explicit nil
+
+### UnsetRatingChange
+`func (o *OwnedMediaRow) UnsetRatingChange()`
+
+UnsetRatingChange ensures that no value is present for RatingChange, not even an explicit nil
+### GetReviewsCount
+
+`func (o *OwnedMediaRow) GetReviewsCount() int32`
+
+GetReviewsCount returns the ReviewsCount field if non-nil, zero value otherwise.
+
+### GetReviewsCountOk
+
+`func (o *OwnedMediaRow) GetReviewsCountOk() (*int32, bool)`
+
+GetReviewsCountOk returns a tuple with the ReviewsCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReviewsCount
+
+`func (o *OwnedMediaRow) SetReviewsCount(v int32)`
+
+SetReviewsCount sets ReviewsCount field to given value.
+
+### HasReviewsCount
+
+`func (o *OwnedMediaRow) HasReviewsCount() bool`
+
+HasReviewsCount returns a boolean if a field has been set.
+
+### SetReviewsCountNil
+
+`func (o *OwnedMediaRow) SetReviewsCountNil(b bool)`
+
+ SetReviewsCountNil sets the value for ReviewsCount to be an explicit nil
+
+### UnsetReviewsCount
+`func (o *OwnedMediaRow) UnsetReviewsCount()`
+
+UnsetReviewsCount ensures that no value is present for ReviewsCount, not even an explicit nil
+### GetStatus
+
+`func (o *OwnedMediaRow) GetStatus() string`
+
+GetStatus returns the Status field if non-nil, zero value otherwise.
+
+### GetStatusOk
+
+`func (o *OwnedMediaRow) GetStatusOk() (*string, bool)`
+
+GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStatus
+
+`func (o *OwnedMediaRow) SetStatus(v string)`
+
+SetStatus sets Status field to given value.
+
+### HasStatus
+
+`func (o *OwnedMediaRow) HasStatus() bool`
+
+HasStatus returns a boolean if a field has been set.
+
+### GetText
+
+`func (o *OwnedMediaRow) GetText() string`
+
+GetText returns the Text field if non-nil, zero value otherwise.
+
+### GetTextOk
+
+`func (o *OwnedMediaRow) GetTextOk() (*string, bool)`
+
+GetTextOk returns a tuple with the Text field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetText
+
+`func (o *OwnedMediaRow) SetText(v string)`
+
+SetText sets Text field to given value.
+
+### HasText
+
+`func (o *OwnedMediaRow) HasText() bool`
+
+HasText returns a boolean if a field has been set.
+
+### SetTextNil
+
+`func (o *OwnedMediaRow) SetTextNil(b bool)`
+
+ SetTextNil sets the value for Text to be an explicit nil
+
+### UnsetText
+`func (o *OwnedMediaRow) UnsetText()`
+
+UnsetText ensures that no value is present for Text, not even an explicit nil
+### GetAuthor
+
+`func (o *OwnedMediaRow) GetAuthor() string`
+
+GetAuthor returns the Author field if non-nil, zero value otherwise.
+
+### GetAuthorOk
+
+`func (o *OwnedMediaRow) GetAuthorOk() (*string, bool)`
+
+GetAuthorOk returns a tuple with the Author field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAuthor
+
+`func (o *OwnedMediaRow) SetAuthor(v string)`
+
+SetAuthor sets Author field to given value.
+
+### HasAuthor
+
+`func (o *OwnedMediaRow) HasAuthor() bool`
+
+HasAuthor returns a boolean if a field has been set.
+
+### SetAuthorNil
+
+`func (o *OwnedMediaRow) SetAuthorNil(b bool)`
+
+ SetAuthorNil sets the value for Author to be an explicit nil
+
+### UnsetAuthor
+`func (o *OwnedMediaRow) UnsetAuthor()`
+
+UnsetAuthor ensures that no value is present for Author, not even an explicit nil
+### GetReplied
+
+`func (o *OwnedMediaRow) GetReplied() bool`
+
+GetReplied returns the Replied field if non-nil, zero value otherwise.
+
+### GetRepliedOk
+
+`func (o *OwnedMediaRow) GetRepliedOk() (*bool, bool)`
+
+GetRepliedOk returns a tuple with the Replied field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReplied
+
+`func (o *OwnedMediaRow) SetReplied(v bool)`
+
+SetReplied sets Replied field to given value.
+
+### HasReplied
+
+`func (o *OwnedMediaRow) HasReplied() bool`
+
+HasReplied returns a boolean if a field has been set.
+
 ### GetTitle
 
 `func (o *OwnedMediaRow) GetTitle() string`
@@ -487,6 +771,16 @@ SetKey sets Key field to given value.
 
 HasKey returns a boolean if a field has been set.
 
+### SetKeyNil
+
+`func (o *OwnedMediaRow) SetKeyNil(b bool)`
+
+ SetKeyNil sets the value for Key to be an explicit nil
+
+### UnsetKey
+`func (o *OwnedMediaRow) UnsetKey()`
+
+UnsetKey ensures that no value is present for Key, not even an explicit nil
 ### GetName
 
 `func (o *OwnedMediaRow) GetName() string`
