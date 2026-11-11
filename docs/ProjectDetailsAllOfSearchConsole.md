@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | Pointer to **string** |  | [optional] 
 **Property** | Pointer to **NullableString** | The primary property (e.g. sc-domain:example.com), null when not connected | [optional] 
-**ConnectUrl** | Pointer to **string** | The in-app page where the property is connected or reconnected (Preferences &gt; Project Settings &gt; Data Connections) | [optional] 
+**ConnectUrl** | Pointer to **string** | The in-app page where the property is connected or reconnected (Preferences &gt; Project Settings &gt; Connections) | [optional] 
 **PropertiesCount** | Pointer to **int32** | Connected properties Google still accepts (reconnect_required ones excluded); GET /search_console/properties lists every property with its status | [optional] 
 
 ## Methods

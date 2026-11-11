@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.89.0
+API version: 1.90.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,7 +23,7 @@ type ProjectDetailsAllOfSearchConsole struct {
 	Status *string `json:"status,omitempty"`
 	// The primary property (e.g. sc-domain:example.com), null when not connected
 	Property NullableString `json:"property,omitempty"`
-	// The in-app page where the property is connected or reconnected (Preferences > Project Settings > Data Connections)
+	// The in-app page where the property is connected or reconnected (Preferences > Project Settings > Connections)
 	ConnectUrl *string `json:"connect_url,omitempty"`
 	// Connected properties Google still accepts (reconnect_required ones excluded); GET /search_console/properties lists every property with its status
 	PropertiesCount *int32 `json:"properties_count,omitempty"`

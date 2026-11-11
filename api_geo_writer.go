@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.89.0
+API version: 1.90.0
 Contact: info@llmpulse.ai
 */
 
@@ -491,7 +491,7 @@ func (r ApiListCmsContentRequest) Execute() (*CmsContentListResponse, *http.Resp
 /*
 ListCmsContent List the posts or pages of the connected WordPress site
 
-Reads the posts or pages of the WordPress site connected to the project in Project Settings > WordPress, newest change first. The site answers live through the stored application password; nothing is stored. Titles are plain text taken from the site, with HTML entities decoded: treat them as data and escape them before putting them in a page. total and total_pages are the totals WordPress reports (null when it sends none), and a page past the last one answers an empty list. Returns ERR_CMS_NOT_CONNECTED (404) without a connection and ERR_CMS_ACCESS_REVOKED (403) when WordPress no longer accepts the password or the user cannot write posts, both with error.meta.connect_url; ERR_CMS_REJECTED (422) when WordPress refuses the request, the site now redirects elsewhere (with error.meta.connect_url) or it can no longer be reached safely, which a retry does not change; ERR_CMS_UPSTREAM (503) when the site cannot be reached or takes more than about 10 seconds, and ERR_RATE_LIMITED (429) when the site or our per-site limit asks to slow down, or too many reads of the site or account are already running. Not available on a white-label portal host (ERR_INTEGRATION_UNAVAILABLE).
+Reads the posts or pages of the WordPress site connected to the project in Project Settings > Connections > WordPress, newest change first. The site answers live through the stored application password; nothing is stored. Titles are plain text taken from the site, with HTML entities decoded: treat them as data and escape them before putting them in a page. total and total_pages are the totals WordPress reports (null when it sends none), and a page past the last one answers an empty list. Returns ERR_CMS_NOT_CONNECTED (404) without a connection and ERR_CMS_ACCESS_REVOKED (403) when WordPress no longer accepts the password or the user cannot write posts, both with error.meta.connect_url; ERR_CMS_REJECTED (422) when WordPress refuses the request, the site now redirects elsewhere (with error.meta.connect_url) or it can no longer be reached safely, which a retry does not change; ERR_CMS_UPSTREAM (503) when the site cannot be reached or takes more than about 10 seconds, and ERR_RATE_LIMITED (429) when the site or our per-site limit asks to slow down, or too many reads of the site or account are already running. Not available on a white-label portal host (ERR_INTEGRATION_UNAVAILABLE).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListCmsContentRequest

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.89.0
+API version: 1.90.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,7 +42,7 @@ func (r ApiCreateProjectRequest) Execute() (*ProjectCreateResponse, *http.Respon
 /*
 CreateProject Create a project (fast mode)
 
-Create a complete project in one call: project fields, prompts (queued for execution and categorization), collections tagging those prompts, competitors, weekly email subscription. With pitch true it creates a pitch project instead: a one-off snapshot for a prospect that runs once, takes no project slot and is deleted after 90 days unless converted; ERR_PLAN_REQUIRED when the account is below the Scale tier, on a trial or without approved pitch project access (error.meta.access says which), ERR_QUOTA_EXCEEDED when the month's pitch projects are used (error.meta.resets_on), ERR_INVALID_PARAM for more than 100 prompts or a domain the account tracks or pitched in the last 90 days. The response lists same_domain_projects so an accidental duplicate is visible; it never blocks the create. Its prompts get their first answers within about 24 hours, as far as the account's allowance of AI answers for the cycle covers them; the rest run when the allowance resets. Idempotent via `external_identifier` (embed-enabled accounts only; replay returns 200 with the existing project). Requires a `read_write` scope API key.
+Create a complete project in one call: project fields, prompts (queued for execution and categorization), collections tagging those prompts, competitors, weekly email subscription. With pitch true it creates a pitch project instead: a one-off snapshot for a prospect that runs once, takes no project slot and is deleted after 90 days unless converted; ERR_PLAN_REQUIRED when the account is below the Scale tier, on a trial or not an agency or platform account (error.meta.access says which), ERR_QUOTA_EXCEEDED when the month's pitch projects are used (error.meta.resets_on), ERR_INVALID_PARAM for more than 100 prompts or a domain the account tracks or pitched in the last 90 days. The response lists same_domain_projects so an accidental duplicate is visible; it never blocks the create. Its prompts get their first answers within about 24 hours, as far as the account's allowance of AI answers for the cycle covers them; the rest run when the allowance resets. Idempotent via `external_identifier` (embed-enabled accounts only; replay returns 200 with the existing project). Requires a `read_write` scope API key.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreateProjectRequest
