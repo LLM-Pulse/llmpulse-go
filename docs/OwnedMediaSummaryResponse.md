@@ -23,6 +23,7 @@ Name | Type | Description | Notes
 **SubredditActivity** | Pointer to [**[]RedditSubredditActivityPeriod**](RedditSubredditActivityPeriod.md) | provider&#x3D;reddit only. One row per subreddit and actual reporting period; the top five subreddits are separate and Others has a null subreddit | [optional] 
 **Positions** | Pointer to [**[]RedditPositionShare**](RedditPositionShare.md) | provider&#x3D;reddit only. Position distribution over the selected date window | [optional] 
 **BrandShare** | Pointer to [**[]RedditBrandShare**](RedditBrandShare.md) | provider&#x3D;reddit only. Citation share among the tracked brand and competitors with cited mentions | [optional] 
+**Replies** | Pointer to [**TrustpilotReplies**](TrustpilotReplies.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
@@ -578,6 +579,31 @@ SetBrandShare sets BrandShare field to given value.
 `func (o *OwnedMediaSummaryResponse) HasBrandShare() bool`
 
 HasBrandShare returns a boolean if a field has been set.
+
+### GetReplies
+
+`func (o *OwnedMediaSummaryResponse) GetReplies() TrustpilotReplies`
+
+GetReplies returns the Replies field if non-nil, zero value otherwise.
+
+### GetRepliesOk
+
+`func (o *OwnedMediaSummaryResponse) GetRepliesOk() (*TrustpilotReplies, bool)`
+
+GetRepliesOk returns a tuple with the Replies field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReplies
+
+`func (o *OwnedMediaSummaryResponse) SetReplies(v TrustpilotReplies)`
+
+SetReplies sets Replies field to given value.
+
+### HasReplies
+
+`func (o *OwnedMediaSummaryResponse) HasReplies() bool`
+
+HasReplies returns a boolean if a field has been set.
 
 ### GetRequestId
 

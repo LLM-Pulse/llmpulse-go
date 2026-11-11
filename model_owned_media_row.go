@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.91.0
+API version: 1.92.0
 Contact: info@llmpulse.ai
 */
 
@@ -19,7 +19,7 @@ import (
 // checks if the OwnedMediaRow type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &OwnedMediaRow{}
 
-// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model), apps (domain, total_responses, rank, global_rank), the Trustpilot views profiles (key, name, rating, reviews_count, url, competitor_id), brands (name, domain, key, rating, rating_change, reviews_count, status, url, competitor_id) and reviews (id, brand, rating, title, text, author, published_at, replied, url, competitor_id), and activity (date, entity_id, entity_name, entity_url, yours, citations, plus store and competitor_id where applicable). Activity rows identify a reporting-period start; entity metadata is optional, and entity_id, entity_name and entity_url can be null when unknown. Store and competitor_id appear only where applicable. Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
+// OwnedMediaRow One row of /dimensions/owned_media. Fields depend on provider and view: videos (title, url, channel_name, channel_handle, channel_url, video_id, thumbnail_url, views, published_at), channels (key, name, handle, url, avatar_url, unique_videos), posts (url, caption, owner_handle, thumbnail_url, content_type, likes, comments, views, posted_at), profiles (handle, name, url, avatar_url, followers, unique_posts), own_citations (url, citation_date, position, model), apps (domain, total_responses, rank, global_rank), the Trustpilot views profiles (key, name, rating, reviews_count, url, competitor_id), brands (name, domain, key, rating, rating_change, reviews_count, reviews_held, replied_count, not_replied_count, reply_rate_pct, median_reply_hours, status, url, competitor_id) and reviews (id, brand, rating, title, text, author, published_at, replied, url, competitor_id), and activity (date, entity_id, entity_name, entity_url, yours, citations, plus store and competitor_id where applicable). Activity rows identify a reporting-period start; entity metadata is optional, and entity_id, entity_name and entity_url can be null when unknown. Store and competitor_id appear only where applicable. Every view but own_citations carries citations and yours; videos, channels, posts and profiles carry avg_position.
 type OwnedMediaRow struct {
 	// The start date of the actual reporting period (view=activity)
 	Date *string `json:"date,omitempty"`
@@ -51,6 +51,16 @@ type OwnedMediaRow struct {
 	Author NullableString `json:"author,omitempty"`
 	// Whether the business replied to the review (provider=trustpilot, view=reviews)
 	Replied *bool `json:"replied,omitempty"`
+	// How many of the profile's reviews LLM Pulse holds: the newest ones from each monthly read, not every review on Trustpilot (provider=trustpilot, view=brands). The reply fields count among these, whatever the date window; all of them are null until the profile has been read
+	ReviewsHeld NullableInt32 `json:"reviews_held,omitempty"`
+	// Reviews held that the business replied to (provider=trustpilot, view=brands)
+	RepliedCount NullableInt32 `json:"replied_count,omitempty"`
+	// Reviews held that the business has not replied to (provider=trustpilot, view=brands)
+	NotRepliedCount NullableInt32 `json:"not_replied_count,omitempty"`
+	// replied_count over reviews_held, on a 0-100 scale; null when no review is held (provider=trustpilot, view=brands)
+	ReplyRatePct NullableFloat32 `json:"reply_rate_pct,omitempty"`
+	// Median hours from a held review's publication to the business's reply, over the replied reviews held that carry both dates (a reply dated before its review is left out); null when there is none (provider=trustpilot, view=brands)
+	MedianReplyHours NullableFloat32 `json:"median_reply_hours,omitempty"`
 	Title NullableString `json:"title,omitempty"`
 	Url NullableString `json:"url,omitempty"`
 	ChannelName NullableString `json:"channel_name,omitempty"`
@@ -681,6 +691,216 @@ func (o *OwnedMediaRow) HasReplied() bool {
 // SetReplied gets a reference to the given bool and assigns it to the Replied field.
 func (o *OwnedMediaRow) SetReplied(v bool) {
 	o.Replied = &v
+}
+
+// GetReviewsHeld returns the ReviewsHeld field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetReviewsHeld() int32 {
+	if o == nil || IsNil(o.ReviewsHeld.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.ReviewsHeld.Get()
+}
+
+// GetReviewsHeldOk returns a tuple with the ReviewsHeld field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetReviewsHeldOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ReviewsHeld.Get(), o.ReviewsHeld.IsSet()
+}
+
+// HasReviewsHeld returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasReviewsHeld() bool {
+	if o != nil && o.ReviewsHeld.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetReviewsHeld gets a reference to the given NullableInt32 and assigns it to the ReviewsHeld field.
+func (o *OwnedMediaRow) SetReviewsHeld(v int32) {
+	o.ReviewsHeld.Set(&v)
+}
+// SetReviewsHeldNil sets the value for ReviewsHeld to be an explicit nil
+func (o *OwnedMediaRow) SetReviewsHeldNil() {
+	o.ReviewsHeld.Set(nil)
+}
+
+// UnsetReviewsHeld ensures that no value is present for ReviewsHeld, not even an explicit nil
+func (o *OwnedMediaRow) UnsetReviewsHeld() {
+	o.ReviewsHeld.Unset()
+}
+
+// GetRepliedCount returns the RepliedCount field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetRepliedCount() int32 {
+	if o == nil || IsNil(o.RepliedCount.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.RepliedCount.Get()
+}
+
+// GetRepliedCountOk returns a tuple with the RepliedCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetRepliedCountOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.RepliedCount.Get(), o.RepliedCount.IsSet()
+}
+
+// HasRepliedCount returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasRepliedCount() bool {
+	if o != nil && o.RepliedCount.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetRepliedCount gets a reference to the given NullableInt32 and assigns it to the RepliedCount field.
+func (o *OwnedMediaRow) SetRepliedCount(v int32) {
+	o.RepliedCount.Set(&v)
+}
+// SetRepliedCountNil sets the value for RepliedCount to be an explicit nil
+func (o *OwnedMediaRow) SetRepliedCountNil() {
+	o.RepliedCount.Set(nil)
+}
+
+// UnsetRepliedCount ensures that no value is present for RepliedCount, not even an explicit nil
+func (o *OwnedMediaRow) UnsetRepliedCount() {
+	o.RepliedCount.Unset()
+}
+
+// GetNotRepliedCount returns the NotRepliedCount field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetNotRepliedCount() int32 {
+	if o == nil || IsNil(o.NotRepliedCount.Get()) {
+		var ret int32
+		return ret
+	}
+	return *o.NotRepliedCount.Get()
+}
+
+// GetNotRepliedCountOk returns a tuple with the NotRepliedCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetNotRepliedCountOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.NotRepliedCount.Get(), o.NotRepliedCount.IsSet()
+}
+
+// HasNotRepliedCount returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasNotRepliedCount() bool {
+	if o != nil && o.NotRepliedCount.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetNotRepliedCount gets a reference to the given NullableInt32 and assigns it to the NotRepliedCount field.
+func (o *OwnedMediaRow) SetNotRepliedCount(v int32) {
+	o.NotRepliedCount.Set(&v)
+}
+// SetNotRepliedCountNil sets the value for NotRepliedCount to be an explicit nil
+func (o *OwnedMediaRow) SetNotRepliedCountNil() {
+	o.NotRepliedCount.Set(nil)
+}
+
+// UnsetNotRepliedCount ensures that no value is present for NotRepliedCount, not even an explicit nil
+func (o *OwnedMediaRow) UnsetNotRepliedCount() {
+	o.NotRepliedCount.Unset()
+}
+
+// GetReplyRatePct returns the ReplyRatePct field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetReplyRatePct() float32 {
+	if o == nil || IsNil(o.ReplyRatePct.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.ReplyRatePct.Get()
+}
+
+// GetReplyRatePctOk returns a tuple with the ReplyRatePct field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetReplyRatePctOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ReplyRatePct.Get(), o.ReplyRatePct.IsSet()
+}
+
+// HasReplyRatePct returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasReplyRatePct() bool {
+	if o != nil && o.ReplyRatePct.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetReplyRatePct gets a reference to the given NullableFloat32 and assigns it to the ReplyRatePct field.
+func (o *OwnedMediaRow) SetReplyRatePct(v float32) {
+	o.ReplyRatePct.Set(&v)
+}
+// SetReplyRatePctNil sets the value for ReplyRatePct to be an explicit nil
+func (o *OwnedMediaRow) SetReplyRatePctNil() {
+	o.ReplyRatePct.Set(nil)
+}
+
+// UnsetReplyRatePct ensures that no value is present for ReplyRatePct, not even an explicit nil
+func (o *OwnedMediaRow) UnsetReplyRatePct() {
+	o.ReplyRatePct.Unset()
+}
+
+// GetMedianReplyHours returns the MedianReplyHours field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *OwnedMediaRow) GetMedianReplyHours() float32 {
+	if o == nil || IsNil(o.MedianReplyHours.Get()) {
+		var ret float32
+		return ret
+	}
+	return *o.MedianReplyHours.Get()
+}
+
+// GetMedianReplyHoursOk returns a tuple with the MedianReplyHours field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *OwnedMediaRow) GetMedianReplyHoursOk() (*float32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.MedianReplyHours.Get(), o.MedianReplyHours.IsSet()
+}
+
+// HasMedianReplyHours returns a boolean if a field has been set.
+func (o *OwnedMediaRow) HasMedianReplyHours() bool {
+	if o != nil && o.MedianReplyHours.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetMedianReplyHours gets a reference to the given NullableFloat32 and assigns it to the MedianReplyHours field.
+func (o *OwnedMediaRow) SetMedianReplyHours(v float32) {
+	o.MedianReplyHours.Set(&v)
+}
+// SetMedianReplyHoursNil sets the value for MedianReplyHours to be an explicit nil
+func (o *OwnedMediaRow) SetMedianReplyHoursNil() {
+	o.MedianReplyHours.Set(nil)
+}
+
+// UnsetMedianReplyHours ensures that no value is present for MedianReplyHours, not even an explicit nil
+func (o *OwnedMediaRow) UnsetMedianReplyHours() {
+	o.MedianReplyHours.Unset()
 }
 
 // GetTitle returns the Title field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -2002,6 +2222,21 @@ func (o OwnedMediaRow) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Replied) {
 		toSerialize["replied"] = o.Replied
+	}
+	if o.ReviewsHeld.IsSet() {
+		toSerialize["reviews_held"] = o.ReviewsHeld.Get()
+	}
+	if o.RepliedCount.IsSet() {
+		toSerialize["replied_count"] = o.RepliedCount.Get()
+	}
+	if o.NotRepliedCount.IsSet() {
+		toSerialize["not_replied_count"] = o.NotRepliedCount.Get()
+	}
+	if o.ReplyRatePct.IsSet() {
+		toSerialize["reply_rate_pct"] = o.ReplyRatePct.Get()
+	}
+	if o.MedianReplyHours.IsSet() {
+		toSerialize["median_reply_hours"] = o.MedianReplyHours.Get()
 	}
 	if o.Title.IsSet() {
 		toSerialize["title"] = o.Title.Get()

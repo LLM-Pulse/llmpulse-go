@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.91.0
+API version: 1.92.0
 Contact: info@llmpulse.ai
 */
 
@@ -51,6 +51,7 @@ type OwnedMediaSummaryResponse struct {
 	Positions []RedditPositionShare `json:"positions,omitempty"`
 	// provider=reddit only. Citation share among the tracked brand and competitors with cited mentions
 	BrandShare []RedditBrandShare `json:"brand_share,omitempty"`
+	Replies *TrustpilotReplies `json:"replies,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
 }
 
@@ -685,6 +686,38 @@ func (o *OwnedMediaSummaryResponse) SetBrandShare(v []RedditBrandShare) {
 	o.BrandShare = v
 }
 
+// GetReplies returns the Replies field value if set, zero value otherwise.
+func (o *OwnedMediaSummaryResponse) GetReplies() TrustpilotReplies {
+	if o == nil || IsNil(o.Replies) {
+		var ret TrustpilotReplies
+		return ret
+	}
+	return *o.Replies
+}
+
+// GetRepliesOk returns a tuple with the Replies field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaSummaryResponse) GetRepliesOk() (*TrustpilotReplies, bool) {
+	if o == nil || IsNil(o.Replies) {
+		return nil, false
+	}
+	return o.Replies, true
+}
+
+// HasReplies returns a boolean if a field has been set.
+func (o *OwnedMediaSummaryResponse) HasReplies() bool {
+	if o != nil && !IsNil(o.Replies) {
+		return true
+	}
+
+	return false
+}
+
+// SetReplies gets a reference to the given TrustpilotReplies and assigns it to the Replies field.
+func (o *OwnedMediaSummaryResponse) SetReplies(v TrustpilotReplies) {
+	o.Replies = &v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *OwnedMediaSummaryResponse) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -783,6 +816,9 @@ func (o OwnedMediaSummaryResponse) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.BrandShare) {
 		toSerialize["brand_share"] = o.BrandShare
+	}
+	if !IsNil(o.Replies) {
+		toSerialize["replies"] = o.Replies
 	}
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId

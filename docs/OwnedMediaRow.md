@@ -19,6 +19,11 @@ Name | Type | Description | Notes
 **Text** | Pointer to **NullableString** | The review text (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
 **Author** | Pointer to **NullableString** | The reviewer&#39;s display name (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
 **Replied** | Pointer to **bool** | Whether the business replied to the review (provider&#x3D;trustpilot, view&#x3D;reviews) | [optional] 
+**ReviewsHeld** | Pointer to **NullableInt32** | How many of the profile&#39;s reviews LLM Pulse holds: the newest ones from each monthly read, not every review on Trustpilot (provider&#x3D;trustpilot, view&#x3D;brands). The reply fields count among these, whatever the date window; all of them are null until the profile has been read | [optional] 
+**RepliedCount** | Pointer to **NullableInt32** | Reviews held that the business replied to (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
+**NotRepliedCount** | Pointer to **NullableInt32** | Reviews held that the business has not replied to (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
+**ReplyRatePct** | Pointer to **NullableFloat32** | replied_count over reviews_held, on a 0-100 scale; null when no review is held (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
+**MedianReplyHours** | Pointer to **NullableFloat32** | Median hours from a held review&#39;s publication to the business&#39;s reply, over the replied reviews held that carry both dates (a reply dated before its review is left out); null when there is none (provider&#x3D;trustpilot, view&#x3D;brands) | [optional] 
 **Title** | Pointer to **NullableString** |  | [optional] 
 **Url** | Pointer to **NullableString** |  | [optional] 
 **ChannelName** | Pointer to **NullableString** |  | [optional] 
@@ -536,6 +541,181 @@ SetReplied sets Replied field to given value.
 
 HasReplied returns a boolean if a field has been set.
 
+### GetReviewsHeld
+
+`func (o *OwnedMediaRow) GetReviewsHeld() int32`
+
+GetReviewsHeld returns the ReviewsHeld field if non-nil, zero value otherwise.
+
+### GetReviewsHeldOk
+
+`func (o *OwnedMediaRow) GetReviewsHeldOk() (*int32, bool)`
+
+GetReviewsHeldOk returns a tuple with the ReviewsHeld field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReviewsHeld
+
+`func (o *OwnedMediaRow) SetReviewsHeld(v int32)`
+
+SetReviewsHeld sets ReviewsHeld field to given value.
+
+### HasReviewsHeld
+
+`func (o *OwnedMediaRow) HasReviewsHeld() bool`
+
+HasReviewsHeld returns a boolean if a field has been set.
+
+### SetReviewsHeldNil
+
+`func (o *OwnedMediaRow) SetReviewsHeldNil(b bool)`
+
+ SetReviewsHeldNil sets the value for ReviewsHeld to be an explicit nil
+
+### UnsetReviewsHeld
+`func (o *OwnedMediaRow) UnsetReviewsHeld()`
+
+UnsetReviewsHeld ensures that no value is present for ReviewsHeld, not even an explicit nil
+### GetRepliedCount
+
+`func (o *OwnedMediaRow) GetRepliedCount() int32`
+
+GetRepliedCount returns the RepliedCount field if non-nil, zero value otherwise.
+
+### GetRepliedCountOk
+
+`func (o *OwnedMediaRow) GetRepliedCountOk() (*int32, bool)`
+
+GetRepliedCountOk returns a tuple with the RepliedCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRepliedCount
+
+`func (o *OwnedMediaRow) SetRepliedCount(v int32)`
+
+SetRepliedCount sets RepliedCount field to given value.
+
+### HasRepliedCount
+
+`func (o *OwnedMediaRow) HasRepliedCount() bool`
+
+HasRepliedCount returns a boolean if a field has been set.
+
+### SetRepliedCountNil
+
+`func (o *OwnedMediaRow) SetRepliedCountNil(b bool)`
+
+ SetRepliedCountNil sets the value for RepliedCount to be an explicit nil
+
+### UnsetRepliedCount
+`func (o *OwnedMediaRow) UnsetRepliedCount()`
+
+UnsetRepliedCount ensures that no value is present for RepliedCount, not even an explicit nil
+### GetNotRepliedCount
+
+`func (o *OwnedMediaRow) GetNotRepliedCount() int32`
+
+GetNotRepliedCount returns the NotRepliedCount field if non-nil, zero value otherwise.
+
+### GetNotRepliedCountOk
+
+`func (o *OwnedMediaRow) GetNotRepliedCountOk() (*int32, bool)`
+
+GetNotRepliedCountOk returns a tuple with the NotRepliedCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetNotRepliedCount
+
+`func (o *OwnedMediaRow) SetNotRepliedCount(v int32)`
+
+SetNotRepliedCount sets NotRepliedCount field to given value.
+
+### HasNotRepliedCount
+
+`func (o *OwnedMediaRow) HasNotRepliedCount() bool`
+
+HasNotRepliedCount returns a boolean if a field has been set.
+
+### SetNotRepliedCountNil
+
+`func (o *OwnedMediaRow) SetNotRepliedCountNil(b bool)`
+
+ SetNotRepliedCountNil sets the value for NotRepliedCount to be an explicit nil
+
+### UnsetNotRepliedCount
+`func (o *OwnedMediaRow) UnsetNotRepliedCount()`
+
+UnsetNotRepliedCount ensures that no value is present for NotRepliedCount, not even an explicit nil
+### GetReplyRatePct
+
+`func (o *OwnedMediaRow) GetReplyRatePct() float32`
+
+GetReplyRatePct returns the ReplyRatePct field if non-nil, zero value otherwise.
+
+### GetReplyRatePctOk
+
+`func (o *OwnedMediaRow) GetReplyRatePctOk() (*float32, bool)`
+
+GetReplyRatePctOk returns a tuple with the ReplyRatePct field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReplyRatePct
+
+`func (o *OwnedMediaRow) SetReplyRatePct(v float32)`
+
+SetReplyRatePct sets ReplyRatePct field to given value.
+
+### HasReplyRatePct
+
+`func (o *OwnedMediaRow) HasReplyRatePct() bool`
+
+HasReplyRatePct returns a boolean if a field has been set.
+
+### SetReplyRatePctNil
+
+`func (o *OwnedMediaRow) SetReplyRatePctNil(b bool)`
+
+ SetReplyRatePctNil sets the value for ReplyRatePct to be an explicit nil
+
+### UnsetReplyRatePct
+`func (o *OwnedMediaRow) UnsetReplyRatePct()`
+
+UnsetReplyRatePct ensures that no value is present for ReplyRatePct, not even an explicit nil
+### GetMedianReplyHours
+
+`func (o *OwnedMediaRow) GetMedianReplyHours() float32`
+
+GetMedianReplyHours returns the MedianReplyHours field if non-nil, zero value otherwise.
+
+### GetMedianReplyHoursOk
+
+`func (o *OwnedMediaRow) GetMedianReplyHoursOk() (*float32, bool)`
+
+GetMedianReplyHoursOk returns a tuple with the MedianReplyHours field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMedianReplyHours
+
+`func (o *OwnedMediaRow) SetMedianReplyHours(v float32)`
+
+SetMedianReplyHours sets MedianReplyHours field to given value.
+
+### HasMedianReplyHours
+
+`func (o *OwnedMediaRow) HasMedianReplyHours() bool`
+
+HasMedianReplyHours returns a boolean if a field has been set.
+
+### SetMedianReplyHoursNil
+
+`func (o *OwnedMediaRow) SetMedianReplyHoursNil(b bool)`
+
+ SetMedianReplyHoursNil sets the value for MedianReplyHours to be an explicit nil
+
+### UnsetMedianReplyHours
+`func (o *OwnedMediaRow) UnsetMedianReplyHours()`
+
+UnsetMedianReplyHours ensures that no value is present for MedianReplyHours, not even an explicit nil
 ### GetTitle
 
 `func (o *OwnedMediaRow) GetTitle() string`
