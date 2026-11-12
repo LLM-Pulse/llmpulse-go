@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.93.0
+API version: 1.94.0
 Contact: info@llmpulse.ai
 */
 
@@ -40,6 +40,8 @@ type ProjectProfile struct {
 	AdditionalOwnedDomains []string `json:"additional_owned_domains"`
 	// The most prompts this project can hold, set by the account owner or a co-owner (Account Settings > Prompt Limits). Null when the project has no limit of its own; the account's plan allowance applies either way
 	PromptLimit NullableInt32 `json:"prompt_limit"`
+	// The project type it is billed as under the account's pricing agreement, such as core or lean. Null for accounts without per-project types and for pitch projects
+	ProjectType NullableString `json:"project_type"`
 }
 
 type _ProjectProfile ProjectProfile
@@ -48,13 +50,14 @@ type _ProjectProfile ProjectProfile
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32) *ProjectProfile {
+func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32, projectType NullableString) *ProjectProfile {
 	this := ProjectProfile{}
 	this.Id = id
 	this.Name = name
 	this.MatchingNames = matchingNames
 	this.AdditionalOwnedDomains = additionalOwnedDomains
 	this.PromptLimit = promptLimit
+	this.ProjectType = projectType
 	return &this
 }
 
@@ -547,6 +550,32 @@ func (o *ProjectProfile) SetPromptLimit(v int32) {
 	o.PromptLimit.Set(&v)
 }
 
+// GetProjectType returns the ProjectType field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ProjectProfile) GetProjectType() string {
+	if o == nil || o.ProjectType.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.ProjectType.Get()
+}
+
+// GetProjectTypeOk returns a tuple with the ProjectType field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectProfile) GetProjectTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ProjectType.Get(), o.ProjectType.IsSet()
+}
+
+// SetProjectType sets field value
+func (o *ProjectProfile) SetProjectType(v string) {
+	o.ProjectType.Set(&v)
+}
+
 func (o ProjectProfile) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -589,6 +618,7 @@ func (o ProjectProfile) ToMap() (map[string]interface{}, error) {
 	toSerialize["matching_names"] = o.MatchingNames
 	toSerialize["additional_owned_domains"] = o.AdditionalOwnedDomains
 	toSerialize["prompt_limit"] = o.PromptLimit.Get()
+	toSerialize["project_type"] = o.ProjectType.Get()
 	return toSerialize, nil
 }
 
@@ -602,6 +632,7 @@ func (o *ProjectProfile) UnmarshalJSON(data []byte) (err error) {
 		"matching_names",
 		"additional_owned_domains",
 		"prompt_limit",
+		"project_type",
 	}
 
 	allProperties := make(map[string]interface{})

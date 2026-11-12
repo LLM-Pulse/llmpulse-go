@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.93.0
+API version: 1.94.0
 Contact: info@llmpulse.ai
 */
 
@@ -46,6 +46,8 @@ type UpdateProjectRequest struct {
 	AdditionalOwnedDomains []string `json:"additional_owned_domains,omitempty"`
 	// The most prompts this project can hold, a JSON integer from 1 to 2147483647; null removes the project's limit. A string, a decimal, 0 or a negative number is rejected with ERR_INVALID_PARAM. The account's plan allowance still applies, so the lower of the two wins (GET /dimensions/projects/{id} returns prompt_limit and stats.prompts_available). A limit below the current count keeps every prompt and refuses new ones until the project is under it; note says what the project can now hold. Account owner or a co-owner with Projects update permission only; a key limited to some projects answers ERR_KEY_PROJECT_SCOPED. The Swift, Kotlin, Dart and R clients leave a null field out of the request body, so they can set a limit but not remove one: remove it with a plain HTTP request that sends prompt_limit as null
 	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
+	// Only for accounts billed per project type under a pricing agreement; any other account gets ERR_INVALID_PARAM. The key of one of the account's project types, such as core or lean. The new type's prompt cap applies at once and its price from the next renewal. Send it on its own: with other fields it answers ERR_INVALID_PARAM. Moving to a type whose cap is below the prompts the project holds answers ERR_INVALID_PARAM, and so do a pitch project and a project the team set up by hand (included at no cost, paused or with a raised prompt limit), which keeps its type; sending the type the project already has changes nothing. Account owner or a co-owner with Projects update permission only; a key limited to some projects answers ERR_KEY_PROJECT_SCOPED. It is applied even while a rematch runs
+	ProjectType *string `json:"project_type,omitempty"`
 	// false converts a pitch project into a tracked project. Send it on its own, without other fields; true is rejected
 	Pitch *bool `json:"pitch,omitempty"`
 }
@@ -493,6 +495,38 @@ func (o *UpdateProjectRequest) UnsetPromptLimit() {
 	o.PromptLimit.Unset()
 }
 
+// GetProjectType returns the ProjectType field value if set, zero value otherwise.
+func (o *UpdateProjectRequest) GetProjectType() string {
+	if o == nil || IsNil(o.ProjectType) {
+		var ret string
+		return ret
+	}
+	return *o.ProjectType
+}
+
+// GetProjectTypeOk returns a tuple with the ProjectType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UpdateProjectRequest) GetProjectTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.ProjectType) {
+		return nil, false
+	}
+	return o.ProjectType, true
+}
+
+// HasProjectType returns a boolean if a field has been set.
+func (o *UpdateProjectRequest) HasProjectType() bool {
+	if o != nil && !IsNil(o.ProjectType) {
+		return true
+	}
+
+	return false
+}
+
+// SetProjectType gets a reference to the given string and assigns it to the ProjectType field.
+func (o *UpdateProjectRequest) SetProjectType(v string) {
+	o.ProjectType = &v
+}
+
 // GetPitch returns the Pitch field value if set, zero value otherwise.
 func (o *UpdateProjectRequest) GetPitch() bool {
 	if o == nil || IsNil(o.Pitch) {
@@ -573,6 +607,9 @@ func (o UpdateProjectRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if o.PromptLimit.IsSet() {
 		toSerialize["prompt_limit"] = o.PromptLimit.Get()
+	}
+	if !IsNil(o.ProjectType) {
+		toSerialize["project_type"] = o.ProjectType
 	}
 	if !IsNil(o.Pitch) {
 		toSerialize["pitch"] = o.Pitch

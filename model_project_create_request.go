@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.93.0
+API version: 1.94.0
 Contact: info@llmpulse.ai
 */
 
@@ -58,6 +58,8 @@ type ProjectCreateRequest struct {
 	ExecutePromptsImmediately *bool `json:"execute_prompts_immediately,omitempty"`
 	// Create a pitch project, a one-off snapshot for a prospect. It runs its prompts once across the account's AI models right away, takes no project slot and its prompts do not count against the prompt quota, and it is deleted 90 days later unless converted by sending pitch false to PATCH /projects/{id}. It uses one of the month's pitch projects (GET /account, limits.pitch_projects), needs an agency or platform account (GET /account, limits.pitch_projects.access) and a paid subscription on the Scale tier or higher, takes 1 to 100 prompts, and cannot use a domain the account already tracks or pitched in the last 90 days. execute_prompts_immediately must not be false
 	Pitch *bool `json:"pitch,omitempty"`
+	// Only for accounts billed per project type under a pricing agreement; any other account gets ERR_INVALID_PARAM. The key of one of the account's project types, such as core or lean, which sets the most prompts the project can hold and the price it is billed at. Omitted, the project takes the account's default type. A type other than the default needs the account owner or a co-owner (ERR_INSUFFICIENT_PERMISSION). An unknown key answers ERR_INVALID_PARAM with the valid keys; a pitch project has no type
+	ProjectType *string `json:"project_type,omitempty"`
 }
 
 type _ProjectCreateRequest ProjectCreateRequest
@@ -803,6 +805,38 @@ func (o *ProjectCreateRequest) SetPitch(v bool) {
 	o.Pitch = &v
 }
 
+// GetProjectType returns the ProjectType field value if set, zero value otherwise.
+func (o *ProjectCreateRequest) GetProjectType() string {
+	if o == nil || IsNil(o.ProjectType) {
+		var ret string
+		return ret
+	}
+	return *o.ProjectType
+}
+
+// GetProjectTypeOk returns a tuple with the ProjectType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectCreateRequest) GetProjectTypeOk() (*string, bool) {
+	if o == nil || IsNil(o.ProjectType) {
+		return nil, false
+	}
+	return o.ProjectType, true
+}
+
+// HasProjectType returns a boolean if a field has been set.
+func (o *ProjectCreateRequest) HasProjectType() bool {
+	if o != nil && !IsNil(o.ProjectType) {
+		return true
+	}
+
+	return false
+}
+
+// SetProjectType gets a reference to the given string and assigns it to the ProjectType field.
+func (o *ProjectCreateRequest) SetProjectType(v string) {
+	o.ProjectType = &v
+}
+
 func (o ProjectCreateRequest) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -873,6 +907,9 @@ func (o ProjectCreateRequest) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Pitch) {
 		toSerialize["pitch"] = o.Pitch
+	}
+	if !IsNil(o.ProjectType) {
+		toSerialize["project_type"] = o.ProjectType
 	}
 	return toSerialize, nil
 }

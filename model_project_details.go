@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.93.0
+API version: 1.94.0
 Contact: info@llmpulse.ai
 */
 
@@ -58,6 +58,8 @@ type ProjectDetails struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// The most prompts this project can hold, set by the account owner or a co-owner (Account Settings > Prompt Limits). Null when the project has no limit of its own; the account's plan allowance applies either way
 	PromptLimit NullableInt32 `json:"prompt_limit,omitempty"`
+	// The project type it is billed as under the account's pricing agreement, such as core or lean (its own, else the account's default type). Null for accounts without per-project types and for pitch projects
+	ProjectType NullableString `json:"project_type,omitempty"`
 	Stats *ProjectDetailsAllOfStats `json:"stats,omitempty"`
 	PitchRun NullableProjectDetailsAllOfPitchRun `json:"pitch_run,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
@@ -995,6 +997,48 @@ func (o *ProjectDetails) UnsetPromptLimit() {
 	o.PromptLimit.Unset()
 }
 
+// GetProjectType returns the ProjectType field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ProjectDetails) GetProjectType() string {
+	if o == nil || IsNil(o.ProjectType.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.ProjectType.Get()
+}
+
+// GetProjectTypeOk returns a tuple with the ProjectType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ProjectDetails) GetProjectTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.ProjectType.Get(), o.ProjectType.IsSet()
+}
+
+// HasProjectType returns a boolean if a field has been set.
+func (o *ProjectDetails) HasProjectType() bool {
+	if o != nil && o.ProjectType.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetProjectType gets a reference to the given NullableString and assigns it to the ProjectType field.
+func (o *ProjectDetails) SetProjectType(v string) {
+	o.ProjectType.Set(&v)
+}
+// SetProjectTypeNil sets the value for ProjectType to be an explicit nil
+func (o *ProjectDetails) SetProjectTypeNil() {
+	o.ProjectType.Set(nil)
+}
+
+// UnsetProjectType ensures that no value is present for ProjectType, not even an explicit nil
+func (o *ProjectDetails) UnsetProjectType() {
+	o.ProjectType.Unset()
+}
+
 // GetStats returns the Stats field value if set, zero value otherwise.
 func (o *ProjectDetails) GetStats() ProjectDetailsAllOfStats {
 	if o == nil || IsNil(o.Stats) {
@@ -1309,6 +1353,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if o.PromptLimit.IsSet() {
 		toSerialize["prompt_limit"] = o.PromptLimit.Get()
+	}
+	if o.ProjectType.IsSet() {
+		toSerialize["project_type"] = o.ProjectType.Get()
 	}
 	if !IsNil(o.Stats) {
 		toSerialize["stats"] = o.Stats

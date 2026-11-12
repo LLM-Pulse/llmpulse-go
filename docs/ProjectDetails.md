@@ -29,6 +29,7 @@ Name | Type | Description | Notes
 **AppStoreId** | Pointer to **NullableString** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **PromptLimit** | Pointer to **NullableInt32** | The most prompts this project can hold, set by the account owner or a co-owner (Account Settings &gt; Prompt Limits). Null when the project has no limit of its own; the account&#39;s plan allowance applies either way | [optional] 
+**ProjectType** | Pointer to **NullableString** | The project type it is billed as under the account&#39;s pricing agreement, such as core or lean (its own, else the account&#39;s default type). Null for accounts without per-project types and for pitch projects | [optional] 
 **Stats** | Pointer to [**ProjectDetailsAllOfStats**](ProjectDetailsAllOfStats.md) |  | [optional] 
 **PitchRun** | Pointer to [**NullableProjectDetailsAllOfPitchRun**](ProjectDetailsAllOfPitchRun.md) |  | [optional] 
 **DataCoverage** | Pointer to [**ProjectDetailsAllOfDataCoverage**](ProjectDetailsAllOfDataCoverage.md) |  | [optional] 
@@ -811,6 +812,41 @@ HasPromptLimit returns a boolean if a field has been set.
 `func (o *ProjectDetails) UnsetPromptLimit()`
 
 UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
+### GetProjectType
+
+`func (o *ProjectDetails) GetProjectType() string`
+
+GetProjectType returns the ProjectType field if non-nil, zero value otherwise.
+
+### GetProjectTypeOk
+
+`func (o *ProjectDetails) GetProjectTypeOk() (*string, bool)`
+
+GetProjectTypeOk returns a tuple with the ProjectType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProjectType
+
+`func (o *ProjectDetails) SetProjectType(v string)`
+
+SetProjectType sets ProjectType field to given value.
+
+### HasProjectType
+
+`func (o *ProjectDetails) HasProjectType() bool`
+
+HasProjectType returns a boolean if a field has been set.
+
+### SetProjectTypeNil
+
+`func (o *ProjectDetails) SetProjectTypeNil(b bool)`
+
+ SetProjectTypeNil sets the value for ProjectType to be an explicit nil
+
+### UnsetProjectType
+`func (o *ProjectDetails) UnsetProjectType()`
+
+UnsetProjectType ensures that no value is present for ProjectType, not even an explicit nil
 ### GetStats
 
 `func (o *ProjectDetails) GetStats() ProjectDetailsAllOfStats`

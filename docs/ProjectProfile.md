@@ -18,12 +18,13 @@ Name | Type | Description | Notes
 **MatchingNames** | **[]string** |  | 
 **AdditionalOwnedDomains** | **[]string** | Other domains the brand owns (at most 10, each a website&#39;s own domain covering its subdomains), whose citations count as owned like the project website. Empty when none | 
 **PromptLimit** | **NullableInt32** | The most prompts this project can hold, set by the account owner or a co-owner (Account Settings &gt; Prompt Limits). Null when the project has no limit of its own; the account&#39;s plan allowance applies either way | 
+**ProjectType** | **NullableString** | The project type it is billed as under the account&#39;s pricing agreement, such as core or lean. Null for accounts without per-project types and for pitch projects | 
 
 ## Methods
 
 ### NewProjectProfile
 
-`func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32, ) *ProjectProfile`
+`func NewProjectProfile(id int32, name string, matchingNames []string, additionalOwnedDomains []string, promptLimit NullableInt32, projectType NullableString, ) *ProjectProfile`
 
 NewProjectProfile instantiates a new ProjectProfile object
 This constructor will assign default values to properties that have it defined,
@@ -453,6 +454,36 @@ SetPromptLimit sets PromptLimit field to given value.
 `func (o *ProjectProfile) UnsetPromptLimit()`
 
 UnsetPromptLimit ensures that no value is present for PromptLimit, not even an explicit nil
+### GetProjectType
+
+`func (o *ProjectProfile) GetProjectType() string`
+
+GetProjectType returns the ProjectType field if non-nil, zero value otherwise.
+
+### GetProjectTypeOk
+
+`func (o *ProjectProfile) GetProjectTypeOk() (*string, bool)`
+
+GetProjectTypeOk returns a tuple with the ProjectType field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProjectType
+
+`func (o *ProjectProfile) SetProjectType(v string)`
+
+SetProjectType sets ProjectType field to given value.
+
+
+### SetProjectTypeNil
+
+`func (o *ProjectProfile) SetProjectTypeNil(b bool)`
+
+ SetProjectTypeNil sets the value for ProjectType to be an explicit nil
+
+### UnsetProjectType
+`func (o *ProjectProfile) UnsetProjectType()`
+
+UnsetProjectType ensures that no value is present for ProjectType, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
