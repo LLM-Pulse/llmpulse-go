@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.92.0
+API version: 1.93.0
 Contact: info@llmpulse.ai
 */
 
@@ -28,7 +28,7 @@ type CustomReportWidget struct {
 	Width string `json:"width"`
 	// false when the widget's data source (web analytics, agent analytics, owned media) is not connected
 	Available bool `json:"available"`
-	// Shaped by kind. timeseries: series [{ name, color, points [{ date, value }] }]. donut: slices [{ name, value, color }]. bar: bars [{ label, value, color }]. kpi_grid: values and changes (null unless the report compares with the previous period). table: rows, one object per row. Null when the widget is not available.
+	// Shaped by kind. timeseries: series [{ name, color, points [{ date, value }] }]. donut: slices [{ name, value, color }]. bar: bars [{ label, value, color }]. kpi_grid: values and changes (null unless the report compares with the previous period). table: rows, one object per row; the monthly_breakdown widget has one row per calendar month of the window with month, from, to, partial (a month the window cuts), responses, mentions, visibility, weighted_visibility, sov_share, citations and avg_mention_position. Null when the widget is not available.
 	Data map[string]interface{} `json:"data,omitempty"`
 }
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.92.0
+API version: 1.93.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,13 +22,17 @@ var _ MappedNullable = &CustomReportDateRange{}
 
 // CustomReportDateRange struct for CustomReportDateRange
 type CustomReportDateRange struct {
-	// rolling (the last range_days days) or previous_month (the previous calendar month)
+	// rolling (the last range_days days), previous_month (the previous calendar month), previous_3_months (the 3 calendar months before the current one) or custom (fixed dates, custom_from to custom_to)
 	Type string `json:"type"`
-	// Length of a rolling window; null for previous_month
+	// Length of a rolling window; null for the other types
 	RangeDays NullableInt32 `json:"range_days"`
+	// First day chosen for a custom range; null for the other types
+	CustomFrom NullableString `json:"custom_from"`
+	// Last day chosen for a custom range, which can be after today; null for the other types
+	CustomTo NullableString `json:"custom_to"`
 	// First day of the window as of now (detail only)
 	From *string `json:"from,omitempty"`
-	// Last day of the window as of now (detail only)
+	// Last day of the window as of now (detail only); a custom range stops at today
 	To *string `json:"to,omitempty"`
 	// The window as the report shows it (detail only)
 	Label *string `json:"label,omitempty"`
@@ -40,10 +44,12 @@ type _CustomReportDateRange CustomReportDateRange
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomReportDateRange(type_ string, rangeDays NullableInt32) *CustomReportDateRange {
+func NewCustomReportDateRange(type_ string, rangeDays NullableInt32, customFrom NullableString, customTo NullableString) *CustomReportDateRange {
 	this := CustomReportDateRange{}
 	this.Type = type_
 	this.RangeDays = rangeDays
+	this.CustomFrom = customFrom
+	this.CustomTo = customTo
 	return &this
 }
 
@@ -103,6 +109,58 @@ func (o *CustomReportDateRange) GetRangeDaysOk() (*int32, bool) {
 // SetRangeDays sets field value
 func (o *CustomReportDateRange) SetRangeDays(v int32) {
 	o.RangeDays.Set(&v)
+}
+
+// GetCustomFrom returns the CustomFrom field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *CustomReportDateRange) GetCustomFrom() string {
+	if o == nil || o.CustomFrom.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.CustomFrom.Get()
+}
+
+// GetCustomFromOk returns a tuple with the CustomFrom field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CustomReportDateRange) GetCustomFromOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CustomFrom.Get(), o.CustomFrom.IsSet()
+}
+
+// SetCustomFrom sets field value
+func (o *CustomReportDateRange) SetCustomFrom(v string) {
+	o.CustomFrom.Set(&v)
+}
+
+// GetCustomTo returns the CustomTo field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *CustomReportDateRange) GetCustomTo() string {
+	if o == nil || o.CustomTo.Get() == nil {
+		var ret string
+		return ret
+	}
+
+	return *o.CustomTo.Get()
+}
+
+// GetCustomToOk returns a tuple with the CustomTo field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *CustomReportDateRange) GetCustomToOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.CustomTo.Get(), o.CustomTo.IsSet()
+}
+
+// SetCustomTo sets field value
+func (o *CustomReportDateRange) SetCustomTo(v string) {
+	o.CustomTo.Set(&v)
 }
 
 // GetFrom returns the From field value if set, zero value otherwise.
@@ -213,6 +271,8 @@ func (o CustomReportDateRange) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["type"] = o.Type
 	toSerialize["range_days"] = o.RangeDays.Get()
+	toSerialize["custom_from"] = o.CustomFrom.Get()
+	toSerialize["custom_to"] = o.CustomTo.Get()
 	if !IsNil(o.From) {
 		toSerialize["from"] = o.From
 	}
@@ -232,6 +292,8 @@ func (o *CustomReportDateRange) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"type",
 		"range_days",
+		"custom_from",
+		"custom_to",
 	}
 
 	allProperties := make(map[string]interface{})
