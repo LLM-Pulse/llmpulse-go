@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -54,7 +54,7 @@ func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Property(property string) Ap
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleAiVisibilityGapsRequest) Range_(range_ int32) ApiGetSearchConsoleAiVisibilityGapsRequest {
 	r.range_ = &range_
 	return r
@@ -369,7 +369,7 @@ func (r ApiGetSearchConsoleBrandSplitRequest) Property(property string) ApiGetSe
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleBrandSplitRequest) Range_(range_ int32) ApiGetSearchConsoleBrandSplitRequest {
 	r.range_ = &range_
 	return r
@@ -630,7 +630,7 @@ func (r ApiGetSearchConsoleCannibalizationRequest) Property(property string) Api
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleCannibalizationRequest) Range_(range_ int32) ApiGetSearchConsoleCannibalizationRequest {
 	r.range_ = &range_
 	return r
@@ -950,7 +950,7 @@ func (r ApiGetSearchConsoleDecayRequest) Property(property string) ApiGetSearchC
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleDecayRequest) Range_(range_ int32) ApiGetSearchConsoleDecayRequest {
 	r.range_ = &range_
 	return r
@@ -1271,7 +1271,7 @@ func (r ApiGetSearchConsoleOpportunitiesRequest) Property(property string) ApiGe
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleOpportunitiesRequest) Range_(range_ int32) ApiGetSearchConsoleOpportunitiesRequest {
 	r.range_ = &range_
 	return r
@@ -1598,7 +1598,7 @@ func (r ApiGetSearchConsolePagesRequest) ProjectId(projectId int32) ApiGetSearch
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsolePagesRequest) Range_(range_ int32) ApiGetSearchConsolePagesRequest {
 	r.range_ = &range_
 	return r
@@ -1917,7 +1917,7 @@ func (r ApiGetSearchConsoleQueriesRequest) ProjectId(projectId int32) ApiGetSear
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleQueriesRequest) Range_(range_ int32) ApiGetSearchConsoleQueriesRequest {
 	r.range_ = &range_
 	return r
@@ -2243,7 +2243,7 @@ func (r ApiGetSearchConsoleRowsRequest) Dimensions(dimensions string) ApiGetSear
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleRowsRequest) Range_(range_ int32) ApiGetSearchConsoleRowsRequest {
 	r.range_ = &range_
 	return r
@@ -2563,7 +2563,7 @@ func (r ApiGetSearchConsoleSummaryRequest) ProjectId(projectId int32) ApiGetSear
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleSummaryRequest) Range_(range_ int32) ApiGetSearchConsoleSummaryRequest {
 	r.range_ = &range_
 	return r
@@ -2839,7 +2839,7 @@ func (r ApiGetSearchConsoleTimeseriesRequest) ProjectId(projectId int32) ApiGetS
 	return r
 }
 
-// Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention.
+// Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to.
 func (r ApiGetSearchConsoleTimeseriesRequest) Range_(range_ int32) ApiGetSearchConsoleTimeseriesRequest {
 	r.range_ = &range_
 	return r

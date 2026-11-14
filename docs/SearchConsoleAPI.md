@@ -42,7 +42,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	property := "all" // string | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. (optional)
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	minImpressions := int32(56) // int32 | Smallest impressions a query needs. (optional) (default to 100)
@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **property** | **string** | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **minImpressions** | **int32** | Smallest impressions a query needs. | [default to 100]
@@ -135,7 +135,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	property := "all" // string | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. (optional)
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	searchType := "searchType_example" // string | Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them. (optional) (default to "web")
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **property** | **string** | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **searchType** | **string** | Which search surface to measure. Defaults to web. discover and googleNews carry no query dimension, so Google rejects /search_console/queries for them. | [default to &quot;web&quot;]
@@ -218,7 +218,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	property := "all" // string | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. (optional)
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	minImpressions := int32(56) // int32 | Smallest impressions a query needs. (optional) (default to 100)
@@ -256,7 +256,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **property** | **string** | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **minImpressions** | **int32** | Smallest impressions a query needs. | [default to 100]
@@ -311,7 +311,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	property := "all" // string | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. (optional)
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	dimension := "dimension_example" // string | Compare pages or queries. (optional) (default to "page")
@@ -349,7 +349,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **property** | **string** | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **dimension** | **string** | Compare pages or queries. | [default to &quot;page&quot;]
@@ -404,7 +404,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	property := "all" // string | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. (optional)
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	minImpressions := int32(56) // int32 | Smallest impressions a query needs. (optional) (default to 100)
@@ -443,7 +443,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **property** | **string** | Which Search Console properties to read; /search_console/properties lists them. Omit it for the primary property, or pass one property id (e.g. sc-domain:example.com) to read that one; both answer with property. A comma-separated list of ids, or all, combines several and answers with properties, excluded_properties and property_errors instead: excluded_properties are left out because another selected property already counts them (a URL-prefix property under a domain property), so no click is counted twice; property_errors are properties Google refused, left out of the figures and also named in the X-Search-Console-Property-Errors header. When Google refuses every property, the request fails as a single-property read would. | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **minImpressions** | **int32** | Smallest impressions a query needs. | [default to 100]
@@ -498,7 +498,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	sort := "sort_example" // string |  (optional) (default to "impressions")
@@ -536,7 +536,7 @@ Other parameters are passed through a pointer to a apiGetSearchConsolePagesReque
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **sort** | **string** |  | [default to &quot;impressions&quot;]
@@ -591,7 +591,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	sort := "sort_example" // string |  (optional) (default to "impressions")
@@ -629,7 +629,7 @@ Other parameters are passed through a pointer to a apiGetSearchConsoleQueriesReq
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **sort** | **string** |  | [default to &quot;impressions&quot;]
@@ -685,7 +685,7 @@ import (
 func main() {
 	projectId := int32(56) // int32 | Project ID
 	dimensions := "page,query" // string | Comma-separated dimensions to group by, 1 to 3 of date, country, device, page, query, searchAppearance, property. Each becomes a field of every row; country and device values are lowercase. property is the Search Console property the row comes from (see the property parameter).
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	sort := "sort_example" // string |  (optional) (default to "impressions")
@@ -724,7 +724,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
  **dimensions** | **string** | Comma-separated dimensions to group by, 1 to 3 of date, country, device, page, query, searchAppearance, property. Each becomes a field of every row; country and device values are lowercase. property is the Search Console property the row comes from (see the property parameter). | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **sort** | **string** |  | [default to &quot;impressions&quot;]
@@ -779,7 +779,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	dimension := "dimension_example" // string | Optional breakdown aggregated over the range. country and device are lowercased; page and query keep the casing Google returns, because a page URL is case sensitive. property gives one row per property read (see the property parameter). (optional)
@@ -814,7 +814,7 @@ Other parameters are passed through a pointer to a apiGetSearchConsoleSummaryReq
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **dimension** | **string** | Optional breakdown aggregated over the range. country and device are lowercased; page and query keep the casing Google returns, because a page URL is case sensitive. property gives one row per property read (see the property parameter). | 
@@ -866,7 +866,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to). At most 487, Google's retention. (optional)
+	range_ := int32(56) // int32 | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google's retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. (optional)
 	from := time.Now() // string | Start date (YYYY-MM-DD). Defaults to 30 days ago. (optional)
 	to := time.Now() // string | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. (optional)
 	granularity := "granularity_example" // string |  (optional)
@@ -901,7 +901,7 @@ Other parameters are passed through a pointer to a apiGetSearchConsoleTimeseries
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back, today included (alternative to from/to). At most 487, Google&#39;s retention. | 
+ **range_** | **int32** | Number of days to look back, today included (alternative to from/to, which win when both are given). At most 487, Google&#39;s retention. A value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside from/to. | 
  **from** | **string** | Start date (YYYY-MM-DD). Defaults to 30 days ago. | 
  **to** | **string** | End date (YYYY-MM-DD), inclusive. Defaults to today. Google publishes data with a 2-3 day lag, so data_through in the response says how far it reaches. | 
  **granularity** | **string** |  | 

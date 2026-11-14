@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -50,7 +50,7 @@ func (r ApiListAllCitationsRequest) ProjectId(projectId int32) ApiListAllCitatio
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListAllCitationsRequest) Competitors(competitors string) ApiListAllCitationsRequest {
 	r.competitors = &competitors
 	return r
@@ -78,18 +78,19 @@ func (r ApiListAllCitationsRequest) CollectionId(collectionId string) ApiListAll
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAllCitationsRequest) Prompt(prompt int32) ApiListAllCitationsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAllCitationsRequest) From(from time.Time) ApiListAllCitationsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListAllCitationsRequest) To(to time.Time) ApiListAllCitationsRequest {
 	r.to = &to
 	return r
@@ -125,7 +126,7 @@ func (r ApiListAllCitationsRequest) BrandKind(brandKind string) ApiListAllCitati
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListAllCitationsRequest) Range_(range_ int32) ApiListAllCitationsRequest {
 	r.range_ = &range_
 	return r
@@ -294,7 +295,7 @@ func (r ApiListAllMentionsRequest) ProjectId(projectId int32) ApiListAllMentions
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListAllMentionsRequest) Competitors(competitors string) ApiListAllMentionsRequest {
 	r.competitors = &competitors
 	return r
@@ -322,18 +323,19 @@ func (r ApiListAllMentionsRequest) CollectionId(collectionId string) ApiListAllM
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAllMentionsRequest) Prompt(prompt int32) ApiListAllMentionsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAllMentionsRequest) From(from time.Time) ApiListAllMentionsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListAllMentionsRequest) To(to time.Time) ApiListAllMentionsRequest {
 	r.to = &to
 	return r
@@ -369,7 +371,7 @@ func (r ApiListAllMentionsRequest) BrandKind(brandKind string) ApiListAllMention
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListAllMentionsRequest) Range_(range_ int32) ApiListAllMentionsRequest {
 	r.range_ = &range_
 	return r
@@ -571,18 +573,19 @@ func (r ApiListCitationsRequest) LanguageCode(languageCode string) ApiListCitati
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCitationsRequest) Prompt(prompt int32) ApiListCitationsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCitationsRequest) From(from time.Time) ApiListCitationsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListCitationsRequest) To(to time.Time) ApiListCitationsRequest {
 	r.to = &to
 	return r
@@ -606,7 +609,7 @@ func (r ApiListCitationsRequest) BrandKind(brandKind string) ApiListCitationsReq
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListCitationsRequest) Range_(range_ int32) ApiListCitationsRequest {
 	r.range_ = &range_
 	return r
@@ -783,7 +786,7 @@ func (r ApiListCompetitorCitationsRequest) ProjectId(projectId int32) ApiListCom
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListCompetitorCitationsRequest) Competitors(competitors string) ApiListCompetitorCitationsRequest {
 	r.competitors = &competitors
 	return r
@@ -811,18 +814,19 @@ func (r ApiListCompetitorCitationsRequest) CollectionId(collectionId string) Api
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCompetitorCitationsRequest) Prompt(prompt int32) ApiListCompetitorCitationsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCompetitorCitationsRequest) From(from time.Time) ApiListCompetitorCitationsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListCompetitorCitationsRequest) To(to time.Time) ApiListCompetitorCitationsRequest {
 	r.to = &to
 	return r
@@ -858,7 +862,7 @@ func (r ApiListCompetitorCitationsRequest) BrandKind(brandKind string) ApiListCo
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListCompetitorCitationsRequest) Range_(range_ int32) ApiListCompetitorCitationsRequest {
 	r.range_ = &range_
 	return r
@@ -1027,7 +1031,7 @@ func (r ApiListCompetitorMentionsRequest) ProjectId(projectId int32) ApiListComp
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListCompetitorMentionsRequest) Competitors(competitors string) ApiListCompetitorMentionsRequest {
 	r.competitors = &competitors
 	return r
@@ -1055,18 +1059,19 @@ func (r ApiListCompetitorMentionsRequest) CollectionId(collectionId string) ApiL
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCompetitorMentionsRequest) Prompt(prompt int32) ApiListCompetitorMentionsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListCompetitorMentionsRequest) From(from time.Time) ApiListCompetitorMentionsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListCompetitorMentionsRequest) To(to time.Time) ApiListCompetitorMentionsRequest {
 	r.to = &to
 	return r
@@ -1102,7 +1107,7 @@ func (r ApiListCompetitorMentionsRequest) BrandKind(brandKind string) ApiListCom
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListCompetitorMentionsRequest) Range_(range_ int32) ApiListCompetitorMentionsRequest {
 	r.range_ = &range_
 	return r
@@ -1313,18 +1318,19 @@ func (r ApiListMentionsRequest) LanguageCode(languageCode string) ApiListMention
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListMentionsRequest) Prompt(prompt int32) ApiListMentionsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListMentionsRequest) From(from time.Time) ApiListMentionsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListMentionsRequest) To(to time.Time) ApiListMentionsRequest {
 	r.to = &to
 	return r
@@ -1348,7 +1354,7 @@ func (r ApiListMentionsRequest) BrandKind(brandKind string) ApiListMentionsReque
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListMentionsRequest) Range_(range_ int32) ApiListMentionsRequest {
 	r.range_ = &range_
 	return r

@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **CompetitorId** | Pointer to **NullableInt32** | Null for the project, the competitor id otherwise | [optional] 
 **Name** | Pointer to **string** |  | [optional] 
 **Domain** | Pointer to **NullableString** | Bare (scheme-less) domain. Null for the project actor when the project has no URL. | [optional] 
-**TotalWeightedVisibilityScore** | Pointer to **float32** | The actor&#39;s AI Visibility Score points summed over the models | [optional] 
+**TotalWeightedVisibilityScore** | Pointer to **float32** | The actor&#39;s AI Visibility Score across the enabled models, its points there divided by the project&#39;s days with answers in them, so actors compare | [optional] 
 **Models** | Pointer to [**map[string]AiModelWeightedVisibilityCell**](AiModelWeightedVisibilityCell.md) | One cell per model, keyed by model | [optional] 
 
 ## Methods

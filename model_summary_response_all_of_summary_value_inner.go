@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,8 +22,9 @@ var _ MappedNullable = &SummaryResponseAllOfSummaryValueInner{}
 type SummaryResponseAllOfSummaryValueInner struct {
 	Actor *Actor `json:"actor,omitempty"`
 	Metric *string `json:"metric,omitempty"`
+	// Count metrics sum the buckets; rate, position and sentiment metrics average them. ai_visibility_score (weighted_visibility) is the window's points divided by its data days (the days with responses under the filters), the number the app shows, whatever the granularity.
 	Total *float32 `json:"total,omitempty"`
-	// How total combines the buckets
+	// How total combines the buckets (average for ai_visibility_score, a per-data-day score)
 	Aggregation *string `json:"aggregation,omitempty"`
 	Min *float32 `json:"min,omitempty"`
 	Max *float32 `json:"max,omitempty"`

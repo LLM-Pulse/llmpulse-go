@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -118,7 +118,7 @@ func (r ApiListAdsRequest) LanguageCode(languageCode string) ApiListAdsRequest {
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAdsRequest) Prompt(prompt int32) ApiListAdsRequest {
 	r.prompt = &prompt
 	return r
@@ -136,18 +136,19 @@ func (r ApiListAdsRequest) BrandKind(brandKind string) ApiListAdsRequest {
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListAdsRequest) Range_(range_ int32) ApiListAdsRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAdsRequest) From(from time.Time) ApiListAdsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListAdsRequest) To(to time.Time) ApiListAdsRequest {
 	r.to = &to
 	return r
@@ -408,7 +409,7 @@ func (r ApiListLocalBusinessesRequest) LanguageCode(languageCode string) ApiList
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListLocalBusinessesRequest) Prompt(prompt int32) ApiListLocalBusinessesRequest {
 	r.prompt = &prompt
 	return r
@@ -426,18 +427,19 @@ func (r ApiListLocalBusinessesRequest) BrandKind(brandKind string) ApiListLocalB
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListLocalBusinessesRequest) Range_(range_ int32) ApiListLocalBusinessesRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListLocalBusinessesRequest) From(from time.Time) ApiListLocalBusinessesRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListLocalBusinessesRequest) To(to time.Time) ApiListLocalBusinessesRequest {
 	r.to = &to
 	return r
@@ -717,7 +719,7 @@ func (r ApiListShoppingRequest) LanguageCode(languageCode string) ApiListShoppin
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListShoppingRequest) Prompt(prompt int32) ApiListShoppingRequest {
 	r.prompt = &prompt
 	return r
@@ -735,18 +737,19 @@ func (r ApiListShoppingRequest) BrandKind(brandKind string) ApiListShoppingReque
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListShoppingRequest) Range_(range_ int32) ApiListShoppingRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListShoppingRequest) From(from time.Time) ApiListShoppingRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListShoppingRequest) To(to time.Time) ApiListShoppingRequest {
 	r.to = &to
 	return r

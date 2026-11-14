@@ -168,7 +168,7 @@ import (
 )
 
 func main() {
-	projectId := int32(56) // int32 | Optional project filter (optional)
+	projectId := int32(56) // int32 | Optional project filter. An id that is not a plain number, or that names no project of the account, returns ERR_PROJECT_NOT_FOUND. (optional)
 	page := int32(56) // int32 |  (optional)
 	perPage := int32(56) // int32 | Max 100 (optional)
 
@@ -195,7 +195,7 @@ Other parameters are passed through a pointer to a apiListWebhooksRequest struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **projectId** | **int32** | Optional project filter | 
+ **projectId** | **int32** | Optional project filter. An id that is not a plain number, or that names no project of the account, returns ERR_PROJECT_NOT_FOUND. | 
  **page** | **int32** |  | 
  **perPage** | **int32** | Max 100 | 
 

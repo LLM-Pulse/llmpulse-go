@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,7 +20,7 @@ var _ MappedNullable = &AiModelInsightsSummaryResponseSummaryWeightedVisibilityB
 
 // AiModelInsightsSummaryResponseSummaryWeightedVisibilityByModel struct for AiModelInsightsSummaryResponseSummaryWeightedVisibilityByModel
 type AiModelInsightsSummaryResponseSummaryWeightedVisibilityByModel struct {
-	// The brand's AI Visibility Score points across the models; 0 when it has none
+	// The brand's AI Visibility Score across the enabled models, its points there divided by the days with answers in any of them (the Overview's number for the same filters; a model that answered while disabled keeps its row but stays out of it); 0 when it has none
 	TotalWeightedVisibilityScore *float32 `json:"total_weighted_visibility_score,omitempty"`
 	Models []AiModelWeightedVisibilityRow `json:"models,omitempty"`
 }

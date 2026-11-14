@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -52,7 +52,7 @@ func (r ApiGetPromptSummaryRequest) ProjectId(projectId int32) ApiGetPromptSumma
 	return r
 }
 
-// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
+// Number of days to look back, today included. Required unless from is given, and from/to win when both are given: a request with neither range nor from, or a range that is not a plain positive number (even beside from/to), returns 422 ERR_INVALID_PARAM.
 func (r ApiGetPromptSummaryRequest) Range_(range_ int32) ApiGetPromptSummaryRequest {
 	r.range_ = &range_
 	return r
@@ -100,7 +100,7 @@ func (r ApiGetPromptSummaryRequest) LanguageCode(languageCode string) ApiGetProm
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetPromptSummaryRequest) Prompt(prompt int32) ApiGetPromptSummaryRequest {
 	r.prompt = &prompt
 	return r
@@ -343,7 +343,7 @@ func (r ApiGetShareOfVoiceRequest) ProjectId(projectId int32) ApiGetShareOfVoice
 	return r
 }
 
-// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
+// Number of days to look back, today included. Required unless from is given, and from/to win when both are given: a request with neither range nor from, or a range that is not a plain positive number (even beside from/to), returns 422 ERR_INVALID_PARAM.
 func (r ApiGetShareOfVoiceRequest) Range_(range_ int32) ApiGetShareOfVoiceRequest {
 	r.range_ = &range_
 	return r
@@ -366,7 +366,7 @@ func (r ApiGetShareOfVoiceRequest) Granularity(granularity string) ApiGetShareOf
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiGetShareOfVoiceRequest) Competitors(competitors string) ApiGetShareOfVoiceRequest {
 	r.competitors = &competitors
 	return r
@@ -384,7 +384,7 @@ func (r ApiGetShareOfVoiceRequest) CollectionId(collectionId string) ApiGetShare
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetShareOfVoiceRequest) Prompt(prompt int32) ApiGetShareOfVoiceRequest {
 	r.prompt = &prompt
 	return r
@@ -408,7 +408,7 @@ func (r ApiGetShareOfVoiceRequest) Output(output string) ApiGetShareOfVoiceReque
 	return r
 }
 
-// Which Share of Voice projection to flatten. Only valid together with &#39;output&#39;. &#39;over_time&#39; (default) is one row per date and actor, &#39;current&#39; the ranked snapshot, &#39;breakdown&#39; the Top 4 plus Others.
+// Which Share of Voice projection to flatten. It applies only together with &#39;output&#39;; an unknown value returns 422 ERR_INVALID_PARAM with or without it. &#39;over_time&#39; (default) is one row per date and actor, &#39;current&#39; the ranked snapshot, &#39;breakdown&#39; the Top 4 plus Others.
 func (r ApiGetShareOfVoiceRequest) View(view string) ApiGetShareOfVoiceRequest {
 	r.view = &view
 	return r
@@ -609,7 +609,7 @@ func (r ApiGetSummaryRequest) ProjectId(projectId int32) ApiGetSummaryRequest {
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the days with responses, per period and for the summary total.
 func (r ApiGetSummaryRequest) Metrics(metrics string) ApiGetSummaryRequest {
 	r.metrics = &metrics
 	return r
@@ -620,7 +620,7 @@ func (r ApiGetSummaryRequest) Granularity(granularity string) ApiGetSummaryReque
 	return r
 }
 
-// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
+// Number of days to look back, today included. Required unless from is given, and from/to win when both are given: a request with neither range nor from, or a range that is not a plain positive number (even beside from/to), returns 422 ERR_INVALID_PARAM.
 func (r ApiGetSummaryRequest) Range_(range_ int32) ApiGetSummaryRequest {
 	r.range_ = &range_
 	return r
@@ -638,7 +638,7 @@ func (r ApiGetSummaryRequest) To(to time.Time) ApiGetSummaryRequest {
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiGetSummaryRequest) Competitors(competitors string) ApiGetSummaryRequest {
 	r.competitors = &competitors
 	return r
@@ -656,7 +656,7 @@ func (r ApiGetSummaryRequest) CollectionId(collectionId string) ApiGetSummaryReq
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetSummaryRequest) Prompt(prompt int32) ApiGetSummaryRequest {
 	r.prompt = &prompt
 	return r
@@ -892,7 +892,7 @@ func (r ApiGetTimeseriesRequest) ProjectId(projectId int32) ApiGetTimeseriesRequ
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the days with responses, per period and for the summary total.
 func (r ApiGetTimeseriesRequest) Metrics(metrics string) ApiGetTimeseriesRequest {
 	r.metrics = &metrics
 	return r
@@ -903,7 +903,7 @@ func (r ApiGetTimeseriesRequest) Granularity(granularity string) ApiGetTimeserie
 	return r
 }
 
-// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
+// Number of days to look back, today included. Required unless from is given, and from/to win when both are given: a request with neither range nor from, or a range that is not a plain positive number (even beside from/to), returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTimeseriesRequest) Range_(range_ int32) ApiGetTimeseriesRequest {
 	r.range_ = &range_
 	return r
@@ -921,7 +921,7 @@ func (r ApiGetTimeseriesRequest) To(to time.Time) ApiGetTimeseriesRequest {
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiGetTimeseriesRequest) Competitors(competitors string) ApiGetTimeseriesRequest {
 	r.competitors = &competitors
 	return r
@@ -951,7 +951,7 @@ func (r ApiGetTimeseriesRequest) LanguageCode(languageCode string) ApiGetTimeser
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTimeseriesRequest) Prompt(prompt int32) ApiGetTimeseriesRequest {
 	r.prompt = &prompt
 	return r
@@ -1188,7 +1188,7 @@ func (r ApiGetTopSourcesRequest) ProjectId(projectId int32) ApiGetTopSourcesRequ
 	return r
 }
 
-// Number of days to look back, today included. Required unless from is given: a request with neither range nor from returns 422 ERR_INVALID_PARAM.
+// Number of days to look back, today included. Required unless from is given, and from/to win when both are given: a request with neither range nor from, or a range that is not a plain positive number (even beside from/to), returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTopSourcesRequest) Range_(range_ int32) ApiGetTopSourcesRequest {
 	r.range_ = &range_
 	return r
@@ -1230,7 +1230,7 @@ func (r ApiGetTopSourcesRequest) LanguageCode(languageCode string) ApiGetTopSour
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetTopSourcesRequest) Prompt(prompt int32) ApiGetTopSourcesRequest {
 	r.prompt = &prompt
 	return r

@@ -33,7 +33,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
@@ -42,7 +42,7 @@ func main() {
 	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
 	promptType := "promptType_example" // string | One prompt type or a comma-separated list: informational, navigational, commercial, transactional (optional)
 	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
-	competitors := "competitors_example" // string | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) (optional)
+	competitors := "competitors_example" // string | Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -68,7 +68,7 @@ Other parameters are passed through a pointer to a apiGetAiModelInsightsSummaryR
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
  **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
  **promptType** | **string** | One prompt type or a comma-separated list: informational, navigational, commercial, transactional | 
  **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
- **competitors** | **string** | Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM) | 
+ **competitors** | **string** | Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM) | 
 
 ### Return type
 
@@ -118,7 +118,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
@@ -153,7 +153,7 @@ Other parameters are passed through a pointer to a apiGetAiModelPositionDistribu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 
@@ -205,7 +205,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	granularity := "granularity_example" // string |  (optional)
@@ -239,7 +239,7 @@ Other parameters are passed through a pointer to a apiGetAiOverviewResultsReques
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **granularity** | **string** |  | 

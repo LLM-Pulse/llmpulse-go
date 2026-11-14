@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -43,7 +43,7 @@ func (r ApiGetAgentTrafficRequest) ProjectId(projectId int32) ApiGetAgentTraffic
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiGetAgentTrafficRequest) Range_(range_ int32) ApiGetAgentTrafficRequest {
 	r.range_ = &range_
 	return r
@@ -243,7 +243,7 @@ func (r ApiGetAiTrafficRequest) ProjectId(projectId int32) ApiGetAiTrafficReques
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiGetAiTrafficRequest) Range_(range_ int32) ApiGetAiTrafficRequest {
 	r.range_ = &range_
 	return r

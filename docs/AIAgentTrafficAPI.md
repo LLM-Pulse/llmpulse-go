@@ -35,7 +35,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	bot := "bot_example" // string | Filter by bot slug (e.g. gptbot, claudebot, perplexitybot) (optional)
@@ -67,7 +67,7 @@ Other parameters are passed through a pointer to a apiGetAgentTrafficRequest str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **bot** | **string** | Filter by bot slug (e.g. gptbot, claudebot, perplexitybot) | 
@@ -116,7 +116,7 @@ import (
 
 func main() {
 	projectId := int32(56) // int32 | Project ID
-	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to) (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	source := "source_example" // string | Filter by a single AI source slug (e.g. chatgpt, perplexity, gemini, claude) (optional)
@@ -144,7 +144,7 @@ Other parameters are passed through a pointer to a apiGetAiTrafficRequest struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **projectId** | **int32** | Project ID | 
- **range_** | **int32** | Number of days to look back (alternative to from/to) | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **source** | **string** | Filter by a single AI source slug (e.g. chatgpt, perplexity, gemini, claude) | 

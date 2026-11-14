@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -460,7 +460,7 @@ func (r ApiDeletePromptRequest) Execute() (*http.Response, error) {
 /*
 DeletePrompt Delete a prompt
 
-Deletes a prompt (irreversible). The prompt disappears immediately and frees a prompt slot; its historical data (executions, mentions, citations, sentiment) is purged by a background job. The prompts of a launched pitch project are fixed, so deleting one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. Requires a `read_write` scope API key.
+Deletes a prompt (irreversible). The prompt disappears immediately and frees a prompt slot; its historical data (executions, mentions, citations, sentiment) is purged by a background job. Until that job finishes, its answers, mentions and metrics still count the prompt, so totals can include it for a short while. The prompts of a launched pitch project are fixed, so deleting one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. Requires a `read_write` scope API key.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param id
@@ -913,18 +913,19 @@ func (r ApiListPromptExecutionsRequest) LanguageCode(languageCode string) ApiLis
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListPromptExecutionsRequest) Prompt(prompt int32) ApiListPromptExecutionsRequest {
 	r.prompt = &prompt
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListPromptExecutionsRequest) From(from time.Time) ApiListPromptExecutionsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListPromptExecutionsRequest) To(to time.Time) ApiListPromptExecutionsRequest {
 	r.to = &to
 	return r
@@ -942,7 +943,7 @@ func (r ApiListPromptExecutionsRequest) CitationFilter(citationFilter string) Ap
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListPromptExecutionsRequest) Competitors(competitors string) ApiListPromptExecutionsRequest {
 	r.competitors = &competitors
 	return r
@@ -1173,7 +1174,7 @@ func (r ApiListPromptsRequest) LanguageCode(languageCode string) ApiListPromptsR
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListPromptsRequest) Prompt(prompt int32) ApiListPromptsRequest {
 	r.prompt = &prompt
 	return r
@@ -1191,12 +1192,13 @@ func (r ApiListPromptsRequest) BrandKind(brandKind string) ApiListPromptsRequest
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListPromptsRequest) From(from time.Time) ApiListPromptsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListPromptsRequest) To(to time.Time) ApiListPromptsRequest {
 	r.to = &to
 	return r
@@ -1434,7 +1436,7 @@ func (r ApiListQueryFanOutsRequest) LanguageCode(languageCode string) ApiListQue
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListQueryFanOutsRequest) Prompt(prompt int32) ApiListQueryFanOutsRequest {
 	r.prompt = &prompt
 	return r
@@ -1452,18 +1454,19 @@ func (r ApiListQueryFanOutsRequest) BrandKind(brandKind string) ApiListQueryFanO
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListQueryFanOutsRequest) Range_(range_ int32) ApiListQueryFanOutsRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListQueryFanOutsRequest) From(from time.Time) ApiListQueryFanOutsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListQueryFanOutsRequest) To(to time.Time) ApiListQueryFanOutsRequest {
 	r.to = &to
 	return r

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,9 +26,9 @@ type AiModelWeightedVisibilityRow struct {
 	Label *string `json:"label,omitempty"`
 	// Hex color the app charts the model with
 	Color *string `json:"color,omitempty"`
-	// The brand's AI Visibility Score points in the model; 0 when it has none
+	// The brand's AI Visibility Score in the model, its points there divided by the days the model answered; 0 when it has none
 	WeightedVisibilityScore *float32 `json:"weighted_visibility_score,omitempty"`
-	// The model's percentage (0-100) of total_weighted_visibility_score; null when that total is 0
+	// The model's percentage (0-100) of the brand's AI Visibility Score points; null when the brand has none
 	ShareOfTotal NullableFloat32 `json:"share_of_total,omitempty"`
 }
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -28,7 +28,7 @@ type AiModelWeightedVisibilityMatrixActor struct {
 	Name *string `json:"name,omitempty"`
 	// Bare (scheme-less) domain. Null for the project actor when the project has no URL.
 	Domain NullableString `json:"domain,omitempty"`
-	// The actor's AI Visibility Score points summed over the models
+	// The actor's AI Visibility Score across the enabled models, its points there divided by the project's days with answers in them, so actors compare
 	TotalWeightedVisibilityScore *float32 `json:"total_weighted_visibility_score,omitempty"`
 	// One cell per model, keyed by model
 	Models *map[string]AiModelWeightedVisibilityCell `json:"models,omitempty"`

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -206,18 +206,19 @@ func (r ApiGetOwnedMediaSummaryRequest) BrandKind(brandKind string) ApiGetOwnedM
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiGetOwnedMediaSummaryRequest) Range_(range_ int32) ApiGetOwnedMediaSummaryRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiGetOwnedMediaSummaryRequest) From(from time.Time) ApiGetOwnedMediaSummaryRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiGetOwnedMediaSummaryRequest) To(to time.Time) ApiGetOwnedMediaSummaryRequest {
 	r.to = &to
 	return r
@@ -472,18 +473,19 @@ func (r ApiListOwnedMediaRequest) BrandKind(brandKind string) ApiListOwnedMediaR
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListOwnedMediaRequest) Range_(range_ int32) ApiListOwnedMediaRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListOwnedMediaRequest) From(from time.Time) ApiListOwnedMediaRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListOwnedMediaRequest) To(to time.Time) ApiListOwnedMediaRequest {
 	r.to = &to
 	return r
@@ -756,18 +758,19 @@ func (r ApiListOwnedMediaCitingPromptsRequest) BrandKind(brandKind string) ApiLi
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListOwnedMediaCitingPromptsRequest) Range_(range_ int32) ApiListOwnedMediaCitingPromptsRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListOwnedMediaCitingPromptsRequest) From(from time.Time) ApiListOwnedMediaCitingPromptsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListOwnedMediaCitingPromptsRequest) To(to time.Time) ApiListOwnedMediaCitingPromptsRequest {
 	r.to = &to
 	return r
@@ -1030,7 +1033,7 @@ func (r ApiListRedditCitationsRequest) Owned(owned bool) ApiListRedditCitationsR
 	return r
 }
 
-// Filter to citations whose scraped Reddit content mentions a brand: &#39;brand&#39; for the tracked brand, or a competitor id. Reads the page content, not the AI answer.
+// Filter to citations whose scraped Reddit content mentions a brand: &#39;brand&#39; for the tracked brand, or a competitor id. Reads the page content, not the AI answer. Any other value, or an id that names no competitor of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListRedditCitationsRequest) Brand(brand string) ApiListRedditCitationsRequest {
 	r.brand = &brand
 	return r
@@ -1077,18 +1080,19 @@ func (r ApiListRedditCitationsRequest) BrandKind(brandKind string) ApiListReddit
 	return r
 }
 
-// Number of days to look back (alternative to from/to)
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
 func (r ApiListRedditCitationsRequest) Range_(range_ int32) ApiListRedditCitationsRequest {
 	r.range_ = &range_
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListRedditCitationsRequest) From(from time.Time) ApiListRedditCitationsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListRedditCitationsRequest) To(to time.Time) ApiListRedditCitationsRequest {
 	r.to = &to
 	return r

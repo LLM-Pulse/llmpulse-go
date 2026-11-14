@@ -172,7 +172,7 @@ func main() {
 	projectId := int32(56) // int32 | Project ID
 	from := time.Now() // string |  (optional)
 	to := time.Now() // string |  (optional)
-	annotationCategoryId := int32(56) // int32 |  (optional)
+	annotationCategoryId := int32(56) // int32 | Keep the annotations filed under this category, one of the project's or a system category. Any other id returns 422 ERR_INVALID_PARAM. (optional)
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
 
@@ -200,7 +200,7 @@ Name | Type | Description  | Notes
  **projectId** | **int32** | Project ID | 
  **from** | **string** |  | 
  **to** | **string** |  | 
- **annotationCategoryId** | **int32** |  | 
+ **annotationCategoryId** | **int32** | Keep the annotations filed under this category, one of the project&#39;s or a system category. Any other id returns 422 ERR_INVALID_PARAM. | 
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
 

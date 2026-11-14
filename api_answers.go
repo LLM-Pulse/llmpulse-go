@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -171,6 +171,8 @@ type ApiListAnswersRequest struct {
 	countryCode *string
 	languageCode *string
 	prompt *int32
+	promptType *string
+	brandKind *string
 	mentionFilter *string
 	citationFilter *string
 	competitors *string
@@ -212,9 +214,21 @@ func (r ApiListAnswersRequest) LanguageCode(languageCode string) ApiListAnswersR
 	return r
 }
 
-// Filter by prompt ID
+// Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAnswersRequest) Prompt(prompt int32) ApiListAnswersRequest {
 	r.prompt = &prompt
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiListAnswersRequest) PromptType(promptType string) ApiListAnswersRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiListAnswersRequest) BrandKind(brandKind string) ApiListAnswersRequest {
+	r.brandKind = &brandKind
 	return r
 }
 
@@ -230,18 +244,19 @@ func (r ApiListAnswersRequest) CitationFilter(citationFilter string) ApiListAnsw
 	return r
 }
 
-// Comma-separated competitor IDs (unknown IDs return ERR_INVALID_PARAM)
+// Comma-separated competitor IDs (a malformed or unknown ID returns ERR_INVALID_PARAM)
 func (r ApiListAnswersRequest) Competitors(competitors string) ApiListAnswersRequest {
 	r.competitors = &competitors
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListAnswersRequest) From(from time.Time) ApiListAnswersRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListAnswersRequest) To(to time.Time) ApiListAnswersRequest {
 	r.to = &to
 	return r
@@ -325,6 +340,12 @@ func (a *AnswersAPIService) ListAnswersExecute(r ApiListAnswersRequest) (*http.R
 	}
 	if r.prompt != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt", r.prompt, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
 	}
 	if r.mentionFilter != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "mention_filter", r.mentionFilter, "form", "")

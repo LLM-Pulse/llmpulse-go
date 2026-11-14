@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -20,7 +20,7 @@ var _ MappedNullable = &AiModelWeightedVisibilityCell{}
 
 // AiModelWeightedVisibilityCell struct for AiModelWeightedVisibilityCell
 type AiModelWeightedVisibilityCell struct {
-	// The actor's AI Visibility Score points in the model; 0 when it has none
+	// The actor's AI Visibility Score in the model, its points there divided by the project's days with answers in that model; 0 when it has none
 	Value *float32 `json:"value,omitempty"`
 }
 

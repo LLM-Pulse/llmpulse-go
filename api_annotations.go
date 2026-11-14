@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -306,6 +306,7 @@ func (r ApiListAnnotationsRequest) To(to string) ApiListAnnotationsRequest {
 	return r
 }
 
+// Keep the annotations filed under this category, one of the project&#39;s or a system category. Any other id returns 422 ERR_INVALID_PARAM.
 func (r ApiListAnnotationsRequest) AnnotationCategoryId(annotationCategoryId int32) ApiListAnnotationsRequest {
 	r.annotationCategoryId = &annotationCategoryId
 	return r

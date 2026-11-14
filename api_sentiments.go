@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.94.0
+API version: 1.95.0
 Contact: info@llmpulse.ai
 */
 
@@ -53,7 +53,7 @@ func (r ApiGetSentimentTagsRequest) ProjectId(projectId int32) ApiGetSentimentTa
 	return r
 }
 
-// Number of days to look back, today included (default 28, like the Sentiment page). Ignored when from or to is given.
+// Number of days to look back, today included (default 28, like the Sentiment page). from or to win over it, but a value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside them.
 func (r ApiGetSentimentTagsRequest) Range_(range_ int32) ApiGetSentimentTagsRequest {
 	r.range_ = &range_
 	return r
@@ -366,7 +366,7 @@ func (r ApiGetSentimentTopicsRequest) ProjectId(projectId int32) ApiGetSentiment
 	return r
 }
 
-// Number of days to look back, today included (default 28, like the Sentiment page). Ignored when from or to is given.
+// Number of days to look back, today included (default 28, like the Sentiment page). from or to win over it, but a value that is not a plain positive number returns 422 ERR_INVALID_PARAM even beside them.
 func (r ApiGetSentimentTopicsRequest) Range_(range_ int32) ApiGetSentimentTopicsRequest {
 	r.range_ = &range_
 	return r
@@ -792,11 +792,13 @@ func (r ApiListSentimentRecordsRequest) ProjectId(projectId int32) ApiListSentim
 	return r
 }
 
+// Keep the sentiments about this competitor. An id that is not a plain positive number, or that names no competitor of the project, returns 422 ERR_INVALID_PARAM.
 func (r ApiListSentimentRecordsRequest) CompetitorId(competitorId int32) ApiListSentimentRecordsRequest {
 	r.competitorId = &competitorId
 	return r
 }
 
+// true keeps only the sentiments about your own brand.
 func (r ApiListSentimentRecordsRequest) BrandOnly(brandOnly bool) ApiListSentimentRecordsRequest {
 	r.brandOnly = &brandOnly
 	return r
@@ -808,7 +810,7 @@ func (r ApiListSentimentRecordsRequest) Analysis(analysis string) ApiListSentime
 	return r
 }
 
-// Filter by one AI model. Here an unknown value, or a model the API key&#39;s user has not enabled, is ignored rather than rejected: the request succeeds and returns the records of every enabled model, as if model were omitted.
+// Filter by one AI model. It must be a model enabled for the API key&#39;s user: an unknown value, or a model the user has not enabled, returns 422 ERR_INVALID_PARAM with the valid values in the message.
 func (r ApiListSentimentRecordsRequest) Model(model string) ApiListSentimentRecordsRequest {
 	r.model = &model
 	return r
@@ -832,12 +834,13 @@ func (r ApiListSentimentRecordsRequest) LanguageCode(languageCode string) ApiLis
 	return r
 }
 
+// Start of the window. Sent alone, the window runs from it to the end of today. A from later than to, or a window longer than 1,500 days, returns 422 ERR_INVALID_PARAM.
 func (r ApiListSentimentRecordsRequest) From(from time.Time) ApiListSentimentRecordsRequest {
 	r.from = &from
 	return r
 }
 
-// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. Sent without from, the window covers the 30 days that end on it.
 func (r ApiListSentimentRecordsRequest) To(to time.Time) ApiListSentimentRecordsRequest {
 	r.to = &to
 	return r
