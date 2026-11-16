@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.95.0
+API version: 1.97.0
 Contact: info@llmpulse.ai
 */
 
@@ -28,6 +28,7 @@ type ProjectCreateRequest struct {
 	Name string `json:"name"`
 	MainCountry string `json:"main_country"`
 	MainLanguage string `json:"main_language"`
+	// Defaults to name. Up to 100 characters, the name included when it stands in; a longer one is refused with ERR_INVALID_PARAM
 	BrandName *string `json:"brand_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	// Industry keys, case-insensitive; a single key string is also accepted. An unknown key returns ERR_INVALID_PARAM listing the valid keys (the same list as the in-app industry picker, e.g. TECHNOLOGY, SAAS, ECOMMERCE)

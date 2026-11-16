@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.95.0
+API version: 1.97.0
 Contact: info@llmpulse.ai
 */
 
@@ -609,7 +609,7 @@ func (r ApiGetSummaryRequest) ProjectId(projectId int32) ApiGetSummaryRequest {
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the days with responses, per period and for the summary total.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total.
 func (r ApiGetSummaryRequest) Metrics(metrics string) ApiGetSummaryRequest {
 	r.metrics = &metrics
 	return r
@@ -704,7 +704,7 @@ func (r ApiGetSummaryRequest) Execute() (*SummaryResponse, *http.Response, error
 /*
 GetSummary Aggregated metrics summary
 
-Same as /metrics/timeseries but adds a `summary` block with total/min/max/last per metric per actor, plus a `position_distribution` block (Position 1, Position 2, Position 3+). Citations and citation rate include visible citations and background source references. Background references use position 0 and are excluded from avg_position and position distributions. `total` is a SUM for count metrics (mentions, citations, responses) and an AVERAGE across periods for rate/percentage and average metrics (visibility/mention_rate, citation_rate, ai_visibility_score, sentiment shares, avg_position, avg_mention_position, net_sentiment); rates are never summed. Each summary row carries an `aggregation` field (`sum` or `average`).
+Same as /metrics/timeseries but adds a `summary` block with total/min/max/last per metric per actor, plus a `position_distribution` block (Position 1, Position 2, Position 3+). Citations and citation rate include visible citations and background source references. Background references use position 0 and are excluded from avg_position and position distributions. `total` is a SUM for count metrics (mentions, citations, responses). For rate/percentage and average metrics (visibility/mention_rate, citation_rate, sentiment shares, net_sentiment, avg_position, avg_mention_position) it pools the whole window, the number the app shows for the same filters; visibility is all mentions over all responses, never a mean of the period rates, which would weigh a period of 2 responses like one of 200. ai_visibility_score is the window's points over its tracking runs. Rates are never summed. Each summary row carries an `aggregation` field (`sum` or `average`).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetSummaryRequest
@@ -892,7 +892,7 @@ func (r ApiGetTimeseriesRequest) ProjectId(projectId int32) ApiGetTimeseriesRequ
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the days with responses, per period and for the summary total.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total.
 func (r ApiGetTimeseriesRequest) Metrics(metrics string) ApiGetTimeseriesRequest {
 	r.metrics = &metrics
 	return r

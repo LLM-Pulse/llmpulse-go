@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.95.0
+API version: 1.97.0
 Contact: info@llmpulse.ai
 */
 
@@ -24,6 +24,7 @@ var _ MappedNullable = &UpdateProjectDraftRequest{}
 type UpdateProjectDraftRequest struct {
 	Step string `json:"step"`
 	Name *string `json:"name,omitempty"`
+	// Defaults to name. Up to 100 characters, the name included when it stands in; finalize refuses a longer one with ERR_INVALID_PARAM
 	BrandName *string `json:"brand_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Industry []string `json:"industry,omitempty"`

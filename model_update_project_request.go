@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.95.0
+API version: 1.97.0
 Contact: info@llmpulse.ai
 */
 
@@ -22,7 +22,7 @@ var _ MappedNullable = &UpdateProjectRequest{}
 type UpdateProjectRequest struct {
 	// Project name shown in the app. A label: it does not change mention detection unless brand_name is empty. Cannot be blank
 	Name *string `json:"name,omitempty"`
-	// Brand name used to detect mentions. Applies to future runs; it does not rewrite history
+	// Brand name used to detect mentions, up to 100 characters (a longer one is refused with ERR_INVALID_PARAM). Applies to future runs; it does not rewrite history
 	BrandName *string `json:"brand_name,omitempty"`
 	// What the brand does. Context for Recommendations and GEO Writer (Brand Book)
 	Description *string `json:"description,omitempty"`
