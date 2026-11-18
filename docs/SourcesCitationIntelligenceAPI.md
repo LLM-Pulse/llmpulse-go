@@ -4,13 +4,230 @@ All URIs are relative to *https://api.llmpulse.ai/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AddUrlListEntries**](SourcesCitationIntelligenceAPI.md#AddUrlListEntries) | **Post** /url_lists/{id}/entries | Add entries to a URL list
+[**CreateUrlList**](SourcesCitationIntelligenceAPI.md#CreateUrlList) | **Post** /url_lists | Create a URL list
+[**DeleteUrlList**](SourcesCitationIntelligenceAPI.md#DeleteUrlList) | **Delete** /url_lists/{id} | Delete a URL list
 [**GetCitedUrlContent**](SourcesCitationIntelligenceAPI.md#GetCitedUrlContent) | **Get** /citation_intelligence/urls/{url_sha256}/content | Cited URL cached content
 [**GetCitedUrlDetail**](SourcesCitationIntelligenceAPI.md#GetCitedUrlDetail) | **Get** /citation_intelligence/urls/{url_sha256} | Cited URL detail
 [**GetMentionsByCitingDomain**](SourcesCitationIntelligenceAPI.md#GetMentionsByCitingDomain) | **Get** /citation_intelligence/mentions_by_domain | Mention share by citing domain
+[**GetUrlList**](SourcesCitationIntelligenceAPI.md#GetUrlList) | **Get** /url_lists/{id} | Get a URL list report
 [**ListCitationGroups**](SourcesCitationIntelligenceAPI.md#ListCitationGroups) | **Get** /citation_intelligence/groups | Grouped citation intelligence
 [**ListCitedUrlOccurrences**](SourcesCitationIntelligenceAPI.md#ListCitedUrlOccurrences) | **Get** /citation_intelligence/urls/{url_sha256}/occurrences | Cited URL occurrences
 [**ListSources**](SourcesCitationIntelligenceAPI.md#ListSources) | **Get** /dimensions/sources | List source URLs
+[**ListUrlLists**](SourcesCitationIntelligenceAPI.md#ListUrlLists) | **Get** /url_lists | List URL lists
+[**RemoveUrlListEntries**](SourcesCitationIntelligenceAPI.md#RemoveUrlListEntries) | **Post** /url_lists/{id}/entries/remove | Remove entries from a URL list
+[**UpdateUrlList**](SourcesCitationIntelligenceAPI.md#UpdateUrlList) | **Patch** /url_lists/{id} | Update a URL list
 
+
+
+## AddUrlListEntries
+
+> UrlListEntriesAddResponse AddUrlListEntries(ctx, id).UrlListEntriesAddRequest(urlListEntriesAddRequest).Execute()
+
+Add entries to a URL list
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	urlListEntriesAddRequest := *openapiclient.NewUrlListEntriesAddRequest(int32(123), []openapiclient.UrlListEntryInput{*openapiclient.NewUrlListEntryInput("Value_example")}) // UrlListEntriesAddRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.AddUrlListEntries(context.Background(), id).UrlListEntriesAddRequest(urlListEntriesAddRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.AddUrlListEntries``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `AddUrlListEntries`: UrlListEntriesAddResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.AddUrlListEntries`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAddUrlListEntriesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **urlListEntriesAddRequest** | [**UrlListEntriesAddRequest**](UrlListEntriesAddRequest.md) |  | 
+
+### Return type
+
+[**UrlListEntriesAddResponse**](UrlListEntriesAddResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateUrlList
+
+> UrlListCreateResponse CreateUrlList(ctx).UrlListCreateRequest(urlListCreateRequest).Execute()
+
+Create a URL list
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	urlListCreateRequest := *openapiclient.NewUrlListCreateRequest(int32(123), "Name_example") // UrlListCreateRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.CreateUrlList(context.Background()).UrlListCreateRequest(urlListCreateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.CreateUrlList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateUrlList`: UrlListCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.CreateUrlList`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateUrlListRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **urlListCreateRequest** | [**UrlListCreateRequest**](UrlListCreateRequest.md) |  | 
+
+### Return type
+
+[**UrlListCreateResponse**](UrlListCreateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteUrlList
+
+> UrlListDeleteResponse DeleteUrlList(ctx, id).ProjectId(projectId).Execute()
+
+Delete a URL list
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	id := int32(56) // int32 | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.DeleteUrlList(context.Background(), id).ProjectId(projectId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.DeleteUrlList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `DeleteUrlList`: UrlListDeleteResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.DeleteUrlList`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteUrlListRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+
+
+### Return type
+
+[**UrlListDeleteResponse**](UrlListDeleteResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## GetCitedUrlContent
@@ -246,6 +463,107 @@ Name | Type | Description  | Notes
 ### Return type
 
  (empty response body)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetUrlList
+
+> UrlListDetailResponse GetUrlList(ctx, id).ProjectId(projectId).Status(status).Order(order).Direction(direction).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Range_(range_).Execute()
+
+Get a URL list report
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	projectId := int32(56) // int32 | Project ID
+	status := "status_example" // string | Only entries with this status. (optional)
+	order := "order_example" // string |  (optional) (default to "citations")
+	direction := "direction_example" // string |  (optional) (default to "desc")
+	page := int32(56) // int32 |  (optional) (default to 1)
+	perPage := int32(56) // int32 |  (optional) (default to 20)
+	model := "model_example" // string | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen, doubao and bing_ai_mode are accepted: any other value, including another model enabled for the API key's user, returns 422 ERR_INVALID_PARAM (invalid model). One of those eleven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	prompt := int32(56) // int32 | Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM. (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	from := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.GetUrlList(context.Background(), id).ProjectId(projectId).Status(status).Order(order).Direction(direction).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Range_(range_).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.GetUrlList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetUrlList`: UrlListDetailResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.GetUrlList`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUrlListRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **projectId** | **int32** | Project ID | 
+ **status** | **string** | Only entries with this status. | 
+ **order** | **string** |  | [default to &quot;citations&quot;]
+ **direction** | **string** |  | [default to &quot;desc&quot;]
+ **page** | **int32** |  | [default to 1]
+ **perPage** | **int32** |  | [default to 20]
+ **model** | **string** | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen, doubao and bing_ai_mode are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those eleven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **prompt** | **int32** | Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM. | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **from** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
+
+### Return type
+
+[**UrlListDetailResponse**](UrlListDetailResponse.md)
 
 ### Authorization
 
@@ -524,6 +842,235 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListUrlLists
+
+> UrlListsResponse ListUrlLists(ctx).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Range_(range_).Execute()
+
+List URL lists
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | Project ID
+	model := "model_example" // string | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen, doubao and bing_ai_mode are accepted: any other value, including another model enabled for the API key's user, returns 422 ERR_INVALID_PARAM (invalid model). One of those eleven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. (optional)
+	collectionId := "12,34" // string | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. (optional)
+	countryCode := "countryCode_example" // string | One ISO country code or a comma-separated list (e.g. US,GB,DE) (optional)
+	languageCode := "languageCode_example" // string | One ISO language code or a comma-separated list (e.g. en,es,de) (optional)
+	prompt := int32(56) // int32 | Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM. (optional)
+	brandKind := "brandKind_example" // string | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. (optional)
+	from := time.Now() // time.Time |  (optional)
+	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
+	range_ := int32(56) // int32 | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.ListUrlLists(context.Background()).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Range_(range_).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListUrlLists``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListUrlLists`: UrlListsResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.ListUrlLists`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListUrlListsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** | Project ID | 
+ **model** | **string** | Filter by one AI model. Only chatgpt, ai_overview, ai_mode, perplexity, gemini, naver_ai, baidu_ai, naver_ai_tab, qwen, doubao and bing_ai_mode are accepted: any other value, including another model enabled for the API key&#39;s user, returns 422 ERR_INVALID_PARAM (invalid model). One of those eleven that the user has not enabled also returns 422 ERR_INVALID_PARAM, with the valid values in the message. | 
+ **collectionId** | **string** | One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize. | 
+ **countryCode** | **string** | One ISO country code or a comma-separated list (e.g. US,GB,DE) | 
+ **languageCode** | **string** | One ISO language code or a comma-separated list (e.g. en,es,de) | 
+ **prompt** | **int32** | Filter by prompt ID. An id that is not a plain positive number, or that names no prompt of the project, returns 422 ERR_INVALID_PARAM. | 
+ **brandKind** | **string** | Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default. | 
+ **from** | **time.Time** |  | 
+ **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
+ **range_** | **int32** | Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to. | 
+
+### Return type
+
+[**UrlListsResponse**](UrlListsResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RemoveUrlListEntries
+
+> UrlListEntriesRemoveResponse RemoveUrlListEntries(ctx, id).UrlListEntriesRemoveRequest(urlListEntriesRemoveRequest).Execute()
+
+Remove entries from a URL list
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	urlListEntriesRemoveRequest := *openapiclient.NewUrlListEntriesRemoveRequest(int32(123)) // UrlListEntriesRemoveRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.RemoveUrlListEntries(context.Background(), id).UrlListEntriesRemoveRequest(urlListEntriesRemoveRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.RemoveUrlListEntries``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RemoveUrlListEntries`: UrlListEntriesRemoveResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.RemoveUrlListEntries`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRemoveUrlListEntriesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **urlListEntriesRemoveRequest** | [**UrlListEntriesRemoveRequest**](UrlListEntriesRemoveRequest.md) |  | 
+
+### Return type
+
+[**UrlListEntriesRemoveResponse**](UrlListEntriesRemoveResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateUrlList
+
+> UrlListUpdateResponse UpdateUrlList(ctx, id).UrlListUpdateRequest(urlListUpdateRequest).Execute()
+
+Update a URL list
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	id := int32(56) // int32 | 
+	urlListUpdateRequest := *openapiclient.NewUrlListUpdateRequest(int32(123)) // UrlListUpdateRequest | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.UpdateUrlList(context.Background(), id).UrlListUpdateRequest(urlListUpdateRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.UpdateUrlList``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateUrlList`: UrlListUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.UpdateUrlList`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **int32** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateUrlListRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **urlListUpdateRequest** | [**UrlListUpdateRequest**](UrlListUpdateRequest.md) |  | 
+
+### Return type
+
+[**UrlListUpdateResponse**](UrlListUpdateResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
