@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.98.0
+API version: 1.99.0
 Contact: info@llmpulse.ai
 */
 
@@ -655,4 +655,261 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOvervi
 	}
 
 	return localVarHTTPResponse, nil
+}
+
+type ApiGetDeclinedAnswersRequest struct {
+	ctx context.Context
+	ApiService *AIModelInsightsAPIService
+	projectId *int32
+	range_ *int32
+	from *time.Time
+	to *time.Time
+	model *string
+	collectionId *string
+	countryCode *string
+	languageCode *string
+	promptType *string
+	brandKind *string
+	page *int32
+	perPage *int32
+}
+
+// Project ID
+func (r ApiGetDeclinedAnswersRequest) ProjectId(projectId int32) ApiGetDeclinedAnswersRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// Number of days to look back (alternative to from/to, which win when both are given). A value that is not a plain positive number returns 422 ERR_INVALID_PARAM, even beside from/to.
+func (r ApiGetDeclinedAnswersRequest) Range_(range_ int32) ApiGetDeclinedAnswersRequest {
+	r.range_ = &range_
+	return r
+}
+
+func (r ApiGetDeclinedAnswersRequest) From(from time.Time) ApiGetDeclinedAnswersRequest {
+	r.from = &from
+	return r
+}
+
+// End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier.
+func (r ApiGetDeclinedAnswersRequest) To(to time.Time) ApiGetDeclinedAnswersRequest {
+	r.to = &to
+	return r
+}
+
+// The model whose declines to read, whether or not it is enabled for the API key&#39;s user. Default: gemini. Any other model returns 422 ERR_INVALID_PARAM (invalid model).
+func (r ApiGetDeclinedAnswersRequest) Model(model string) ApiGetDeclinedAnswersRequest {
+	r.model = &model
+	return r
+}
+
+// One collection/tag ID or a comma-separated list of IDs. A query value is always a string on the wire, so it is typed as one: the previous integer-or-string union made generators emit a wrapper type they could not serialize.
+func (r ApiGetDeclinedAnswersRequest) CollectionId(collectionId string) ApiGetDeclinedAnswersRequest {
+	r.collectionId = &collectionId
+	return r
+}
+
+// One ISO country code or a comma-separated list (e.g. US,GB,DE)
+func (r ApiGetDeclinedAnswersRequest) CountryCode(countryCode string) ApiGetDeclinedAnswersRequest {
+	r.countryCode = &countryCode
+	return r
+}
+
+// One ISO language code or a comma-separated list (e.g. en,es,de)
+func (r ApiGetDeclinedAnswersRequest) LanguageCode(languageCode string) ApiGetDeclinedAnswersRequest {
+	r.languageCode = &languageCode
+	return r
+}
+
+// One prompt type or a comma-separated list: informational, navigational, commercial, transactional
+func (r ApiGetDeclinedAnswersRequest) PromptType(promptType string) ApiGetDeclinedAnswersRequest {
+	r.promptType = &promptType
+	return r
+}
+
+// Filter by brand kind: brand (own brand/products), brand_other (competitors/other brands), non_brand (generic, no brand named). For fair 1:1 brand-vs-competitor comparisons (visibility, share of voice), use non_brand: brand-focused prompts skew results toward the brand they name. The in-app Overview page applies non_brand by default.
+func (r ApiGetDeclinedAnswersRequest) BrandKind(brandKind string) ApiGetDeclinedAnswersRequest {
+	r.brandKind = &brandKind
+	return r
+}
+
+func (r ApiGetDeclinedAnswersRequest) Page(page int32) ApiGetDeclinedAnswersRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiGetDeclinedAnswersRequest) PerPage(perPage int32) ApiGetDeclinedAnswersRequest {
+	r.perPage = &perPage
+	return r
+}
+
+func (r ApiGetDeclinedAnswersRequest) Execute() (*AiModelDeclinedAnswersResponse, *http.Response, error) {
+	return r.ApiService.GetDeclinedAnswersExecute(r)
+}
+
+/*
+GetDeclinedAnswers Declined answers (decline rate)
+
+The Declined answers tab of AI Model Insights. A model declines a prompt for its own safety filters (safety_filter) or because it refuses the topic itself, such as tobacco, gambling or alcohol (topic_refusal); today only Gemini declines. A declined answer counts as no answer and never lowers visibility. The chart has one point per tracking period at the account's cadence that holds an answer of the model, and the window starts at the tracking period holding its first day.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiGetDeclinedAnswersRequest
+*/
+func (a *AIModelInsightsAPIService) GetDeclinedAnswers(ctx context.Context) ApiGetDeclinedAnswersRequest {
+	return ApiGetDeclinedAnswersRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return AiModelDeclinedAnswersResponse
+func (a *AIModelInsightsAPIService) GetDeclinedAnswersExecute(r ApiGetDeclinedAnswersRequest) (*AiModelDeclinedAnswersResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *AiModelDeclinedAnswersResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AIModelInsightsAPIService.GetDeclinedAnswers")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/reports/ai_model_insights/declined_answers"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
+	if r.range_ != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "range", r.range_, "form", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
+	}
+	if r.to != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
+	}
+	if r.model != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "model", r.model, "form", "")
+	}
+	if r.collectionId != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "collection_id", r.collectionId, "form", "")
+	}
+	if r.countryCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "country_code", r.countryCode, "form", "")
+	}
+	if r.languageCode != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "language_code", r.languageCode, "form", "")
+	}
+	if r.promptType != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "prompt_type", r.promptType, "form", "")
+	}
+	if r.brandKind != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "brand_kind", r.brandKind, "form", "")
+	}
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 1
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.perPage != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", r.perPage, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
+		r.perPage = &defaultValue
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

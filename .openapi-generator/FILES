@@ -45,6 +45,13 @@ docs/AgentBot.md
 docs/AgentBotsResponse.md
 docs/AgentTrafficResponse.md
 docs/AiModelCitationsRow.md
+docs/AiModelDeclineCounts.md
+docs/AiModelDeclinedAnswersResponse.md
+docs/AiModelDeclinedAnswersResponseByPrompt.md
+docs/AiModelDeclinedAnswersResponseByPromptDataInner.md
+docs/AiModelDeclinedAnswersResponseChartInner.md
+docs/AiModelDeclinedAnswersResponseFilters.md
+docs/AiModelDeclinedAnswersResponseSummary.md
 docs/AiModelInsightsFiltersEcho.md
 docs/AiModelInsightsModel.md
 docs/AiModelInsightsSummaryResponse.md
@@ -415,6 +422,13 @@ model_agent_bot.go
 model_agent_bots_response.go
 model_agent_traffic_response.go
 model_ai_model_citations_row.go
+model_ai_model_decline_counts.go
+model_ai_model_declined_answers_response.go
+model_ai_model_declined_answers_response_by_prompt.go
+model_ai_model_declined_answers_response_by_prompt_data_inner.go
+model_ai_model_declined_answers_response_chart_inner.go
+model_ai_model_declined_answers_response_filters.go
+model_ai_model_declined_answers_response_summary.go
 model_ai_model_insights_filters_echo.go
 model_ai_model_insights_model.go
 model_ai_model_insights_summary_response.go
