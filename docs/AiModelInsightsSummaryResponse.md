@@ -10,13 +10,14 @@ Name | Type | Description | Notes
 **Filters** | Pointer to [**AiModelInsightsFiltersEcho**](AiModelInsightsFiltersEcho.md) |  | [optional] 
 **Models** | Pointer to [**[]AiModelInsightsModel**](AiModelInsightsModel.md) | The AI models the account has enabled or that answered in the window, in the in-app column order | [optional] 
 **Summary** | Pointer to [**AiModelInsightsSummaryResponseSummary**](AiModelInsightsSummaryResponseSummary.md) |  | [optional] 
+**PlanRequiredFields** | **[]string** | The summary sections left out because they need a higher plan (brand_net_sentiment_by_model and sentiment_market_share below Growth); empty when none is | 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
 ### NewAiModelInsightsSummaryResponse
 
-`func NewAiModelInsightsSummaryResponse() *AiModelInsightsSummaryResponse`
+`func NewAiModelInsightsSummaryResponse(planRequiredFields []string, ) *AiModelInsightsSummaryResponse`
 
 NewAiModelInsightsSummaryResponse instantiates a new AiModelInsightsSummaryResponse object
 This constructor will assign default values to properties that have it defined,
@@ -180,6 +181,26 @@ SetSummary sets Summary field to given value.
 `func (o *AiModelInsightsSummaryResponse) HasSummary() bool`
 
 HasSummary returns a boolean if a field has been set.
+
+### GetPlanRequiredFields
+
+`func (o *AiModelInsightsSummaryResponse) GetPlanRequiredFields() []string`
+
+GetPlanRequiredFields returns the PlanRequiredFields field if non-nil, zero value otherwise.
+
+### GetPlanRequiredFieldsOk
+
+`func (o *AiModelInsightsSummaryResponse) GetPlanRequiredFieldsOk() (*[]string, bool)`
+
+GetPlanRequiredFieldsOk returns a tuple with the PlanRequiredFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPlanRequiredFields
+
+`func (o *AiModelInsightsSummaryResponse) SetPlanRequiredFields(v []string)`
+
+SetPlanRequiredFields sets PlanRequiredFields field to given value.
+
 
 ### GetRequestId
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,7 +18,7 @@ import (
 // checks if the AiModelInsightsSummaryResponseSummarySentimentMarketShare type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &AiModelInsightsSummaryResponseSummarySentimentMarketShare{}
 
-// AiModelInsightsSummaryResponseSummarySentimentMarketShare struct for AiModelInsightsSummaryResponseSummarySentimentMarketShare
+// AiModelInsightsSummaryResponseSummarySentimentMarketShare Needs the Growth plan or above; left out below it and named in plan_required_fields
 type AiModelInsightsSummaryResponseSummarySentimentMarketShare struct {
 	// The project and each competitor with a sentiment verdict in the window (only the competitors given in competitors, when it is given), by total_sentiments descending
 	Actors []AiModelSentimentMatrixActor `json:"actors,omitempty"`

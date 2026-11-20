@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -14,6 +14,8 @@ package llmpulse
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the AiModelInsightsSummaryResponse type satisfies the MappedNullable interface at compile time
@@ -28,15 +30,20 @@ type AiModelInsightsSummaryResponse struct {
 	// The AI models the account has enabled or that answered in the window, in the in-app column order
 	Models []AiModelInsightsModel `json:"models,omitempty"`
 	Summary *AiModelInsightsSummaryResponseSummary `json:"summary,omitempty"`
+	// The summary sections left out because they need a higher plan (brand_net_sentiment_by_model and sentiment_market_share below Growth); empty when none is
+	PlanRequiredFields []string `json:"plan_required_fields"`
 	RequestId *string `json:"request_id,omitempty"`
 }
+
+type _AiModelInsightsSummaryResponse AiModelInsightsSummaryResponse
 
 // NewAiModelInsightsSummaryResponse instantiates a new AiModelInsightsSummaryResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAiModelInsightsSummaryResponse() *AiModelInsightsSummaryResponse {
+func NewAiModelInsightsSummaryResponse(planRequiredFields []string) *AiModelInsightsSummaryResponse {
 	this := AiModelInsightsSummaryResponse{}
+	this.PlanRequiredFields = planRequiredFields
 	return &this
 }
 
@@ -240,6 +247,30 @@ func (o *AiModelInsightsSummaryResponse) SetSummary(v AiModelInsightsSummaryResp
 	o.Summary = &v
 }
 
+// GetPlanRequiredFields returns the PlanRequiredFields field value
+func (o *AiModelInsightsSummaryResponse) GetPlanRequiredFields() []string {
+	if o == nil {
+		var ret []string
+		return ret
+	}
+
+	return o.PlanRequiredFields
+}
+
+// GetPlanRequiredFieldsOk returns a tuple with the PlanRequiredFields field value
+// and a boolean to check if the value has been set.
+func (o *AiModelInsightsSummaryResponse) GetPlanRequiredFieldsOk() ([]string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.PlanRequiredFields, true
+}
+
+// SetPlanRequiredFields sets field value
+func (o *AiModelInsightsSummaryResponse) SetPlanRequiredFields(v []string) {
+	o.PlanRequiredFields = v
+}
+
 // GetRequestId returns the RequestId field value if set, zero value otherwise.
 func (o *AiModelInsightsSummaryResponse) GetRequestId() string {
 	if o == nil || IsNil(o.RequestId) {
@@ -300,10 +331,48 @@ func (o AiModelInsightsSummaryResponse) ToMap() (map[string]interface{}, error) 
 	if !IsNil(o.Summary) {
 		toSerialize["summary"] = o.Summary
 	}
+	toSerialize["plan_required_fields"] = o.PlanRequiredFields
 	if !IsNil(o.RequestId) {
 		toSerialize["request_id"] = o.RequestId
 	}
 	return toSerialize, nil
+}
+
+func (o *AiModelInsightsSummaryResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"plan_required_fields",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAiModelInsightsSummaryResponse := _AiModelInsightsSummaryResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAiModelInsightsSummaryResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AiModelInsightsSummaryResponse(varAiModelInsightsSummaryResponse)
+
+	return err
 }
 
 type NullableAiModelInsightsSummaryResponse struct {

@@ -333,7 +333,7 @@ func main() {
 	from := time.Now() // time.Time |  (optional)
 	to := time.Now() // time.Time | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. (optional)
 	sourceType := "sourceType_example" // string |  (optional)
-	sentiment := "sentiment_example" // string |  (optional)
+	sentiment := "sentiment_example" // string | Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. (optional)
 	contentGap := "contentGap_example" // string | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. (optional)
 	includeSeries := true // bool | Adds citation_series. Without it the response is unchanged. (optional) (default to false)
 
@@ -373,7 +373,7 @@ Name | Type | Description  | Notes
  **from** | **time.Time** |  | 
  **to** | **time.Time** | End of the window. A date-only value such as 2026-09-01 covers that whole day. Pass a full timestamp to end the window earlier. | 
  **sourceType** | **string** |  | 
- **sentiment** | **string** |  | 
+ **sentiment** | **string** | Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. | 
  **contentGap** | **string** | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. | 
  **includeSeries** | **bool** | Adds citation_series. Without it the response is unchanged. | [default to false]
 
@@ -619,7 +619,7 @@ func main() {
 	includeSeries := true // bool | Requires key, else 422 ERR_INVALID_PARAM. Adds citation_series to the group's row. (optional) (default to false)
 	query := "query_example" // string |  (optional)
 	sourceType := "sourceType_example" // string |  (optional)
-	sentiment := "sentiment_example" // string |  (optional)
+	sentiment := "sentiment_example" // string | Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. (optional)
 	contentGap := "contentGap_example" // string | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. (optional)
 
 	configuration := openapiclient.NewConfiguration()
@@ -661,7 +661,7 @@ Name | Type | Description  | Notes
  **includeSeries** | **bool** | Requires key, else 422 ERR_INVALID_PARAM. Adds citation_series to the group&#39;s row. | [default to false]
  **query** | **string** |  | 
  **sourceType** | **string** |  | 
- **sentiment** | **string** |  | 
+ **sentiment** | **string** | Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. | 
  **contentGap** | **string** | mentioned: the cited page mentions your brand. gap: it mentions a competitor but not your brand. Only pages with usable content whose mention analysis has completed for this project match. | 
 
 ### Return type
@@ -684,7 +684,7 @@ Name | Type | Description  | Notes
 
 ## ListCitedUrlOccurrences
 
-> ListCitedUrlOccurrences(ctx, urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Execute()
+> ListCitedUrlOccurrences(ctx, urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
 
 Cited URL occurrences
 
@@ -705,10 +705,11 @@ func main() {
 	urlSha256 := "urlSha256_example" // string | 64-character hex SHA-256 of the cited URL
 	page := int32(56) // int32 |  (optional) (default to 1)
 	perPage := int32(56) // int32 |  (optional) (default to 20)
+	sentiment := "sentiment_example" // string | Keeps the occurrences in answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences(context.Background(), urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Execute()
+	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences(context.Background(), urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -735,6 +736,7 @@ Name | Type | Description  | Notes
 
  **page** | **int32** |  | [default to 1]
  **perPage** | **int32** |  | [default to 20]
+ **sentiment** | **string** | Keeps the occurrences in answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED. | 
 
 ### Return type
 

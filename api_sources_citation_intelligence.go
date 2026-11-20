@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -627,6 +627,7 @@ func (r ApiGetCitedUrlDetailRequest) SourceType(sourceType string) ApiGetCitedUr
 	return r
 }
 
+// Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED.
 func (r ApiGetCitedUrlDetailRequest) Sentiment(sentiment string) ApiGetCitedUrlDetailRequest {
 	r.sentiment = &sentiment
 	return r
@@ -767,6 +768,17 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGe
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
@@ -1405,6 +1417,7 @@ func (r ApiListCitationGroupsRequest) SourceType(sourceType string) ApiListCitat
 	return r
 }
 
+// Keeps the citations of answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED.
 func (r ApiListCitationGroupsRequest) Sentiment(sentiment string) ApiListCitationGroupsRequest {
 	r.sentiment = &sentiment
 	return r
@@ -1570,6 +1583,17 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiL
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -1593,6 +1617,7 @@ type ApiListCitedUrlOccurrencesRequest struct {
 	urlSha256 string
 	page *int32
 	perPage *int32
+	sentiment *string
 }
 
 // Project ID
@@ -1608,6 +1633,12 @@ func (r ApiListCitedUrlOccurrencesRequest) Page(page int32) ApiListCitedUrlOccur
 
 func (r ApiListCitedUrlOccurrencesRequest) PerPage(perPage int32) ApiListCitedUrlOccurrencesRequest {
 	r.perPage = &perPage
+	return r
+}
+
+// Keeps the occurrences in answers with a negative brand sentiment. Needs the Growth plan or above: below it the filter answers 403 ERR_PLAN_REQUIRED.
+func (r ApiListCitedUrlOccurrencesRequest) Sentiment(sentiment string) ApiListCitedUrlOccurrencesRequest {
+	r.sentiment = &sentiment
 	return r
 }
 
@@ -1668,6 +1699,9 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r
 		parameterAddToHeaderOrQuery(localVarQueryParams, "per_page", defaultValue, "form", "")
 		r.perPage = &defaultValue
 	}
+	if r.sentiment != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "sentiment", r.sentiment, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1706,6 +1740,17 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r
 		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError

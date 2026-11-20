@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -500,7 +500,7 @@ func (r ApiListAiOrdersRequest) Execute() (*AiOrdersResponse, *http.Response, er
 /*
 ListAiOrders Read AI-referred store orders
 
-Reads back the AI-referred orders a store app pushed for a project: totals, one row per AI assistant and a daily series of the days with orders. Revenue values are decimal strings in currency. Team members need read access to AI Traffic. Not available to accounts with a white-label portal or an embed (ERR_INTEGRATION_UNAVAILABLE).
+Reads back the AI-referred orders a store app pushed for a project: totals, one row per AI assistant and a daily series of the days with orders. Revenue values are decimal strings in currency. Needs the Growth plan or above, like AI Traffic, while the store app keeps pushing orders on every plan. Team members need read access to AI Traffic. Not available to accounts with a white-label portal or an embed (ERR_INTEGRATION_UNAVAILABLE).
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiListAiOrdersRequest

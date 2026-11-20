@@ -15,13 +15,14 @@ Name | Type | Description | Notes
 **PerPage** | Pointer to **int32** |  | [optional] 
 **Total** | Pointer to **int32** |  | [optional] 
 **Data** | Pointer to [**[]PromptSummaryRow**](PromptSummaryRow.md) |  | [optional] 
+**PlanRequiredFields** | **[]string** | The row fields left out because they need a higher plan (the sentiment fields below Growth); empty when none is | 
 **RequestId** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
 ### NewPromptSummaryResponse
 
-`func NewPromptSummaryResponse() *PromptSummaryResponse`
+`func NewPromptSummaryResponse(planRequiredFields []string, ) *PromptSummaryResponse`
 
 NewPromptSummaryResponse instantiates a new PromptSummaryResponse object
 This constructor will assign default values to properties that have it defined,
@@ -320,6 +321,26 @@ SetData sets Data field to given value.
 `func (o *PromptSummaryResponse) HasData() bool`
 
 HasData returns a boolean if a field has been set.
+
+### GetPlanRequiredFields
+
+`func (o *PromptSummaryResponse) GetPlanRequiredFields() []string`
+
+GetPlanRequiredFields returns the PlanRequiredFields field if non-nil, zero value otherwise.
+
+### GetPlanRequiredFieldsOk
+
+`func (o *PromptSummaryResponse) GetPlanRequiredFieldsOk() (*[]string, bool)`
+
+GetPlanRequiredFieldsOk returns a tuple with the PlanRequiredFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPlanRequiredFields
+
+`func (o *PromptSummaryResponse) SetPlanRequiredFields(v []string)`
+
+SetPlanRequiredFields sets PlanRequiredFields field to given value.
+
 
 ### GetRequestId
 

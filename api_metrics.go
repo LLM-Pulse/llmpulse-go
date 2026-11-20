@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -151,7 +151,7 @@ func (r ApiGetPromptSummaryRequest) Execute() (*PromptSummaryResponse, *http.Res
 /*
 GetPromptSummary Per-prompt metrics summary
 
-Paginated per-prompt aggregated metrics. Returns responses, mentions, citations, mention_rate, citation_rate, avg_mention_position and avg_position per prompt, plus the brand sentiment of its responses (sentiment_responses, the five sentiment percentages and net_sentiment, computed like the sentiment timeseries) and the prompt's classification (country_code, language_code, prompt_type, brand_kind and tags, as in /dimensions/prompts). Citations and citation rate include visible citations and background source references; avg_position uses visible citations only. Pass `breakdown=model` to split each prompt by model.
+Paginated per-prompt aggregated metrics. Returns responses, mentions, citations, mention_rate, citation_rate, avg_mention_position and avg_position per prompt, plus the brand sentiment of its responses (sentiment_responses, the five sentiment percentages and net_sentiment, computed like the sentiment timeseries; they need the Growth plan or above, and below it they are left out of every row and listed in `plan_required_fields`, which is always present and empty when nothing is left out) and the prompt's classification (country_code, language_code, prompt_type, brand_kind and tags, as in /dimensions/prompts). Citations and citation rate include visible citations and background source references; avg_position uses visible citations only. Pass `breakdown=model` to split each prompt by model.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiGetPromptSummaryRequest
@@ -609,7 +609,7 @@ func (r ApiGetSummaryRequest) ProjectId(projectId int32) ApiGetSummaryRequest {
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total. The sentiment metrics (net_sentiment and the five sentiment_* shares) need the Growth plan or above: below it a request that names one answers 403 ERR_PLAN_REQUIRED.
 func (r ApiGetSummaryRequest) Metrics(metrics string) ApiGetSummaryRequest {
 	r.metrics = &metrics
 	return r
@@ -840,6 +840,17 @@ func (a *MetricsAPIService) GetSummaryExecute(r ApiGetSummaryRequest) (*SummaryR
 					newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
@@ -892,7 +903,7 @@ func (r ApiGetTimeseriesRequest) ProjectId(projectId int32) ApiGetTimeseriesRequ
 	return r
 }
 
-// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total.
+// Comma-separated list of metrics: mentions, citations, responses, mention_rate, visibility (alias for mention_rate), weighted_visibility, ai_visibility_score (alias for weighted_visibility), citation_rate, avg_position, avg_mention_position, net_sentiment, sentiment_very_positive, sentiment_positive, sentiment_neutral, sentiment_negative, sentiment_very_negative. Citations and citation_rate include visible citations and background source references; avg_position uses visible citations only. weighted_visibility (ai_visibility_score) is position-weighted points divided by the tracking runs (days, weeks or months at the account&#39;s tracking frequency) with responses, per period and for the summary total. The sentiment metrics (net_sentiment and the five sentiment_* shares) need the Growth plan or above: below it a request that names one answers 403 ERR_PLAN_REQUIRED.
 func (r ApiGetTimeseriesRequest) Metrics(metrics string) ApiGetTimeseriesRequest {
 	r.metrics = &metrics
 	return r
@@ -1113,6 +1124,17 @@ func (a *MetricsAPIService) GetTimeseriesExecute(r ApiGetTimeseriesRequest) (*Ti
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {

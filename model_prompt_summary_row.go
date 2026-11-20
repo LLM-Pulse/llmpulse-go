@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.99.0
+API version: 1.100.0
 Contact: info@llmpulse.ai
 */
 
@@ -44,7 +44,7 @@ type PromptSummaryRow struct {
 	BrandKind NullableString `json:"brand_kind,omitempty"`
 	// Every tag the prompt belongs to
 	Tags []TagRef `json:"tags,omitempty"`
-	// Responses in the window with a sentiment verdict for the brand, the base of the sentiment percentages (deduplicated like the sentiment timeseries)
+	// Responses in the window with a sentiment verdict for the brand, the base of the sentiment percentages (deduplicated like the sentiment timeseries). Needs the Growth plan or above, like every sentiment field of the row; below it they are left out and named in plan_required_fields
 	SentimentResponses *int32 `json:"sentiment_responses,omitempty"`
 	// Percentage (0-100) of sentiment_responses whose brand verdict is very positive; null when sentiment_responses is 0
 	SentimentVeryPositive NullableFloat32 `json:"sentiment_very_positive,omitempty"`
