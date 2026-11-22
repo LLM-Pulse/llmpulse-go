@@ -34,6 +34,7 @@ Name | Type | Description | Notes
 **PitchRun** | Pointer to [**NullableProjectDetailsAllOfPitchRun**](ProjectDetailsAllOfPitchRun.md) |  | [optional] 
 **DataCoverage** | Pointer to [**ProjectDetailsAllOfDataCoverage**](ProjectDetailsAllOfDataCoverage.md) |  | [optional] 
 **SearchConsole** | Pointer to [**ProjectDetailsAllOfSearchConsole**](ProjectDetailsAllOfSearchConsole.md) |  | [optional] 
+**BingWebmaster** | Pointer to [**ProjectDetailsAllOfBingWebmaster**](ProjectDetailsAllOfBingWebmaster.md) |  | [optional] 
 **AiTraffic** | Pointer to [**ProjectDetailsAllOfAiTraffic**](ProjectDetailsAllOfAiTraffic.md) |  | [optional] 
 **AgentTraffic** | Pointer to [**ProjectDetailsAllOfAgentTraffic**](ProjectDetailsAllOfAgentTraffic.md) |  | [optional] 
 **RequestId** | Pointer to **string** |  | [optional] 
@@ -956,6 +957,31 @@ SetSearchConsole sets SearchConsole field to given value.
 `func (o *ProjectDetails) HasSearchConsole() bool`
 
 HasSearchConsole returns a boolean if a field has been set.
+
+### GetBingWebmaster
+
+`func (o *ProjectDetails) GetBingWebmaster() ProjectDetailsAllOfBingWebmaster`
+
+GetBingWebmaster returns the BingWebmaster field if non-nil, zero value otherwise.
+
+### GetBingWebmasterOk
+
+`func (o *ProjectDetails) GetBingWebmasterOk() (*ProjectDetailsAllOfBingWebmaster, bool)`
+
+GetBingWebmasterOk returns a tuple with the BingWebmaster field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBingWebmaster
+
+`func (o *ProjectDetails) SetBingWebmaster(v ProjectDetailsAllOfBingWebmaster)`
+
+SetBingWebmaster sets BingWebmaster field to given value.
+
+### HasBingWebmaster
+
+`func (o *ProjectDetails) HasBingWebmaster() bool`
+
+HasBingWebmaster returns a boolean if a field has been set.
 
 ### GetAiTraffic
 

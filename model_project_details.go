@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.100.0
+API version: 1.101.0
 Contact: info@llmpulse.ai
 */
 
@@ -64,6 +64,7 @@ type ProjectDetails struct {
 	PitchRun NullableProjectDetailsAllOfPitchRun `json:"pitch_run,omitempty"`
 	DataCoverage *ProjectDetailsAllOfDataCoverage `json:"data_coverage,omitempty"`
 	SearchConsole *ProjectDetailsAllOfSearchConsole `json:"search_console,omitempty"`
+	BingWebmaster *ProjectDetailsAllOfBingWebmaster `json:"bing_webmaster,omitempty"`
 	AiTraffic *ProjectDetailsAllOfAiTraffic `json:"ai_traffic,omitempty"`
 	AgentTraffic *ProjectDetailsAllOfAgentTraffic `json:"agent_traffic,omitempty"`
 	RequestId *string `json:"request_id,omitempty"`
@@ -1177,6 +1178,38 @@ func (o *ProjectDetails) SetSearchConsole(v ProjectDetailsAllOfSearchConsole) {
 	o.SearchConsole = &v
 }
 
+// GetBingWebmaster returns the BingWebmaster field value if set, zero value otherwise.
+func (o *ProjectDetails) GetBingWebmaster() ProjectDetailsAllOfBingWebmaster {
+	if o == nil || IsNil(o.BingWebmaster) {
+		var ret ProjectDetailsAllOfBingWebmaster
+		return ret
+	}
+	return *o.BingWebmaster
+}
+
+// GetBingWebmasterOk returns a tuple with the BingWebmaster field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProjectDetails) GetBingWebmasterOk() (*ProjectDetailsAllOfBingWebmaster, bool) {
+	if o == nil || IsNil(o.BingWebmaster) {
+		return nil, false
+	}
+	return o.BingWebmaster, true
+}
+
+// HasBingWebmaster returns a boolean if a field has been set.
+func (o *ProjectDetails) HasBingWebmaster() bool {
+	if o != nil && !IsNil(o.BingWebmaster) {
+		return true
+	}
+
+	return false
+}
+
+// SetBingWebmaster gets a reference to the given ProjectDetailsAllOfBingWebmaster and assigns it to the BingWebmaster field.
+func (o *ProjectDetails) SetBingWebmaster(v ProjectDetailsAllOfBingWebmaster) {
+	o.BingWebmaster = &v
+}
+
 // GetAiTraffic returns the AiTraffic field value if set, zero value otherwise.
 func (o *ProjectDetails) GetAiTraffic() ProjectDetailsAllOfAiTraffic {
 	if o == nil || IsNil(o.AiTraffic) {
@@ -1368,6 +1401,9 @@ func (o ProjectDetails) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.SearchConsole) {
 		toSerialize["search_console"] = o.SearchConsole
+	}
+	if !IsNil(o.BingWebmaster) {
+		toSerialize["bing_webmaster"] = o.BingWebmaster
 	}
 	if !IsNil(o.AiTraffic) {
 		toSerialize["ai_traffic"] = o.AiTraffic

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.100.0
+API version: 1.101.0
 Contact: info@llmpulse.ai
 */
 
@@ -42,7 +42,7 @@ var (
 	queryDescape    = strings.NewReplacer( "%5B", "[", "%5D", "]" )
 )
 
-// APIClient manages communication with the LLM Pulse API API v1.100.0
+// APIClient manages communication with the LLM Pulse API API v1.101.0
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
@@ -61,6 +61,8 @@ type APIClient struct {
 	AnnotationsAPI *AnnotationsAPIService
 
 	AnswersAPI *AnswersAPIService
+
+	BingWebmasterToolsAPI *BingWebmasterToolsAPIService
 
 	CollectionsTagsAPI *CollectionsTagsAPIService
 
@@ -127,6 +129,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.AccountAPI = (*AccountAPIService)(&c.common)
 	c.AnnotationsAPI = (*AnnotationsAPIService)(&c.common)
 	c.AnswersAPI = (*AnswersAPIService)(&c.common)
+	c.BingWebmasterToolsAPI = (*BingWebmasterToolsAPIService)(&c.common)
 	c.CollectionsTagsAPI = (*CollectionsTagsAPIService)(&c.common)
 	c.CompetitorsAPI = (*CompetitorsAPIService)(&c.common)
 	c.CustomReportsAPI = (*CustomReportsAPIService)(&c.common)

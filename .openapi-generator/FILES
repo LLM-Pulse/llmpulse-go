@@ -9,6 +9,7 @@ api_ai_model_insights.go
 api_annotations.go
 api_answers.go
 api_api_keys.go
+api_bing_webmaster_tools.go
 api_collections_tags.go
 api_competitors.go
 api_custom_reports.go
@@ -89,6 +90,13 @@ docs/ApiError.md
 docs/ApiErrorError.md
 docs/ApiKeyInfo.md
 docs/AssignPromptTagsRequest.md
+docs/BingWebmasterListResponse.md
+docs/BingWebmasterListResponseDataInner.md
+docs/BingWebmasterMetrics.md
+docs/BingWebmasterSummaryResponse.md
+docs/BingWebmasterTimeseriesResponse.md
+docs/BingWebmasterTimeseriesResponseDataInner.md
+docs/BingWebmasterToolsAPI.md
 docs/CatalogProduct.md
 docs/CatalogPromptSuggestion.md
 docs/CatalogPromptSuggestionIdsRequest.md
@@ -251,6 +259,7 @@ docs/ProjectDeleteResponse.md
 docs/ProjectDetails.md
 docs/ProjectDetailsAllOfAgentTraffic.md
 docs/ProjectDetailsAllOfAiTraffic.md
+docs/ProjectDetailsAllOfBingWebmaster.md
 docs/ProjectDetailsAllOfDataCoverage.md
 docs/ProjectDetailsAllOfPitchRun.md
 docs/ProjectDetailsAllOfSearchConsole.md
@@ -464,6 +473,12 @@ model_api_error.go
 model_api_error_error.go
 model_api_key_info.go
 model_assign_prompt_tags_request.go
+model_bing_webmaster_list_response.go
+model_bing_webmaster_list_response_data_inner.go
+model_bing_webmaster_metrics.go
+model_bing_webmaster_summary_response.go
+model_bing_webmaster_timeseries_response.go
+model_bing_webmaster_timeseries_response_data_inner.go
 model_catalog_product.go
 model_catalog_prompt_suggestion.go
 model_catalog_prompt_suggestion_ids_request.go
@@ -617,6 +632,7 @@ model_project_delete_response.go
 model_project_details.go
 model_project_details_all_of_agent_traffic.go
 model_project_details_all_of_ai_traffic.go
+model_project_details_all_of_bing_webmaster.go
 model_project_details_all_of_data_coverage.go
 model_project_details_all_of_pitch_run.go
 model_project_details_all_of_search_console.go
