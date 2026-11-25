@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.102.0
+API version: 1.103.0
 Contact: info@llmpulse.ai
 */
 
@@ -26,7 +26,7 @@ type OwnedMediaPlatformRollup struct {
 	Yours *int32 `json:"yours,omitempty"`
 	SharePct *float32 `json:"share_pct,omitempty"`
 	Weekly []OwnedMediaPlatformRollupWeeklyInner `json:"weekly,omitempty"`
-	// One date/citation row per actual project tracking period with runs
+	// One date/citation row per project tracking period that holds a run inside the window; a period whose runs all fell before from is left out
 	Activity []OwnedMediaPlatformActivityPeriod `json:"activity,omitempty"`
 }
 

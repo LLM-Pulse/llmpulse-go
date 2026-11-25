@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.102.0
+API version: 1.103.0
 Contact: info@llmpulse.ai
 */
 
@@ -36,6 +36,8 @@ type OwnedMediaKpis struct {
 	UniqueAuthors NullableInt32 `json:"unique_authors,omitempty"`
 	// Positive sentiment among rated Reddit citations, as a percentage (provider=reddit; null or omitted for other providers)
 	PositivePct NullableFloat32 `json:"positive_pct,omitempty"`
+	// provider=overview only. The platforms with a connected profile, channel or app, out of the rows in platforms (the Connected sources card). It describes the current setup, so previous.kpis and changes leave it out
+	ConnectedCount *int32 `json:"connected_count,omitempty"`
 }
 
 // NewOwnedMediaKpis instantiates a new OwnedMediaKpis object
@@ -361,6 +363,38 @@ func (o *OwnedMediaKpis) UnsetPositivePct() {
 	o.PositivePct.Unset()
 }
 
+// GetConnectedCount returns the ConnectedCount field value if set, zero value otherwise.
+func (o *OwnedMediaKpis) GetConnectedCount() int32 {
+	if o == nil || IsNil(o.ConnectedCount) {
+		var ret int32
+		return ret
+	}
+	return *o.ConnectedCount
+}
+
+// GetConnectedCountOk returns a tuple with the ConnectedCount field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OwnedMediaKpis) GetConnectedCountOk() (*int32, bool) {
+	if o == nil || IsNil(o.ConnectedCount) {
+		return nil, false
+	}
+	return o.ConnectedCount, true
+}
+
+// HasConnectedCount returns a boolean if a field has been set.
+func (o *OwnedMediaKpis) HasConnectedCount() bool {
+	if o != nil && !IsNil(o.ConnectedCount) {
+		return true
+	}
+
+	return false
+}
+
+// SetConnectedCount gets a reference to the given int32 and assigns it to the ConnectedCount field.
+func (o *OwnedMediaKpis) SetConnectedCount(v int32) {
+	o.ConnectedCount = &v
+}
+
 func (o OwnedMediaKpis) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -394,6 +428,9 @@ func (o OwnedMediaKpis) ToMap() (map[string]interface{}, error) {
 	}
 	if o.PositivePct.IsSet() {
 		toSerialize["positive_pct"] = o.PositivePct.Get()
+	}
+	if !IsNil(o.ConnectedCount) {
+		toSerialize["connected_count"] = o.ConnectedCount
 	}
 	return toSerialize, nil
 }

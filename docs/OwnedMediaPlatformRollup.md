@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Yours** | Pointer to **int32** |  | [optional] 
 **SharePct** | Pointer to **float32** |  | [optional] 
 **Weekly** | Pointer to [**[]OwnedMediaPlatformRollupWeeklyInner**](OwnedMediaPlatformRollupWeeklyInner.md) |  | [optional] 
-**Activity** | Pointer to [**[]OwnedMediaPlatformActivityPeriod**](OwnedMediaPlatformActivityPeriod.md) | One date/citation row per actual project tracking period with runs | [optional] 
+**Activity** | Pointer to [**[]OwnedMediaPlatformActivityPeriod**](OwnedMediaPlatformActivityPeriod.md) | One date/citation row per project tracking period that holds a run inside the window; a period whose runs all fell before from is left out | [optional] 
 
 ## Methods
 

@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **UniqueSubreddits** | Pointer to **NullableInt32** | Number of cited subreddits (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
 **UniqueAuthors** | Pointer to **NullableInt32** | Number of cited Reddit authors (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
 **PositivePct** | Pointer to **NullableFloat32** | Positive sentiment among rated Reddit citations, as a percentage (provider&#x3D;reddit; null or omitted for other providers) | [optional] 
+**ConnectedCount** | Pointer to **int32** | provider&#x3D;overview only. The platforms with a connected profile, channel or app, out of the rows in platforms (the Connected sources card). It describes the current setup, so previous.kpis and changes leave it out | [optional] 
 
 ## Methods
 
@@ -282,6 +283,31 @@ HasPositivePct returns a boolean if a field has been set.
 `func (o *OwnedMediaKpis) UnsetPositivePct()`
 
 UnsetPositivePct ensures that no value is present for PositivePct, not even an explicit nil
+### GetConnectedCount
+
+`func (o *OwnedMediaKpis) GetConnectedCount() int32`
+
+GetConnectedCount returns the ConnectedCount field if non-nil, zero value otherwise.
+
+### GetConnectedCountOk
+
+`func (o *OwnedMediaKpis) GetConnectedCountOk() (*int32, bool)`
+
+GetConnectedCountOk returns a tuple with the ConnectedCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetConnectedCount
+
+`func (o *OwnedMediaKpis) SetConnectedCount(v int32)`
+
+SetConnectedCount sets ConnectedCount field to given value.
+
+### HasConnectedCount
+
+`func (o *OwnedMediaKpis) HasConnectedCount() bool`
+
+HasConnectedCount returns a boolean if a field has been set.
+
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
