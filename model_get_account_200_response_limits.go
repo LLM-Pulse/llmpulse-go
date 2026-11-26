@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.103.0
+API version: 1.104.0
 Contact: info@llmpulse.ai
 */
 
@@ -29,6 +29,7 @@ type GetAccount200ResponseLimits struct {
 	GeoAuditManualRuns *AccountQuota `json:"geo_audit_manual_runs,omitempty"`
 	PromptExecutions *AccountExecutionQuota `json:"prompt_executions,omitempty"`
 	PitchProjects *AccountPitchQuota `json:"pitch_projects,omitempty"`
+	AgentUsage *AccountAgentUsage `json:"agent_usage,omitempty"`
 }
 
 // NewGetAccount200ResponseLimits instantiates a new GetAccount200ResponseLimits object
@@ -336,6 +337,38 @@ func (o *GetAccount200ResponseLimits) SetPitchProjects(v AccountPitchQuota) {
 	o.PitchProjects = &v
 }
 
+// GetAgentUsage returns the AgentUsage field value if set, zero value otherwise.
+func (o *GetAccount200ResponseLimits) GetAgentUsage() AccountAgentUsage {
+	if o == nil || IsNil(o.AgentUsage) {
+		var ret AccountAgentUsage
+		return ret
+	}
+	return *o.AgentUsage
+}
+
+// GetAgentUsageOk returns a tuple with the AgentUsage field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetAccount200ResponseLimits) GetAgentUsageOk() (*AccountAgentUsage, bool) {
+	if o == nil || IsNil(o.AgentUsage) {
+		return nil, false
+	}
+	return o.AgentUsage, true
+}
+
+// HasAgentUsage returns a boolean if a field has been set.
+func (o *GetAccount200ResponseLimits) HasAgentUsage() bool {
+	if o != nil && !IsNil(o.AgentUsage) {
+		return true
+	}
+
+	return false
+}
+
+// SetAgentUsage gets a reference to the given AccountAgentUsage and assigns it to the AgentUsage field.
+func (o *GetAccount200ResponseLimits) SetAgentUsage(v AccountAgentUsage) {
+	o.AgentUsage = &v
+}
+
 func (o GetAccount200ResponseLimits) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -372,6 +405,9 @@ func (o GetAccount200ResponseLimits) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.PitchProjects) {
 		toSerialize["pitch_projects"] = o.PitchProjects
+	}
+	if !IsNil(o.AgentUsage) {
+		toSerialize["agent_usage"] = o.AgentUsage
 	}
 	return toSerialize, nil
 }

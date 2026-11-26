@@ -37,6 +37,7 @@ docs/AIAgentTrafficAPI.md
 docs/AIModelInsightsAPI.md
 docs/APIKeysAPI.md
 docs/AccountAPI.md
+docs/AccountAgentUsage.md
 docs/AccountCapacity.md
 docs/AccountExecutionQuota.md
 docs/AccountPitchQuota.md
@@ -422,6 +423,7 @@ docs/WebhooksAPI.md
 git_push.sh
 go.mod
 go.sum
+model_account_agent_usage.go
 model_account_capacity.go
 model_account_execution_quota.go
 model_account_pitch_quota.go
