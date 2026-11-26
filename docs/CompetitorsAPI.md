@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ## DeleteCompetitor
 
-> DeleteCompetitor(ctx, id).ProjectId(projectId).Execute()
+> CompetitorDeleteResponse DeleteCompetitor(ctx, id).ProjectId(projectId).Execute()
 
 Delete a competitor
 
@@ -105,11 +105,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CompetitorsAPI.DeleteCompetitor(context.Background(), id).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.CompetitorsAPI.DeleteCompetitor(context.Background(), id).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CompetitorsAPI.DeleteCompetitor``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `DeleteCompetitor`: CompetitorDeleteResponse
+	fmt.Fprintf(os.Stdout, "Response from `CompetitorsAPI.DeleteCompetitor`: %v\n", resp)
 }
 ```
 
@@ -133,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CompetitorDeleteResponse**](CompetitorDeleteResponse.md)
 
 ### Authorization
 
@@ -365,7 +367,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCompetitor
 
-> UpdateCompetitor(ctx, id).UpdateCompetitorRequest(updateCompetitorRequest).Execute()
+> CompetitorUpdateResponse UpdateCompetitor(ctx, id).UpdateCompetitorRequest(updateCompetitorRequest).Execute()
 
 Update a competitor
 
@@ -389,11 +391,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CompetitorsAPI.UpdateCompetitor(context.Background(), id).UpdateCompetitorRequest(updateCompetitorRequest).Execute()
+	resp, r, err := apiClient.CompetitorsAPI.UpdateCompetitor(context.Background(), id).UpdateCompetitorRequest(updateCompetitorRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CompetitorsAPI.UpdateCompetitor``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `UpdateCompetitor`: CompetitorUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `CompetitorsAPI.UpdateCompetitor`: %v\n", resp)
 }
 ```
 
@@ -417,7 +421,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CompetitorUpdateResponse**](CompetitorUpdateResponse.md)
 
 ### Authorization
 

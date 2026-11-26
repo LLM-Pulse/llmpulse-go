@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -15,35 +15,35 @@ import (
 	"encoding/json"
 )
 
-// checks if the RecommendationSummarySummary type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &RecommendationSummarySummary{}
+// checks if the RecommendationDetailResponseSummary type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &RecommendationDetailResponseSummary{}
 
-// RecommendationSummarySummary Empty until the generation completes
-type RecommendationSummarySummary struct {
+// RecommendationDetailResponseSummary Empty until the generation completes
+type RecommendationDetailResponseSummary struct {
 	TotalRecommendations *int32 `json:"total_recommendations,omitempty"`
 	HighPriorityCount *int32 `json:"high_priority_count,omitempty"`
 	Categories []string `json:"categories,omitempty"`
 }
 
-// NewRecommendationSummarySummary instantiates a new RecommendationSummarySummary object
+// NewRecommendationDetailResponseSummary instantiates a new RecommendationDetailResponseSummary object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRecommendationSummarySummary() *RecommendationSummarySummary {
-	this := RecommendationSummarySummary{}
+func NewRecommendationDetailResponseSummary() *RecommendationDetailResponseSummary {
+	this := RecommendationDetailResponseSummary{}
 	return &this
 }
 
-// NewRecommendationSummarySummaryWithDefaults instantiates a new RecommendationSummarySummary object
+// NewRecommendationDetailResponseSummaryWithDefaults instantiates a new RecommendationDetailResponseSummary object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewRecommendationSummarySummaryWithDefaults() *RecommendationSummarySummary {
-	this := RecommendationSummarySummary{}
+func NewRecommendationDetailResponseSummaryWithDefaults() *RecommendationDetailResponseSummary {
+	this := RecommendationDetailResponseSummary{}
 	return &this
 }
 
 // GetTotalRecommendations returns the TotalRecommendations field value if set, zero value otherwise.
-func (o *RecommendationSummarySummary) GetTotalRecommendations() int32 {
+func (o *RecommendationDetailResponseSummary) GetTotalRecommendations() int32 {
 	if o == nil || IsNil(o.TotalRecommendations) {
 		var ret int32
 		return ret
@@ -53,7 +53,7 @@ func (o *RecommendationSummarySummary) GetTotalRecommendations() int32 {
 
 // GetTotalRecommendationsOk returns a tuple with the TotalRecommendations field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RecommendationSummarySummary) GetTotalRecommendationsOk() (*int32, bool) {
+func (o *RecommendationDetailResponseSummary) GetTotalRecommendationsOk() (*int32, bool) {
 	if o == nil || IsNil(o.TotalRecommendations) {
 		return nil, false
 	}
@@ -61,7 +61,7 @@ func (o *RecommendationSummarySummary) GetTotalRecommendationsOk() (*int32, bool
 }
 
 // HasTotalRecommendations returns a boolean if a field has been set.
-func (o *RecommendationSummarySummary) HasTotalRecommendations() bool {
+func (o *RecommendationDetailResponseSummary) HasTotalRecommendations() bool {
 	if o != nil && !IsNil(o.TotalRecommendations) {
 		return true
 	}
@@ -70,12 +70,12 @@ func (o *RecommendationSummarySummary) HasTotalRecommendations() bool {
 }
 
 // SetTotalRecommendations gets a reference to the given int32 and assigns it to the TotalRecommendations field.
-func (o *RecommendationSummarySummary) SetTotalRecommendations(v int32) {
+func (o *RecommendationDetailResponseSummary) SetTotalRecommendations(v int32) {
 	o.TotalRecommendations = &v
 }
 
 // GetHighPriorityCount returns the HighPriorityCount field value if set, zero value otherwise.
-func (o *RecommendationSummarySummary) GetHighPriorityCount() int32 {
+func (o *RecommendationDetailResponseSummary) GetHighPriorityCount() int32 {
 	if o == nil || IsNil(o.HighPriorityCount) {
 		var ret int32
 		return ret
@@ -85,7 +85,7 @@ func (o *RecommendationSummarySummary) GetHighPriorityCount() int32 {
 
 // GetHighPriorityCountOk returns a tuple with the HighPriorityCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RecommendationSummarySummary) GetHighPriorityCountOk() (*int32, bool) {
+func (o *RecommendationDetailResponseSummary) GetHighPriorityCountOk() (*int32, bool) {
 	if o == nil || IsNil(o.HighPriorityCount) {
 		return nil, false
 	}
@@ -93,7 +93,7 @@ func (o *RecommendationSummarySummary) GetHighPriorityCountOk() (*int32, bool) {
 }
 
 // HasHighPriorityCount returns a boolean if a field has been set.
-func (o *RecommendationSummarySummary) HasHighPriorityCount() bool {
+func (o *RecommendationDetailResponseSummary) HasHighPriorityCount() bool {
 	if o != nil && !IsNil(o.HighPriorityCount) {
 		return true
 	}
@@ -102,12 +102,12 @@ func (o *RecommendationSummarySummary) HasHighPriorityCount() bool {
 }
 
 // SetHighPriorityCount gets a reference to the given int32 and assigns it to the HighPriorityCount field.
-func (o *RecommendationSummarySummary) SetHighPriorityCount(v int32) {
+func (o *RecommendationDetailResponseSummary) SetHighPriorityCount(v int32) {
 	o.HighPriorityCount = &v
 }
 
 // GetCategories returns the Categories field value if set, zero value otherwise.
-func (o *RecommendationSummarySummary) GetCategories() []string {
+func (o *RecommendationDetailResponseSummary) GetCategories() []string {
 	if o == nil || IsNil(o.Categories) {
 		var ret []string
 		return ret
@@ -117,7 +117,7 @@ func (o *RecommendationSummarySummary) GetCategories() []string {
 
 // GetCategoriesOk returns a tuple with the Categories field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *RecommendationSummarySummary) GetCategoriesOk() ([]string, bool) {
+func (o *RecommendationDetailResponseSummary) GetCategoriesOk() ([]string, bool) {
 	if o == nil || IsNil(o.Categories) {
 		return nil, false
 	}
@@ -125,7 +125,7 @@ func (o *RecommendationSummarySummary) GetCategoriesOk() ([]string, bool) {
 }
 
 // HasCategories returns a boolean if a field has been set.
-func (o *RecommendationSummarySummary) HasCategories() bool {
+func (o *RecommendationDetailResponseSummary) HasCategories() bool {
 	if o != nil && !IsNil(o.Categories) {
 		return true
 	}
@@ -134,11 +134,11 @@ func (o *RecommendationSummarySummary) HasCategories() bool {
 }
 
 // SetCategories gets a reference to the given []string and assigns it to the Categories field.
-func (o *RecommendationSummarySummary) SetCategories(v []string) {
+func (o *RecommendationDetailResponseSummary) SetCategories(v []string) {
 	o.Categories = v
 }
 
-func (o RecommendationSummarySummary) MarshalJSON() ([]byte, error) {
+func (o RecommendationDetailResponseSummary) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -146,7 +146,7 @@ func (o RecommendationSummarySummary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o RecommendationSummarySummary) ToMap() (map[string]interface{}, error) {
+func (o RecommendationDetailResponseSummary) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.TotalRecommendations) {
 		toSerialize["total_recommendations"] = o.TotalRecommendations
@@ -160,38 +160,38 @@ func (o RecommendationSummarySummary) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-type NullableRecommendationSummarySummary struct {
-	value *RecommendationSummarySummary
+type NullableRecommendationDetailResponseSummary struct {
+	value *RecommendationDetailResponseSummary
 	isSet bool
 }
 
-func (v NullableRecommendationSummarySummary) Get() *RecommendationSummarySummary {
+func (v NullableRecommendationDetailResponseSummary) Get() *RecommendationDetailResponseSummary {
 	return v.value
 }
 
-func (v *NullableRecommendationSummarySummary) Set(val *RecommendationSummarySummary) {
+func (v *NullableRecommendationDetailResponseSummary) Set(val *RecommendationDetailResponseSummary) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableRecommendationSummarySummary) IsSet() bool {
+func (v NullableRecommendationDetailResponseSummary) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableRecommendationSummarySummary) Unset() {
+func (v *NullableRecommendationDetailResponseSummary) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableRecommendationSummarySummary(val *RecommendationSummarySummary) *NullableRecommendationSummarySummary {
-	return &NullableRecommendationSummarySummary{value: val, isSet: true}
+func NewNullableRecommendationDetailResponseSummary(val *RecommendationDetailResponseSummary) *NullableRecommendationDetailResponseSummary {
+	return &NullableRecommendationDetailResponseSummary{value: val, isSet: true}
 }
 
-func (v NullableRecommendationSummarySummary) MarshalJSON() ([]byte, error) {
+func (v NullableRecommendationDetailResponseSummary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableRecommendationSummarySummary) UnmarshalJSON(src []byte) error {
+func (v *NullableRecommendationDetailResponseSummary) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

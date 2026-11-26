@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## ListAds
 
-> ListAds(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+> AdsResponse ListAds(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 
 List AI ad placements
 
@@ -54,11 +54,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ShoppingAdsAPI.ListAds(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.ShoppingAdsAPI.ListAds(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ShoppingAdsAPI.ListAds``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAds`: AdsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ShoppingAdsAPI.ListAds`: %v\n", resp)
 }
 ```
 
@@ -95,7 +97,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AdsResponse**](AdsResponse.md)
 
 ### Authorization
 
@@ -214,7 +216,7 @@ Name | Type | Description  | Notes
 
 ## ListShopping
 
-> ListShopping(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+> ShoppingResponse ListShopping(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 
 List shopping results
 
@@ -256,11 +258,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ShoppingAdsAPI.ListShopping(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.ShoppingAdsAPI.ListShopping(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Owned(owned).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ShoppingAdsAPI.ListShopping``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListShopping`: ShoppingResponse
+	fmt.Fprintf(os.Stdout, "Response from `ShoppingAdsAPI.ListShopping`: %v\n", resp)
 }
 ```
 
@@ -297,7 +301,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ShoppingResponse**](ShoppingResponse.md)
 
 ### Authorization
 

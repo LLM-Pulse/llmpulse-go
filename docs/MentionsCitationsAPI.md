@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## ListAllCitations
 
-> ListAllCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+> AllCitationsResponse ListAllCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List all citations (brand + competitor)
 
@@ -53,11 +53,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListAllCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListAllCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListAllCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAllCitations`: AllCitationsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListAllCitations`: %v\n", resp)
 }
 ```
 
@@ -90,7 +92,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AllCitationsResponse**](AllCitationsResponse.md)
 
 ### Authorization
 
@@ -99,7 +101,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -108,7 +110,7 @@ Name | Type | Description  | Notes
 
 ## ListAllMentions
 
-> ListAllMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+> AllMentionsResponse ListAllMentions(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List all mentions (brand + competitor)
 
@@ -146,11 +148,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListAllMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListAllMentions(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListAllMentions``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAllMentions`: AllMentionsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListAllMentions`: %v\n", resp)
 }
 ```
 
@@ -183,7 +187,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AllMentionsResponse**](AllMentionsResponse.md)
 
 ### Authorization
 
@@ -192,7 +196,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -294,7 +298,7 @@ Name | Type | Description  | Notes
 
 ## ListCompetitorCitations
 
-> ListCompetitorCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+> CompetitorCitationsResponse ListCompetitorCitations(ctx).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List competitor citations
 
@@ -332,11 +336,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.MentionsCitationsAPI.ListCompetitorCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+	resp, r, err := apiClient.MentionsCitationsAPI.ListCompetitorCitations(context.Background()).ProjectId(projectId).Competitors(competitors).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).Prompt(prompt).From(from).To(to).Output(output).CountryCode(countryCode).LanguageCode(languageCode).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `MentionsCitationsAPI.ListCompetitorCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCompetitorCitations`: CompetitorCitationsResponse
+	fmt.Fprintf(os.Stdout, "Response from `MentionsCitationsAPI.ListCompetitorCitations`: %v\n", resp)
 }
 ```
 
@@ -369,7 +375,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CompetitorCitationsResponse**](CompetitorCitationsResponse.md)
 
 ### Authorization
 
@@ -378,7 +384,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

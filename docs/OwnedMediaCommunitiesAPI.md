@@ -362,7 +362,7 @@ Name | Type | Description  | Notes
 
 ## ListRedditCitations
 
-> ListRedditCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Subreddit(subreddit).Author(author).Status(status).Owned(owned).Brand(brand).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+> RedditResponse ListRedditCitations(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Subreddit(subreddit).Author(author).Status(status).Owned(owned).Brand(brand).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 
 List cited Reddit content
 
@@ -405,11 +405,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.OwnedMediaCommunitiesAPI.ListRedditCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Subreddit(subreddit).Author(author).Status(status).Owned(owned).Brand(brand).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.OwnedMediaCommunitiesAPI.ListRedditCitations(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Subreddit(subreddit).Author(author).Status(status).Owned(owned).Brand(brand).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `OwnedMediaCommunitiesAPI.ListRedditCitations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListRedditCitations`: RedditResponse
+	fmt.Fprintf(os.Stdout, "Response from `OwnedMediaCommunitiesAPI.ListRedditCitations`: %v\n", resp)
 }
 ```
 
@@ -447,7 +449,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**RedditResponse**](RedditResponse.md)
 
 ### Authorization
 

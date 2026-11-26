@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## CreateTechnicalGeoReports
 
-> CreateTechnicalGeoReports(ctx).CreateTechnicalGeoReportsRequest(createTechnicalGeoReportsRequest).Execute()
+> TechnicalGeoReportsCreateResponse CreateTechnicalGeoReports(ctx).CreateTechnicalGeoReportsRequest(createTechnicalGeoReportsRequest).Execute()
 
 Run technical GEO analysis
 
@@ -37,11 +37,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.TechnicalGEOReportsAPI.CreateTechnicalGeoReports(context.Background()).CreateTechnicalGeoReportsRequest(createTechnicalGeoReportsRequest).Execute()
+	resp, r, err := apiClient.TechnicalGEOReportsAPI.CreateTechnicalGeoReports(context.Background()).CreateTechnicalGeoReportsRequest(createTechnicalGeoReportsRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `TechnicalGEOReportsAPI.CreateTechnicalGeoReports``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `CreateTechnicalGeoReports`: TechnicalGeoReportsCreateResponse
+	fmt.Fprintf(os.Stdout, "Response from `TechnicalGEOReportsAPI.CreateTechnicalGeoReports`: %v\n", resp)
 }
 ```
 
@@ -60,7 +62,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**TechnicalGeoReportsCreateResponse**](TechnicalGeoReportsCreateResponse.md)
 
 ### Authorization
 
@@ -78,7 +80,7 @@ Name | Type | Description  | Notes
 
 ## GetTechnicalGeoReport
 
-> GetTechnicalGeoReport(ctx, id).ProjectId(projectId).ReportType(reportType).Execute()
+> TechnicalGeoReportResponse GetTechnicalGeoReport(ctx, id).ProjectId(projectId).ReportType(reportType).Execute()
 
 Get a technical GEO report
 
@@ -103,11 +105,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.TechnicalGEOReportsAPI.GetTechnicalGeoReport(context.Background(), id).ProjectId(projectId).ReportType(reportType).Execute()
+	resp, r, err := apiClient.TechnicalGEOReportsAPI.GetTechnicalGeoReport(context.Background(), id).ProjectId(projectId).ReportType(reportType).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `TechnicalGEOReportsAPI.GetTechnicalGeoReport``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetTechnicalGeoReport`: TechnicalGeoReportResponse
+	fmt.Fprintf(os.Stdout, "Response from `TechnicalGEOReportsAPI.GetTechnicalGeoReport`: %v\n", resp)
 }
 ```
 
@@ -132,7 +136,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**TechnicalGeoReportResponse**](TechnicalGeoReportResponse.md)
 
 ### Authorization
 
@@ -150,7 +154,7 @@ Name | Type | Description  | Notes
 
 ## ListTechnicalGeoReports
 
-> ListTechnicalGeoReports(ctx).ProjectId(projectId).ReportType(reportType).Status(status).BatchId(batchId).Page(page).PerPage(perPage).Execute()
+> TechnicalGeoReportsResponse ListTechnicalGeoReports(ctx).ProjectId(projectId).ReportType(reportType).Status(status).BatchId(batchId).Page(page).PerPage(perPage).Execute()
 
 List technical GEO reports
 
@@ -178,11 +182,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.TechnicalGEOReportsAPI.ListTechnicalGeoReports(context.Background()).ProjectId(projectId).ReportType(reportType).Status(status).BatchId(batchId).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.TechnicalGEOReportsAPI.ListTechnicalGeoReports(context.Background()).ProjectId(projectId).ReportType(reportType).Status(status).BatchId(batchId).Page(page).PerPage(perPage).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `TechnicalGEOReportsAPI.ListTechnicalGeoReports``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListTechnicalGeoReports`: TechnicalGeoReportsResponse
+	fmt.Fprintf(os.Stdout, "Response from `TechnicalGEOReportsAPI.ListTechnicalGeoReports`: %v\n", resp)
 }
 ```
 
@@ -206,7 +212,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**TechnicalGeoReportsResponse**](TechnicalGeoReportsResponse.md)
 
 ### Authorization
 

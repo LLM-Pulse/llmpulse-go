@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -21,9 +21,9 @@ import (
 // checks if the ReputationReportSummary type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ReputationReportSummary{}
 
-// ReputationReportSummary One reputation report's status and analyst model coverage
+// ReputationReportSummary One reputation or custom-study report's status and analyst model coverage
 type ReputationReportSummary struct {
-	// Report id for GET /reputation/reports/{id}
+	// Report id for GET /reputation/reports/{id}, or GET /studies/{id}/reports/{report_id} for a study report
 	Id string `json:"id"`
 	Status string `json:"status"`
 	CreatedAt time.Time `json:"created_at"`

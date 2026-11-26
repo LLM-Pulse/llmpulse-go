@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -168,7 +168,7 @@ func (r ApiDeleteCompetitorRequest) ProjectId(projectId int32) ApiDeleteCompetit
 	return r
 }
 
-func (r ApiDeleteCompetitorRequest) Execute() (*http.Response, error) {
+func (r ApiDeleteCompetitorRequest) Execute() (*CompetitorDeleteResponse, *http.Response, error) {
 	return r.ApiService.DeleteCompetitorExecute(r)
 }
 
@@ -190,16 +190,18 @@ func (a *CompetitorsAPIService) DeleteCompetitor(ctx context.Context, id int32) 
 }
 
 // Execute executes the request
-func (a *CompetitorsAPIService) DeleteCompetitorExecute(r ApiDeleteCompetitorRequest) (*http.Response, error) {
+//  @return CompetitorDeleteResponse
+func (a *CompetitorsAPIService) DeleteCompetitorExecute(r ApiDeleteCompetitorRequest) (*CompetitorDeleteResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CompetitorDeleteResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CompetitorsAPIService.DeleteCompetitor")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/competitors/{id}"
@@ -209,7 +211,7 @@ func (a *CompetitorsAPIService) DeleteCompetitorExecute(r ApiDeleteCompetitorReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -232,19 +234,19 @@ func (a *CompetitorsAPIService) DeleteCompetitorExecute(r ApiDeleteCompetitorReq
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -257,26 +259,35 @@ func (a *CompetitorsAPIService) DeleteCompetitorExecute(r ApiDeleteCompetitorReq
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetCompetitorDetailsRequest struct {
@@ -714,7 +725,7 @@ func (r ApiUpdateCompetitorRequest) UpdateCompetitorRequest(updateCompetitorRequ
 	return r
 }
 
-func (r ApiUpdateCompetitorRequest) Execute() (*http.Response, error) {
+func (r ApiUpdateCompetitorRequest) Execute() (*CompetitorUpdateResponse, *http.Response, error) {
 	return r.ApiService.UpdateCompetitorExecute(r)
 }
 
@@ -736,16 +747,18 @@ func (a *CompetitorsAPIService) UpdateCompetitor(ctx context.Context, id int32) 
 }
 
 // Execute executes the request
-func (a *CompetitorsAPIService) UpdateCompetitorExecute(r ApiUpdateCompetitorRequest) (*http.Response, error) {
+//  @return CompetitorUpdateResponse
+func (a *CompetitorsAPIService) UpdateCompetitorExecute(r ApiUpdateCompetitorRequest) (*CompetitorUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CompetitorUpdateResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CompetitorsAPIService.UpdateCompetitor")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/competitors/{id}"
@@ -755,7 +768,7 @@ func (a *CompetitorsAPIService) UpdateCompetitorExecute(r ApiUpdateCompetitorReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.updateCompetitorRequest == nil {
-		return nil, reportError("updateCompetitorRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("updateCompetitorRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -779,19 +792,19 @@ func (a *CompetitorsAPIService) UpdateCompetitorExecute(r ApiUpdateCompetitorReq
 	localVarPostBody = r.updateCompetitorRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -804,35 +817,44 @@ func (a *CompetitorsAPIService) UpdateCompetitorExecute(r ApiUpdateCompetitorReq
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -168,7 +168,7 @@ func (r ApiDeleteAnnotationRequest) ProjectId(projectId int32) ApiDeleteAnnotati
 	return r
 }
 
-func (r ApiDeleteAnnotationRequest) Execute() (*http.Response, error) {
+func (r ApiDeleteAnnotationRequest) Execute() (*AnnotationDeleteResponse, *http.Response, error) {
 	return r.ApiService.DeleteAnnotationExecute(r)
 }
 
@@ -190,16 +190,18 @@ func (a *AnnotationsAPIService) DeleteAnnotation(ctx context.Context, id int32) 
 }
 
 // Execute executes the request
-func (a *AnnotationsAPIService) DeleteAnnotationExecute(r ApiDeleteAnnotationRequest) (*http.Response, error) {
+//  @return AnnotationDeleteResponse
+func (a *AnnotationsAPIService) DeleteAnnotationExecute(r ApiDeleteAnnotationRequest) (*AnnotationDeleteResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AnnotationDeleteResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AnnotationsAPIService.DeleteAnnotation")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/annotations/{id}"
@@ -209,7 +211,7 @@ func (a *AnnotationsAPIService) DeleteAnnotationExecute(r ApiDeleteAnnotationReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -232,19 +234,19 @@ func (a *AnnotationsAPIService) DeleteAnnotationExecute(r ApiDeleteAnnotationReq
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -257,26 +259,35 @@ func (a *AnnotationsAPIService) DeleteAnnotationExecute(r ApiDeleteAnnotationReq
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListAnnotationsRequest struct {
@@ -322,7 +333,7 @@ func (r ApiListAnnotationsRequest) PerPage(perPage int32) ApiListAnnotationsRequ
 	return r
 }
 
-func (r ApiListAnnotationsRequest) Execute() (*http.Response, error) {
+func (r ApiListAnnotationsRequest) Execute() (*AnnotationsResponse, *http.Response, error) {
 	return r.ApiService.ListAnnotationsExecute(r)
 }
 
@@ -342,16 +353,18 @@ func (a *AnnotationsAPIService) ListAnnotations(ctx context.Context) ApiListAnno
 }
 
 // Execute executes the request
-func (a *AnnotationsAPIService) ListAnnotationsExecute(r ApiListAnnotationsRequest) (*http.Response, error) {
+//  @return AnnotationsResponse
+func (a *AnnotationsAPIService) ListAnnotationsExecute(r ApiListAnnotationsRequest) (*AnnotationsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AnnotationsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AnnotationsAPIService.ListAnnotations")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/annotations"
@@ -360,7 +373,7 @@ func (a *AnnotationsAPIService) ListAnnotationsExecute(r ApiListAnnotationsReque
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -406,19 +419,19 @@ func (a *AnnotationsAPIService) ListAnnotationsExecute(r ApiListAnnotationsReque
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -431,15 +444,24 @@ func (a *AnnotationsAPIService) ListAnnotationsExecute(r ApiListAnnotationsReque
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiUpdateAnnotationRequest struct {
@@ -454,7 +476,7 @@ func (r ApiUpdateAnnotationRequest) UpdateAnnotationRequest(updateAnnotationRequ
 	return r
 }
 
-func (r ApiUpdateAnnotationRequest) Execute() (*http.Response, error) {
+func (r ApiUpdateAnnotationRequest) Execute() (*AnnotationUpdateResponse, *http.Response, error) {
 	return r.ApiService.UpdateAnnotationExecute(r)
 }
 
@@ -476,16 +498,18 @@ func (a *AnnotationsAPIService) UpdateAnnotation(ctx context.Context, id int32) 
 }
 
 // Execute executes the request
-func (a *AnnotationsAPIService) UpdateAnnotationExecute(r ApiUpdateAnnotationRequest) (*http.Response, error) {
+//  @return AnnotationUpdateResponse
+func (a *AnnotationsAPIService) UpdateAnnotationExecute(r ApiUpdateAnnotationRequest) (*AnnotationUpdateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AnnotationUpdateResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AnnotationsAPIService.UpdateAnnotation")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/annotations/{id}"
@@ -495,7 +519,7 @@ func (a *AnnotationsAPIService) UpdateAnnotationExecute(r ApiUpdateAnnotationReq
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.updateAnnotationRequest == nil {
-		return nil, reportError("updateAnnotationRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("updateAnnotationRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -519,19 +543,19 @@ func (a *AnnotationsAPIService) UpdateAnnotationExecute(r ApiUpdateAnnotationReq
 	localVarPostBody = r.updateAnnotationRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -544,35 +568,44 @@ func (a *AnnotationsAPIService) UpdateAnnotationExecute(r ApiUpdateAnnotationReq
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

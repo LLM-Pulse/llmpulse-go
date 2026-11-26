@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -325,7 +325,7 @@ func (r ApiGetAiModelPositionDistributionRequest) Brand2(brand2 int32) ApiGetAiM
 	return r
 }
 
-func (r ApiGetAiModelPositionDistributionRequest) Execute() (*http.Response, error) {
+func (r ApiGetAiModelPositionDistributionRequest) Execute() (*AiModelPositionDistributionResponse, *http.Response, error) {
 	return r.ApiService.GetAiModelPositionDistributionExecute(r)
 }
 
@@ -343,16 +343,18 @@ func (a *AIModelInsightsAPIService) GetAiModelPositionDistribution(ctx context.C
 }
 
 // Execute executes the request
-func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiGetAiModelPositionDistributionRequest) (*http.Response, error) {
+//  @return AiModelPositionDistributionResponse
+func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiGetAiModelPositionDistributionRequest) (*AiModelPositionDistributionResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AiModelPositionDistributionResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AIModelInsightsAPIService.GetAiModelPositionDistribution")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/reports/ai_model_insights/position_distribution"
@@ -361,7 +363,7 @@ func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiG
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -411,7 +413,7 @@ func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiG
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -420,19 +422,19 @@ func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiG
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -440,10 +442,19 @@ func (a *AIModelInsightsAPIService) GetAiModelPositionDistributionExecute(r ApiG
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetAiOverviewResultsRequest struct {
@@ -531,7 +542,7 @@ func (r ApiGetAiOverviewResultsRequest) PerPage(perPage int32) ApiGetAiOverviewR
 	return r
 }
 
-func (r ApiGetAiOverviewResultsRequest) Execute() (*http.Response, error) {
+func (r ApiGetAiOverviewResultsRequest) Execute() (*AiOverviewResultsResponse, *http.Response, error) {
 	return r.ApiService.GetAiOverviewResultsExecute(r)
 }
 
@@ -549,16 +560,18 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResults(ctx context.Context) Ap
 }
 
 // Execute executes the request
-func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOverviewResultsRequest) (*http.Response, error) {
+//  @return AiOverviewResultsResponse
+func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOverviewResultsRequest) (*AiOverviewResultsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *AiOverviewResultsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AIModelInsightsAPIService.GetAiOverviewResults")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/reports/ai_model_insights/ai_overview_results"
@@ -567,7 +580,7 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOvervi
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -622,7 +635,7 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOvervi
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -631,19 +644,19 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOvervi
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -651,10 +664,19 @@ func (a *AIModelInsightsAPIService) GetAiOverviewResultsExecute(r ApiGetAiOvervi
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetDeclinedAnswersRequest struct {

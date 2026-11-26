@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 
 ## DeleteCollection
 
-> DeleteCollection(ctx, id).ProjectId(projectId).Execute()
+> CollectionDeleteResponse DeleteCollection(ctx, id).ProjectId(projectId).Execute()
 
 Delete a tag
 
@@ -172,11 +172,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.DeleteCollection(context.Background(), id).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.DeleteCollection(context.Background(), id).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.DeleteCollection``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `DeleteCollection`: CollectionDeleteResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.DeleteCollection`: %v\n", resp)
 }
 ```
 
@@ -200,7 +202,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CollectionDeleteResponse**](CollectionDeleteResponse.md)
 
 ### Authorization
 
@@ -416,7 +418,7 @@ Name | Type | Description  | Notes
 
 ## UpdateCollection
 
-> UpdateCollection(ctx, id).UpdateCollectionRequest(updateCollectionRequest).Execute()
+> CollectionUpdateResponse UpdateCollection(ctx, id).UpdateCollectionRequest(updateCollectionRequest).Execute()
 
 Update a tag
 
@@ -440,11 +442,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.CollectionsTagsAPI.UpdateCollection(context.Background(), id).UpdateCollectionRequest(updateCollectionRequest).Execute()
+	resp, r, err := apiClient.CollectionsTagsAPI.UpdateCollection(context.Background(), id).UpdateCollectionRequest(updateCollectionRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `CollectionsTagsAPI.UpdateCollection``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `UpdateCollection`: CollectionUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `CollectionsTagsAPI.UpdateCollection`: %v\n", resp)
 }
 ```
 
@@ -468,7 +472,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CollectionUpdateResponse**](CollectionUpdateResponse.md)
 
 ### Authorization
 

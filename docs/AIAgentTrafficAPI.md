@@ -95,7 +95,7 @@ Name | Type | Description  | Notes
 
 ## GetAiTraffic
 
-> GetAiTraffic(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
+> AiTrafficResponse GetAiTraffic(ctx).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
 
 AI referral traffic (Scale plan or above)
 
@@ -124,11 +124,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AIAgentTrafficAPI.GetAiTraffic(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
+	resp, r, err := apiClient.AIAgentTrafficAPI.GetAiTraffic(context.Background()).ProjectId(projectId).Range_(range_).From(from).To(to).Source(source).Granularity(granularity).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AIAgentTrafficAPI.GetAiTraffic``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetAiTraffic`: AiTrafficResponse
+	fmt.Fprintf(os.Stdout, "Response from `AIAgentTrafficAPI.GetAiTraffic`: %v\n", resp)
 }
 ```
 
@@ -152,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AiTrafficResponse**](AiTrafficResponse.md)
 
 ### Authorization
 

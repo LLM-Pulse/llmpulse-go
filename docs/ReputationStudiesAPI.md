@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 
 ## GetReputationReport
 
-> GetReputationReport(ctx, id).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).Brand(brand).Dimension(dimension).Output(output).Execute()
+> ReputationReportScoresResponse GetReputationReport(ctx, id).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).Brand(brand).Dimension(dimension).Output(output).Execute()
 
 Get reputation report scores
 
@@ -111,11 +111,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReputationStudiesAPI.GetReputationReport(context.Background(), id).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).Brand(brand).Dimension(dimension).Output(output).Execute()
+	resp, r, err := apiClient.ReputationStudiesAPI.GetReputationReport(context.Background(), id).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).Brand(brand).Dimension(dimension).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.GetReputationReport``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetReputationReport`: ReputationReportScoresResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.GetReputationReport`: %v\n", resp)
 }
 ```
 
@@ -145,7 +147,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ReputationReportScoresResponse**](ReputationReportScoresResponse.md)
 
 ### Authorization
 
@@ -163,7 +165,7 @@ Name | Type | Description  | Notes
 
 ## GetStudy
 
-> GetStudy(ctx, id).Execute()
+> StudyResponse GetStudy(ctx, id).Execute()
 
 Get a custom AI study
 
@@ -186,11 +188,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReputationStudiesAPI.GetStudy(context.Background(), id).Execute()
+	resp, r, err := apiClient.ReputationStudiesAPI.GetStudy(context.Background(), id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.GetStudy``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetStudy`: StudyResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.GetStudy`: %v\n", resp)
 }
 ```
 
@@ -213,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**StudyResponse**](StudyResponse.md)
 
 ### Authorization
 
@@ -231,7 +235,7 @@ Name | Type | Description  | Notes
 
 ## GetStudyReport
 
-> GetStudyReport(ctx, id, reportId).Page(page).PerPage(perPage).Model(model).Subject(subject).Dimension(dimension).Output(output).Execute()
+> StudyReportScoresResponse GetStudyReport(ctx, id, reportId).Page(page).PerPage(perPage).Model(model).Subject(subject).Dimension(dimension).Output(output).Execute()
 
 Get custom study report scores
 
@@ -261,11 +265,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReputationStudiesAPI.GetStudyReport(context.Background(), id, reportId).Page(page).PerPage(perPage).Model(model).Subject(subject).Dimension(dimension).Output(output).Execute()
+	resp, r, err := apiClient.ReputationStudiesAPI.GetStudyReport(context.Background(), id, reportId).Page(page).PerPage(perPage).Model(model).Subject(subject).Dimension(dimension).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.GetStudyReport``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetStudyReport`: StudyReportScoresResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.GetStudyReport`: %v\n", resp)
 }
 ```
 
@@ -296,7 +302,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**StudyReportScoresResponse**](StudyReportScoresResponse.md)
 
 ### Authorization
 
@@ -314,7 +320,7 @@ Name | Type | Description  | Notes
 
 ## ListReputationReports
 
-> ListReputationReports(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Output(output).Execute()
+> ReputationReportsResponse ListReputationReports(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Output(output).Execute()
 
 List reputation reports
 
@@ -340,11 +346,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReputationStudiesAPI.ListReputationReports(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Output(output).Execute()
+	resp, r, err := apiClient.ReputationStudiesAPI.ListReputationReports(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.ListReputationReports``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListReputationReports`: ReputationReportsResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.ListReputationReports`: %v\n", resp)
 }
 ```
 
@@ -366,7 +374,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ReputationReportsResponse**](ReputationReportsResponse.md)
 
 ### Authorization
 
@@ -375,7 +383,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
@@ -384,7 +392,7 @@ Name | Type | Description  | Notes
 
 ## ListStudies
 
-> ListStudies(ctx).ProjectId(projectId).Status(status).Page(page).PerPage(perPage).Output(output).Execute()
+> StudiesResponse ListStudies(ctx).ProjectId(projectId).Status(status).Page(page).PerPage(perPage).Output(output).Execute()
 
 List custom AI studies
 
@@ -411,11 +419,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReputationStudiesAPI.ListStudies(context.Background()).ProjectId(projectId).Status(status).Page(page).PerPage(perPage).Output(output).Execute()
+	resp, r, err := apiClient.ReputationStudiesAPI.ListStudies(context.Background()).ProjectId(projectId).Status(status).Page(page).PerPage(perPage).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReputationStudiesAPI.ListStudies``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListStudies`: StudiesResponse
+	fmt.Fprintf(os.Stdout, "Response from `ReputationStudiesAPI.ListStudies`: %v\n", resp)
 }
 ```
 
@@ -438,7 +448,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**StudiesResponse**](StudiesResponse.md)
 
 ### Authorization
 
@@ -447,7 +457,7 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)

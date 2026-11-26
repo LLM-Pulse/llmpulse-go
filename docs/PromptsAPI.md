@@ -219,7 +219,7 @@ Name | Type | Description  | Notes
 
 ## DeletePrompt
 
-> DeletePrompt(ctx, id).ProjectId(projectId).Execute()
+> PromptDeleteResponse DeletePrompt(ctx, id).ProjectId(projectId).Execute()
 
 Delete a prompt
 
@@ -243,11 +243,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PromptsAPI.DeletePrompt(context.Background(), id).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.PromptsAPI.DeletePrompt(context.Background(), id).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.DeletePrompt``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `DeletePrompt`: PromptDeleteResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.DeletePrompt`: %v\n", resp)
 }
 ```
 
@@ -271,7 +273,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**PromptDeleteResponse**](PromptDeleteResponse.md)
 
 ### Authorization
 
@@ -611,7 +613,7 @@ Name | Type | Description  | Notes
 
 ## ListQueryFanOuts
 
-> ListQueryFanOuts(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+> QueryFanOutsResponse ListQueryFanOuts(ctx).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 
 List query fan-out
 
@@ -652,11 +654,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.PromptsAPI.ListQueryFanOuts(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
+	resp, r, err := apiClient.PromptsAPI.ListQueryFanOuts(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).View(view).Order(order).Direction(direction).Query(query).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).Range_(range_).From(from).To(to).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ListQueryFanOuts``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListQueryFanOuts`: QueryFanOutsResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ListQueryFanOuts`: %v\n", resp)
 }
 ```
 
@@ -692,7 +696,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**QueryFanOutsResponse**](QueryFanOutsResponse.md)
 
 ### Authorization
 

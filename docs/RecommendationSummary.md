@@ -14,14 +14,14 @@ Name | Type | Description | Notes
 **UpdatedAt** | **time.Time** |  | 
 **TotalRecommendations** | **int32** |  | 
 **HighPriorityCount** | **int32** |  | 
-**Summary** | [**RecommendationSummarySummary**](RecommendationSummarySummary.md) |  | 
+**Summary** | [**RecommendationDetailResponseSummary**](RecommendationDetailResponseSummary.md) |  | 
 **Context** | **map[string]interface{}** | Generation context and run diagnostics as stored; empty until the generation completes. Its keys are not a stable contract | 
 
 ## Methods
 
 ### NewRecommendationSummary
 
-`func NewRecommendationSummary(id int32, projectId int32, recommendationType string, status string, errorMessage NullableString, generatedAt NullableTime, createdAt time.Time, updatedAt time.Time, totalRecommendations int32, highPriorityCount int32, summary RecommendationSummarySummary, context map[string]interface{}, ) *RecommendationSummary`
+`func NewRecommendationSummary(id int32, projectId int32, recommendationType string, status string, errorMessage NullableString, generatedAt NullableTime, createdAt time.Time, updatedAt time.Time, totalRecommendations int32, highPriorityCount int32, summary RecommendationDetailResponseSummary, context map[string]interface{}, ) *RecommendationSummary`
 
 NewRecommendationSummary instantiates a new RecommendationSummary object
 This constructor will assign default values to properties that have it defined,
@@ -258,20 +258,20 @@ SetHighPriorityCount sets HighPriorityCount field to given value.
 
 ### GetSummary
 
-`func (o *RecommendationSummary) GetSummary() RecommendationSummarySummary`
+`func (o *RecommendationSummary) GetSummary() RecommendationDetailResponseSummary`
 
 GetSummary returns the Summary field if non-nil, zero value otherwise.
 
 ### GetSummaryOk
 
-`func (o *RecommendationSummary) GetSummaryOk() (*RecommendationSummarySummary, bool)`
+`func (o *RecommendationSummary) GetSummaryOk() (*RecommendationDetailResponseSummary, bool)`
 
 GetSummaryOk returns a tuple with the Summary field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSummary
 
-`func (o *RecommendationSummary) SetSummary(v RecommendationSummarySummary)`
+`func (o *RecommendationSummary) SetSummary(v RecommendationDetailResponseSummary)`
 
 SetSummary sets Summary field to given value.
 

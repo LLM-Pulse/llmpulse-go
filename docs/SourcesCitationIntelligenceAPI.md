@@ -232,7 +232,7 @@ Name | Type | Description  | Notes
 
 ## GetCitedUrlContent
 
-> GetCitedUrlContent(ctx, urlSha256).ProjectId(projectId).Execute()
+> CitedUrlContentResponse GetCitedUrlContent(ctx, urlSha256).ProjectId(projectId).Execute()
 
 Cited URL cached content
 
@@ -256,11 +256,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlContent(context.Background(), urlSha256).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlContent(context.Background(), urlSha256).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.GetCitedUrlContent``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetCitedUrlContent`: CitedUrlContentResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.GetCitedUrlContent`: %v\n", resp)
 }
 ```
 
@@ -284,7 +286,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitedUrlContentResponse**](CitedUrlContentResponse.md)
 
 ### Authorization
 
@@ -302,7 +304,7 @@ Name | Type | Description  | Notes
 
 ## GetCitedUrlDetail
 
-> GetCitedUrlDetail(ctx, urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
+> CitedUrlDetailsResponse GetCitedUrlDetail(ctx, urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
 
 Cited URL detail
 
@@ -339,11 +341,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlDetail(context.Background(), urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.GetCitedUrlDetail(context.Background(), urlSha256).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).IncludeSeries(includeSeries).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.GetCitedUrlDetail``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetCitedUrlDetail`: CitedUrlDetailsResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.GetCitedUrlDetail`: %v\n", resp)
 }
 ```
 
@@ -379,7 +383,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitedUrlDetailsResponse**](CitedUrlDetailsResponse.md)
 
 ### Authorization
 
@@ -397,7 +401,7 @@ Name | Type | Description  | Notes
 
 ## GetMentionsByCitingDomain
 
-> GetMentionsByCitingDomain(ctx).ProjectId(projectId).Domains(domains).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Execute()
+> CitingDomainMentionShareResponse GetMentionsByCitingDomain(ctx).ProjectId(projectId).Domains(domains).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Execute()
 
 Mention share by citing domain
 
@@ -430,11 +434,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.GetMentionsByCitingDomain(context.Background()).ProjectId(projectId).Domains(domains).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.GetMentionsByCitingDomain(context.Background()).ProjectId(projectId).Domains(domains).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.GetMentionsByCitingDomain``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetMentionsByCitingDomain`: CitingDomainMentionShareResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.GetMentionsByCitingDomain`: %v\n", resp)
 }
 ```
 
@@ -462,7 +468,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitingDomainMentionShareResponse**](CitingDomainMentionShareResponse.md)
 
 ### Authorization
 
@@ -581,7 +587,7 @@ Name | Type | Description  | Notes
 
 ## ListCitationGroups
 
-> ListCitationGroups(ctx).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
+> CitationGroupsResponse ListCitationGroups(ctx).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
 
 Grouped citation intelligence
 
@@ -624,11 +630,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitationGroups(context.Background()).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitationGroups(context.Background()).ProjectId(projectId).View(view).Page(page).PerPage(perPage).Order(order).Direction(direction).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).BrandKind(brandKind).From(from).To(to).Key(key).IncludeSeries(includeSeries).Query(query).SourceType(sourceType).Sentiment(sentiment).ContentGap(contentGap).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListCitationGroups``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCitationGroups`: CitationGroupsResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.ListCitationGroups`: %v\n", resp)
 }
 ```
 
@@ -666,7 +674,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitationGroupsResponse**](CitationGroupsResponse.md)
 
 ### Authorization
 
@@ -684,7 +692,7 @@ Name | Type | Description  | Notes
 
 ## ListCitedUrlOccurrences
 
-> ListCitedUrlOccurrences(ctx, urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
+> CitedUrlOccurrencesResponse ListCitedUrlOccurrences(ctx, urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
 
 Cited URL occurrences
 
@@ -709,11 +717,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences(context.Background(), urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences(context.Background(), urlSha256).ProjectId(projectId).Page(page).PerPage(perPage).Sentiment(sentiment).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListCitedUrlOccurrences`: CitedUrlOccurrencesResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.ListCitedUrlOccurrences`: %v\n", resp)
 }
 ```
 
@@ -740,7 +750,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**CitedUrlOccurrencesResponse**](CitedUrlOccurrencesResponse.md)
 
 ### Authorization
 
@@ -758,7 +768,7 @@ Name | Type | Description  | Notes
 
 ## ListSources
 
-> ListSources(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).SourceType(sourceType).MentionFilter(mentionFilter).Competitors(competitors).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+> SourcesResponse ListSources(ctx).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).SourceType(sourceType).MentionFilter(mentionFilter).Competitors(competitors).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 
 List source URLs
 
@@ -796,11 +806,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SourcesCitationIntelligenceAPI.ListSources(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).SourceType(sourceType).MentionFilter(mentionFilter).Competitors(competitors).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
+	resp, r, err := apiClient.SourcesCitationIntelligenceAPI.ListSources(context.Background()).ProjectId(projectId).Page(page).PerPage(perPage).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).From(from).To(to).SourceType(sourceType).MentionFilter(mentionFilter).Competitors(competitors).Output(output).PromptType(promptType).BrandKind(brandKind).Range_(range_).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SourcesCitationIntelligenceAPI.ListSources``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListSources`: SourcesResponse
+	fmt.Fprintf(os.Stdout, "Response from `SourcesCitationIntelligenceAPI.ListSources`: %v\n", resp)
 }
 ```
 
@@ -835,7 +847,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**SourcesResponse**](SourcesResponse.md)
 
 ### Authorization
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,7 +35,7 @@ func (r ApiCreateTechnicalGeoReportsRequest) CreateTechnicalGeoReportsRequest(cr
 	return r
 }
 
-func (r ApiCreateTechnicalGeoReportsRequest) Execute() (*http.Response, error) {
+func (r ApiCreateTechnicalGeoReportsRequest) Execute() (*TechnicalGeoReportsCreateResponse, *http.Response, error) {
 	return r.ApiService.CreateTechnicalGeoReportsExecute(r)
 }
 
@@ -55,16 +55,18 @@ func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReports(ctx context.Co
 }
 
 // Execute executes the request
-func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCreateTechnicalGeoReportsRequest) (*http.Response, error) {
+//  @return TechnicalGeoReportsCreateResponse
+func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCreateTechnicalGeoReportsRequest) (*TechnicalGeoReportsCreateResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *TechnicalGeoReportsCreateResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.CreateTechnicalGeoReports")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/technical_geo_reports"
@@ -73,7 +75,7 @@ func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCr
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.createTechnicalGeoReportsRequest == nil {
-		return nil, reportError("createTechnicalGeoReportsRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("createTechnicalGeoReportsRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -97,19 +99,19 @@ func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCr
 	localVarPostBody = r.createTechnicalGeoReportsRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -122,26 +124,35 @@ func (a *TechnicalGEOReportsAPIService) CreateTechnicalGeoReportsExecute(r ApiCr
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetTechnicalGeoReportRequest struct {
@@ -163,7 +174,7 @@ func (r ApiGetTechnicalGeoReportRequest) ReportType(reportType string) ApiGetTec
 	return r
 }
 
-func (r ApiGetTechnicalGeoReportRequest) Execute() (*http.Response, error) {
+func (r ApiGetTechnicalGeoReportRequest) Execute() (*TechnicalGeoReportResponse, *http.Response, error) {
 	return r.ApiService.GetTechnicalGeoReportExecute(r)
 }
 
@@ -185,16 +196,18 @@ func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReport(ctx context.Contex
 }
 
 // Execute executes the request
-func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTechnicalGeoReportRequest) (*http.Response, error) {
+//  @return TechnicalGeoReportResponse
+func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTechnicalGeoReportRequest) (*TechnicalGeoReportResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *TechnicalGeoReportResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.GetTechnicalGeoReport")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/technical_geo_reports/{id}"
@@ -204,10 +217,10 @@ func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTec
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 	if r.reportType == nil {
-		return nil, reportError("reportType is required and must be specified")
+		return localVarReturnValue, nil, reportError("reportType is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -231,19 +244,19 @@ func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTec
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -256,26 +269,35 @@ func (a *TechnicalGEOReportsAPIService) GetTechnicalGeoReportExecute(r ApiGetTec
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListTechnicalGeoReportsRequest struct {
@@ -322,7 +344,7 @@ func (r ApiListTechnicalGeoReportsRequest) PerPage(perPage int32) ApiListTechnic
 	return r
 }
 
-func (r ApiListTechnicalGeoReportsRequest) Execute() (*http.Response, error) {
+func (r ApiListTechnicalGeoReportsRequest) Execute() (*TechnicalGeoReportsResponse, *http.Response, error) {
 	return r.ApiService.ListTechnicalGeoReportsExecute(r)
 }
 
@@ -342,16 +364,18 @@ func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReports(ctx context.Cont
 }
 
 // Execute executes the request
-func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiListTechnicalGeoReportsRequest) (*http.Response, error) {
+//  @return TechnicalGeoReportsResponse
+func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiListTechnicalGeoReportsRequest) (*TechnicalGeoReportsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *TechnicalGeoReportsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TechnicalGEOReportsAPIService.ListTechnicalGeoReports")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/technical_geo_reports"
@@ -360,10 +384,10 @@ func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiList
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 	if r.reportType == nil {
-		return nil, reportError("reportType is required and must be specified")
+		return localVarReturnValue, nil, reportError("reportType is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -407,19 +431,19 @@ func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiList
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -432,15 +456,24 @@ func (a *TechnicalGEOReportsAPIService) ListTechnicalGeoReportsExecute(r ApiList
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiRevertTechnicalGeoReportContentRequest struct {

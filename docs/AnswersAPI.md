@@ -85,7 +85,7 @@ Name | Type | Description  | Notes
 
 ## ListAnswers
 
-> ListAnswers(ctx).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).From(from).To(to).Page(page).PerPage(perPage).Query(query).NoResult(noResult).Execute()
+> AnswersResponse ListAnswers(ctx).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).From(from).To(to).Page(page).PerPage(perPage).Query(query).NoResult(noResult).Execute()
 
 List AI responses
 
@@ -125,11 +125,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AnswersAPI.ListAnswers(context.Background()).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).From(from).To(to).Page(page).PerPage(perPage).Query(query).NoResult(noResult).Execute()
+	resp, r, err := apiClient.AnswersAPI.ListAnswers(context.Background()).ProjectId(projectId).Model(model).CollectionId(collectionId).CountryCode(countryCode).LanguageCode(languageCode).Prompt(prompt).PromptType(promptType).BrandKind(brandKind).MentionFilter(mentionFilter).CitationFilter(citationFilter).Competitors(competitors).From(from).To(to).Page(page).PerPage(perPage).Query(query).NoResult(noResult).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AnswersAPI.ListAnswers``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAnswers`: AnswersResponse
+	fmt.Fprintf(os.Stdout, "Response from `AnswersAPI.ListAnswers`: %v\n", resp)
 }
 ```
 
@@ -164,7 +166,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AnswersResponse**](AnswersResponse.md)
 
 ### Authorization
 

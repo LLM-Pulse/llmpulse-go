@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -230,7 +230,7 @@ func (r ApiGetReputationReportRequest) Output(output string) ApiGetReputationRep
 	return r
 }
 
-func (r ApiGetReputationReportRequest) Execute() (*http.Response, error) {
+func (r ApiGetReputationReportRequest) Execute() (*ReputationReportScoresResponse, *http.Response, error) {
 	return r.ApiService.GetReputationReportExecute(r)
 }
 
@@ -252,16 +252,18 @@ func (a *ReputationStudiesAPIService) GetReputationReport(ctx context.Context, i
 }
 
 // Execute executes the request
-func (a *ReputationStudiesAPIService) GetReputationReportExecute(r ApiGetReputationReportRequest) (*http.Response, error) {
+//  @return ReputationReportScoresResponse
+func (a *ReputationStudiesAPIService) GetReputationReportExecute(r ApiGetReputationReportRequest) (*ReputationReportScoresResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ReputationReportScoresResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ReputationStudiesAPIService.GetReputationReport")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/reputation/reports/{id}"
@@ -271,7 +273,7 @@ func (a *ReputationStudiesAPIService) GetReputationReportExecute(r ApiGetReputat
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -320,19 +322,19 @@ func (a *ReputationStudiesAPIService) GetReputationReportExecute(r ApiGetReputat
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -345,26 +347,35 @@ func (a *ReputationStudiesAPIService) GetReputationReportExecute(r ApiGetReputat
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetStudyRequest struct {
@@ -373,7 +384,7 @@ type ApiGetStudyRequest struct {
 	id int32
 }
 
-func (r ApiGetStudyRequest) Execute() (*http.Response, error) {
+func (r ApiGetStudyRequest) Execute() (*StudyResponse, *http.Response, error) {
 	return r.ApiService.GetStudyExecute(r)
 }
 
@@ -395,16 +406,18 @@ func (a *ReputationStudiesAPIService) GetStudy(ctx context.Context, id int32) Ap
 }
 
 // Execute executes the request
-func (a *ReputationStudiesAPIService) GetStudyExecute(r ApiGetStudyRequest) (*http.Response, error) {
+//  @return StudyResponse
+func (a *ReputationStudiesAPIService) GetStudyExecute(r ApiGetStudyRequest) (*StudyResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *StudyResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ReputationStudiesAPIService.GetStudy")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/studies/{id}"
@@ -433,19 +446,19 @@ func (a *ReputationStudiesAPIService) GetStudyExecute(r ApiGetStudyRequest) (*ht
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -458,15 +471,24 @@ func (a *ReputationStudiesAPIService) GetStudyExecute(r ApiGetStudyRequest) (*ht
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetStudyReportRequest struct {
@@ -516,7 +538,7 @@ func (r ApiGetStudyReportRequest) Output(output string) ApiGetStudyReportRequest
 	return r
 }
 
-func (r ApiGetStudyReportRequest) Execute() (*http.Response, error) {
+func (r ApiGetStudyReportRequest) Execute() (*StudyReportScoresResponse, *http.Response, error) {
 	return r.ApiService.GetStudyReportExecute(r)
 }
 
@@ -540,16 +562,18 @@ func (a *ReputationStudiesAPIService) GetStudyReport(ctx context.Context, id int
 }
 
 // Execute executes the request
-func (a *ReputationStudiesAPIService) GetStudyReportExecute(r ApiGetStudyReportRequest) (*http.Response, error) {
+//  @return StudyReportScoresResponse
+func (a *ReputationStudiesAPIService) GetStudyReportExecute(r ApiGetStudyReportRequest) (*StudyReportScoresResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *StudyReportScoresResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ReputationStudiesAPIService.GetStudyReport")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/studies/{id}/reports/{report_id}"
@@ -605,19 +629,19 @@ func (a *ReputationStudiesAPIService) GetStudyReportExecute(r ApiGetStudyReportR
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -630,26 +654,35 @@ func (a *ReputationStudiesAPIService) GetStudyReportExecute(r ApiGetStudyReportR
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListReputationReportsRequest struct {
@@ -683,7 +716,7 @@ func (r ApiListReputationReportsRequest) Output(output string) ApiListReputation
 	return r
 }
 
-func (r ApiListReputationReportsRequest) Execute() (*http.Response, error) {
+func (r ApiListReputationReportsRequest) Execute() (*ReputationReportsResponse, *http.Response, error) {
 	return r.ApiService.ListReputationReportsExecute(r)
 }
 
@@ -703,16 +736,18 @@ func (a *ReputationStudiesAPIService) ListReputationReports(ctx context.Context)
 }
 
 // Execute executes the request
-func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListReputationReportsRequest) (*http.Response, error) {
+//  @return ReputationReportsResponse
+func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListReputationReportsRequest) (*ReputationReportsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ReputationReportsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ReputationStudiesAPIService.ListReputationReports")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/reputation/reports"
@@ -721,7 +756,7 @@ func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListRepu
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -752,7 +787,7 @@ func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListRepu
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -761,19 +796,19 @@ func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListRepu
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -781,10 +816,19 @@ func (a *ReputationStudiesAPIService) ListReputationReportsExecute(r ApiListRepu
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListStudiesRequest struct {
@@ -824,7 +868,7 @@ func (r ApiListStudiesRequest) Output(output string) ApiListStudiesRequest {
 	return r
 }
 
-func (r ApiListStudiesRequest) Execute() (*http.Response, error) {
+func (r ApiListStudiesRequest) Execute() (*StudiesResponse, *http.Response, error) {
 	return r.ApiService.ListStudiesExecute(r)
 }
 
@@ -844,16 +888,18 @@ func (a *ReputationStudiesAPIService) ListStudies(ctx context.Context) ApiListSt
 }
 
 // Execute executes the request
-func (a *ReputationStudiesAPIService) ListStudiesExecute(r ApiListStudiesRequest) (*http.Response, error) {
+//  @return StudiesResponse
+func (a *ReputationStudiesAPIService) ListStudiesExecute(r ApiListStudiesRequest) (*StudiesResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *StudiesResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ReputationStudiesAPIService.ListStudies")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/studies"
@@ -895,7 +941,7 @@ func (a *ReputationStudiesAPIService) ListStudiesExecute(r ApiListStudiesRequest
 	}
 
 	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{}
+	localVarHTTPHeaderAccepts := []string{"application/json"}
 
 	// set Accept header
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
@@ -904,19 +950,19 @@ func (a *ReputationStudiesAPIService) ListStudiesExecute(r ApiListStudiesRequest
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -924,8 +970,17 @@ func (a *ReputationStudiesAPIService) ListStudiesExecute(r ApiListStudiesRequest
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

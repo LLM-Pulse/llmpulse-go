@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ## ListSentimentCategories
 
-> ListSentimentCategories(ctx).ProjectId(projectId).Output(output).Execute()
+> SentimentCategoriesResponse ListSentimentCategories(ctx).ProjectId(projectId).Output(output).Execute()
 
 List sentiment categories (Growth plan or above)
 
@@ -239,11 +239,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SentimentsAPI.ListSentimentCategories(context.Background()).ProjectId(projectId).Output(output).Execute()
+	resp, r, err := apiClient.SentimentsAPI.ListSentimentCategories(context.Background()).ProjectId(projectId).Output(output).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SentimentsAPI.ListSentimentCategories``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListSentimentCategories`: SentimentCategoriesResponse
+	fmt.Fprintf(os.Stdout, "Response from `SentimentsAPI.ListSentimentCategories`: %v\n", resp)
 }
 ```
 
@@ -263,7 +265,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**SentimentCategoriesResponse**](SentimentCategoriesResponse.md)
 
 ### Authorization
 

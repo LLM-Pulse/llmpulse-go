@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 ## DeleteAnnotation
 
-> DeleteAnnotation(ctx, id).ProjectId(projectId).Execute()
+> AnnotationDeleteResponse DeleteAnnotation(ctx, id).ProjectId(projectId).Execute()
 
 Delete a timeline annotation
 
@@ -103,11 +103,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AnnotationsAPI.DeleteAnnotation(context.Background(), id).ProjectId(projectId).Execute()
+	resp, r, err := apiClient.AnnotationsAPI.DeleteAnnotation(context.Background(), id).ProjectId(projectId).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AnnotationsAPI.DeleteAnnotation``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `DeleteAnnotation`: AnnotationDeleteResponse
+	fmt.Fprintf(os.Stdout, "Response from `AnnotationsAPI.DeleteAnnotation`: %v\n", resp)
 }
 ```
 
@@ -131,7 +133,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AnnotationDeleteResponse**](AnnotationDeleteResponse.md)
 
 ### Authorization
 
@@ -149,7 +151,7 @@ Name | Type | Description  | Notes
 
 ## ListAnnotations
 
-> ListAnnotations(ctx).ProjectId(projectId).From(from).To(to).AnnotationCategoryId(annotationCategoryId).Page(page).PerPage(perPage).Execute()
+> AnnotationsResponse ListAnnotations(ctx).ProjectId(projectId).From(from).To(to).AnnotationCategoryId(annotationCategoryId).Page(page).PerPage(perPage).Execute()
 
 List timeline annotations
 
@@ -178,11 +180,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AnnotationsAPI.ListAnnotations(context.Background()).ProjectId(projectId).From(from).To(to).AnnotationCategoryId(annotationCategoryId).Page(page).PerPage(perPage).Execute()
+	resp, r, err := apiClient.AnnotationsAPI.ListAnnotations(context.Background()).ProjectId(projectId).From(from).To(to).AnnotationCategoryId(annotationCategoryId).Page(page).PerPage(perPage).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AnnotationsAPI.ListAnnotations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ListAnnotations`: AnnotationsResponse
+	fmt.Fprintf(os.Stdout, "Response from `AnnotationsAPI.ListAnnotations`: %v\n", resp)
 }
 ```
 
@@ -206,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AnnotationsResponse**](AnnotationsResponse.md)
 
 ### Authorization
 
@@ -224,7 +228,7 @@ Name | Type | Description  | Notes
 
 ## UpdateAnnotation
 
-> UpdateAnnotation(ctx, id).UpdateAnnotationRequest(updateAnnotationRequest).Execute()
+> AnnotationUpdateResponse UpdateAnnotation(ctx, id).UpdateAnnotationRequest(updateAnnotationRequest).Execute()
 
 Update a timeline annotation
 
@@ -248,11 +252,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.AnnotationsAPI.UpdateAnnotation(context.Background(), id).UpdateAnnotationRequest(updateAnnotationRequest).Execute()
+	resp, r, err := apiClient.AnnotationsAPI.UpdateAnnotation(context.Background(), id).UpdateAnnotationRequest(updateAnnotationRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `AnnotationsAPI.UpdateAnnotation``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `UpdateAnnotation`: AnnotationUpdateResponse
+	fmt.Fprintf(os.Stdout, "Response from `AnnotationsAPI.UpdateAnnotation`: %v\n", resp)
 }
 ```
 
@@ -276,7 +282,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**AnnotationUpdateResponse**](AnnotationUpdateResponse.md)
 
 ### Authorization
 

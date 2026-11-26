@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 ## CreateProjectDraft
 
-> CreateProjectDraft(ctx).CreateProjectDraftRequest(createProjectDraftRequest).Execute()
+> ProjectDraftResponse CreateProjectDraft(ctx).CreateProjectDraftRequest(createProjectDraftRequest).Execute()
 
 Start a project draft (wizard step 1)
 
@@ -109,11 +109,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.CreateProjectDraft(context.Background()).CreateProjectDraftRequest(createProjectDraftRequest).Execute()
+	resp, r, err := apiClient.ProjectsAPI.CreateProjectDraft(context.Background()).CreateProjectDraftRequest(createProjectDraftRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.CreateProjectDraft``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `CreateProjectDraft`: ProjectDraftResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.CreateProjectDraft`: %v\n", resp)
 }
 ```
 
@@ -132,7 +134,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ProjectDraftResponse**](ProjectDraftResponse.md)
 
 ### Authorization
 
@@ -360,7 +362,7 @@ Name | Type | Description  | Notes
 
 ## GetProjectDraft
 
-> GetProjectDraft(ctx, id).IncludeSuggestions(includeSuggestions).Execute()
+> ProjectDraftResponse GetProjectDraft(ctx, id).IncludeSuggestions(includeSuggestions).Execute()
 
 Read a project draft
 
@@ -382,11 +384,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.GetProjectDraft(context.Background(), id).IncludeSuggestions(includeSuggestions).Execute()
+	resp, r, err := apiClient.ProjectsAPI.GetProjectDraft(context.Background(), id).IncludeSuggestions(includeSuggestions).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.GetProjectDraft``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetProjectDraft`: ProjectDraftResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.GetProjectDraft`: %v\n", resp)
 }
 ```
 
@@ -410,7 +414,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ProjectDraftResponse**](ProjectDraftResponse.md)
 
 ### Authorization
 
@@ -696,7 +700,7 @@ Name | Type | Description  | Notes
 
 ## UpdateProjectDraft
 
-> UpdateProjectDraft(ctx, id).UpdateProjectDraftRequest(updateProjectDraftRequest).Execute()
+> ProjectDraftResponse UpdateProjectDraft(ctx, id).UpdateProjectDraftRequest(updateProjectDraftRequest).Execute()
 
 Submit a wizard step
 
@@ -720,11 +724,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ProjectsAPI.UpdateProjectDraft(context.Background(), id).UpdateProjectDraftRequest(updateProjectDraftRequest).Execute()
+	resp, r, err := apiClient.ProjectsAPI.UpdateProjectDraft(context.Background(), id).UpdateProjectDraftRequest(updateProjectDraftRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ProjectsAPI.UpdateProjectDraft``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `UpdateProjectDraft`: ProjectDraftResponse
+	fmt.Fprintf(os.Stdout, "Response from `ProjectsAPI.UpdateProjectDraft`: %v\n", resp)
 }
 ```
 
@@ -748,7 +754,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**ProjectDraftResponse**](ProjectDraftResponse.md)
 
 ### Authorization
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -35,7 +35,7 @@ type RecommendationSummary struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	TotalRecommendations int32 `json:"total_recommendations"`
 	HighPriorityCount int32 `json:"high_priority_count"`
-	Summary RecommendationSummarySummary `json:"summary"`
+	Summary RecommendationDetailResponseSummary `json:"summary"`
 	// Generation context and run diagnostics as stored; empty until the generation completes. Its keys are not a stable contract
 	Context map[string]interface{} `json:"context"`
 }
@@ -46,7 +46,7 @@ type _RecommendationSummary RecommendationSummary
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewRecommendationSummary(id int32, projectId int32, recommendationType string, status string, errorMessage NullableString, generatedAt NullableTime, createdAt time.Time, updatedAt time.Time, totalRecommendations int32, highPriorityCount int32, summary RecommendationSummarySummary, context map[string]interface{}) *RecommendationSummary {
+func NewRecommendationSummary(id int32, projectId int32, recommendationType string, status string, errorMessage NullableString, generatedAt NullableTime, createdAt time.Time, updatedAt time.Time, totalRecommendations int32, highPriorityCount int32, summary RecommendationDetailResponseSummary, context map[string]interface{}) *RecommendationSummary {
 	this := RecommendationSummary{}
 	this.Id = id
 	this.ProjectId = projectId
@@ -316,9 +316,9 @@ func (o *RecommendationSummary) SetHighPriorityCount(v int32) {
 }
 
 // GetSummary returns the Summary field value
-func (o *RecommendationSummary) GetSummary() RecommendationSummarySummary {
+func (o *RecommendationSummary) GetSummary() RecommendationDetailResponseSummary {
 	if o == nil {
-		var ret RecommendationSummarySummary
+		var ret RecommendationDetailResponseSummary
 		return ret
 	}
 
@@ -327,7 +327,7 @@ func (o *RecommendationSummary) GetSummary() RecommendationSummarySummary {
 
 // GetSummaryOk returns a tuple with the Summary field value
 // and a boolean to check if the value has been set.
-func (o *RecommendationSummary) GetSummaryOk() (*RecommendationSummarySummary, bool) {
+func (o *RecommendationSummary) GetSummaryOk() (*RecommendationDetailResponseSummary, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -335,7 +335,7 @@ func (o *RecommendationSummary) GetSummaryOk() (*RecommendationSummarySummary, b
 }
 
 // SetSummary sets field value
-func (o *RecommendationSummary) SetSummary(v RecommendationSummarySummary) {
+func (o *RecommendationSummary) SetSummary(v RecommendationDetailResponseSummary) {
 	o.Summary = v
 }
 

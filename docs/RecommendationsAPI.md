@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## GetRecommendation
 
-> GetRecommendation(ctx, id).ProjectId(projectId).ItemStatus(itemStatus).ResolveSourceRefs(resolveSourceRefs).Execute()
+> RecommendationDetailResponse GetRecommendation(ctx, id).ProjectId(projectId).ItemStatus(itemStatus).ResolveSourceRefs(resolveSourceRefs).Execute()
 
 Get recommendation run with items
 
@@ -37,11 +37,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.RecommendationsAPI.GetRecommendation(context.Background(), id).ProjectId(projectId).ItemStatus(itemStatus).ResolveSourceRefs(resolveSourceRefs).Execute()
+	resp, r, err := apiClient.RecommendationsAPI.GetRecommendation(context.Background(), id).ProjectId(projectId).ItemStatus(itemStatus).ResolveSourceRefs(resolveSourceRefs).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `RecommendationsAPI.GetRecommendation``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `GetRecommendation`: RecommendationDetailResponse
+	fmt.Fprintf(os.Stdout, "Response from `RecommendationsAPI.GetRecommendation`: %v\n", resp)
 }
 ```
 
@@ -67,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**RecommendationDetailResponse**](RecommendationDetailResponse.md)
 
 ### Authorization
 
@@ -85,7 +87,7 @@ Name | Type | Description  | Notes
 
 ## LaunchRecommendations
 
-> LaunchRecommendations(ctx).LaunchRecommendationsRequest(launchRecommendationsRequest).Execute()
+> RecommendationLaunchResponse LaunchRecommendations(ctx).LaunchRecommendationsRequest(launchRecommendationsRequest).Execute()
 
 Launch a recommendations generation
 
@@ -108,11 +110,13 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.RecommendationsAPI.LaunchRecommendations(context.Background()).LaunchRecommendationsRequest(launchRecommendationsRequest).Execute()
+	resp, r, err := apiClient.RecommendationsAPI.LaunchRecommendations(context.Background()).LaunchRecommendationsRequest(launchRecommendationsRequest).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `RecommendationsAPI.LaunchRecommendations``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `LaunchRecommendations`: RecommendationLaunchResponse
+	fmt.Fprintf(os.Stdout, "Response from `RecommendationsAPI.LaunchRecommendations`: %v\n", resp)
 }
 ```
 
@@ -131,7 +135,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
- (empty response body)
+[**RecommendationLaunchResponse**](RecommendationLaunchResponse.md)
 
 ### Authorization
 

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -166,7 +166,7 @@ func (r ApiCreateProjectDraftRequest) CreateProjectDraftRequest(createProjectDra
 	return r
 }
 
-func (r ApiCreateProjectDraftRequest) Execute() (*http.Response, error) {
+func (r ApiCreateProjectDraftRequest) Execute() (*ProjectDraftResponse, *http.Response, error) {
 	return r.ApiService.CreateProjectDraftExecute(r)
 }
 
@@ -186,16 +186,18 @@ func (a *ProjectsAPIService) CreateProjectDraft(ctx context.Context) ApiCreatePr
 }
 
 // Execute executes the request
-func (a *ProjectsAPIService) CreateProjectDraftExecute(r ApiCreateProjectDraftRequest) (*http.Response, error) {
+//  @return ProjectDraftResponse
+func (a *ProjectsAPIService) CreateProjectDraftExecute(r ApiCreateProjectDraftRequest) (*ProjectDraftResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ProjectDraftResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.CreateProjectDraft")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/project_drafts"
@@ -204,7 +206,7 @@ func (a *ProjectsAPIService) CreateProjectDraftExecute(r ApiCreateProjectDraftRe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.createProjectDraftRequest == nil {
-		return nil, reportError("createProjectDraftRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("createProjectDraftRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -228,19 +230,19 @@ func (a *ProjectsAPIService) CreateProjectDraftExecute(r ApiCreateProjectDraftRe
 	localVarPostBody = r.createProjectDraftRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -253,26 +255,35 @@ func (a *ProjectsAPIService) CreateProjectDraftExecute(r ApiCreateProjectDraftRe
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiDeleteProjectRequest struct {
@@ -657,7 +668,7 @@ func (r ApiGetProjectDraftRequest) IncludeSuggestions(includeSuggestions bool) A
 	return r
 }
 
-func (r ApiGetProjectDraftRequest) Execute() (*http.Response, error) {
+func (r ApiGetProjectDraftRequest) Execute() (*ProjectDraftResponse, *http.Response, error) {
 	return r.ApiService.GetProjectDraftExecute(r)
 }
 
@@ -677,16 +688,18 @@ func (a *ProjectsAPIService) GetProjectDraft(ctx context.Context, id string) Api
 }
 
 // Execute executes the request
-func (a *ProjectsAPIService) GetProjectDraftExecute(r ApiGetProjectDraftRequest) (*http.Response, error) {
+//  @return ProjectDraftResponse
+func (a *ProjectsAPIService) GetProjectDraftExecute(r ApiGetProjectDraftRequest) (*ProjectDraftResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ProjectDraftResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.GetProjectDraft")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/project_drafts/{id}"
@@ -722,19 +735,19 @@ func (a *ProjectsAPIService) GetProjectDraftExecute(r ApiGetProjectDraftRequest)
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -747,26 +760,35 @@ func (a *ProjectsAPIService) GetProjectDraftExecute(r ApiGetProjectDraftRequest)
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListLocalesRequest struct {
@@ -1266,7 +1288,7 @@ func (r ApiUpdateProjectDraftRequest) UpdateProjectDraftRequest(updateProjectDra
 	return r
 }
 
-func (r ApiUpdateProjectDraftRequest) Execute() (*http.Response, error) {
+func (r ApiUpdateProjectDraftRequest) Execute() (*ProjectDraftResponse, *http.Response, error) {
 	return r.ApiService.UpdateProjectDraftExecute(r)
 }
 
@@ -1288,16 +1310,18 @@ func (a *ProjectsAPIService) UpdateProjectDraft(ctx context.Context, id string) 
 }
 
 // Execute executes the request
-func (a *ProjectsAPIService) UpdateProjectDraftExecute(r ApiUpdateProjectDraftRequest) (*http.Response, error) {
+//  @return ProjectDraftResponse
+func (a *ProjectsAPIService) UpdateProjectDraftExecute(r ApiUpdateProjectDraftRequest) (*ProjectDraftResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *ProjectDraftResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProjectsAPIService.UpdateProjectDraft")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/project_drafts/{id}"
@@ -1307,7 +1331,7 @@ func (a *ProjectsAPIService) UpdateProjectDraftExecute(r ApiUpdateProjectDraftRe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.updateProjectDraftRequest == nil {
-		return nil, reportError("updateProjectDraftRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("updateProjectDraftRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -1331,19 +1355,19 @@ func (a *ProjectsAPIService) UpdateProjectDraftExecute(r ApiUpdateProjectDraftRe
 	localVarPostBody = r.updateProjectDraftRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1356,35 +1380,44 @@ func (a *ProjectsAPIService) UpdateProjectDraftExecute(r ApiUpdateProjectDraftRe
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -450,7 +450,7 @@ func (r ApiGetCitedUrlContentRequest) ProjectId(projectId int32) ApiGetCitedUrlC
 	return r
 }
 
-func (r ApiGetCitedUrlContentRequest) Execute() (*http.Response, error) {
+func (r ApiGetCitedUrlContentRequest) Execute() (*CitedUrlContentResponse, *http.Response, error) {
 	return r.ApiService.GetCitedUrlContentExecute(r)
 }
 
@@ -472,16 +472,18 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContent(ctx context.C
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiGetCitedUrlContentRequest) (*http.Response, error) {
+//  @return CitedUrlContentResponse
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiGetCitedUrlContentRequest) (*CitedUrlContentResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitedUrlContentResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetCitedUrlContent")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/citation_intelligence/urls/{url_sha256}/content"
@@ -491,7 +493,7 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiG
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -514,19 +516,19 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiG
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -539,15 +541,24 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlContentExecute(r ApiG
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetCitedUrlDetailRequest struct {
@@ -645,7 +656,7 @@ func (r ApiGetCitedUrlDetailRequest) IncludeSeries(includeSeries bool) ApiGetCit
 	return r
 }
 
-func (r ApiGetCitedUrlDetailRequest) Execute() (*http.Response, error) {
+func (r ApiGetCitedUrlDetailRequest) Execute() (*CitedUrlDetailsResponse, *http.Response, error) {
 	return r.ApiService.GetCitedUrlDetailExecute(r)
 }
 
@@ -667,16 +678,18 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetail(ctx context.Co
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGetCitedUrlDetailRequest) (*http.Response, error) {
+//  @return CitedUrlDetailsResponse
+func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGetCitedUrlDetailRequest) (*CitedUrlDetailsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitedUrlDetailsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetCitedUrlDetail")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/citation_intelligence/urls/{url_sha256}"
@@ -686,7 +699,7 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGe
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -749,19 +762,19 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGe
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -774,26 +787,35 @@ func (a *SourcesCitationIntelligenceAPIService) GetCitedUrlDetailExecute(r ApiGe
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetMentionsByCitingDomainRequest struct {
@@ -870,7 +892,7 @@ func (r ApiGetMentionsByCitingDomainRequest) To(to time.Time) ApiGetMentionsByCi
 	return r
 }
 
-func (r ApiGetMentionsByCitingDomainRequest) Execute() (*http.Response, error) {
+func (r ApiGetMentionsByCitingDomainRequest) Execute() (*CitingDomainMentionShareResponse, *http.Response, error) {
 	return r.ApiService.GetMentionsByCitingDomainExecute(r)
 }
 
@@ -890,16 +912,18 @@ func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomain(ctx co
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiGetMentionsByCitingDomainRequest) (*http.Response, error) {
+//  @return CitingDomainMentionShareResponse
+func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute(r ApiGetMentionsByCitingDomainRequest) (*CitingDomainMentionShareResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitingDomainMentionShareResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.GetMentionsByCitingDomain")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/citation_intelligence/mentions_by_domain"
@@ -908,10 +932,10 @@ func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 	if r.domains == nil {
-		return nil, reportError("domains is required and must be specified")
+		return localVarReturnValue, nil, reportError("domains is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -959,19 +983,19 @@ func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -984,15 +1008,24 @@ func (a *SourcesCitationIntelligenceAPIService) GetMentionsByCitingDomainExecute
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiGetUrlListRequest struct {
@@ -1429,7 +1462,7 @@ func (r ApiListCitationGroupsRequest) ContentGap(contentGap string) ApiListCitat
 	return r
 }
 
-func (r ApiListCitationGroupsRequest) Execute() (*http.Response, error) {
+func (r ApiListCitationGroupsRequest) Execute() (*CitationGroupsResponse, *http.Response, error) {
 	return r.ApiService.ListCitationGroupsExecute(r)
 }
 
@@ -1449,16 +1482,18 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroups(ctx context.C
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiListCitationGroupsRequest) (*http.Response, error) {
+//  @return CitationGroupsResponse
+func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiListCitationGroupsRequest) (*CitationGroupsResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitationGroupsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListCitationGroups")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/citation_intelligence/groups"
@@ -1467,7 +1502,7 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiL
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -1563,19 +1598,19 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiL
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1588,26 +1623,35 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitationGroupsExecute(r ApiL
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListCitedUrlOccurrencesRequest struct {
@@ -1642,7 +1686,7 @@ func (r ApiListCitedUrlOccurrencesRequest) Sentiment(sentiment string) ApiListCi
 	return r
 }
 
-func (r ApiListCitedUrlOccurrencesRequest) Execute() (*http.Response, error) {
+func (r ApiListCitedUrlOccurrencesRequest) Execute() (*CitedUrlOccurrencesResponse, *http.Response, error) {
 	return r.ApiService.ListCitedUrlOccurrencesExecute(r)
 }
 
@@ -1662,16 +1706,18 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrences(ctx cont
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r ApiListCitedUrlOccurrencesRequest) (*http.Response, error) {
+//  @return CitedUrlOccurrencesResponse
+func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r ApiListCitedUrlOccurrencesRequest) (*CitedUrlOccurrencesResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *CitedUrlOccurrencesResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListCitedUrlOccurrences")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/citation_intelligence/urls/{url_sha256}/occurrences"
@@ -1681,7 +1727,7 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -1721,19 +1767,19 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1746,26 +1792,35 @@ func (a *SourcesCitationIntelligenceAPIService) ListCitedUrlOccurrencesExecute(r
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListSourcesRequest struct {
@@ -1890,7 +1945,7 @@ func (r ApiListSourcesRequest) Range_(range_ int32) ApiListSourcesRequest {
 	return r
 }
 
-func (r ApiListSourcesRequest) Execute() (*http.Response, error) {
+func (r ApiListSourcesRequest) Execute() (*SourcesResponse, *http.Response, error) {
 	return r.ApiService.ListSourcesExecute(r)
 }
 
@@ -1908,16 +1963,18 @@ func (a *SourcesCitationIntelligenceAPIService) ListSources(ctx context.Context)
 }
 
 // Execute executes the request
-func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSourcesRequest) (*http.Response, error) {
+//  @return SourcesResponse
+func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSourcesRequest) (*SourcesResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *SourcesResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SourcesCitationIntelligenceAPIService.ListSources")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/dimensions/sources"
@@ -1926,7 +1983,7 @@ func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSour
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -2005,19 +2062,19 @@ func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSour
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -2030,15 +2087,24 @@ func (a *SourcesCitationIntelligenceAPIService) ListSourcesExecute(r ApiListSour
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListUrlListsRequest struct {

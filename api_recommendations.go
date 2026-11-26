@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.104.0
+API version: 1.105.0
 Contact: info@llmpulse.ai
 */
 
@@ -49,7 +49,7 @@ func (r ApiGetRecommendationRequest) ResolveSourceRefs(resolveSourceRefs bool) A
 	return r
 }
 
-func (r ApiGetRecommendationRequest) Execute() (*http.Response, error) {
+func (r ApiGetRecommendationRequest) Execute() (*RecommendationDetailResponse, *http.Response, error) {
 	return r.ApiService.GetRecommendationExecute(r)
 }
 
@@ -69,16 +69,18 @@ func (a *RecommendationsAPIService) GetRecommendation(ctx context.Context, id in
 }
 
 // Execute executes the request
-func (a *RecommendationsAPIService) GetRecommendationExecute(r ApiGetRecommendationRequest) (*http.Response, error) {
+//  @return RecommendationDetailResponse
+func (a *RecommendationsAPIService) GetRecommendationExecute(r ApiGetRecommendationRequest) (*RecommendationDetailResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *RecommendationDetailResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RecommendationsAPIService.GetRecommendation")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/recommendations/{id}"
@@ -88,7 +90,7 @@ func (a *RecommendationsAPIService) GetRecommendationExecute(r ApiGetRecommendat
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.projectId == nil {
-		return nil, reportError("projectId is required and must be specified")
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
 	}
 
 	parameterAddToHeaderOrQuery(localVarQueryParams, "project_id", r.projectId, "form", "")
@@ -121,19 +123,19 @@ func (a *RecommendationsAPIService) GetRecommendationExecute(r ApiGetRecommendat
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -146,15 +148,24 @@ func (a *RecommendationsAPIService) GetRecommendationExecute(r ApiGetRecommendat
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiLaunchRecommendationsRequest struct {
@@ -168,7 +179,7 @@ func (r ApiLaunchRecommendationsRequest) LaunchRecommendationsRequest(launchReco
 	return r
 }
 
-func (r ApiLaunchRecommendationsRequest) Execute() (*http.Response, error) {
+func (r ApiLaunchRecommendationsRequest) Execute() (*RecommendationLaunchResponse, *http.Response, error) {
 	return r.ApiService.LaunchRecommendationsExecute(r)
 }
 
@@ -188,16 +199,18 @@ func (a *RecommendationsAPIService) LaunchRecommendations(ctx context.Context) A
 }
 
 // Execute executes the request
-func (a *RecommendationsAPIService) LaunchRecommendationsExecute(r ApiLaunchRecommendationsRequest) (*http.Response, error) {
+//  @return RecommendationLaunchResponse
+func (a *RecommendationsAPIService) LaunchRecommendationsExecute(r ApiLaunchRecommendationsRequest) (*RecommendationLaunchResponse, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
+		localVarReturnValue  *RecommendationLaunchResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RecommendationsAPIService.LaunchRecommendations")
 	if err != nil {
-		return nil, &GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/recommendations"
@@ -206,7 +219,7 @@ func (a *RecommendationsAPIService) LaunchRecommendationsExecute(r ApiLaunchReco
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 	if r.launchRecommendationsRequest == nil {
-		return nil, reportError("launchRecommendationsRequest is required and must be specified")
+		return localVarReturnValue, nil, reportError("launchRecommendationsRequest is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -230,19 +243,19 @@ func (a *RecommendationsAPIService) LaunchRecommendationsExecute(r ApiLaunchReco
 	localVarPostBody = r.launchRecommendationsRequest
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
-		return nil, err
+		return localVarReturnValue, nil, err
 	}
 
 	localVarHTTPResponse, err := a.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
-		return localVarHTTPResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -255,26 +268,35 @@ func (a *RecommendationsAPIService) LaunchRecommendationsExecute(r ApiLaunchReco
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
-			return localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 422 {
 			var v ApiError
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
 					newErr.model = v
 		}
-		return localVarHTTPResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarHTTPResponse, nil
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 type ApiListRecommendationsRequest struct {
