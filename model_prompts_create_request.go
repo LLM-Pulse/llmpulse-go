@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.105.0
+API version: 1.106.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,6 +23,7 @@ var _ MappedNullable = &PromptsCreateRequest{}
 // PromptsCreateRequest struct for PromptsCreateRequest
 type PromptsCreateRequest struct {
 	ProjectId int32 `json:"project_id"`
+	// Prompt texts (max 100). Each can be up to 2,000 bytes of UTF-8 text (about 2,000 characters in English, fewer with accented letters or non-Latin scripts). A new prompt over that returns ERR_INVALID_PARAM with error.meta.reason prompt_too_long and creates none of the batch; a text the project already tracks still comes back as exists.
 	Prompts []string `json:"prompts"`
 	CountryCode string `json:"country_code"`
 	LanguageCode string `json:"language_code"`

@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.105.0
+API version: 1.106.0
 Contact: info@llmpulse.ai
 */
 
@@ -18,6 +18,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"os"
 	"time"
 )
 
@@ -43,7 +44,7 @@ func (r ApiAcceptSuggestedPromptsRequest) Execute() (*SuggestedPromptsAcceptResp
 /*
 AcceptSuggestedPrompts Accept suggested prompts
 
-Starts tracking up to 100 pending suggestions: each becomes a prompt in its own country and language, optionally put in one tag (tag_ids or tag_names; create_missing creates a missing name when the team member may create tags). Suggestions that are no longer pending come back in skipped. When the new prompts would exceed the plan the call returns ERR_LIMIT_REACHED and accepts nothing. The prompts of a launched pitch project are fixed, so accepting a suggestion returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. Requires a `read_write` scope API key and, for team members, create access to Prompts.
+Starts tracking up to 100 pending suggestions: each becomes a prompt in its own country and language, optionally put in one tag (tag_ids or tag_names; create_missing creates a missing name when the team member may create tags). Suggestions that are no longer pending come back in skipped, as does one that would be a new prompt over the 2,000-byte limit (reason prompt_too_long), which stays pending. When the new prompts would exceed the plan the call returns ERR_LIMIT_REACHED and accepts nothing. The prompts of a launched pitch project are fixed, so accepting a suggestion returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. Requires a `read_write` scope API key and, for team members, create access to Prompts.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiAcceptSuggestedPromptsRequest
@@ -327,7 +328,7 @@ func (r ApiCreatePromptsRequest) Execute() (*PromptsCreateResponse, *http.Respon
 /*
 CreatePrompts Bulk-create prompts
 
-Add prompts to a project in bulk (up to 100 per request). Validates the account prompt quota and skips duplicates. When the project does not run on the schedule (paused, or beyond the plan's project limit) the prompts are still created, and the response says so with `tracked` false, `untracked_reason` and a `warning`. New prompts get their first answers within about 24 hours. The first run is queued on creation and a nightly run at 00:00 Europe/Madrid picks up any prompt still without answers, as far as the account's allowance of AI answers for the cycle covers it. When the allowance left cannot give every new prompt one answer per enabled AI model, `first_runs_wait_until` gives the reset time when the rest run, with a `warning`. On an account that caps each project's executions at its prompt limit, the project's own share of the allowance counts the same way. A pitch project holds at most 100 prompts in all, deleted ones included (ERR_LIMIT_REACHED past that), and the prompts of a launched pitch project are fixed, so adding one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. Requires a `read_write` scope API key.
+Add prompts to a project in bulk (up to 100 per request). Validates the account prompt quota and skips duplicates. When the project does not run on the schedule (paused, or beyond the plan's project limit) the prompts are still created, and the response says so with `tracked` false, `untracked_reason` and a `warning`. New prompts get their first answers within about 24 hours. The first run is queued on creation and a nightly run at 00:00 Europe/Madrid picks up any prompt still without answers, as far as the account's allowance of AI answers for the cycle covers it. When the allowance left cannot give every new prompt one answer per enabled AI model, `first_runs_wait_until` gives the reset time when the rest run, with a `warning`. On an account that caps each project's executions at its prompt limit, the project's own share of the allowance counts the same way. A pitch project holds at most 100 prompts in all, deleted ones included (ERR_LIMIT_REACHED past that), and the prompts of a launched pitch project are fixed, so adding one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. A new prompt over 2,000 bytes returns ERR_INVALID_PARAM with error.meta.reason prompt_too_long (see prompts). Requires a `read_write` scope API key.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCreatePromptsRequest
@@ -721,6 +722,172 @@ func (a *PromptsAPIService) GetPromptGenerationExecute(r ApiGetPromptGenerationR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiImportPeecExportRequest struct {
+	ctx context.Context
+	ApiService *PromptsAPIService
+	projectId *int32
+	file *os.File
+}
+
+func (r ApiImportPeecExportRequest) ProjectId(projectId int32) ApiImportPeecExportRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// The answers export of Peec AI, a CSV of up to 8 MB and 20,000 answers
+func (r ApiImportPeecExportRequest) File(file *os.File) ApiImportPeecExportRequest {
+	r.file = file
+	return r
+}
+
+func (r ApiImportPeecExportRequest) Execute() (*PeecExportImportResponse, *http.Response, error) {
+	return r.ApiService.ImportPeecExportExecute(r)
+}
+
+/*
+ImportPeecExport Import a Peec AI export
+
+Not available yet: until file imports are enabled, the call returns ERR_INTEGRATION_UNAVAILABLE (403). Imports the answers export of Peec AI, sent as a multipart/form-data body with project_id and the file as a part named file: a CSV of up to 8 MB and 20,000 answers with Peec AI's column names (user, assistant, model, created, and optionally country and mentions). Every prompt of the file becomes a tracked prompt of the project, and each answer from an AI model the account tracks is filed as that week's answer for its model and analysed for mentions, sources and sentiment like a tracked one; answers from other models are skipped and listed in skipped_models. Competitors are not created: detected_brands lists the names the export mentions, to add with POST /competitors. The file is checked whole before anything is written: a file that cannot be read returns ERR_INVALID_PARAM with error.meta.reason file_missing, file_empty, file_too_large, columns_missing, models_not_tracked, nothing_to_import or too_large (more than 20,000 weekly answers: prompts x AI models x weeks), dates_out_of_range (an answer dated before 2022-11-30 or after today), answer_too_long (an answer over 50,000 characters) or prompt_too_long (a prompt over 2,000 bytes), or a message naming the problem. The prompt limits count only the prompts the project does not hold yet, together with those of the account's imports still finishing: when they would exceed the project or the plan, the call returns ERR_LIMIT_REACHED and imports nothing, so a full account can still add answers to the prompts it holds. The analysis is paid on-demand work, so an account that is not active gets ERR_ACCOUNT_INACTIVE. The import is planned in the request and finishes in the background, usually within minutes: 202 means it started, and app_url opens the project's prompts. The MCP tool import_peec_export takes the same file through the MCP files extension. Requires a `read_write` scope API key and, for team members, create access to Prompts.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiImportPeecExportRequest
+*/
+func (a *PromptsAPIService) ImportPeecExport(ctx context.Context) ApiImportPeecExportRequest {
+	return ApiImportPeecExportRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return PeecExportImportResponse
+func (a *PromptsAPIService) ImportPeecExportExecute(r ApiImportPeecExportRequest) (*PeecExportImportResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *PeecExportImportResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ImportPeecExport")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/prompts/import_peec_export"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+	if r.file == nil {
+		return localVarReturnValue, nil, reportError("file is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	parameterAddToHeaderOrQuery(localVarFormParams, "project_id", r.projectId, "", "")
+	var fileLocalVarFormFileName string
+	var fileLocalVarFileName     string
+	var fileLocalVarFileBytes    []byte
+
+	fileLocalVarFormFileName = "file"
+	fileLocalVarFile := r.file
+
+	if fileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(fileLocalVarFile)
+
+		fileLocalVarFileBytes = fbs
+		fileLocalVarFileName = fileLocalVarFile.Name()
+		fileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: fileLocalVarFileBytes, fileName: fileLocalVarFileName, formFileName: fileLocalVarFormFileName})
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiImportPromptsRequest struct {
 	ctx context.Context
 	ApiService *PromptsAPIService
@@ -739,7 +906,7 @@ func (r ApiImportPromptsRequest) Execute() (*PromptsImportResponse, *http.Respon
 /*
 ImportPrompts Import prompts
 
-The app's CSV import as JSON: up to 500 rows, each with its own prompt, country_code, language_code (codes or names; both default to the project's) and tags, created when missing. Duplicates are skipped and existing prompts still get the row's tags. The prompt limits are checked before anything is written: when the new prompts would exceed the plan the call returns ERR_LIMIT_REACHED and imports nothing. A row is skipped and comes back in row_errors when its country or language is unknown, when it would give a prompt more than 50 tags (rows repeating a prompt add up) or when its tags would take the request past 500 new tags. For a team member without create access to Tags, a row that needs a tag that does not exist yet is skipped and comes back in row_errors. For a team member without update access to Prompts, a row matching a prompt that already existed adds no tags to it, and comes back in row_errors when it would have added one. Responds 201 when it created prompts, 200 otherwise. The prompts of a launched pitch project are fixed, so importing one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. `tracked` false, with `untracked_reason` and a `warning`, means the project does not run on the schedule, so the imported prompts do not run until that changes. Imported prompts get their first answers within about 24 hours. The first run is queued on creation and a nightly run at 00:00 Europe/Madrid picks up any prompt still without answers, as far as the account's allowance of AI answers for the cycle covers it. When the allowance left cannot give every new prompt one answer per enabled AI model, `first_runs_wait_until` gives the reset time when the rest run, with a `warning`. On an account that caps each project's executions at its prompt limit, the project's own share of the allowance counts the same way. Requires a `read_write` scope API key and, for team members, create access to Prompts.
+The app's CSV import as JSON: up to 500 rows, each with its own prompt, country_code, language_code (codes or names; both default to the project's) and tags, created when missing. Duplicates are skipped and existing prompts still get the row's tags. The prompt limits are checked before anything is written: when the new prompts would exceed the plan the call returns ERR_LIMIT_REACHED and imports nothing. A row is skipped and comes back in row_errors when it would add a new prompt over 2,000 bytes, when its country or language is unknown, when it would give a prompt more than 50 tags (rows repeating a prompt add up) or when its tags would take the request past 500 new tags. For a team member without create access to Tags, a row that needs a tag that does not exist yet is skipped and comes back in row_errors. For a team member without update access to Prompts, a row matching a prompt that already existed adds no tags to it, and comes back in row_errors when it would have added one. Responds 201 when it created prompts, 200 otherwise. The prompts of a launched pitch project are fixed, so importing one returns ERR_INVALID_PARAM with error.meta.reason pitch_prompts_frozen. `tracked` false, with `untracked_reason` and a `warning`, means the project does not run on the schedule, so the imported prompts do not run until that changes. Imported prompts get their first answers within about 24 hours. The first run is queued on creation and a nightly run at 00:00 Europe/Madrid picks up any prompt still without answers, as far as the account's allowance of AI answers for the cycle covers it. When the allowance left cannot give every new prompt one answer per enabled AI model, `first_runs_wait_until` gives the reset time when the rest run, with a `warning`. On an account that caps each project's executions at its prompt limit, the project's own share of the allowance counts the same way. Requires a `read_write` scope API key and, for team members, create access to Prompts.
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiImportPromptsRequest
@@ -794,6 +961,172 @@ func (a *PromptsAPIService) ImportPromptsExecute(r ApiImportPromptsRequest) (*Pr
 	}
 	// body params
 	localVarPostBody = r.promptsImportRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 422 {
+			var v ApiError
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiImportPromptsFileRequest struct {
+	ctx context.Context
+	ApiService *PromptsAPIService
+	projectId *int32
+	file *os.File
+}
+
+func (r ApiImportPromptsFileRequest) ProjectId(projectId int32) ApiImportPromptsFileRequest {
+	r.projectId = &projectId
+	return r
+}
+
+// A CSV or .xlsx file (its first sheet is read) of up to 5 MB and 10,000 rows, with the columns of the app&#39;s CSV import
+func (r ApiImportPromptsFileRequest) File(file *os.File) ApiImportPromptsFileRequest {
+	r.file = file
+	return r
+}
+
+func (r ApiImportPromptsFileRequest) Execute() (*PromptsImportFileResponse, *http.Response, error) {
+	return r.ApiService.ImportPromptsFileExecute(r)
+}
+
+/*
+ImportPromptsFile Import prompts from a file
+
+Not available yet: until file imports are enabled, the call returns ERR_INTEGRATION_UNAVAILABLE (403). The app's CSV import with the file itself: a multipart/form-data body with project_id and the file as a part named file, a CSV or an .xlsx workbook (its first sheet) of up to 5 MB and 10,000 rows. The file is recognized by its bytes, never by its name or declared type, and formulas are never evaluated: a cell gives the value its spreadsheet saved. The columns are those of the app's import: prompt, then optional country, language and tags (separated by | or ,), under a header row or in that order; country and language take codes or names and default to the project's. Duplicates are skipped and existing prompts still get the row's tags. As in the app, the prompt limits count only the new prompts: when they would exceed the project or the plan, the call returns ERR_LIMIT_REACHED and imports nothing, so a full account can still tag the prompts it holds. A file that cannot be read returns ERR_INVALID_PARAM with error.meta.reason file_missing, file_empty or file_too_large, or a message naming the problem; rows that cannot be imported come back in row_errors, among them a row that would add a new prompt over 2,000 bytes. The MCP tool import_prompts_file takes the same file through the MCP files extension, so its rows never pass through the conversation. `tracked`, `warning` and `first_runs_wait_until` read as on POST /prompts/import. Requires a `read_write` scope API key and, for team members, create access to Prompts.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiImportPromptsFileRequest
+*/
+func (a *PromptsAPIService) ImportPromptsFile(ctx context.Context) ApiImportPromptsFileRequest {
+	return ApiImportPromptsFileRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return PromptsImportFileResponse
+func (a *PromptsAPIService) ImportPromptsFileExecute(r ApiImportPromptsFileRequest) (*PromptsImportFileResponse, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *PromptsImportFileResponse
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PromptsAPIService.ImportPromptsFile")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/prompts/import_file"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.projectId == nil {
+		return localVarReturnValue, nil, reportError("projectId is required and must be specified")
+	}
+	if r.file == nil {
+		return localVarReturnValue, nil, reportError("file is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	parameterAddToHeaderOrQuery(localVarFormParams, "project_id", r.projectId, "", "")
+	var fileLocalVarFormFileName string
+	var fileLocalVarFileName     string
+	var fileLocalVarFileBytes    []byte
+
+	fileLocalVarFormFileName = "file"
+	fileLocalVarFile := r.file
+
+	if fileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(fileLocalVarFile)
+
+		fileLocalVarFileBytes = fbs
+		fileLocalVarFileName = fileLocalVarFile.Name()
+		fileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: fileLocalVarFileBytes, fileName: fileLocalVarFileName, formFileName: fileLocalVarFormFileName})
+	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

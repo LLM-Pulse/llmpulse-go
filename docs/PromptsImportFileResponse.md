@@ -1,0 +1,374 @@
+# PromptsImportFileResponse
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**ProjectId** | **int32** |  | 
+**ProcessedRows** | **int32** | Distinct rows of the file imported or matched to an existing prompt | 
+**Created** | **int32** |  | 
+**Duplicates** | **int32** | Rows that matched an existing prompt (they still get the row&#39;s tags, unless a team member lacks update access to Prompts) | 
+**Tagged** | **int32** | New prompt-tag links | 
+**CreatedTags** | **int32** |  | 
+**RowErrors** | **[]string** | Rows of the file that were skipped or whose tags were not added, each a sentence naming its line in the file | 
+**LengthWarning** | **NullableString** | Which tracked AI models will skip new prompts that are too long for them | 
+**PromptsAvailable** | **NullableInt32** | Prompt slots left on the plan; null when unlimited | 
+**Tracked** | **bool** | Whether scheduled runs include the project the prompts were imported into. False when it is paused or beyond the plan&#39;s project limit, so the new prompts do not run until that changes | 
+**UntrackedReason** | **NullableString** | Why tracked is false: pitch_project, paused or project_limit. Null when tracked | 
+**Warning** | **NullableString** | What to do when tracked is false, or why some first runs wait when first_runs_wait_until is set. Null otherwise | 
+**FirstRunsWaitUntil** | **NullableTime** | Set when the account&#39;s allowance of AI answers left this cycle, or the project&#39;s own share of it when the account caps each project&#39;s executions, cannot give every new prompt one answer per enabled AI model, so the rest run when the allowance resets at this time (00:00 Europe/Madrid). It counts this request&#39;s prompts against what was left when it arrived, not first runs other requests queued moments earlier. Null otherwise, when the allowance is unlimited, when tracked is false or when the account is not active | 
+**RequestId** | **string** |  | 
+
+## Methods
+
+### NewPromptsImportFileResponse
+
+`func NewPromptsImportFileResponse(projectId int32, processedRows int32, created int32, duplicates int32, tagged int32, createdTags int32, rowErrors []string, lengthWarning NullableString, promptsAvailable NullableInt32, tracked bool, untrackedReason NullableString, warning NullableString, firstRunsWaitUntil NullableTime, requestId string, ) *PromptsImportFileResponse`
+
+NewPromptsImportFileResponse instantiates a new PromptsImportFileResponse object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewPromptsImportFileResponseWithDefaults
+
+`func NewPromptsImportFileResponseWithDefaults() *PromptsImportFileResponse`
+
+NewPromptsImportFileResponseWithDefaults instantiates a new PromptsImportFileResponse object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetProjectId
+
+`func (o *PromptsImportFileResponse) GetProjectId() int32`
+
+GetProjectId returns the ProjectId field if non-nil, zero value otherwise.
+
+### GetProjectIdOk
+
+`func (o *PromptsImportFileResponse) GetProjectIdOk() (*int32, bool)`
+
+GetProjectIdOk returns a tuple with the ProjectId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProjectId
+
+`func (o *PromptsImportFileResponse) SetProjectId(v int32)`
+
+SetProjectId sets ProjectId field to given value.
+
+
+### GetProcessedRows
+
+`func (o *PromptsImportFileResponse) GetProcessedRows() int32`
+
+GetProcessedRows returns the ProcessedRows field if non-nil, zero value otherwise.
+
+### GetProcessedRowsOk
+
+`func (o *PromptsImportFileResponse) GetProcessedRowsOk() (*int32, bool)`
+
+GetProcessedRowsOk returns a tuple with the ProcessedRows field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProcessedRows
+
+`func (o *PromptsImportFileResponse) SetProcessedRows(v int32)`
+
+SetProcessedRows sets ProcessedRows field to given value.
+
+
+### GetCreated
+
+`func (o *PromptsImportFileResponse) GetCreated() int32`
+
+GetCreated returns the Created field if non-nil, zero value otherwise.
+
+### GetCreatedOk
+
+`func (o *PromptsImportFileResponse) GetCreatedOk() (*int32, bool)`
+
+GetCreatedOk returns a tuple with the Created field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCreated
+
+`func (o *PromptsImportFileResponse) SetCreated(v int32)`
+
+SetCreated sets Created field to given value.
+
+
+### GetDuplicates
+
+`func (o *PromptsImportFileResponse) GetDuplicates() int32`
+
+GetDuplicates returns the Duplicates field if non-nil, zero value otherwise.
+
+### GetDuplicatesOk
+
+`func (o *PromptsImportFileResponse) GetDuplicatesOk() (*int32, bool)`
+
+GetDuplicatesOk returns a tuple with the Duplicates field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDuplicates
+
+`func (o *PromptsImportFileResponse) SetDuplicates(v int32)`
+
+SetDuplicates sets Duplicates field to given value.
+
+
+### GetTagged
+
+`func (o *PromptsImportFileResponse) GetTagged() int32`
+
+GetTagged returns the Tagged field if non-nil, zero value otherwise.
+
+### GetTaggedOk
+
+`func (o *PromptsImportFileResponse) GetTaggedOk() (*int32, bool)`
+
+GetTaggedOk returns a tuple with the Tagged field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTagged
+
+`func (o *PromptsImportFileResponse) SetTagged(v int32)`
+
+SetTagged sets Tagged field to given value.
+
+
+### GetCreatedTags
+
+`func (o *PromptsImportFileResponse) GetCreatedTags() int32`
+
+GetCreatedTags returns the CreatedTags field if non-nil, zero value otherwise.
+
+### GetCreatedTagsOk
+
+`func (o *PromptsImportFileResponse) GetCreatedTagsOk() (*int32, bool)`
+
+GetCreatedTagsOk returns a tuple with the CreatedTags field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCreatedTags
+
+`func (o *PromptsImportFileResponse) SetCreatedTags(v int32)`
+
+SetCreatedTags sets CreatedTags field to given value.
+
+
+### GetRowErrors
+
+`func (o *PromptsImportFileResponse) GetRowErrors() []string`
+
+GetRowErrors returns the RowErrors field if non-nil, zero value otherwise.
+
+### GetRowErrorsOk
+
+`func (o *PromptsImportFileResponse) GetRowErrorsOk() (*[]string, bool)`
+
+GetRowErrorsOk returns a tuple with the RowErrors field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRowErrors
+
+`func (o *PromptsImportFileResponse) SetRowErrors(v []string)`
+
+SetRowErrors sets RowErrors field to given value.
+
+
+### GetLengthWarning
+
+`func (o *PromptsImportFileResponse) GetLengthWarning() string`
+
+GetLengthWarning returns the LengthWarning field if non-nil, zero value otherwise.
+
+### GetLengthWarningOk
+
+`func (o *PromptsImportFileResponse) GetLengthWarningOk() (*string, bool)`
+
+GetLengthWarningOk returns a tuple with the LengthWarning field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLengthWarning
+
+`func (o *PromptsImportFileResponse) SetLengthWarning(v string)`
+
+SetLengthWarning sets LengthWarning field to given value.
+
+
+### SetLengthWarningNil
+
+`func (o *PromptsImportFileResponse) SetLengthWarningNil(b bool)`
+
+ SetLengthWarningNil sets the value for LengthWarning to be an explicit nil
+
+### UnsetLengthWarning
+`func (o *PromptsImportFileResponse) UnsetLengthWarning()`
+
+UnsetLengthWarning ensures that no value is present for LengthWarning, not even an explicit nil
+### GetPromptsAvailable
+
+`func (o *PromptsImportFileResponse) GetPromptsAvailable() int32`
+
+GetPromptsAvailable returns the PromptsAvailable field if non-nil, zero value otherwise.
+
+### GetPromptsAvailableOk
+
+`func (o *PromptsImportFileResponse) GetPromptsAvailableOk() (*int32, bool)`
+
+GetPromptsAvailableOk returns a tuple with the PromptsAvailable field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPromptsAvailable
+
+`func (o *PromptsImportFileResponse) SetPromptsAvailable(v int32)`
+
+SetPromptsAvailable sets PromptsAvailable field to given value.
+
+
+### SetPromptsAvailableNil
+
+`func (o *PromptsImportFileResponse) SetPromptsAvailableNil(b bool)`
+
+ SetPromptsAvailableNil sets the value for PromptsAvailable to be an explicit nil
+
+### UnsetPromptsAvailable
+`func (o *PromptsImportFileResponse) UnsetPromptsAvailable()`
+
+UnsetPromptsAvailable ensures that no value is present for PromptsAvailable, not even an explicit nil
+### GetTracked
+
+`func (o *PromptsImportFileResponse) GetTracked() bool`
+
+GetTracked returns the Tracked field if non-nil, zero value otherwise.
+
+### GetTrackedOk
+
+`func (o *PromptsImportFileResponse) GetTrackedOk() (*bool, bool)`
+
+GetTrackedOk returns a tuple with the Tracked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTracked
+
+`func (o *PromptsImportFileResponse) SetTracked(v bool)`
+
+SetTracked sets Tracked field to given value.
+
+
+### GetUntrackedReason
+
+`func (o *PromptsImportFileResponse) GetUntrackedReason() string`
+
+GetUntrackedReason returns the UntrackedReason field if non-nil, zero value otherwise.
+
+### GetUntrackedReasonOk
+
+`func (o *PromptsImportFileResponse) GetUntrackedReasonOk() (*string, bool)`
+
+GetUntrackedReasonOk returns a tuple with the UntrackedReason field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUntrackedReason
+
+`func (o *PromptsImportFileResponse) SetUntrackedReason(v string)`
+
+SetUntrackedReason sets UntrackedReason field to given value.
+
+
+### SetUntrackedReasonNil
+
+`func (o *PromptsImportFileResponse) SetUntrackedReasonNil(b bool)`
+
+ SetUntrackedReasonNil sets the value for UntrackedReason to be an explicit nil
+
+### UnsetUntrackedReason
+`func (o *PromptsImportFileResponse) UnsetUntrackedReason()`
+
+UnsetUntrackedReason ensures that no value is present for UntrackedReason, not even an explicit nil
+### GetWarning
+
+`func (o *PromptsImportFileResponse) GetWarning() string`
+
+GetWarning returns the Warning field if non-nil, zero value otherwise.
+
+### GetWarningOk
+
+`func (o *PromptsImportFileResponse) GetWarningOk() (*string, bool)`
+
+GetWarningOk returns a tuple with the Warning field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetWarning
+
+`func (o *PromptsImportFileResponse) SetWarning(v string)`
+
+SetWarning sets Warning field to given value.
+
+
+### SetWarningNil
+
+`func (o *PromptsImportFileResponse) SetWarningNil(b bool)`
+
+ SetWarningNil sets the value for Warning to be an explicit nil
+
+### UnsetWarning
+`func (o *PromptsImportFileResponse) UnsetWarning()`
+
+UnsetWarning ensures that no value is present for Warning, not even an explicit nil
+### GetFirstRunsWaitUntil
+
+`func (o *PromptsImportFileResponse) GetFirstRunsWaitUntil() time.Time`
+
+GetFirstRunsWaitUntil returns the FirstRunsWaitUntil field if non-nil, zero value otherwise.
+
+### GetFirstRunsWaitUntilOk
+
+`func (o *PromptsImportFileResponse) GetFirstRunsWaitUntilOk() (*time.Time, bool)`
+
+GetFirstRunsWaitUntilOk returns a tuple with the FirstRunsWaitUntil field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetFirstRunsWaitUntil
+
+`func (o *PromptsImportFileResponse) SetFirstRunsWaitUntil(v time.Time)`
+
+SetFirstRunsWaitUntil sets FirstRunsWaitUntil field to given value.
+
+
+### SetFirstRunsWaitUntilNil
+
+`func (o *PromptsImportFileResponse) SetFirstRunsWaitUntilNil(b bool)`
+
+ SetFirstRunsWaitUntilNil sets the value for FirstRunsWaitUntil to be an explicit nil
+
+### UnsetFirstRunsWaitUntil
+`func (o *PromptsImportFileResponse) UnsetFirstRunsWaitUntil()`
+
+UnsetFirstRunsWaitUntil ensures that no value is present for FirstRunsWaitUntil, not even an explicit nil
+### GetRequestId
+
+`func (o *PromptsImportFileResponse) GetRequestId() string`
+
+GetRequestId returns the RequestId field if non-nil, zero value otherwise.
+
+### GetRequestIdOk
+
+`func (o *PromptsImportFileResponse) GetRequestIdOk() (*string, bool)`
+
+GetRequestIdOk returns a tuple with the RequestId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestId
+
+`func (o *PromptsImportFileResponse) SetRequestId(v string)`
+
+SetRequestId sets RequestId field to given value.
+
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

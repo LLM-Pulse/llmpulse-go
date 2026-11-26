@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.105.0
+API version: 1.106.0
 Contact: info@llmpulse.ai
 */
 
@@ -23,7 +23,7 @@ var _ MappedNullable = &CatalogPromptSuggestionsAcceptResponseSkippedInner{}
 // CatalogPromptSuggestionsAcceptResponseSkippedInner struct for CatalogPromptSuggestionsAcceptResponseSkippedInner
 type CatalogPromptSuggestionsAcceptResponseSkippedInner struct {
 	SuggestionId int32 `json:"suggestion_id"`
-	// accepted or rejected (the suggestion was no longer pending), or pending_deletion
+	// accepted or rejected (the suggestion was no longer pending), pending_deletion, or prompt_too_long (it would be a new prompt over the 2,000-byte limit; the suggestion stays pending)
 	Reason string `json:"reason"`
 }
 

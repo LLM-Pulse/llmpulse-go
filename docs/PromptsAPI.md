@@ -9,7 +9,9 @@ Method | HTTP request | Description
 [**CreatePrompts**](PromptsAPI.md#CreatePrompts) | **Post** /prompts | Bulk-create prompts
 [**DeletePrompt**](PromptsAPI.md#DeletePrompt) | **Delete** /prompts/{id} | Delete a prompt
 [**GetPromptGeneration**](PromptsAPI.md#GetPromptGeneration) | **Get** /prompt_generations/{id} | Get a prompt generation run
+[**ImportPeecExport**](PromptsAPI.md#ImportPeecExport) | **Post** /prompts/import_peec_export | Import a Peec AI export
 [**ImportPrompts**](PromptsAPI.md#ImportPrompts) | **Post** /prompts/import | Import prompts
+[**ImportPromptsFile**](PromptsAPI.md#ImportPromptsFile) | **Post** /prompts/import_file | Import prompts from a file
 [**ListPromptExecutions**](PromptsAPI.md#ListPromptExecutions) | **Get** /dimensions/prompt_executions | List prompt executions
 [**ListPrompts**](PromptsAPI.md#ListPrompts) | **Get** /dimensions/prompts | List prompts
 [**ListQueryFanOuts**](PromptsAPI.md#ListQueryFanOuts) | **Get** /dimensions/query_fan_outs | List query fan-out
@@ -361,6 +363,74 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ImportPeecExport
+
+> PeecExportImportResponse ImportPeecExport(ctx).ProjectId(projectId).File(file).Execute()
+
+Import a Peec AI export
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | 
+	file := os.NewFile(1234, "some_file") // *os.File | The answers export of Peec AI, a CSV of up to 8 MB and 20,000 answers
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.ImportPeecExport(context.Background()).ProjectId(projectId).File(file).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ImportPeecExport``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ImportPeecExport`: PeecExportImportResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ImportPeecExport`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiImportPeecExportRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** |  | 
+ **file** | ***os.File** | The answers export of Peec AI, a CSV of up to 8 MB and 20,000 answers | 
+
+### Return type
+
+[**PeecExportImportResponse**](PeecExportImportResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ImportPrompts
 
 > PromptsImportResponse ImportPrompts(ctx).PromptsImportRequest(promptsImportRequest).Execute()
@@ -420,6 +490,74 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ImportPromptsFile
+
+> PromptsImportFileResponse ImportPromptsFile(ctx).ProjectId(projectId).File(file).Execute()
+
+Import prompts from a file
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/LLM-Pulse/llmpulse-go"
+)
+
+func main() {
+	projectId := int32(56) // int32 | 
+	file := os.NewFile(1234, "some_file") // *os.File | A CSV or .xlsx file (its first sheet is read) of up to 5 MB and 10,000 rows, with the columns of the app's CSV import
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PromptsAPI.ImportPromptsFile(context.Background()).ProjectId(projectId).File(file).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PromptsAPI.ImportPromptsFile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ImportPromptsFile`: PromptsImportFileResponse
+	fmt.Fprintf(os.Stdout, "Response from `PromptsAPI.ImportPromptsFile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiImportPromptsFileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **int32** |  | 
+ **file** | ***os.File** | A CSV or .xlsx file (its first sheet is read) of up to 5 MB and 10,000 rows, with the columns of the app&#39;s CSV import | 
+
+### Return type
+
+[**PromptsImportFileResponse**](PromptsImportFileResponse.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
