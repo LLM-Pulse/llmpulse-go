@@ -299,7 +299,6 @@ docs/OwnedMediaSummaryResponse.md
 docs/OwnedMediaSummaryResponsePrevious.md
 docs/OwnedMediaWeek.md
 docs/PaginatedEnvelope.md
-docs/PeecExportImportResponse.md
 docs/Ping200Response.md
 docs/Project.md
 docs/ProjectCreateRequest.md
@@ -767,7 +766,6 @@ model_owned_media_summary_response.go
 model_owned_media_summary_response_previous.go
 model_owned_media_week.go
 model_paginated_envelope.go
-model_peec_export_import_response.go
 model_ping_200_response.go
 model_project.go
 model_project_create_request.go

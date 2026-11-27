@@ -3,7 +3,7 @@ LLM Pulse API
 
 REST API client for LLM Pulse AI visibility analytics.
 
-API version: 1.107.1
+API version: 1.108.0
 Contact: info@llmpulse.ai
 */
 
@@ -55,7 +55,7 @@ type ProjectCreateRequest struct {
 	OwnedMedia *ProjectCreateRequestOwnedMedia `json:"owned_media,omitempty"`
 	UseSubdomain *bool `json:"use_subdomain,omitempty"`
 	WeeklyEmailSubscribed *bool `json:"weekly_email_subscribed,omitempty"`
-	// Embed-enabled (Enterprise) accounts only; other accounts receive ERR_PLAN_REQUIRED. Idempotency key and embed-session join key, unique per account
+	// Accounts with Enterprise Embed enabled only; other accounts receive ERR_PLAN_REQUIRED. Idempotency key and embed-session join key, unique per account
 	ExternalIdentifier *string `json:"external_identifier,omitempty" validate:"regexp=^[a-z0-9_-]{1\\,64}$"`
 	ExecutePromptsImmediately *bool `json:"execute_prompts_immediately,omitempty"`
 	// Create a pitch project, a one-off snapshot for a prospect. It runs its prompts once across the account's AI models right away, takes no project slot and its prompts do not count against the prompt quota, and it is deleted 90 days later unless converted by sending pitch false to PATCH /projects/{id}. It uses one of the month's pitch projects (GET /account, limits.pitch_projects), needs an agency or platform account (GET /account, limits.pitch_projects.access) and a paid subscription on the Scale tier or higher, takes 1 to 100 prompts, and cannot use a domain the account already tracks or pitched in the last 90 days. execute_prompts_immediately must not be false
